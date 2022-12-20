@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<JUCERPROJECT id="X0QZwP" name="Neutrino" projectType="audioplug" useAppConfig="0"
+              addUsingNamespaceToJuceHeader="0" jucerFormatVersion="1" pluginFormats="buildStandalone">
+  <MAINGROUP id="M46wPq" name="Neutrino">
+    <GROUP id="{2FE70917-738D-3A38-9BF5-75FAFAF8EB81}" name="Source">
+      <GROUP id="{5C31B0FE-1024-5EB2-F31E-69C37FDCA2EE}" name="GUI">
+        <FILE id="ujdASP" name="PresetPanel.h" compile="0" resource="0" file="Source/PresetPanel.h"/>
+      </GROUP>
+      <FILE id="PirRv3" name="PluginProcessor.cpp" compile="1" resource="0"
+            file="Source/PluginProcessor.cpp"/>
+      <FILE id="vWKrDw" name="PluginProcessor.h" compile="0" resource="0"
+            file="Source/PluginProcessor.h"/>
+      <FILE id="DqDOPF" name="PluginEditor.cpp" compile="1" resource="0"
+            file="Source/PluginEditor.cpp"/>
+      <FILE id="Azx0zy" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
+    </GROUP>
+  </MAINGROUP>
+  <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1" JUCE_VST3_CAN_REPLACE_VST2="0"/>
+  <EXPORTFORMATS>
+    <VS2022 targetFolder="Builds/VisualStudio2022">
+      <CONFIGURATIONS>
+        <CONFIGURATION isDebug="1" name="Debug" targetName="Neutrino"/>
+        <CONFIGURATION isDebug="0" name="Release" targetName="Neutrino"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="juce_audio_basics" path="../../Ressources/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_devices" path="../../Ressources/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_formats" path="../../Ressources/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_plugin_client" path="../../Ressources/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_processors" path="../../Ressources/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_utils" path="../../Ressources/JUCE/modules"/>
+        <MODULEPATH id="juce_core" path="../../Ressources/JUCE/modules"/>
+        <MODULEPATH id="juce_data_structures" path="../../Ressources/JUCE/modules"/>
+        <MODULEPATH id="juce_events" path="../../Ressources/JUCE/modules"/>
+        <MODULEPATH id="juce_graphics" path="../../Ressources/JUCE/modules"/>
+        <MODULEPATH id="juce_gui_basics" path="../../Ressources/JUCE/modules"/>
+        <MODULEPATH id="juce_gui_extra" path="../../Ressources/JUCE/modules"/>
+      </MODULEPATHS>
+    </VS2022>
+  </EXPORTFORMATS>
+  <MODULES>
+    <MODULE id="juce_audio_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_devices" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_formats" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_plugin_client" showAllCode="1" useLocalCopy="0"
+            useGlobalPath="1"/>
+    <MODULE id="juce_audio_processors" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_utils" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_core" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_data_structures" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_events" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_graphics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_gui_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_gui_extra" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+  </MODULES>
+</JUCERPROJECT>
