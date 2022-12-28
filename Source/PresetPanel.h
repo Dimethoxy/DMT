@@ -30,11 +30,11 @@ public:
     configureButton(nextPresetButton, ">");
     configureButton(deleteButton, "Delete");
 
-    presetList.setTextWhenNothingSelected("No Preset Selected");
-    presetList.setTextWhenNoChoicesAvailable("No Presets Available");
-    presetList.setMouseCursor(juce::MouseCursor::PointingHandCursor);
-    addAndMakeVisible(presetList);
-    presetList.addListener(this);
+    presetListBox.setTextWhenNothingSelected("No Preset Selected");
+    presetListBox.setTextWhenNoChoicesAvailable("No Presets Available");
+    presetListBox.setMouseCursor(juce::MouseCursor::PointingHandCursor);
+    addAndMakeVisible(presetListBox);
+    presetListBox.addListener(this);
 
     loadPresetList();
   }
@@ -45,7 +45,7 @@ public:
     previousPresetButton.removeListener(this);
     nextPresetButton.removeListener(this);
     deleteButton.removeListener(this);
-    presetList.removeListener(this);
+    presetListBox.removeListener(this);
   }
 
   void paint(juce::Graphics&) override {}
@@ -60,7 +60,7 @@ public:
       bounds.removeFromLeft(container.proportionOfWidth(0.2)).reduced(padding));
     previousPresetButton.setBounds(
       bounds.removeFromLeft(container.proportionOfWidth(0.1)).reduced(padding));
-    presetList.setBounds(
+    presetListBox.setBounds(
       bounds.removeFromLeft(container.proportionOfWidth(0.4)).reduced(padding));
     nextPresetButton.setBounds(
       bounds.removeFromLeft(container.proportionOfWidth(0.1)).reduced(padding));
@@ -71,25 +71,26 @@ private:
   void buttonClicked(juce::Button* button) override
   {
     if (button == &saveButton) {
-      fileChooser =
-        std::make_unique<juce::FileChooser>("Save Preset",
-                                            presetManager.defaultDirectory,
-                                            "*." + presetManager.extension);
+      fileChooser = std::make_unique<juce::FileChooser>(
+        "Save Preset",
+        dmt::PresetManager::defaultDirectory,
+        "*." + dmt::PresetManager::extension);
 
       fileChooser->launchAsync(juce::FileBrowserComponent::saveMode,
                                [&](const juce::FileChooser& chooser) {
                                  const auto result = chooser.getResult();
-                                 presetManager.savePreset(result.getFileName());
+                                 presetManager.savePreset(
+                                   result.getFileNameWithoutExtension());
                                  loadPresetList();
                                });
     }
     if (button == &previousPresetButton) {
       const auto index = presetManager.loadPreviousPreset();
-      presetList.setSelectedItemIndex(index, juce::dontSendNotification);
+      presetListBox.setSelectedItemIndex(index, juce::dontSendNotification);
     }
     if (button == &nextPresetButton) {
       const auto index = presetManager.loadNextPreset();
-      presetList.setSelectedItemIndex(index, juce::dontSendNotification);
+      presetListBox.setSelectedItemIndex(index, juce::dontSendNotification);
     }
     if (button == &deleteButton) {
       presetManager.deletePreset(presetManager.getCurrentPreset());
@@ -99,9 +100,9 @@ private:
 
   void comboBoxChanged(juce::ComboBox* comboBoxThatHasChanged) override
   {
-    if (comboBoxThatHasChanged == &presetList) {
+    if (comboBoxThatHasChanged == &presetListBox) {
       presetManager.loadPreset(
-        presetList.getItemText(presetList.getSelectedItemIndex()));
+        presetListBox.getItemText(presetListBox.getSelectedItemIndex()));
     }
   }
 
@@ -115,12 +116,12 @@ private:
 
   void loadPresetList()
   {
-    presetList.clear(juce::dontSendNotification);
+    presetListBox.clear(juce::dontSendNotification);
     const auto allPresets = presetManager.getPresetList();
     const auto currentPreset = presetManager.getCurrentPreset();
-    presetList.addItemList(allPresets, 1);
-    presetList.setSelectedItemIndex(allPresets.indexOf(currentPreset),
-                                    juce::dontSendNotification);
+    presetListBox.addItemList(allPresets, 1);
+    presetListBox.setSelectedItemIndex(allPresets.indexOf(currentPreset),
+                                       juce::dontSendNotification);
   }
 
   dmt::PresetManager presetManager;
@@ -130,7 +131,7 @@ private:
   juce::TextButton nextPresetButton;
   juce::TextButton deleteButton;
 
-  juce::ComboBox presetList;
+  juce::ComboBox presetListBox;
 
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(PresetPanel)
 };

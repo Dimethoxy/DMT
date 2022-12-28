@@ -6,6 +6,8 @@
   <MAINGROUP id="M46wPq" name="Neutrino">
     <GROUP id="{2FE70917-738D-3A38-9BF5-75FAFAF8EB81}" name="Source">
       <GROUP id="{5C31B0FE-1024-5EB2-F31E-69C37FDCA2EE}" name="Presets">
+        <FILE id="sRJk8Q" name="FolderManager.h" compile="0" resource="0" file="Source/FolderManager.h"/>
+        <FILE id="dmHoO1" name="FolderPanel.h" compile="0" resource="0" file="Source/FolderPanel.h"/>
         <FILE id="IAVRtL" name="PresetManager.h" compile="0" resource="0" file="Source/PresetManager.h"/>
         <FILE id="ujdASP" name="PresetPanel.h" compile="0" resource="0" file="Source/PresetPanel.h"/>
       </GROUP>

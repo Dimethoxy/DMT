@@ -53,7 +53,8 @@ public:
       return;
     currentPreset.setValue(presetName);
     const auto xml = valueTreeState.copyState().createXml();
-    const auto presetFile = defaultDirectory.getChildFile(presetName);
+    const auto presetFile =
+      defaultDirectory.getChildFile(presetName + "." + extension);
     if (!xml->writeTo(presetFile)) {
       DBG("Could not create preset file: " + presetFile.getFullPathName());
       jassertfalse;
@@ -89,8 +90,8 @@ public:
   }
 
   void loadInitPreset()
-  { 
-      //valueTreeState.
+  {
+    // valueTreeState.
   }
 
   void deletePreset(const juce::String& presetName)

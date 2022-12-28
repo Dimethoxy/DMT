@@ -155,7 +155,7 @@
  #define JucePlugin_ARAFactoryID           "com.yourcompany.Neutrino.factory"
 #endif
 #ifndef  JucePlugin_ARADocumentArchiveID
- #define JucePlugin_ARADocumentArchiveID   "com.yourcompany.Neutrino.aradocumentarchive.1.0.0"
+ #define JucePlugin_ARADocumentArchiveID   "com.yourcompany.Neutrino.aradocumentarchive.0.0.1"
 #endif
 #ifndef  JucePlugin_ARACompatibleArchiveIDs
  #define JucePlugin_ARACompatibleArchiveIDs  ""

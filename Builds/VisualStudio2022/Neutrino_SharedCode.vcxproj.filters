@@ -2892,6 +2892,12 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Source\FolderManager.h">
+      <Filter>Neutrino\Source\Presets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\FolderPanel.h">
+      <Filter>Neutrino\Source\Presets</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\PresetManager.h">
       <Filter>Neutrino\Source\Presets</Filter>
     </ClInclude>
