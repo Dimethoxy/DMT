@@ -2,8 +2,8 @@
 
 <Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Neutrino\Source\GUI">
-      <UniqueIdentifier>{BE2DB130-51F4-9067-FD9C-BD76D73E94A3}</UniqueIdentifier>
+    <Filter Include="Neutrino\Source\Presets">
+      <UniqueIdentifier>{B227401E-667E-9C65-54F6-F0862A30BC1B}</UniqueIdentifier>
     </Filter>
     <Filter Include="Neutrino\Source">
       <UniqueIdentifier>{435EE20D-CF50-D347-FADB-565BE1353B47}</UniqueIdentifier>
@@ -2892,8 +2892,11 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Source\PresetManager.h">
+      <Filter>Neutrino\Source\Presets</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\PresetPanel.h">
-      <Filter>Neutrino\Source\GUI</Filter>
+      <Filter>Neutrino\Source\Presets</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\PluginProcessor.h">
       <Filter>Neutrino\Source</Filter>
