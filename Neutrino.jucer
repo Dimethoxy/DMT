@@ -2,7 +2,7 @@
 
 <JUCERPROJECT id="X0QZwP" name="Neutrino" projectType="audioplug" useAppConfig="0"
               addUsingNamespaceToJuceHeader="0" jucerFormatVersion="1" pluginFormats="buildStandalone"
-              version="0.0.1">
+              version="0.0.1" companyName="Dimethoxy">
   <MAINGROUP id="M46wPq" name="Neutrino">
     <GROUP id="{2FE70917-738D-3A38-9BF5-75FAFAF8EB81}" name="Source">
       <GROUP id="{5C31B0FE-1024-5EB2-F31E-69C37FDCA2EE}" name="Presets">

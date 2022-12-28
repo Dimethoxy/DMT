@@ -9,3 +9,19 @@
 */
 
 #pragma once
+
+#include <JuceHeader.h>
+
+//==============================================================================
+
+namespace dmt {
+class FolderManager
+{
+public:
+  inline static const juce::File& defaultDirectory =
+    juce::File::getSpecialLocation(
+      juce::File::SpecialLocationType::commonDocumentsDirectory)
+      .getChildFile(ProjectInfo::companyName)
+      .getChildFile(ProjectInfo::projectName);
+};
+}

@@ -19,9 +19,10 @@ NeutrinoAudioProcessorEditor::NeutrinoAudioProcessorEditor(
   , presetPanel(p.getPresetManager())
   , genericAudioProcessorEditor(p)
 {
+  addAndMakeVisible(folderPanel);
   addAndMakeVisible(presetPanel);
   addAndMakeVisible(genericAudioProcessorEditor);
-  setSize(400, 400);
+  setSize(500, 500);
 }
 
 NeutrinoAudioProcessorEditor::~NeutrinoAudioProcessorEditor() {}
@@ -39,6 +40,7 @@ NeutrinoAudioProcessorEditor::resized()
 {
   auto bounds = getLocalBounds();
 
-  genericAudioProcessorEditor.setBoundsRelative(0.0f, 0.2f, 1.0f, 0.8f);
-  presetPanel.setBounds(bounds.removeFromTop(proportionOfHeight(0.1)));
+  genericAudioProcessorEditor.setBoundsRelative(0.0f, 0.15f, 1.0f, 0.8f);
+  folderPanel.setBounds(bounds.removeFromTop(proportionOfHeight(0.06)));
+  presetPanel.setBounds(bounds.removeFromTop(proportionOfHeight(0.06)));
 }

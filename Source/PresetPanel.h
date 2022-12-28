@@ -16,6 +16,7 @@
 
 //==============================================================================
 
+namespace dmt {
 class PresetPanel
   : public juce::Component
   , juce::Button::Listener
@@ -52,7 +53,7 @@ public:
 
   void resized() override
   {
-    auto padding = 4;
+    auto padding = 1;
     const auto container = getLocalBounds().reduced(padding);
     auto bounds = container;
 
@@ -106,14 +107,6 @@ private:
     }
   }
 
-  void configureButton(juce::Button& button, const juce::String& buttontext)
-  {
-    button.setButtonText(buttontext);
-    button.setMouseCursor(juce::MouseCursor::PointingHandCursor);
-    addAndMakeVisible(button);
-    button.addListener(this);
-  }
-
   void loadPresetList()
   {
     presetListBox.clear(juce::dontSendNotification);
@@ -122,6 +115,14 @@ private:
     presetListBox.addItemList(allPresets, 1);
     presetListBox.setSelectedItemIndex(allPresets.indexOf(currentPreset),
                                        juce::dontSendNotification);
+  }
+
+  void configureButton(juce::Button& button, const juce::String& buttontext)
+  {
+    button.setButtonText(buttontext);
+    button.setMouseCursor(juce::MouseCursor::PointingHandCursor);
+    addAndMakeVisible(button);
+    button.addListener(this);
   }
 
   dmt::PresetManager presetManager;
@@ -135,3 +136,4 @@ private:
 
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(PresetPanel)
 };
+}
