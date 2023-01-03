@@ -5,6 +5,10 @@
               version="0.0.1" companyName="Dimethoxy">
   <MAINGROUP id="M46wPq" name="Neutrino">
     <GROUP id="{2FE70917-738D-3A38-9BF5-75FAFAF8EB81}" name="Source">
+      <GROUP id="{EEE4EEAB-33EF-14D9-AEBF-119DBB5FCFBF}" name="Synth">
+        <FILE id="erhcfP" name="SynthSound.h" compile="0" resource="0" file="Source/SynthSound.h"/>
+        <FILE id="zcYgtJ" name="SynthVoice.h" compile="0" resource="0" file="Source/SynthVoice.h"/>
+      </GROUP>
       <GROUP id="{5C31B0FE-1024-5EB2-F31E-69C37FDCA2EE}" name="Presets">
         <FILE id="sRJk8Q" name="FolderManager.h" compile="0" resource="0" file="Source/FolderManager.h"/>
         <FILE id="dmHoO1" name="FolderPanel.h" compile="0" resource="0" file="Source/FolderPanel.h"/>

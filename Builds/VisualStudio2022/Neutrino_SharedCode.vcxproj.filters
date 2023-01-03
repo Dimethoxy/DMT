@@ -2,6 +2,9 @@
 
 <Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <Filter Include="Neutrino\Source\Synth">
+      <UniqueIdentifier>{986FE8CA-FFDF-1F56-DA02-50870261429A}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Neutrino\Source\Presets">
       <UniqueIdentifier>{B227401E-667E-9C65-54F6-F0862A30BC1B}</UniqueIdentifier>
     </Filter>
@@ -2892,6 +2895,12 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Source\SynthSound.h">
+      <Filter>Neutrino\Source\Synth</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SynthVoice.h">
+      <Filter>Neutrino\Source\Synth</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\FolderManager.h">
       <Filter>Neutrino\Source\Presets</Filter>
     </ClInclude>

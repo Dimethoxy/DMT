@@ -2295,6 +2295,8 @@
     <ClCompile Include="..\..\JuceLibraryCode\include_juce_gui_extra.cpp"/>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Source\SynthSound.h"/>
+    <ClInclude Include="..\..\Source\SynthVoice.h"/>
     <ClInclude Include="..\..\Source\FolderManager.h"/>
     <ClInclude Include="..\..\Source\FolderPanel.h"/>
     <ClInclude Include="..\..\Source\PresetManager.h"/>
