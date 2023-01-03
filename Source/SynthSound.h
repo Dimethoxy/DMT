@@ -9,3 +9,23 @@
 */
 
 #pragma once
+
+#include <JuceHeader.h>
+
+//==============================================================================
+
+namespace dmt {
+
+//==============================================================================
+/*
+        This class is a implemantation of the juce::SynthesiserSound class.
+        It is needed because the original juce class is a bastract class.
+*/
+class CustomSynthesiserSound : public juce::SynthesiserSound
+{
+public:
+  bool appliesToNote(int midiNoteNumber) override { return true; }
+  bool appliesToChannel(int midiChannel) override { return true; }
+};
+
+}
