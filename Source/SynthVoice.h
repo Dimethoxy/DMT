@@ -43,9 +43,19 @@ public:
                  juce::SynthesiserSound* sound,
                  int currentPitchWheelPosition) override
   {
+    note = midiNoteNumber;
+    pitchEnvelope.noteOn();
+    gainEnvelope.noteOn();
   }
 
-  void stopNote(float velocity, bool allowTailOff) override {}
+  void stopNote(float velocity, bool allowTailOff) override
+  {
+    gainEnvelope.noteOff();
+    pitchEnvelope.noteOff();
+
+    if (!allowTailOff || !gainEnvelope.isActive())
+      clearCurrentNote();
+  }
 
   void controllerMoved(int controllerNumber, int newControllerValue) override {}
 
@@ -60,22 +70,57 @@ public:
 
     osc.prepare(spec);
     gain.prepare(spec);
+    pitchEnvelope.setSampleRate(sampleRate);
+    gainEnvelope.setSampleRate(sampleRate);
 
-    osc.setFrequency(90.0f);
-    gain.setGainLinear(1.5f);
+    juce::ADSR::Parameters pitchEnvelopeParams;
+    pitchEnvelopeParams.attack = 0.0f;
+    pitchEnvelopeParams.decay = 0.05f;
+    pitchEnvelopeParams.sustain = 0.0f;
+    pitchEnvelopeParams.release = 0.0f;
+    pitchEnvelope.setParameters(pitchEnvelopeParams);
+
+    juce::ADSR::Parameters gainEnvelopeParams;
+    gainEnvelopeParams.attack = 0.1f;
+    gainEnvelopeParams.decay = 0.3f;
+    gainEnvelopeParams.sustain = 0.0f;
+    gainEnvelopeParams.release = 0.0f;
+    gainEnvelope.setParameters(gainEnvelopeParams);
+
+    osc.setFrequency(60.0f);
+    gain.setGainLinear(1.0f);
   }
 
   void renderNextBlock(juce::AudioBuffer<float>& outputBuffer,
                        int startSample,
                        int numSamples) override
   {
+    auto* leftChannel = outputBuffer.getWritePointer(0);
+    auto* rightChannel = outputBuffer.getWritePointer(1);
+    for (int sample = 0; sample < outputBuffer.getNumSamples(); sample++) {
+      osc.setFrequency(note);
+      osc.setFrequency(osc.getFrequency() + pitchEnvelope.getNextSample() 
+                                          * (2000.0f - osc.getFrequency() 
+                                          * pitchDepth));
+      auto currentSample =
+        osc.processSample(0.0f) * gainEnvelope.getNextSample();
+      leftChannel[sample] = currentSample;
+      rightChannel[sample] = currentSample;
+    }
   }
 
 private:
-  juce::dsp::Oscillator<float> osc{ [](float x) {
-    return juce::dsp::FastMathApproximations::sin(x);
-  } };
+  float wave(float x)
+  {
+    // const auto pi = juce::MathConstants<float>::pi;
+    return sin(x);
+  }
+  juce::dsp::Oscillator<float> osc{ [&](float x) { return wave(x); } };
   juce::dsp::Gain<float> gain;
+  juce::ADSR pitchEnvelope;
+  juce::ADSR gainEnvelope;
+  int note = 0;
+  float pitchDepth = 0.7;
 };
 
 }

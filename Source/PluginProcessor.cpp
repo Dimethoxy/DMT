@@ -111,6 +111,11 @@ void
 NeutrinoAudioProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
 {
   synth.setCurrentPlaybackSampleRate(sampleRate);
+
+  for (int i = 0; i < synth.getNumVoices(); i++) {
+    auto voice = dynamic_cast<dmt::SynthVoice*>(synth.getVoice(i));
+    voice->prepareToPlay(sampleRate, samplesPerBlock, 2);
+  }
 }
 
 void
