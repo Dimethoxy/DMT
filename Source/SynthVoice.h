@@ -16,6 +16,11 @@
 
 namespace dmt {
 
+struct SynthParameters
+{
+  float gain = 0.0f;
+};
+
 //==============================================================================
 /*
         This class is used as a sound generating source.

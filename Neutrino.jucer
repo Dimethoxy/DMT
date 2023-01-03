@@ -2,7 +2,7 @@
 
 <JUCERPROJECT id="X0QZwP" name="Neutrino" projectType="audioplug" useAppConfig="0"
               addUsingNamespaceToJuceHeader="0" jucerFormatVersion="1" pluginFormats="buildStandalone"
-              version="0.0.1" companyName="Dimethoxy">
+              version="0.0.1" companyName="Dimethoxy" pluginCharacteristicsValue="pluginIsSynth,pluginWantsMidiIn">
   <MAINGROUP id="M46wPq" name="Neutrino">
     <GROUP id="{2FE70917-738D-3A38-9BF5-75FAFAF8EB81}" name="Source">
       <GROUP id="{EEE4EEAB-33EF-14D9-AEBF-119DBB5FCFBF}" name="Synth">
@@ -44,6 +44,7 @@
         <MODULEPATH id="juce_graphics" path="../../Ressources/JUCE/modules"/>
         <MODULEPATH id="juce_gui_basics" path="../../Ressources/JUCE/modules"/>
         <MODULEPATH id="juce_gui_extra" path="../../Ressources/JUCE/modules"/>
+        <MODULEPATH id="juce_dsp" path="../../Ressources/JUCE/modules"/>
       </MODULEPATHS>
     </VS2022>
   </EXPORTFORMATS>
@@ -57,6 +58,7 @@
     <MODULE id="juce_audio_utils" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
     <MODULE id="juce_core" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
     <MODULE id="juce_data_structures" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_dsp" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
     <MODULE id="juce_events" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
     <MODULE id="juce_graphics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
     <MODULE id="juce_gui_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>

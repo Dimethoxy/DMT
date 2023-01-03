@@ -10,6 +10,8 @@
 #pragma once
 
 #include "PresetManager.h"
+#include "SynthSound.h"
+#include "SynthVoice.h"
 #include <JuceHeader.h>
 
 namespace dmt {
@@ -84,6 +86,8 @@ private:
   //==============================================================================
   juce::AudioProcessorValueTreeState valueTreeState;
   std::unique_ptr<dmt::PresetManager> presetManager;
+
+  juce::Synthesiser synth;
 
   //==============================================================================
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(NeutrinoAudioProcessor)
