@@ -32,6 +32,30 @@ createParameterLayout()
       0)
   };
 }
+
+class AHD
+{
+  struct Parameters
+  {
+    int attack = 0;
+    int hold = 0;
+    int decay = 0;
+  };
+
+public:
+  AHD() {}
+
+  void setParameters(Parameters params) { this->params = params; }
+  void setSampleRate(int sampleRate) { this->sampleRate = sampleRate; }
+  void noteOn() { sampleIndex = 0; }
+
+private:
+  int getHoldStart() { return params.attack; }
+  int getDecayStart() { return params.attack + params.hold; }
+  int sampleRate = -1;
+  Parameters params;
+  int sampleIndex = 0;
+};
 }
 
 //==============================================================================
