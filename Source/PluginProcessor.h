@@ -42,16 +42,38 @@ class AHD
     int decay = 0;
   };
 
+  enum class State
+  {
+    Attack,
+    Hold,
+    Decay,
+  };
+
 public:
   AHD() {}
 
   void setParameters(Parameters params) { this->params = params; }
   void setSampleRate(int sampleRate) { this->sampleRate = sampleRate; }
   void noteOn() { sampleIndex = 0; }
+  State getState()
+  {
+    if (sampleIndex < getHoldStart())
+      return State::Attack;
+    if (sampleIndex < getDecayStart())
+      return State::Hold;
+    return State::Decay;
+  }
+  float getNextSample()
+  {
+    float result = 0.0f;
+
+    sampleIndex++;
+    return result;
+  }
 
 private:
-  int getHoldStart() { return params.attack; }
-  int getDecayStart() { return params.attack + params.hold; }
+  int getHoldStart() { return params.attack * sampleRate; }
+  int getDecayStart() { return (params.attack + params.hold) * sampleRate; }
   int sampleRate = -1;
   Parameters params;
   int sampleIndex = 0;
