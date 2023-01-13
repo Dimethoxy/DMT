@@ -112,8 +112,10 @@ public:
 private:
   float wave(float x)
   {
-    // const auto pi = juce::MathConstants<float>::pi;
-    return sin(x);
+    const auto pi = juce::MathConstants<float>::pi;
+    auto signBit = std::signbit(x)  ? -1 : 1;
+    auto result = x * signBit / pi - pi;
+    return result;
   }
   juce::dsp::Oscillator<float> osc{ [&](float x) { return wave(x); } };
   juce::dsp::Gain<float> gain;
