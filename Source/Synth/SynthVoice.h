@@ -45,12 +45,20 @@ public:
                  int currentPitchWheelPosition) override
   {
     dmt::AhdEnvelope::Parameters params;
-    params.attack = 0.015f;
+    params.attack = 0.005f;
     params.hold = 0.08f;
     params.decay = 0.5f;
+    params.decayScew = 0;
     gainEnvelope.setParameters(params);
+    params.attack = 0.0f;
+    params.hold = 0.0f;
+    params.decay = 0.3f;
+    params.decayScew = 60;
+    pitchEnvelope.setParameters(params);
+    osc.reset();
     note = midiNoteNumber;
     gainEnvelope.noteOn();
+    pitchEnvelope.noteOn();
   }
 
   void stopNote(float velocity, bool allowTailOff) override
@@ -73,43 +81,68 @@ public:
     osc.setFrequency(60.0f);
     gain.setGainLinear(1.0f);
 
-    dmt::AhdEnvelope::Parameters params;
-    params.attack = 0.015f;
-    params.hold = 0.1f;
-    params.decay = 1.0f;
-    gainEnvelope.setParameters(params);
     gainEnvelope.setSampleRate(sampleRate);
+    pitchEnvelope.setSampleRate(sampleRate);
+
+    isPrepared = true;
   }
 
   void renderNextBlock(juce::AudioBuffer<float>& outputBuffer,
                        int startSample,
                        int numSamples) override
   {
-    auto* leftChannel = outputBuffer.getWritePointer(0);
-    auto* rightChannel = outputBuffer.getWritePointer(1);
-    for (int sample = 0; sample < outputBuffer.getNumSamples(); sample++) {
+    // Exit if the voice is not playing
+    if (!isVoiceActive() || !isPrepared)
+      return;
+
+    // Reallocate and clear memory
+    tempBuffer.setSize(
+      outputBuffer.getNumChannels(), numSamples, false, false, true);
+    tempBuffer.clear();
+    tempBuffer.clear();
+
+    // Render Oscillator
+    auto* leftChannel = tempBuffer.getWritePointer(0);
+    auto* rightChannel = tempBuffer.getWritePointer(1);
+    for (int sample = 0; sample < tempBuffer.getNumSamples(); sample++) {
+      // Calculate frquency
       osc.setFrequency(note);
+      float baseFreq = osc.getFrequency();
+      float maxFreqModDepth = 5000;
+      float freqModDepth = maxFreqModDepth * pitchEnvelope.getNextSample();
+      osc.setFrequency(baseFreq + freqModDepth);
+      // Calculate gain
       auto oscGain = gainEnvelope.getNextSample();
-      auto currentSample = osc.processSample(0.0f) * oscGain;
+      auto currentSample = osc.processSample(1.0f) * oscGain;
+
+      // Write final sample
       leftChannel[sample] = currentSample;
       rightChannel[sample] = currentSample;
+    }
+
+    // Add temporary buffer to output buffer
+    for (int channel = 0; channel < outputBuffer.getNumChannels(); channel++) {
+      outputBuffer.addFrom(
+        channel, startSample, tempBuffer, channel, 0, numSamples);
     }
   }
 
 private:
   float wave(float x)
   {
-    /*  const auto pi = juce::MathConstants<float>::pi;
-      auto signBit = std::signbit(x) ? -1 : 1;
-      auto result = x * signBit / pi - pi;
-      return result;*/
-    return std::sin(x);
+    const auto pi = juce::MathConstants<float>::pi;
+    auto signBit = std::signbit(x) ? -1 : 1;
+    auto result = x * signBit / pi - pi;
+    return sin(x);
   }
   juce::dsp::Oscillator<float> osc{ [&](float x) { return wave(x); } };
   juce::dsp::Gain<float> gain;
   dmt::AhdEnvelope gainEnvelope;
+  dmt::AhdEnvelope pitchEnvelope;
   int note = 0;
   float pitchDepth = 0.7;
+  juce::AudioBuffer<float> tempBuffer;
+  bool isPrepared = false;
 };
 
 }

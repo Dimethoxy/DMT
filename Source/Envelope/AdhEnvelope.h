@@ -19,8 +19,9 @@ public:
   struct Parameters
   {
     float attack = 0.015f;
-    float hold = 0.1f;
-    float decay = 1.0f;
+    float hold = 0.08f;
+    float decay = 0.5f;
+
     // Negative scew = curve pulled up
     int attackScew = 0;
     int decayScew = 10;
