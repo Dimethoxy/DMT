@@ -58,7 +58,6 @@ public:
     // if (!allowTailOff || !gainEnvelope.isActive())
     //   clearCurrentNote();
   }
-
   void controllerMoved(int controllerNumber, int newControllerValue) override {}
 
   void pitchWheelMoved(int newPitchWheelValue) override {}
@@ -100,10 +99,11 @@ public:
 private:
   float wave(float x)
   {
-    const auto pi = juce::MathConstants<float>::pi;
-    auto signBit = std::signbit(x) ? -1 : 1;
-    auto result = x * signBit / pi - pi;
-    return result;
+    /*  const auto pi = juce::MathConstants<float>::pi;
+      auto signBit = std::signbit(x) ? -1 : 1;
+      auto result = x * signBit / pi - pi;
+      return result;*/
+    return std::sin(x);
   }
   juce::dsp::Oscillator<float> osc{ [&](float x) { return wave(x); } };
   juce::dsp::Gain<float> gain;
