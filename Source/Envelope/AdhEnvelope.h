@@ -75,17 +75,10 @@ private:
       }
       case State::Decay: {
         float decayStart = getDecayStart();
-        float decayDuration = getDecayEnd() - decayStart;
-        float normalizedPosition = (sampleIndex - decayStart) / decayDuration;
+        float normalizedPosition = (sampleIndex - decayStart) / sampleRate;
         float scew = getScew(State::Decay);
-        float value = 1.0f - std::pow(normalizedPosition, scew);
+        float value = 1.0f - std::pow(normalizedPosition / params.decay, scew);
         return value;
-        /*
-    float decayStart = getDecayStart();
-    float normalizedPosition = (sampleIndex - decayStart) / sampleRate;
-    float scew = getScew(State::Decay);
-    float value = 1.0f - std::pow(normalizedPosition / params.decay, scew);
-    return value;*/
       }
       default: {
         return 0.0f;
@@ -110,10 +103,8 @@ private:
   {
     float exponentRange =
       3.0f; // Set the range of exponents to be between -3 and 3
-    float exponent = (rawScew / 100.0f) *
-                     exponentRange; // Map the skew value to the exponent range
-    return std::pow(10.0f, exponent); // Convert the exponent to a suitable
-                                      // value for an exponential function
+    float exponent = (rawScew / 100.0f) * exponentRange;
+    return std::pow(10.0f, exponent);
   }
   int getHoldStart() { return params.attack * sampleRate; }
   int getDecayStart() { return (params.attack + params.hold) * sampleRate + 1; }
