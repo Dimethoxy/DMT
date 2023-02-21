@@ -19,15 +19,14 @@ namespace dmt {
 class PresetManager : juce::ValueTree::Listener
 {
 public:
-  inline static const juce::File& PresetManager::defaultDirectory =
+  inline static const juce::File& defaultDirectory =
     juce::File::getSpecialLocation(
       juce::File::SpecialLocationType::userDocumentsDirectory)
       .getChildFile(ProjectInfo::companyName)
       .getChildFile(ProjectInfo::projectName);
 
-  inline static const juce::String& PresetManager::extension = "preset";
-  inline static const juce::String& PresetManager::presetNameProperty =
-    "presetName";
+  inline static const juce::String& extension = "preset";
+  inline static const juce::String& presetNameProperty = "presetName";
 
   //==============================================================================
   PresetManager(juce::AudioProcessorValueTreeState& apvts)
@@ -165,11 +164,4 @@ private:
   juce::StringArray presetList;
   juce::Value currentPreset;
 };
-
-//===============================================================================
-//
-// Static Constants
-//
-//===============================================================================
-
 }

@@ -8,10 +8,10 @@
 
 #pragma once
 
-#include "FolderManager.h"
-#include "FolderPanel.h"
+#include "./Preset/FolderManager.h"
+#include "./Preset/FolderPanel.h"
+#include "./Preset/PresetPanel.h"
 #include "PluginProcessor.h"
-#include "PresetPanel.h"
 #include <JuceHeader.h>
 
 //==============================================================================

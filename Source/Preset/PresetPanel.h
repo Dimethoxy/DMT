@@ -12,6 +12,7 @@
 
 #pragma once
 
+#include "PresetManager.h"
 #include <JuceHeader.h>
 
 //==============================================================================

@@ -10,6 +10,7 @@
 
 #pragma once
 
+#include "../Envelope/AdhEnvelope.h"
 #include <JuceHeader.h>
 
 //==============================================================================
@@ -51,7 +52,7 @@ public:
   void stopNote(float velocity, bool allowTailOff) override
   {
     gainEnvelope.noteOff();
-    pitchEnvelope.noteOff();
+    // pitchEnvelope.noteOff();
 
     if (!allowTailOff || !gainEnvelope.isActive())
       clearCurrentNote();
@@ -73,18 +74,16 @@ public:
     pitchEnvelope.setSampleRate(sampleRate);
     gainEnvelope.setSampleRate(sampleRate);
 
-    juce::ADSR::Parameters pitchEnvelopeParams;
-    pitchEnvelopeParams.attack = 0.0f;
-    pitchEnvelopeParams.decay = 0.05f;
-    pitchEnvelopeParams.sustain = 0.0f;
-    pitchEnvelopeParams.release = 0.0f;
-    pitchEnvelope.setParameters(pitchEnvelopeParams);
+    dmt::AhdEnvelope::Parameters pitchEnvelopeParams;
+    pitchEnvelopeParams.attack = 1.0f;
+    pitchEnvelopeParams.hold = 1.0f;
+    pitchEnvelopeParams.decay = 1.0;
 
     juce::ADSR::Parameters gainEnvelopeParams;
     gainEnvelopeParams.attack = 0.1f;
-    gainEnvelopeParams.decay = 0.3f;
-    gainEnvelopeParams.sustain = 0.0f;
-    gainEnvelopeParams.release = 0.0f;
+    gainEnvelopeParams.decay = 1.0f;
+    gainEnvelopeParams.sustain = 0.5f;
+    gainEnvelopeParams.release = 0.2f;
     gainEnvelope.setParameters(gainEnvelopeParams);
 
     osc.setFrequency(60.0f);
@@ -99,11 +98,14 @@ public:
     auto* rightChannel = outputBuffer.getWritePointer(1);
     for (int sample = 0; sample < outputBuffer.getNumSamples(); sample++) {
       osc.setFrequency(note);
-      osc.setFrequency(osc.getFrequency() + pitchEnvelope.getNextSample() 
-                                          * (2000.0f - osc.getFrequency() 
-                                          * pitchDepth));
+      auto frequencyModulation = pitchEnvelope.getNextSample() + 1.0f;
+      /*auto newFrequency =
+        osc.getFrequency() +
+        frequencyModulation * (2000.0f - osc.getFrequency() * pitchDepth);
+      std::clamp(newFrequency, 20.0f, 20000.0f);
+      osc.setFrequency(newFrequency);*/
       auto currentSample =
-        osc.processSample(0.0f) * gainEnvelope.getNextSample();
+        osc.processSample(0.0f) * pitchEnvelope.getNextSample();
       leftChannel[sample] = currentSample;
       rightChannel[sample] = currentSample;
     }
@@ -113,13 +115,13 @@ private:
   float wave(float x)
   {
     const auto pi = juce::MathConstants<float>::pi;
-    auto signBit = std::signbit(x)  ? -1 : 1;
+    auto signBit = std::signbit(x) ? -1 : 1;
     auto result = x * signBit / pi - pi;
     return result;
   }
   juce::dsp::Oscillator<float> osc{ [&](float x) { return wave(x); } };
   juce::dsp::Gain<float> gain;
-  juce::ADSR pitchEnvelope;
+  dmt::AhdEnvelope pitchEnvelope;
   juce::ADSR gainEnvelope;
   int note = 0;
   float pitchDepth = 0.7;

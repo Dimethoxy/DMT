@@ -6,15 +6,18 @@
               cppLanguageStandard="latest">
   <MAINGROUP id="M46wPq" name="Neutrino">
     <GROUP id="{2FE70917-738D-3A38-9BF5-75FAFAF8EB81}" name="Source">
-      <GROUP id="{EEE4EEAB-33EF-14D9-AEBF-119DBB5FCFBF}" name="Synth">
-        <FILE id="erhcfP" name="SynthSound.h" compile="0" resource="0" file="Source/SynthSound.h"/>
-        <FILE id="zcYgtJ" name="SynthVoice.h" compile="0" resource="0" file="Source/SynthVoice.h"/>
+      <GROUP id="{983A5375-DD8E-AE34-4BEC-8E3A58720E39}" name="Envelope">
+        <FILE id="versba" name="AdhEnvelope.h" compile="0" resource="0" file="Source/Envelope/AdhEnvelope.h"/>
       </GROUP>
-      <GROUP id="{5C31B0FE-1024-5EB2-F31E-69C37FDCA2EE}" name="Presets">
-        <FILE id="sRJk8Q" name="FolderManager.h" compile="0" resource="0" file="Source/FolderManager.h"/>
-        <FILE id="dmHoO1" name="FolderPanel.h" compile="0" resource="0" file="Source/FolderPanel.h"/>
-        <FILE id="IAVRtL" name="PresetManager.h" compile="0" resource="0" file="Source/PresetManager.h"/>
-        <FILE id="ujdASP" name="PresetPanel.h" compile="0" resource="0" file="Source/PresetPanel.h"/>
+      <GROUP id="{EEE4EEAB-33EF-14D9-AEBF-119DBB5FCFBF}" name="Synth">
+        <FILE id="trv0Aw" name="SynthSound.h" compile="0" resource="0" file="Source/Synth/SynthSound.h"/>
+        <FILE id="z46mgT" name="SynthVoice.h" compile="0" resource="0" file="Source/Synth/SynthVoice.h"/>
+      </GROUP>
+      <GROUP id="{5C31B0FE-1024-5EB2-F31E-69C37FDCA2EE}" name="Preset">
+        <FILE id="WGA0UU" name="FolderManager.h" compile="0" resource="0" file="Source/Preset/FolderManager.h"/>
+        <FILE id="Nrr2nM" name="FolderPanel.h" compile="0" resource="0" file="Source/Preset/FolderPanel.h"/>
+        <FILE id="FyQpTK" name="PresetManager.h" compile="0" resource="0" file="Source/Preset/PresetManager.h"/>
+        <FILE id="Mpb7EZ" name="PresetPanel.h" compile="0" resource="0" file="Source/Preset/PresetPanel.h"/>
       </GROUP>
       <FILE id="PirRv3" name="PluginProcessor.cpp" compile="1" resource="0"
             file="Source/PluginProcessor.cpp"/>
