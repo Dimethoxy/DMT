@@ -20,17 +20,13 @@ namespace dmt {
 struct SynthParameters
 {
   float gain = 0.0f;
+  float modDecay = 0.3f;
+  float modDepth = 5000.0f;
+  float modScew = 70.0f;
 };
 
 //==============================================================================
-/*
-        This class is used as a sound generating source.
-        It has an oscillator that can generate sine, square and saw waveforms.
-        Each object of this class has it's own ADSR envelope for gain
-        modulation.
-        It needs to be hosted inside a JUCE Synthesiser object.
-        Each instance of this class can only play one note at the same time.
-*/
+
 class SynthVoice : public juce::SynthesiserVoice
 {
 public:
@@ -52,14 +48,16 @@ public:
     gainEnvelope.setParameters(params);
     params.attack = 0.0f;
     params.hold = 0.0f;
-    params.decay = 0.3f;
-    params.decayScew = 60;
+    params.decay = synthParams.modDecay;
+    params.decayScew = synthParams.modScew;
     pitchEnvelope.setParameters(params);
     osc.reset();
     note = midiNoteNumber;
     gainEnvelope.noteOn();
     pitchEnvelope.noteOn();
   }
+
+  void setParams(SynthParameters param) { this->synthParams = param; };
 
   void stopNote(float velocity, bool allowTailOff) override
   {
@@ -108,9 +106,10 @@ public:
       // Calculate frquency
       osc.setFrequency(note);
       float baseFreq = osc.getFrequency();
-      float maxFreqModDepth = 5000;
+      float maxFreqModDepth = synthParams.modDepth;
       float freqModDepth = maxFreqModDepth * pitchEnvelope.getNextSample();
       osc.setFrequency(baseFreq + freqModDepth);
+
       // Calculate gain
       auto oscGain = gainEnvelope.getNextSample();
       auto currentSample = osc.processSample(1.0f) * oscGain;
@@ -135,6 +134,7 @@ private:
     auto result = x * signBit / pi - pi;
     return sin(x);
   }
+  SynthParameters synthParams;
   juce::dsp::Oscillator<float> osc{ [&](float x) { return wave(x); } };
   juce::dsp::Gain<float> gain;
   dmt::AhdEnvelope gainEnvelope;

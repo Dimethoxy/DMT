@@ -19,17 +19,59 @@ static juce::AudioProcessorValueTreeState::ParameterLayout
 createParameterLayout()
 {
   return juce::AudioProcessorValueTreeState::ParameterLayout{
+    std::make_unique<juce::AudioParameterFloat>("oscGain",
+                                                "Gain",
+                                                juce::NormalisableRange<float>(
+                                                  // rangeStart
+                                                  -32.0f,
+                                                  // rangeEnd
+                                                  0.0f,
+                                                  // intervalValue
+                                                  0.2f,
+                                                  // skewFactor
+                                                  1.0f),
+                                                // defaultValue
+                                                0.0f),
 
-    std::make_unique<juce::AudioParameterFloat>(
-      "gain",
-      "Gain",
-      juce::NormalisableRange<float>(-32.0f, 0.0f, 0.2f, 1.0f),
-      0.0f),
-    std::make_unique<juce::AudioParameterChoice>(
-      "waveform",
-      "Waveform",
-      juce::StringArray{ "Sine", "Saw", "Triangle", "Square", "Noise" },
-      0)
+    std::make_unique<juce::AudioParameterFloat>("oscModDecay",
+                                                "Decay",
+                                                juce::NormalisableRange<float>(
+                                                  // rangeStart
+                                                  0.0f,
+                                                  // rangeEnd
+                                                  1.0f,
+                                                  // intervalValue
+                                                  0.001f,
+                                                  // skewFactor
+                                                  1.0f),
+                                                // defaultValue
+                                                0.3f),
+    std::make_unique<juce::AudioParameterFloat>("oscModDepth",
+                                                "Depth",
+                                                juce::NormalisableRange<float>(
+                                                  // rangeStart
+                                                  0.0f,
+                                                  // rangeEnd
+                                                  15000.0f,
+                                                  // intervalValue
+                                                  0.1f,
+                                                  // skewFactor
+                                                  1.0f),
+                                                // defaultValue
+                                                0.0f),
+    std::make_unique<juce::AudioParameterFloat>("oscModScew",
+                                                "Scew",
+                                                juce::NormalisableRange<float>(
+                                                  // rangeStart
+                                                  -100.0f,
+                                                  // rangeEnd
+                                                  100.0f,
+                                                  // intervalValue
+                                                  0.1f,
+                                                  // skewFactor
+                                                  16.0f),
+                                                // defaultValue
+                                                0.0f),
   };
 }
 
