@@ -18,11 +18,12 @@ class AhdEnvelope
 public:
   struct Parameters
   {
-    float attack = 2.5f;
-    float hold = 2.5f;
-    float decay = 2.5f;
-    int attackScew = 0.0f;
-    int decayScew = 0.0f;
+    float attack = 0.015f;
+    float hold = 0.1f;
+    float decay = 1.0f;
+    // Negative scew = curve pulled up
+    int attackScew = 0;
+    int decayScew = 10;
   };
 
   enum class State
@@ -53,7 +54,6 @@ public:
 
   float getNextSample()
   {
-    cout << "#" << sampleIndex << std::endl;
     auto state = getState();
     float result = getValue(state);
     sampleIndex++;
@@ -68,23 +68,26 @@ private:
         float normalizedPosition = sampleIndex / sampleRate;
         float scew = getScew(State::Attack);
         float value = std::pow(normalizedPosition / params.attack, scew);
-        cout << "Attack" << std::endl;
         return value;
       }
       case State::Hold: {
-        cout << "Hold" << std::endl;
         return 1.0f;
       }
       case State::Decay: {
-        cout << "Decay" << std::endl;
         float decayStart = getDecayStart();
-        float normalizedPosition = (sampleIndex - decayStart) / sampleRate;
+        float decayDuration = getDecayEnd() - decayStart;
+        float normalizedPosition = (sampleIndex - decayStart) / decayDuration;
         float scew = getScew(State::Decay);
-        float value = 1.0f - std::pow(normalizedPosition / params.decay, scew);
+        float value = 1.0f - std::pow(normalizedPosition, scew);
         return value;
+        /*
+    float decayStart = getDecayStart();
+    float normalizedPosition = (sampleIndex - decayStart) / sampleRate;
+    float scew = getScew(State::Decay);
+    float value = 1.0f - std::pow(normalizedPosition / params.decay, scew);
+    return value;*/
       }
       default: {
-        cout << "Default" << std::endl;
         return 0.0f;
       }
     }
@@ -96,7 +99,7 @@ private:
         return getScewAsExponent(params.attackScew);
       }
       case State::Decay: {
-        return getScewAsExponent(params.decayScew);
+        return getScewAsExponent(-params.decayScew);
       }
       default: {
         return 1.0f;
@@ -105,21 +108,22 @@ private:
   }
   float getScewAsExponent(int rawScew)
   {
-    if (rawScew >= 0) {
-      return 1.0f + (rawScew * 0.09);
-    }
-    if (rawScew < 0) {
-      return 1.0f + (rawScew * 0.009);
-    }
+    float exponentRange =
+      3.0f; // Set the range of exponents to be between -3 and 3
+    float exponent = (rawScew / 100.0f) *
+                     exponentRange; // Map the skew value to the exponent range
+    return std::pow(10.0f, exponent); // Convert the exponent to a suitable
+                                      // value for an exponential function
   }
   int getHoldStart() { return params.attack * sampleRate; }
-  int getDecayStart() { return (params.attack + params.hold) * sampleRate; }
+  int getDecayStart() { return (params.attack + params.hold) * sampleRate + 1; }
   int getDecayEnd()
   {
     return (params.attack + params.hold + params.decay) * sampleRate;
   }
-  float sampleRate = 10.0f;
+  float sampleRate = 60.0f;
   Parameters params;
   int sampleIndex = 0;
 };
+
 }
