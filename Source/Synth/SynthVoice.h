@@ -11,6 +11,7 @@
 #pragma once
 
 #include "../Envelope/AdhEnvelope.h"
+#include "../Synth/AnalogOscillator.h"
 #include <JuceHeader.h>
 
 //==============================================================================
@@ -20,6 +21,7 @@ namespace dmt {
 struct SynthParameters
 {
   float gain = 0.0f;
+  float duration = 0.0f;
   float modDecay = 0.3f;
   float modDepth = 5000.0f;
   float modScew = 70.0f;
@@ -51,8 +53,8 @@ public:
     params.decay = synthParams.modDecay;
     params.decayScew = synthParams.modScew;
     pitchEnvelope.setParameters(params);
-    osc.reset();
-    note = midiNoteNumber;
+    baseFreq = midiNoteNumber;
+    osc.resetPhase();
     gainEnvelope.noteOn();
     pitchEnvelope.noteOn();
   }
@@ -71,17 +73,9 @@ public:
   void prepareToPlay(double sampleRate, int samplesPerBlock, int outputChannels)
   {
     juce::dsp::ProcessSpec spec;
-    spec.sampleRate = sampleRate;
-    spec.maximumBlockSize = samplesPerBlock;
-    spec.numChannels = outputChannels;
-    osc.prepare(spec);
-    gain.prepare(spec);
-    osc.setFrequency(60.0f);
-    gain.setGainLinear(1.0f);
-
     gainEnvelope.setSampleRate(sampleRate);
     pitchEnvelope.setSampleRate(sampleRate);
-
+    osc.setSampleRate(sampleRate);
     isPrepared = true;
   }
 
@@ -93,55 +87,33 @@ public:
     if (!isVoiceActive() || !isPrepared)
       return;
 
-    // Reallocate and clear memory
-    tempBuffer.setSize(
-      outputBuffer.getNumChannels(), numSamples, false, false, true);
-    tempBuffer.clear();
-    tempBuffer.clear();
-
     // Render Oscillator
-    auto* leftChannel = tempBuffer.getWritePointer(0);
-    auto* rightChannel = tempBuffer.getWritePointer(1);
-    for (int sample = 0; sample < tempBuffer.getNumSamples(); sample++) {
+    auto* leftChannel = outputBuffer.getWritePointer(0);
+    auto* rightChannel = outputBuffer.getWritePointer(1);
+    for (int sample = startSample; sample < (numSamples + startSample);
+         sample++) {
       // Calculate frquency
-      osc.setFrequency(note);
-      float baseFreq = osc.getFrequency();
-      float maxFreqModDepth = synthParams.modDepth;
-      float freqModDepth = maxFreqModDepth * pitchEnvelope.getNextSample();
-      osc.setFrequency(baseFreq + freqModDepth);
-
+      float freqModDepth = baseFreq + synthParams.modDepth;
+      float envelopeSample = pitchEnvelope.getNextSample();
+      float newFreq = juce::mapToLog10(envelopeSample, baseFreq, freqModDepth);
+      osc.setFrequency(std::clamp(newFreq, 20.0f, 20000.0f));
       // Calculate gain
       auto oscGain = gainEnvelope.getNextSample();
-      auto currentSample = osc.processSample(1.0f) * oscGain;
+      auto currentSample = osc.getNextSample() * oscGain;
 
       // Write final sample
       leftChannel[sample] = currentSample;
       rightChannel[sample] = currentSample;
     }
-
-    // Add temporary buffer to output buffer
-    for (int channel = 0; channel < outputBuffer.getNumChannels(); channel++) {
-      outputBuffer.addFrom(
-        channel, startSample, tempBuffer, channel, 0, numSamples);
-    }
   }
 
 private:
-  float wave(float x)
-  {
-    const auto pi = juce::MathConstants<float>::pi;
-    auto signBit = std::signbit(x) ? -1 : 1;
-    auto result = x * signBit / pi - pi;
-    return sin(x);
-  }
   SynthParameters synthParams;
-  juce::dsp::Oscillator<float> osc{ [&](float x) { return wave(x); } };
-  juce::dsp::Gain<float> gain;
+  dmt::AnalogOscillator osc;
   dmt::AhdEnvelope gainEnvelope;
   dmt::AhdEnvelope pitchEnvelope;
-  int note = 0;
+  float baseFreq = 0.0f;
   float pitchDepth = 0.7;
-  juce::AudioBuffer<float> tempBuffer;
   bool isPrepared = false;
 };
 

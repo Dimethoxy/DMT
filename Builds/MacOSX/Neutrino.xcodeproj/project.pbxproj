@@ -75,6 +75,7 @@
 		30B30370A1605520F320724B /* include_juce_gui_extra.mm */ /* include_juce_gui_extra.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_gui_extra.mm; path = ../../JuceLibraryCode/include_juce_gui_extra.mm; sourceTree = SOURCE_ROOT; };
 		34B6447055AB6DBE68D2F7AF /* juce_gui_extra */ /* juce_gui_extra */ = {isa = PBXFileReference; lastKnownFileType = folder; name = juce_gui_extra; path = "~/JUCE/modules/juce_gui_extra"; sourceTree = "<absolute>"; };
 		39498465B706164305A2E0D9 /* PresetManager.h */ /* PresetManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PresetManager.h; path = ../../Source/Preset/PresetManager.h; sourceTree = SOURCE_ROOT; };
+		3AFE7DD15BE588CD52F77457 /* AnalogOscillator.h */ /* AnalogOscillator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AnalogOscillator.h; path = ../../Source/Synth/AnalogOscillator.h; sourceTree = SOURCE_ROOT; };
 		412FE30B7F1BD6953A1754B3 /* Cocoa.framework */ /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		41F582972587023D517E160F /* SynthVoice.h */ /* SynthVoice.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SynthVoice.h; path = ../../Source/Synth/SynthVoice.h; sourceTree = SOURCE_ROOT; };
 		4A4E850A8DB64B2E7E5D8FEC /* Info-Standalone_Plugin.plist */ /* Info-Standalone_Plugin.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Info-Standalone_Plugin.plist"; path = "Info-Standalone_Plugin.plist"; sourceTree = SOURCE_ROOT; };
@@ -271,6 +272,7 @@
 		D10294C65DE46C41CFEDA605 /* Synth */ = {
 			isa = PBXGroup;
 			children = (
+				3AFE7DD15BE588CD52F77457,
 				183C03387CE1A9CFE1681D00,
 				41F582972587023D517E160F,
 			);

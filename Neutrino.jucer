@@ -10,6 +10,8 @@
         <FILE id="versba" name="AdhEnvelope.h" compile="0" resource="0" file="Source/Envelope/AdhEnvelope.h"/>
       </GROUP>
       <GROUP id="{EEE4EEAB-33EF-14D9-AEBF-119DBB5FCFBF}" name="Synth">
+        <FILE id="DQisUz" name="AnalogOscillator.h" compile="0" resource="0"
+              file="Source/Synth/AnalogOscillator.h"/>
         <FILE id="trv0Aw" name="SynthSound.h" compile="0" resource="0" file="Source/Synth/SynthSound.h"/>
         <FILE id="z46mgT" name="SynthVoice.h" compile="0" resource="0" file="Source/Synth/SynthVoice.h"/>
       </GROUP>

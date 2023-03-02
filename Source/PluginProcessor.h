@@ -46,19 +46,21 @@ createParameterLayout()
                                                   1.0f),
                                                 // defaultValue
                                                 0.3f),
+
     std::make_unique<juce::AudioParameterFloat>("oscModDepth",
                                                 "Depth",
                                                 juce::NormalisableRange<float>(
                                                   // rangeStart
                                                   0.0f,
                                                   // rangeEnd
-                                                  15000.0f,
+                                                  19000.0f,
                                                   // intervalValue
                                                   0.1f,
                                                   // skewFactor
                                                   1.0f),
                                                 // defaultValue
                                                 0.0f),
+
     std::make_unique<juce::AudioParameterFloat>("oscModScew",
                                                 "Scew",
                                                 juce::NormalisableRange<float>(
@@ -69,7 +71,7 @@ createParameterLayout()
                                                   // intervalValue
                                                   0.1f,
                                                   // skewFactor
-                                                  16.0f),
+                                                  1.0f),
                                                 // defaultValue
                                                 0.0f),
   };

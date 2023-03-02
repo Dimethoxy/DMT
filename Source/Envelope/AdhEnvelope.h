@@ -23,8 +23,8 @@ public:
     float decay = 0.5f;
 
     // Negative scew = curve pulled up
-    int attackScew = 0;
-    int decayScew = 10;
+    float attackScew = 0;
+    float decayScew = 10;
   };
 
   enum class State
@@ -38,7 +38,7 @@ public:
   AhdEnvelope() {}
 
   void setParameters(Parameters params) { this->params = params; }
-  void setSampleRate(int sampleRate) { this->sampleRate = sampleRate; }
+  void setSampleRate(float sampleRate) { this->sampleRate = sampleRate; }
   void noteOn() { sampleIndex = 0; }
 
   State getState()
@@ -113,7 +113,7 @@ private:
   {
     return (params.attack + params.hold + params.decay) * sampleRate;
   }
-  float sampleRate = 60.0f;
+  float sampleRate = -1.0f;
   Parameters params;
   int sampleIndex = 0;
 };
