@@ -16,6 +16,7 @@ const float twoPi = juce::MathConstants<float>::twoPi;
 const float pi = juce::MathConstants<float>::pi;
 
 namespace dmt {
+
 class AnalogOscillator
 {
 public:
@@ -33,7 +34,7 @@ public:
       phase -= twoPi;
     }
 
-    return std::sin(phase);
+    return tri(phase);
   }
   void setFrequency(float frequency) { this->frequency = frequency; }
   void resetPhase() { this->phase = 0.0f; }
@@ -42,12 +43,14 @@ private:
   float frequency = 50.0f;
   float sampleRate = -1.0f;
   float phase = 0.0f;
+  float tri(float x)
+  {
+    float result = 2.0f * (x / twoPi - 0.5f);
+    if (result > 0.5f)
+      result = 1.0f - result;
+    if (result < -0.5f)
+      result = -1.0f - result;
+    return result;
+  }
 };
 }
-
-// float wave(float x)
-//{
-//   auto signBit = std::signbit(x) ? -1 : 1;
-//   auto result = x * signBit / pi - pi;
-//   return std::sin(x);
-// }

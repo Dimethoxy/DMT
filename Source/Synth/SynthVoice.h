@@ -97,9 +97,19 @@ public:
       float envelopeSample = pitchEnvelope.getNextSample();
       float newFreq = juce::mapToLog10(envelopeSample, baseFreq, freqModDepth);
       osc.setFrequency(std::clamp(newFreq, 20.0f, 20000.0f));
+
+      // Calculate sample
+      float currentSample = osc.getNextSample();
+
+      // Distortion stage
+      float currentCleanSample = currentSample;
+      currentSample =
+        juce::dsp::FastMathApproximations::tanh(5.0f * currentSample);
+      currentSample = (0.8 * currentSample) + (0.2 * currentCleanSample);
+
       // Calculate gain
       auto oscGain = gainEnvelope.getNextSample();
-      auto currentSample = osc.getNextSample() * oscGain;
+      currentSample = currentSample * oscGain;
 
       // Write final sample
       leftChannel[sample] = currentSample;
