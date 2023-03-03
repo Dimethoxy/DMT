@@ -43,9 +43,10 @@ public:
                  int currentPitchWheelPosition) override
   {
     dmt::AhdEnvelope::Parameters params;
-    params.attack = 0.005f;
+    params.attack = 0.0f;
     params.hold = 0.08f;
     params.decay = 0.5f;
+    params.attackScew = 0;
     params.decayScew = 0;
     gainEnvelope.setParameters(params);
     params.attack = 0.0f;
