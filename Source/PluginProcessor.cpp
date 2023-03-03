@@ -164,7 +164,6 @@ NeutrinoAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer,
   dmt::ChainSettings chainSettings(this->apvts);
 
   if (auto voice = dynamic_cast<juce::SynthesiserVoice*>(synth.getVoice(0))) {
-
     dynamic_cast<dmt::SynthVoice*>(synth.getVoice(0))
       ->setChainSettings(chainSettings);
   }

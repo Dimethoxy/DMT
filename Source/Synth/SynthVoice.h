@@ -15,17 +15,13 @@
 #include "../Utility/ChainSettings.h"
 #include <JuceHeader.h>
 
-using Math = juce::dsp::FastMathApproximations;
-
 //==============================================================================
-
 namespace dmt {
-
-//==============================================================================
-// SynthVoice
 //==============================================================================
 class SynthVoice : public juce::SynthesiserVoice
 {
+  using Math = juce::dsp::FastMathApproximations;
+
 public:
   //============================================================================
   bool canPlaySound(juce::SynthesiserSound* sound) override
