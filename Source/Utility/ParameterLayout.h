@@ -18,7 +18,7 @@ createParameterLayout()
                                      "Osc Gain",
                                      NormalisableRange(
                                        // rangeStart
-                                       -32.0f,
+                                       -96.0f,
                                        // rangeEnd
                                        0.0f,
                                        // intervalValue
@@ -40,6 +40,19 @@ createParameterLayout()
                                        1.0f),
                                      // defaultValue
                                      4.0f),
+    std::make_unique<ParameterFloat>("oscBias",
+                                     "Osc Bias",
+                                     NormalisableRange(
+                                       // rangeStart
+                                       -1.0f,
+                                       // rangeEnd
+                                       1.0f,
+                                       // intervalValue
+                                       0.01f,
+                                       // skewFactor
+                                       1.0f),
+                                     // defaultValue
+                                     0.0f),
     //============================================================================
     std::make_unique<ParameterFloat>("oscAmpAttack",
                                      "Amp Attack",

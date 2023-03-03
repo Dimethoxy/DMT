@@ -11,7 +11,7 @@ struct AnalogWaveform
 {
   const float twoPi = juce::MathConstants<float>::twoPi;
   const float pi = juce::MathConstants<float>::pi;
-
+  //============================================================================
   enum class Type
   {
     Sine,

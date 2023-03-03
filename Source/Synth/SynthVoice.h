@@ -65,11 +65,11 @@ public:
       return;
 
     // Render oscillator
+    auto endSample = numSamples + startSample;
     auto* leftChannel = outputBuffer.getWritePointer(0);
     auto* rightChannel = outputBuffer.getWritePointer(1);
-    for (int sample = startSample; sample < (numSamples + startSample);
-         sample++) {
-      // Calculate frquency
+    for (int sample = startSample; sample < endSample; sample++) {
+      // Frequency
       float freqModDepth = baseFreq + chainSettings->modDepth;
       float envelopeSample = pitchEnvelope.getNextSample();
       float newFreq = juce::mapToLog10(envelopeSample, baseFreq, freqModDepth);
@@ -78,12 +78,19 @@ public:
       // Calculate sample
       float currentSample = osc.getNextSample();
 
-      // Distortion stage
+      // Bias
+      float bias = chainSettings->oscBias;
+      float sign = (currentSample > 0.0f) ? 1.0f : -1.0f;
       currentSample = Math::tanh(chainSettings->oscDrive * currentSample);
 
-      // Calculate gain
-      auto oscGain = gainEnvelope.getNextSample();
-      currentSample = currentSample * oscGain;
+      // Distortion
+      currentSample = currentSample + sign * currentSample * bias;
+
+      // Gain
+      float envGain = gainEnvelope.getNextSample();
+      float oscGain =
+        juce::Decibels::decibelsToGain(chainSettings->oscGain, -96.0f);
+      currentSample = currentSample * envGain * oscGain;
 
       // Write final sample
       leftChannel[sample] = currentSample;
