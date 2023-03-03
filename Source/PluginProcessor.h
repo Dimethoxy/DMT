@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "./Filter/FilterProcessor.h"
 #include "./Preset/PresetManager.h"
 #include "./Synth/SynthSound.h"
 #include "./Synth/SynthVoice.h"
@@ -70,6 +71,8 @@ private:
   std::unique_ptr<dmt::PresetManager> presetManager;
 
   juce::Synthesiser synth;
+
+  dmt::FilterProcessor filterProcessor;
 
   //============================================================================
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(NeutrinoAudioProcessor)

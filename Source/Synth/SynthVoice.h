@@ -47,12 +47,14 @@ public:
   {
     // Set oscillator frequency
     osc.setPhase(0.0f);
-    baseFreq = midiNoteNumber * 2.0f;
+    baseFreq = midiNoteNumber;
 
     // Start envelopes
     setEnvelopes();
     gainEnvelope.noteOn();
     pitchEnvelope.noteOn();
+
+    callOnNoteReceivers();
   }
   void stopNote(float velocity, bool allowTailOff) override {}
   //============================================================================
@@ -103,6 +105,17 @@ public:
     this->chainSettings = std::make_unique<dmt::ChainSettings>(chainSettings);
   };
   //============================================================================
+  void addOnNoteReceivers(std::function<void()> callbackFunction)
+  {
+    onNoteReceivers.push_back(callbackFunction);
+  }
+  void callOnNoteReceivers()
+  {
+    for (std::function<void()> func : onNoteReceivers) {
+      func();
+    }
+  }
+
 private:
   std::unique_ptr<dmt::ChainSettings> chainSettings;
   dmt::AnalogOscillator osc;
@@ -111,6 +124,8 @@ private:
   float baseFreq = 0.0f;
   float pitchDepth = 0.7;
   bool isPrepared = false;
+
+  std::vector<std::function<void()>> onNoteReceivers;
 
   void setEnvelopes()
   {

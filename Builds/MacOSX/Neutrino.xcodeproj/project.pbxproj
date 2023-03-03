@@ -99,6 +99,7 @@
 		870EB6DDF75DF2EF4225FD94 /* QuartzCore.framework */ /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		8B5B8BC55BA50F3FA94AAF64 /* PluginProcessor.cpp */ /* PluginProcessor.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = PluginProcessor.cpp; path = ../../Source/PluginProcessor.cpp; sourceTree = SOURCE_ROOT; };
 		92F7412BFA94370B245BD62C /* include_juce_audio_processors.mm */ /* include_juce_audio_processors.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_audio_processors.mm; path = ../../JuceLibraryCode/include_juce_audio_processors.mm; sourceTree = SOURCE_ROOT; };
+		934F59786AEF7A9BE390DDF1 /* FilterProcessor.h */ /* FilterProcessor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = FilterProcessor.h; path = ../../Source/Filter/FilterProcessor.h; sourceTree = SOURCE_ROOT; };
 		93C79E7B5CEAE2A33CDD3BC0 /* juce_audio_plugin_client */ /* juce_audio_plugin_client */ = {isa = PBXFileReference; lastKnownFileType = folder; name = juce_audio_plugin_client; path = "~/JUCE/modules/juce_audio_plugin_client"; sourceTree = "<absolute>"; };
 		95E4BF25431C1E4A7E03814B /* CoreAudioKit.framework */ /* CoreAudioKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudioKit.framework; path = System/Library/Frameworks/CoreAudioKit.framework; sourceTree = SDKROOT; };
 		9A551637CDA5C09948566C5A /* include_juce_audio_plugin_client_ARA.cpp */ /* include_juce_audio_plugin_client_ARA.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = include_juce_audio_plugin_client_ARA.cpp; path = ../../JuceLibraryCode/include_juce_audio_plugin_client_ARA.cpp; sourceTree = SOURCE_ROOT; };
@@ -265,8 +266,9 @@
 			isa = PBXGroup;
 			children = (
 				AA978DD7E50671508A44DF55,
-				D10294C65DE46C41CFEDA605,
 				DDCC724DA9A0515631862A1B,
+				C125C6DF965EF6E3B43F47E8,
+				D10294C65DE46C41CFEDA605,
 				724D9844E2B0D80AC86FEBD1,
 				8B5B8BC55BA50F3FA94AAF64,
 				7D06B7AC5D09B87AB646D139,
@@ -282,6 +284,14 @@
 				9C04CCB3B2A17CFA6BB29F34,
 			);
 			name = Envelope;
+			sourceTree = "<group>";
+		};
+		C125C6DF965EF6E3B43F47E8 /* Filter */ = {
+			isa = PBXGroup;
+			children = (
+				934F59786AEF7A9BE390DDF1,
+			);
+			name = Filter;
 			sourceTree = "<group>";
 		};
 		D10294C65DE46C41CFEDA605 /* Synth */ = {

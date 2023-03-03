@@ -164,8 +164,9 @@ NeutrinoAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer,
   dmt::ChainSettings chainSettings(this->apvts);
 
   if (auto voice = dynamic_cast<juce::SynthesiserVoice*>(synth.getVoice(0))) {
-    dynamic_cast<dmt::SynthVoice*>(synth.getVoice(0))
-      ->setChainSettings(chainSettings);
+    auto* ref = dynamic_cast<dmt::SynthVoice*>(synth.getVoice(0));
+    ref->setChainSettings(chainSettings);
+    ref->addOnNoteReceivers([this]() { this->filterProcessor.onNote(); });
   }
 
   synth.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());

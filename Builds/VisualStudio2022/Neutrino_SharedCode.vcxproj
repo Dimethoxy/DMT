@@ -2423,14 +2423,15 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Source\Envelope\AdhEnvelope.h"/>
-    <ClInclude Include="..\..\Source\Synth\AnalogOscillator.h"/>
-    <ClInclude Include="..\..\Source\Synth\AnalogWaveform.h"/>
-    <ClInclude Include="..\..\Source\Synth\SynthSound.h"/>
-    <ClInclude Include="..\..\Source\Synth\SynthVoice.h"/>
     <ClInclude Include="..\..\Source\Preset\FolderManager.h"/>
     <ClInclude Include="..\..\Source\Preset\FolderPanel.h"/>
     <ClInclude Include="..\..\Source\Preset\PresetManager.h"/>
     <ClInclude Include="..\..\Source\Preset\PresetPanel.h"/>
+    <ClInclude Include="..\..\Source\Filter\FilterProcessor.h"/>
+    <ClInclude Include="..\..\Source\Synth\AnalogOscillator.h"/>
+    <ClInclude Include="..\..\Source\Synth\AnalogWaveform.h"/>
+    <ClInclude Include="..\..\Source\Synth\SynthSound.h"/>
+    <ClInclude Include="..\..\Source\Synth\SynthVoice.h"/>
     <ClInclude Include="..\..\Source\Utility\AppSettings.h"/>
     <ClInclude Include="..\..\Source\Utility\ChainSettings.h"/>
     <ClInclude Include="..\..\Source\Utility\ParameterLayout.h"/>

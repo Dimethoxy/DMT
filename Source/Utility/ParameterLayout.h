@@ -24,7 +24,7 @@ createParameterLayout()
                                        // intervalValue
                                        0.2f,
                                        // skewFactor
-                                       1.0f),
+                                       2.0f),
                                      // defaultValue
                                      0.0f),
     std::make_unique<ParameterFloat>("oscDrive",
