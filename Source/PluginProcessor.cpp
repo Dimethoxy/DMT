@@ -14,16 +14,14 @@ NeutrinoAudioProcessor::NeutrinoAudioProcessor()
   : AudioProcessor(BusesProperties().withOutput("Output",
                                                 juce::AudioChannelSet::stereo(),
                                                 true))
-  , valueTreeState(*this,
-                   nullptr,
-                   ProjectInfo::projectName,
-                   dmt::createParameterLayout())
+  , apvts(*this,
+          nullptr,
+          ProjectInfo::projectName,
+          dmt::createParameterLayout())
 {
-  valueTreeState.state.setProperty(
-    dmt::PresetManager::presetNameProperty, "", nullptr);
-  valueTreeState.state.setProperty(
-    "version", ProjectInfo::versionString, nullptr);
-  presetManager = std::make_unique<dmt::PresetManager>(valueTreeState);
+  apvts.state.setProperty(dmt::PresetManager::presetNameProperty, "", nullptr);
+  apvts.state.setProperty("version", ProjectInfo::versionString, nullptr);
+  presetManager = std::make_unique<dmt::PresetManager>(apvts);
 
   synth.addSound(new dmt::SynthSound());
   synth.addVoice(new dmt::SynthVoice());
@@ -163,22 +161,12 @@ NeutrinoAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer,
   for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
     buffer.clear(i, 0, buffer.getNumSamples());
 
-  if (auto voice = dynamic_cast<juce::SynthesiserVoice*>(synth.getVoice(0))) {
-    dmt::SynthParameters params;
+  dmt::ChainSettings chainSettings(this->apvts);
 
-    params.oscGain = valueTreeState.getRawParameterValue("oscGain")->load();
-    params.oscDrive = valueTreeState.getRawParameterValue("oscDrive")->load();
-    params.ampAttack =
-      valueTreeState.getRawParameterValue("oscAmpAttack")->load();
-    params.ampHold = valueTreeState.getRawParameterValue("oscAmpHold")->load();
-    params.ampDecay =
-      valueTreeState.getRawParameterValue("oscAmpDecay")->load();
-    params.modDecay =
-      valueTreeState.getRawParameterValue("oscModDecay")->load();
-    params.modDepth =
-      valueTreeState.getRawParameterValue("oscModDepth")->load();
-    params.modScew = valueTreeState.getRawParameterValue("oscModScew")->load();
-    dynamic_cast<dmt::SynthVoice*>(synth.getVoice(0))->setParams(params);
+  if (auto voice = dynamic_cast<juce::SynthesiserVoice*>(synth.getVoice(0))) {
+
+    dynamic_cast<dmt::SynthVoice*>(synth.getVoice(0))
+      ->setChainSettings(chainSettings);
   }
 
   synth.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
@@ -201,7 +189,7 @@ NeutrinoAudioProcessor::createEditor()
 void
 NeutrinoAudioProcessor::getStateInformation(juce::MemoryBlock& destData)
 {
-  const auto state = valueTreeState.copyState();
+  const auto state = apvts.copyState();
   const auto xml = state.createXml();
   copyXmlToBinary(*xml, destData);
 }
@@ -213,7 +201,7 @@ NeutrinoAudioProcessor::setStateInformation(const void* data, int sizeInBytes)
   if (xmlState == nullptr)
     return;
   const auto newTree = juce::ValueTree::fromXml(*xmlState);
-  valueTreeState.replaceState(newTree);
+  apvts.replaceState(newTree);
 }
 
 //==============================================================================

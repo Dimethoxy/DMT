@@ -12,6 +12,7 @@
 
 #include "../Envelope/AdhEnvelope.h"
 #include "../Synth/AnalogOscillator.h"
+#include "../Utility/ChainSettings.h"
 #include <JuceHeader.h>
 
 using Math = juce::dsp::FastMathApproximations;
@@ -20,21 +21,6 @@ using Math = juce::dsp::FastMathApproximations;
 
 namespace dmt {
 
-//==============================================================================
-// SynthParameters
-//==============================================================================
-struct SynthParameters
-{
-  float oscGain = 0.0f;
-  float oscDrive = 0.0f;
-  float ampAttack = 0.0f;
-  float ampHold = 0.0f;
-  float ampDecay = 0.0f;
-  float duration = 0.0f;
-  float modDecay = 0.0f;
-  float modDepth = 0.0f;
-  float modScew = 0.0f;
-};
 //==============================================================================
 // SynthVoice
 //==============================================================================
@@ -96,7 +82,7 @@ public:
     for (int sample = startSample; sample < (numSamples + startSample);
          sample++) {
       // Calculate frquency
-      float freqModDepth = baseFreq + parameters.modDepth;
+      float freqModDepth = baseFreq + chainSettings->modDepth;
       float envelopeSample = pitchEnvelope.getNextSample();
       float newFreq = juce::mapToLog10(envelopeSample, baseFreq, freqModDepth);
       osc.setFrequency(std::clamp(newFreq, 20.0f, 20000.0f));
@@ -105,7 +91,7 @@ public:
       float currentSample = osc.getNextSample();
 
       // Distortion stage
-      currentSample = Math::tanh(parameters.oscDrive * currentSample);
+      currentSample = Math::tanh(chainSettings->oscDrive * currentSample);
 
       // Calculate gain
       auto oscGain = gainEnvelope.getNextSample();
@@ -117,10 +103,13 @@ public:
     }
   }
   //============================================================================
-  void setParams(SynthParameters param) { this->parameters = param; };
+  void setChainSettings(dmt::ChainSettings chainSettings)
+  {
+    this->chainSettings = std::make_unique<dmt::ChainSettings>(chainSettings);
+  };
   //============================================================================
 private:
-  SynthParameters parameters;
+  std::unique_ptr<dmt::ChainSettings> chainSettings;
   dmt::AnalogOscillator osc;
   dmt::AhdEnvelope gainEnvelope;
   dmt::AhdEnvelope pitchEnvelope;
@@ -131,16 +120,16 @@ private:
   void setEnvelopes()
   {
     dmt::AhdEnvelope::Parameters envParameters;
-    envParameters.attack = parameters.ampAttack;
-    envParameters.hold = parameters.ampHold;
-    envParameters.decay = parameters.ampDecay;
+    envParameters.attack = chainSettings->ampAttack;
+    envParameters.hold = chainSettings->ampHold;
+    envParameters.decay = chainSettings->ampDecay;
     envParameters.attackScew = 0;
     envParameters.decayScew = 0;
     gainEnvelope.setParameters(envParameters);
     envParameters.attack = 0.0;
     envParameters.hold = 0.0f;
-    envParameters.decay = parameters.modDecay;
-    envParameters.decayScew = parameters.modScew;
+    envParameters.decay = chainSettings->modDecay;
+    envParameters.decayScew = chainSettings->modScew;
     pitchEnvelope.setParameters(envParameters);
   }
 };
