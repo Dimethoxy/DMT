@@ -165,7 +165,14 @@ NeutrinoAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer,
 
   if (auto voice = dynamic_cast<juce::SynthesiserVoice*>(synth.getVoice(0))) {
     dmt::SynthParameters params;
-    params.gain = valueTreeState.getRawParameterValue("oscGain")->load();
+
+    params.oscGain = valueTreeState.getRawParameterValue("oscGain")->load();
+    params.oscDrive = valueTreeState.getRawParameterValue("oscDrive")->load();
+    params.ampAttack =
+      valueTreeState.getRawParameterValue("oscAmpAttack")->load();
+    params.ampHold = valueTreeState.getRawParameterValue("oscAmpHold")->load();
+    params.ampDecay =
+      valueTreeState.getRawParameterValue("oscAmpDecay")->load();
     params.modDecay =
       valueTreeState.getRawParameterValue("oscModDecay")->load();
     params.modDepth =

@@ -14,6 +14,8 @@
 #include "../Synth/AnalogOscillator.h"
 #include <JuceHeader.h>
 
+using Math = juce::dsp::FastMathApproximations;
+
 //==============================================================================
 
 namespace dmt {
@@ -23,11 +25,15 @@ namespace dmt {
 //==============================================================================
 struct SynthParameters
 {
-  float gain = 0.0f;
+  float oscGain = 0.0f;
+  float oscDrive = 0.0f;
+  float ampAttack = 0.0f;
+  float ampHold = 0.0f;
+  float ampDecay = 0.0f;
   float duration = 0.0f;
-  float modDecay = 0.3f;
-  float modDepth = 5000.0f;
-  float modScew = 70.0f;
+  float modDecay = 0.0f;
+  float modDepth = 0.0f;
+  float modScew = 0.0f;
 };
 //==============================================================================
 // SynthVoice
@@ -67,7 +73,7 @@ public:
   {
     // Set oscillator frequency
     osc.setPhase(0.0f);
-    baseFreq = midiNoteNumber;
+    baseFreq = midiNoteNumber * 2.0f;
 
     // Start envelopes
     setEnvelopes();
@@ -90,7 +96,7 @@ public:
     for (int sample = startSample; sample < (numSamples + startSample);
          sample++) {
       // Calculate frquency
-      float freqModDepth = baseFreq + synthParams.modDepth;
+      float freqModDepth = baseFreq + parameters.modDepth;
       float envelopeSample = pitchEnvelope.getNextSample();
       float newFreq = juce::mapToLog10(envelopeSample, baseFreq, freqModDepth);
       osc.setFrequency(std::clamp(newFreq, 20.0f, 20000.0f));
@@ -99,10 +105,7 @@ public:
       float currentSample = osc.getNextSample();
 
       // Distortion stage
-      float currentCleanSample = currentSample;
-      currentSample =
-        juce::dsp::FastMathApproximations::tanh(5.0f * currentSample);
-      currentSample = (0.8 * currentSample) + (0.2 * currentCleanSample);
+      currentSample = Math::tanh(parameters.oscDrive * currentSample);
 
       // Calculate gain
       auto oscGain = gainEnvelope.getNextSample();
@@ -114,10 +117,10 @@ public:
     }
   }
   //============================================================================
-  void setParams(SynthParameters param) { this->synthParams = param; };
+  void setParams(SynthParameters param) { this->parameters = param; };
   //============================================================================
 private:
-  SynthParameters synthParams;
+  SynthParameters parameters;
   dmt::AnalogOscillator osc;
   dmt::AhdEnvelope gainEnvelope;
   dmt::AhdEnvelope pitchEnvelope;
@@ -127,18 +130,18 @@ private:
 
   void setEnvelopes()
   {
-    dmt::AhdEnvelope::Parameters params;
-    params.attack = 0.0f;
-    params.hold = 0.08f;
-    params.decay = 0.5f;
-    params.attackScew = 0;
-    params.decayScew = 0;
-    gainEnvelope.setParameters(params);
-    params.attack = 0.0f;
-    params.hold = 0.0f;
-    params.decay = synthParams.modDecay;
-    params.decayScew = synthParams.modScew;
-    pitchEnvelope.setParameters(params);
+    dmt::AhdEnvelope::Parameters envParameters;
+    envParameters.attack = parameters.ampAttack;
+    envParameters.hold = parameters.ampHold;
+    envParameters.decay = parameters.ampDecay;
+    envParameters.attackScew = 0;
+    envParameters.decayScew = 0;
+    gainEnvelope.setParameters(envParameters);
+    envParameters.attack = 0.0;
+    envParameters.hold = 0.0f;
+    envParameters.decay = parameters.modDecay;
+    envParameters.decayScew = parameters.modScew;
+    pitchEnvelope.setParameters(envParameters);
   }
 };
 
