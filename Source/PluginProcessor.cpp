@@ -26,9 +26,59 @@ NeutrinoAudioProcessor::NeutrinoAudioProcessor()
   synth.addSound(new dmt::SynthSound());
   synth.addVoice(new dmt::SynthVoice());
 }
-
 NeutrinoAudioProcessor::~NeutrinoAudioProcessor() {}
+//==============================================================================
+void
+NeutrinoAudioProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
+{
+  synth.setCurrentPlaybackSampleRate(sampleRate);
 
+  for (int i = 0; i < synth.getNumVoices(); i++) {
+    auto voice = dynamic_cast<dmt::SynthVoice*>(synth.getVoice(i));
+    voice->prepareToPlay(sampleRate, samplesPerBlock, 2);
+    voice->addOnNoteReceivers([this]() { this->filterProcessor.onNote(); });
+  }
+
+  filterProcessor.prepare(sampleRate);
+}
+void
+NeutrinoAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer,
+                                     juce::MidiBuffer& midiMessages)
+{
+  juce::ScopedNoDenormals noDenormals;
+  auto totalNumInputChannels = getTotalNumInputChannels();
+  auto totalNumOutputChannels = getTotalNumOutputChannels();
+
+  for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
+    buffer.clear(i, 0, buffer.getNumSamples());
+
+  dmt::ChainSettings chainSettings(apvts);
+
+  if (auto voice = dynamic_cast<juce::SynthesiserVoice*>(synth.getVoice(0))) {
+    auto* ref = dynamic_cast<dmt::SynthVoice*>(synth.getVoice(0));
+    ref->setChainSettings(chainSettings);
+  }
+
+  synth.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
+  filterProcessor.processBlock(buffer, 0, buffer.getNumSamples());
+}
+//==============================================================================
+void
+NeutrinoAudioProcessor::getStateInformation(juce::MemoryBlock& destData)
+{
+  const auto state = apvts.copyState();
+  const auto xml = state.createXml();
+  copyXmlToBinary(*xml, destData);
+}
+void
+NeutrinoAudioProcessor::setStateInformation(const void* data, int sizeInBytes)
+{
+  const auto xmlState = getXmlFromBinary(data, sizeInBytes);
+  if (xmlState == nullptr)
+    return;
+  const auto newTree = juce::ValueTree::fromXml(*xmlState);
+  apvts.replaceState(newTree);
+}
 //==============================================================================
 const juce::String
 NeutrinoAudioProcessor::getName() const
@@ -106,17 +156,6 @@ NeutrinoAudioProcessor::changeProgramName(int index,
 
 //==============================================================================
 void
-NeutrinoAudioProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
-{
-  synth.setCurrentPlaybackSampleRate(sampleRate);
-
-  for (int i = 0; i < synth.getNumVoices(); i++) {
-    auto voice = dynamic_cast<dmt::SynthVoice*>(synth.getVoice(i));
-    voice->prepareToPlay(sampleRate, samplesPerBlock, 2);
-  }
-}
-
-void
 NeutrinoAudioProcessor::releaseResources()
 {
   // When playback stops, you can use this as an opportunity to free up any
@@ -150,28 +189,6 @@ NeutrinoAudioProcessor::isBusesLayoutSupported(const BusesLayout& layouts) const
 }
 #endif
 
-void
-NeutrinoAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer,
-                                     juce::MidiBuffer& midiMessages)
-{
-  juce::ScopedNoDenormals noDenormals;
-  auto totalNumInputChannels = getTotalNumInputChannels();
-  auto totalNumOutputChannels = getTotalNumOutputChannels();
-
-  for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
-    buffer.clear(i, 0, buffer.getNumSamples());
-
-  dmt::ChainSettings chainSettings(this->apvts);
-
-  if (auto voice = dynamic_cast<juce::SynthesiserVoice*>(synth.getVoice(0))) {
-    auto* ref = dynamic_cast<dmt::SynthVoice*>(synth.getVoice(0));
-    ref->setChainSettings(chainSettings);
-    ref->addOnNoteReceivers([this]() { this->filterProcessor.onNote(); });
-  }
-
-  synth.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
-}
-
 //==============================================================================
 bool
 NeutrinoAudioProcessor::hasEditor() const
@@ -183,25 +200,6 @@ juce::AudioProcessorEditor*
 NeutrinoAudioProcessor::createEditor()
 {
   return new NeutrinoAudioProcessorEditor(*this);
-}
-
-//==============================================================================
-void
-NeutrinoAudioProcessor::getStateInformation(juce::MemoryBlock& destData)
-{
-  const auto state = apvts.copyState();
-  const auto xml = state.createXml();
-  copyXmlToBinary(*xml, destData);
-}
-
-void
-NeutrinoAudioProcessor::setStateInformation(const void* data, int sizeInBytes)
-{
-  const auto xmlState = getXmlFromBinary(data, sizeInBytes);
-  if (xmlState == nullptr)
-    return;
-  const auto newTree = juce::ValueTree::fromXml(*xmlState);
-  apvts.replaceState(newTree);
 }
 
 //==============================================================================
