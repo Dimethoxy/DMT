@@ -18,6 +18,7 @@
       <GROUP id="{8E2A8B60-F105-C9DE-8288-648DD89641D4}" name="Filter">
         <FILE id="eR3ReF" name="FilterProcessor.h" compile="0" resource="0"
               file="Source/Filter/FilterProcessor.h"/>
+        <FILE id="F2vUwf" name="IIRFilter.h" compile="0" resource="0" file="Source/Filter/IIRFilter.h"/>
       </GROUP>
       <GROUP id="{EEE4EEAB-33EF-14D9-AEBF-119DBB5FCFBF}" name="Synth">
         <FILE id="DQisUz" name="AnalogOscillator.h" compile="0" resource="0"

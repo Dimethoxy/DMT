@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include "../Filter/IIRFilter.h"
 #include "../Synth/AnalogWaveform.h"
 #include <JuceHeader.h>
 
@@ -16,6 +17,7 @@ struct ChainSettings
     waveformType = static_cast<dmt::AnalogWaveform::Type>(
       apvts.getRawParameterValue("waveformType")->load());
 
+    oscGain = apvts.getRawParameterValue("oscGain")->load();
     oscDrive = apvts.getRawParameterValue("oscDrive")->load();
     oscBias = apvts.getRawParameterValue("oscBias")->load();
 
@@ -27,6 +29,8 @@ struct ChainSettings
     modDepth = apvts.getRawParameterValue("oscModDepth")->load();
     modScew = apvts.getRawParameterValue("oscModScew")->load();
 
+    filterType = static_cast<dmt::IIRFilter::Type>(
+      apvts.getRawParameterValue("filterCutoff")->load());
     filterCutoff = apvts.getRawParameterValue("filterCutoff")->load();
   }
   //============================================================================
@@ -44,6 +48,7 @@ struct ChainSettings
   float modDepth;
   float modScew;
 
+  dmt::IIRFilter::Type filterType;
   float filterCutoff;
   //============================================================================
 };

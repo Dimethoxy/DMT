@@ -3,50 +3,12 @@
 #pragma once
 
 #include "../Utility/ChainSettings.h"
+#include "IIRFilter.h"
 #include <JuceHeader.h>
 
 //==============================================================================
 namespace dmt {
-struct IIRFilter
-{
-public:
-  enum Type
-  {
-    LowPass,
-    HighPass,
-    BandPass,
-    Notch,
-    AllPass,
-    LowShelf,
-    HighShelf,
-    Peak,
-  };
-  juce::IIRCoefficients makeCoefficients(float cutoff, float q, float gain)
-  {
-    switch (type) {
-      case LowPass:
-        return juce::IIRCoefficients::makeLowPass(sampleRate, cutoff, q);
-        break;
-      case HighPass:
-        break;
-      case BandPass:
-        break;
-      case Notch:
-        break;
-      case AllPass:
-        break;
-      case LowShelf:
-        break;
-      case HighShelf:
-        break;
-      case Peak:
-        break;
-    }
-  }
-  float sampleRate = -1;
-  Type type = Type::LowPass;
-  juce::SingleThreadedIIRFilter::IIRFilterBase base;
-};
+
 //==============================================================================
 class FilterProcessor
 {
@@ -68,6 +30,7 @@ public:
     auto* leftChannel = outputBuffer.getWritePointer(0);
     auto* rightChannel = outputBuffer.getWritePointer(1);
 
+    filter.type = chainSettings->filterType;
     float filterBaseCutoff = chainSettings->filterCutoff;
     auto coefficients = filter.makeCoefficients(filterBaseCutoff, 1.0f, 1.0f);
     filter.base.setCoefficients(coefficients);

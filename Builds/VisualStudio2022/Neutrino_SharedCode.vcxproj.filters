@@ -3078,6 +3078,9 @@
     <ClInclude Include="..\..\Source\Filter\FilterProcessor.h">
       <Filter>Neutrino\Source\Filter</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\Filter\IIRFilter.h">
+      <Filter>Neutrino\Source\Filter</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\Synth\AnalogOscillator.h">
       <Filter>Neutrino\Source\Synth</Filter>
     </ClInclude>

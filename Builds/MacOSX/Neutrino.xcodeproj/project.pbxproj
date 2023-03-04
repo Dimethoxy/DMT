@@ -112,6 +112,7 @@
 		B911F645CF2AA43852830347 /* PluginEditor.h */ /* PluginEditor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PluginEditor.h; path = ../../Source/PluginEditor.h; sourceTree = SOURCE_ROOT; };
 		BF5E3B8116A17262A0F019AB /* JuceHeader.h */ /* JuceHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = JuceHeader.h; path = ../../JuceLibraryCode/JuceHeader.h; sourceTree = SOURCE_ROOT; };
 		C0B41FEFB61FBF9A76F7061B /* include_juce_audio_utils.mm */ /* include_juce_audio_utils.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_audio_utils.mm; path = ../../JuceLibraryCode/include_juce_audio_utils.mm; sourceTree = SOURCE_ROOT; };
+		C1C36CB489C305E836F348FC /* IIRFilter.h */ /* IIRFilter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = IIRFilter.h; path = ../../Source/Filter/IIRFilter.h; sourceTree = SOURCE_ROOT; };
 		C2961518713F3880A86AE4D7 /* include_juce_graphics.mm */ /* include_juce_graphics.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_graphics.mm; path = ../../JuceLibraryCode/include_juce_graphics.mm; sourceTree = SOURCE_ROOT; };
 		D0B3BFBF8A4212EEBF1CE7F6 /* juce_audio_devices */ /* juce_audio_devices */ = {isa = PBXFileReference; lastKnownFileType = folder; name = juce_audio_devices; path = "~/JUCE/modules/juce_audio_devices"; sourceTree = "<absolute>"; };
 		D26EC150352B6EEE685ECF7D /* juce_audio_processors */ /* juce_audio_processors */ = {isa = PBXFileReference; lastKnownFileType = folder; name = juce_audio_processors; path = "~/JUCE/modules/juce_audio_processors"; sourceTree = "<absolute>"; };
@@ -290,6 +291,7 @@
 			isa = PBXGroup;
 			children = (
 				934F59786AEF7A9BE390DDF1,
+				C1C36CB489C305E836F348FC,
 			);
 			name = Filter;
 			sourceTree = "<group>";

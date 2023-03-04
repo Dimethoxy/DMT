@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include "../Filter/FilterProcessor.h"
 #include "../Synth/AnalogWaveform.h"
 #include <JuceHeader.h>
 
@@ -138,6 +139,8 @@ createParameterLayout()
                                      // defaultValue
                                      32.0f),
     //============================================================================
+    std::make_unique<ParameterChoice>(
+      "filterType", "Filter", dmt::IIRFilter::typeNames, 0),
     std::make_unique<ParameterFloat>("filterCutoff",
                                      "Filter Cutoff",
                                      NormalisableRange(
