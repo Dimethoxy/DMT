@@ -16,10 +16,15 @@ struct AnalogWaveform
   {
     Sine,
     Saw,
-    Triangle
+    Triangle,
+    Square
   };
+  static const inline juce::StringArray waveformNames = { "Sine",
+                                                          "Saw",
+                                                          "Triangle",
+                                                          "Square" };
   //============================================================================
-  Type type = Type::Triangle;
+  Type type = Type::Sine;
   //============================================================================
   inline float triangle(float x) const noexcept
   {
@@ -40,6 +45,11 @@ struct AnalogWaveform
     float result = juce::dsp::FastMathApproximations::sin(x);
     return result;
   }
+  inline float square(float x) const noexcept
+  {
+    float result = (sine(x) > 0.0f) ? 1.0f : -1.0f;
+    return result;
+  }
   //============================================================================
   inline float getSample(float x) const noexcept
   {
@@ -50,6 +60,8 @@ struct AnalogWaveform
         return saw(x);
       case Type::Triangle:
         return triangle(x);
+      case Type::Square:
+        return square(x);
     }
   }
   //============================================================================

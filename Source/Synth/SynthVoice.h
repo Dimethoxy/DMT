@@ -70,6 +70,7 @@ public:
     auto endSample = numSamples + startSample;
     auto* leftChannel = outputBuffer.getWritePointer(0);
     auto* rightChannel = outputBuffer.getWritePointer(1);
+    osc.setWaveformType(chainSettings->waveformType);
     for (int sample = startSample; sample < endSample; sample++) {
       // Frequency
       float freqModDepth = baseFreq + chainSettings->modDepth;

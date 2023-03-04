@@ -38,6 +38,10 @@ public:
   //============================================================================
   void setFrequency(float frequency) noexcept { this->frequency = frequency; }
   void setPhase(float newPhase) { this->phase = newPhase; }
+  void setWaveformType(dmt::AnalogWaveform::Type type) noexcept
+  {
+    waveform.type = type;
+  }
   //============================================================================
 private:
   dmt::AnalogWaveform waveform;

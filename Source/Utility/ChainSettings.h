@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include "../Synth/AnalogWaveform.h"
 #include <JuceHeader.h>
 
 //==============================================================================
@@ -12,7 +13,9 @@ struct ChainSettings
   //============================================================================
   ChainSettings(juce::AudioProcessorValueTreeState& apvts)
   {
-    oscGain = apvts.getRawParameterValue("oscGain")->load();
+    waveformType = static_cast<dmt::AnalogWaveform::Type>(
+      apvts.getRawParameterValue("waveformType")->load());
+
     oscDrive = apvts.getRawParameterValue("oscDrive")->load();
     oscBias = apvts.getRawParameterValue("oscBias")->load();
 
@@ -23,8 +26,12 @@ struct ChainSettings
     modDecay = apvts.getRawParameterValue("oscModDecay")->load();
     modDepth = apvts.getRawParameterValue("oscModDepth")->load();
     modScew = apvts.getRawParameterValue("oscModScew")->load();
+
+    filterCutoff = apvts.getRawParameterValue("filterCutoff")->load();
   }
   //============================================================================
+  dmt::AnalogWaveform::Type waveformType;
+
   float oscGain;
   float oscDrive;
   float oscBias;
@@ -36,6 +43,8 @@ struct ChainSettings
   float modDecay;
   float modDepth;
   float modScew;
+
+  float filterCutoff;
   //============================================================================
 };
 }

@@ -49,6 +49,9 @@ NeutrinoAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer,
   auto totalNumInputChannels = getTotalNumInputChannels();
   auto totalNumOutputChannels = getTotalNumOutputChannels();
 
+  keyboardState.processNextMidiBuffer(
+    midiMessages, 0, buffer.getNumSamples(), true);
+
   for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
     buffer.clear(i, 0, buffer.getNumSamples());
 
@@ -60,6 +63,8 @@ NeutrinoAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer,
   }
 
   synth.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
+  
+  filterProcessor.setChainSettings(chainSettings);
   filterProcessor.processBlock(buffer, 0, buffer.getNumSamples());
 }
 //==============================================================================

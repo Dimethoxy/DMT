@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include "../Synth/AnalogWaveform.h"
 #include <JuceHeader.h>
 
 //==============================================================================
@@ -11,9 +12,12 @@ static juce::AudioProcessorValueTreeState::ParameterLayout
 createParameterLayout()
 {
   using ParameterFloat = juce::AudioParameterFloat;
+  using ParameterChoice = juce::AudioParameterChoice;
   using NormalisableRange = juce::NormalisableRange<float>;
   return juce::AudioProcessorValueTreeState::ParameterLayout{
     //==========================================================================
+    std::make_unique<ParameterChoice>(
+      "waveformType", "Waveform", dmt::AnalogWaveform::waveformNames, 2),
     std::make_unique<ParameterFloat>("oscGain",
                                      "Osc Gain",
                                      NormalisableRange(
@@ -133,6 +137,20 @@ createParameterLayout()
                                        1.0f),
                                      // defaultValue
                                      32.0f),
+    //============================================================================
+    std::make_unique<ParameterFloat>("filterCutoff",
+                                     "Filter Cutoff",
+                                     NormalisableRange(
+                                       // rangeStart
+                                       20.0f,
+                                       // rangeEnd
+                                       20000.0f,
+                                       // intervalValue
+                                       0.1f,
+                                       // skewFactor
+                                       0.25f),
+                                     // defaultValue
+                                     425.0f),
     //============================================================================
   };
 }

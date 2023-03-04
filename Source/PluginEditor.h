@@ -30,6 +30,7 @@ public:
 private:
   NeutrinoAudioProcessor& audioProcessor;
   juce::GenericAudioProcessorEditor genericAudioProcessorEditor;
+  juce::MidiKeyboardComponent keyboardComponent;
   dmt::PresetPanel presetPanel;
   dmt::FolderPanel folderPanel;
 

@@ -64,6 +64,7 @@ public:
 
   //============================================================================
   dmt::PresetManager& getPresetManager() { return *presetManager; }
+  juce::MidiKeyboardState keyboardState;
 
 private:
   //============================================================================

@@ -18,11 +18,15 @@ NeutrinoAudioProcessorEditor::NeutrinoAudioProcessorEditor(
   audioProcessor(p)
   , presetPanel(p.getPresetManager())
   , genericAudioProcessorEditor(p)
+  , keyboardComponent(p.keyboardState,
+                      juce::MidiKeyboardComponent::horizontalKeyboard)
 {
   addAndMakeVisible(folderPanel);
   addAndMakeVisible(presetPanel);
   addAndMakeVisible(genericAudioProcessorEditor);
-  setSize(500, 500);
+  addAndMakeVisible(keyboardComponent);
+  keyboardComponent.setLowestVisibleKey(34);
+  setSize(500, 600);
 }
 
 NeutrinoAudioProcessorEditor::~NeutrinoAudioProcessorEditor() {}
@@ -40,7 +44,8 @@ NeutrinoAudioProcessorEditor::resized()
 {
   auto bounds = getLocalBounds();
 
-  genericAudioProcessorEditor.setBoundsRelative(0.0f, 0.15f, 1.0f, 0.8f);
-  folderPanel.setBounds(bounds.removeFromTop(proportionOfHeight(0.06)));
-  presetPanel.setBounds(bounds.removeFromTop(proportionOfHeight(0.06)));
+  genericAudioProcessorEditor.setBoundsRelative(0.0f, 0.05f, 1.0f, 0.8f);
+  // folderPanel.setBounds(bounds.removeFromTop(proportionOfHeight(0.04)));
+  presetPanel.setBounds(bounds.removeFromTop(proportionOfHeight(0.05f)));
+  keyboardComponent.setBoundsRelative(0.0f, 0.85f, 1.0f, 0.15f);
 }
