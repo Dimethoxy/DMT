@@ -5,12 +5,11 @@
 #include <JuceHeader.h>
 
 namespace dmt {
-struct IIRFilter
+struct IIRFilterState
 {
   using IIRCoefficients = juce::IIRCoefficients;
   enum class Type
   {
-    None,
     LowPass,
     HighPass,
     BandPass,

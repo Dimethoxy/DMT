@@ -47,7 +47,7 @@ public:
   {
     // Set oscillator frequency
     osc.setPhase(0.0f);
-    baseFreq = midiNoteNumber;
+    baseFreq = 12 + midiNoteNumber;
 
     // Start envelopes
     setEnvelopes();

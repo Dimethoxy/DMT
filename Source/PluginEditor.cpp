@@ -44,7 +44,7 @@ NeutrinoAudioProcessorEditor::resized()
 {
   auto bounds = getLocalBounds();
 
-  genericAudioProcessorEditor.setBoundsRelative(0.0f, 0.075f, 1.0f, 0.75f);
+  genericAudioProcessorEditor.setBoundsRelative(0.0f, 0.075f, 1.0f, 0.80f);
   // folderPanel.setBounds(bounds.removeFromTop(proportionOfHeight(0.04)));
   presetPanel.setBounds(bounds.removeFromTop(proportionOfHeight(0.05f)));
   keyboardComponent.setBoundsRelative(0.0f, 0.9f, 1.0f, 0.1f);

@@ -74,7 +74,7 @@
       <WarningLevel>Level4</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <ResourceCompile>
       <AdditionalIncludeDirectories>..\..\JuceLibraryCode;D:\Dev\Ressources\JUCE\modules;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -115,7 +115,7 @@
       <WarningLevel>Level4</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <ResourceCompile>
       <AdditionalIncludeDirectories>..\..\JuceLibraryCode;D:\Dev\Ressources\JUCE\modules;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -2400,6 +2400,7 @@
     <ClCompile Include="..\..\..\..\Ressources\JUCE\modules\juce_gui_extra\juce_gui_extra.cpp">
       <ExcludedFromBuild>true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="..\..\JuceLibraryCode\BinaryData.cpp"/>
     <ClCompile Include="..\..\JuceLibraryCode\include_juce_audio_basics.cpp"/>
     <ClCompile Include="..\..\JuceLibraryCode\include_juce_audio_devices.cpp"/>
     <ClCompile Include="..\..\JuceLibraryCode\include_juce_audio_formats.cpp"/>
@@ -3382,10 +3383,30 @@
     <ClInclude Include="..\..\..\..\Ressources\JUCE\modules\juce_gui_extra\misc\juce_WebBrowserComponent.h"/>
     <ClInclude Include="..\..\..\..\Ressources\JUCE\modules\juce_gui_extra\native\juce_mac_NSViewFrameWatcher.h"/>
     <ClInclude Include="..\..\..\..\Ressources\JUCE\modules\juce_gui_extra\juce_gui_extra.h"/>
+    <ClInclude Include="..\..\JuceLibraryCode\BinaryData.h"/>
     <ClInclude Include="..\..\JuceLibraryCode\JuceHeader.h"/>
     <ClInclude Include="..\..\JuceLibraryCode\JucePluginDefines.h"/>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\Fonts\Poppins\Poppins-Black.ttf"/>
+    <None Include="..\..\Fonts\Poppins\Poppins-BlackItalic.ttf"/>
+    <None Include="..\..\Fonts\Poppins\Poppins-Bold.ttf"/>
+    <None Include="..\..\Fonts\Poppins\Poppins-BoldItalic.ttf"/>
+    <None Include="..\..\Fonts\Poppins\Poppins-ExtraBold.ttf"/>
+    <None Include="..\..\Fonts\Poppins\Poppins-ExtraBoldItalic.ttf"/>
+    <None Include="..\..\Fonts\Poppins\Poppins-ExtraLight.ttf"/>
+    <None Include="..\..\Fonts\Poppins\Poppins-ExtraLightItalic.ttf"/>
+    <None Include="..\..\Fonts\Poppins\Poppins-Italic.ttf"/>
+    <None Include="..\..\Fonts\Poppins\Poppins-Light.ttf"/>
+    <None Include="..\..\Fonts\Poppins\Poppins-LightItalic.ttf"/>
+    <None Include="..\..\Fonts\Poppins\Poppins-Medium.ttf"/>
+    <None Include="..\..\Fonts\Poppins\Poppins-MediumItalic.ttf"/>
+    <None Include="..\..\Fonts\Poppins\Poppins-Regular.ttf"/>
+    <None Include="..\..\Fonts\Poppins\Poppins-SemiBold.ttf"/>
+    <None Include="..\..\Fonts\Poppins\Poppins-SemiBoldItalic.ttf"/>
+    <None Include="..\..\Fonts\Poppins\Poppins-Thin.ttf"/>
+    <None Include="..\..\Fonts\Poppins\Poppins-ThinItalic.ttf"/>
+    <None Include="..\..\Fonts\Sedgwick_Ave_Display\SedgwickAveDisplay-Regular.ttf"/>
     <None Include="..\..\..\..\Ressources\JUCE\modules\juce_audio_devices\native\oboe\CMakeLists.txt"/>
     <None Include="..\..\..\..\Ressources\JUCE\modules\juce_audio_devices\native\oboe\README.md"/>
     <None Include="..\..\..\..\Ressources\JUCE\modules\juce_audio_formats\codecs\flac\Flac Licence.txt"/>

@@ -140,7 +140,7 @@ createParameterLayout()
                                      32.0f),
     //============================================================================
     std::make_unique<ParameterChoice>(
-      "filterType", "Filter", dmt::IIRFilter::typeNames, 0),
+      "filterType", "Filter", dmt::IIRFilterState::typeNames, 0),
     std::make_unique<ParameterFloat>("filterCutoff",
                                      "Filter Cutoff",
                                      NormalisableRange(
@@ -154,6 +154,32 @@ createParameterLayout()
                                        0.25f),
                                      // defaultValue
                                      425.0f),
+    std::make_unique<ParameterFloat>("filterQ",
+                                     "Filter Q",
+                                     NormalisableRange(
+                                       // rangeStart
+                                       0.1f,
+                                       // rangeEnd
+                                       10.0f,
+                                       // intervalValue
+                                       0.1f,
+                                       // skewFactor
+                                       1.0f),
+                                     // defaultValue
+                                     1.0f),
+    std::make_unique<ParameterFloat>("filterGain",
+                                     "Filter Gain",
+                                     NormalisableRange(
+                                       // rangeStart
+                                       -32.0f,
+                                       // rangeEnd
+                                       32.0f,
+                                       // intervalValue
+                                       0.1f,
+                                       // skewFactor
+                                       1.0f),
+                                     // defaultValue
+                                     0.0f),
     //============================================================================
   };
 }

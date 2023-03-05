@@ -11,8 +11,33 @@
 #include "./Preset/FolderManager.h"
 #include "./Preset/FolderPanel.h"
 #include "./Preset/PresetPanel.h"
+#include "./Utility/Appsettings.h"
 #include "PluginProcessor.h"
 #include <JuceHeader.h>
+
+namespace dmt {
+class OscillatorEditor : juce::Component
+{
+public:
+  OscillatorEditor(dmt::AppSettings& a)
+    : a(a)
+  {
+  }
+  void paint(juce::Graphics& g)
+  {
+    g.setColour(dmt::AppSettings::Colours::solidLight);
+    g.fillRect(this->getLocalBounds());
+
+    g.setColour(a.colours.solidMedium);
+    g.fillRect(this->getLocalBounds().reduced(a.margin * a.size / 3.0f));
+    g.setColour(a.colours.solidDark);
+    g.fillRect(this->getLocalBounds().reduced(a.margin * a.size / 2.0f));
+  }
+
+private:
+  dmt::AppSettings& a;
+};
+}
 
 //==============================================================================
 /**

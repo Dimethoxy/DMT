@@ -32,12 +32,13 @@ public:
 
     filter.type = chainSettings->filterType;
     float filterBaseCutoff = chainSettings->filterCutoff;
-    auto coefficients = filter.makeCoefficients(filterBaseCutoff, 1.0f, 1.0f);
+    auto coefficients = filter.makeCoefficients(
+      filterBaseCutoff, chainSettings->filterQ, chainSettings->filterGain);
     filter.base.setCoefficients(coefficients);
 
     for (int sample = startSample; sample < endSample; sample++) {
-      leftChannel[sample] =
-        filter.base.processSingleSampleRaw(leftChannel[sample]);
+      // leftChannel[sample] =
+      //   filter.base.processSingleSampleRaw(leftChannel[sample]);
       rightChannel[sample] = leftChannel[sample];
     }
   }
@@ -50,6 +51,6 @@ public:
 private:
   float sampleRate = -1;
   std::unique_ptr<dmt::ChainSettings> chainSettings;
-  dmt::IIRFilter filter;
+  dmt::IIRFilterState filter;
 };
 }

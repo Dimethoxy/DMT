@@ -48,6 +48,7 @@ private:
   float frequency = 50.0f;
   float sampleRate = -1.0f;
   float phase = 0.0f;
+  float dutyCycle = 0.5f;
 };
 }
 //==============================================================================

@@ -20,6 +20,15 @@
     <Filter Include="Neutrino\Source">
       <UniqueIdentifier>{435EE20D-CF50-D347-FADB-565BE1353B47}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Neutrino\Fonts\Poppins">
+      <UniqueIdentifier>{187E3FBF-8382-1D9B-6A27-6DF8190969AC}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Neutrino\Fonts\Sedgwick_Ave_Display">
+      <UniqueIdentifier>{14BDD32C-B5D1-5372-E2B8-6314D2D9FFD5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Neutrino\Fonts">
+      <UniqueIdentifier>{19DB76B0-B3B1-6322-B58E-7F1511257543}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Neutrino">
       <UniqueIdentifier>{5E4B2DCE-9771-D18B-80B2-14E2620CE702}</UniqueIdentifier>
     </Filter>
@@ -3010,6 +3019,9 @@
     <ClCompile Include="..\..\..\..\Ressources\JUCE\modules\juce_gui_extra\juce_gui_extra.mm">
       <Filter>JUCE Modules\juce_gui_extra</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\JuceLibraryCode\BinaryData.cpp">
+      <Filter>JUCE Library Code</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\JuceLibraryCode\include_juce_audio_basics.cpp">
       <Filter>JUCE Library Code</Filter>
     </ClCompile>
@@ -5940,6 +5952,9 @@
     <ClInclude Include="..\..\..\..\Ressources\JUCE\modules\juce_gui_extra\juce_gui_extra.h">
       <Filter>JUCE Modules\juce_gui_extra</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\JuceLibraryCode\BinaryData.h">
+      <Filter>JUCE Library Code</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\JuceLibraryCode\JuceHeader.h">
       <Filter>JUCE Library Code</Filter>
     </ClInclude>
@@ -5948,6 +5963,63 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\Fonts\Poppins\Poppins-Black.ttf">
+      <Filter>Neutrino\Fonts\Poppins</Filter>
+    </None>
+    <None Include="..\..\Fonts\Poppins\Poppins-BlackItalic.ttf">
+      <Filter>Neutrino\Fonts\Poppins</Filter>
+    </None>
+    <None Include="..\..\Fonts\Poppins\Poppins-Bold.ttf">
+      <Filter>Neutrino\Fonts\Poppins</Filter>
+    </None>
+    <None Include="..\..\Fonts\Poppins\Poppins-BoldItalic.ttf">
+      <Filter>Neutrino\Fonts\Poppins</Filter>
+    </None>
+    <None Include="..\..\Fonts\Poppins\Poppins-ExtraBold.ttf">
+      <Filter>Neutrino\Fonts\Poppins</Filter>
+    </None>
+    <None Include="..\..\Fonts\Poppins\Poppins-ExtraBoldItalic.ttf">
+      <Filter>Neutrino\Fonts\Poppins</Filter>
+    </None>
+    <None Include="..\..\Fonts\Poppins\Poppins-ExtraLight.ttf">
+      <Filter>Neutrino\Fonts\Poppins</Filter>
+    </None>
+    <None Include="..\..\Fonts\Poppins\Poppins-ExtraLightItalic.ttf">
+      <Filter>Neutrino\Fonts\Poppins</Filter>
+    </None>
+    <None Include="..\..\Fonts\Poppins\Poppins-Italic.ttf">
+      <Filter>Neutrino\Fonts\Poppins</Filter>
+    </None>
+    <None Include="..\..\Fonts\Poppins\Poppins-Light.ttf">
+      <Filter>Neutrino\Fonts\Poppins</Filter>
+    </None>
+    <None Include="..\..\Fonts\Poppins\Poppins-LightItalic.ttf">
+      <Filter>Neutrino\Fonts\Poppins</Filter>
+    </None>
+    <None Include="..\..\Fonts\Poppins\Poppins-Medium.ttf">
+      <Filter>Neutrino\Fonts\Poppins</Filter>
+    </None>
+    <None Include="..\..\Fonts\Poppins\Poppins-MediumItalic.ttf">
+      <Filter>Neutrino\Fonts\Poppins</Filter>
+    </None>
+    <None Include="..\..\Fonts\Poppins\Poppins-Regular.ttf">
+      <Filter>Neutrino\Fonts\Poppins</Filter>
+    </None>
+    <None Include="..\..\Fonts\Poppins\Poppins-SemiBold.ttf">
+      <Filter>Neutrino\Fonts\Poppins</Filter>
+    </None>
+    <None Include="..\..\Fonts\Poppins\Poppins-SemiBoldItalic.ttf">
+      <Filter>Neutrino\Fonts\Poppins</Filter>
+    </None>
+    <None Include="..\..\Fonts\Poppins\Poppins-Thin.ttf">
+      <Filter>Neutrino\Fonts\Poppins</Filter>
+    </None>
+    <None Include="..\..\Fonts\Poppins\Poppins-ThinItalic.ttf">
+      <Filter>Neutrino\Fonts\Poppins</Filter>
+    </None>
+    <None Include="..\..\Fonts\Sedgwick_Ave_Display\SedgwickAveDisplay-Regular.ttf">
+      <Filter>Neutrino\Fonts\Sedgwick_Ave_Display</Filter>
+    </None>
     <None Include="..\..\..\..\Ressources\JUCE\modules\juce_audio_devices\native\oboe\CMakeLists.txt">
       <Filter>JUCE Modules\juce_audio_devices\native\oboe</Filter>
     </None>

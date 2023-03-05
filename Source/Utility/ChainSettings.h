@@ -29,9 +29,11 @@ struct ChainSettings
     modDepth = apvts.getRawParameterValue("oscModDepth")->load();
     modScew = apvts.getRawParameterValue("oscModScew")->load();
 
-    filterType = static_cast<dmt::IIRFilter::Type>(
-      apvts.getRawParameterValue("filterCutoff")->load());
+    filterType = static_cast<dmt::IIRFilterState::Type>(
+      apvts.getRawParameterValue("filterType")->load());
     filterCutoff = apvts.getRawParameterValue("filterCutoff")->load();
+    filterQ = apvts.getRawParameterValue("filterQ")->load();
+    filterGain = apvts.getRawParameterValue("filterGain")->load();
   }
   //============================================================================
   dmt::AnalogWaveform::Type waveformType;
@@ -39,6 +41,7 @@ struct ChainSettings
   float oscGain;
   float oscDrive;
   float oscBias;
+  float oscPwm;
 
   float ampAttack;
   float ampHold;
@@ -48,8 +51,10 @@ struct ChainSettings
   float modDepth;
   float modScew;
 
-  dmt::IIRFilter::Type filterType;
+  dmt::IIRFilterState::Type filterType;
   float filterCutoff;
+  float filterQ;
+  float filterGain;
   //============================================================================
 };
 }

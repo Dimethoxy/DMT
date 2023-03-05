@@ -76,7 +76,7 @@
       <WarningLevel>Level4</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <ResourceCompile>
       <AdditionalIncludeDirectories>..\..\JuceLibraryCode;D:\Dev\Ressources\JUCE\modules;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -121,7 +121,7 @@
       <WarningLevel>Level4</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <ResourceCompile>
       <AdditionalIncludeDirectories>..\..\JuceLibraryCode;D:\Dev\Ressources\JUCE\modules;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
