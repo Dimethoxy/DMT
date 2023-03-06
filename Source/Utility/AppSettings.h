@@ -10,10 +10,9 @@ struct AppSettings
   static inline struct Colours
   {
     static inline juce::Colour background = juce::Colour(18, 18, 18);
-    static inline juce::Colour panelBackground = juce::Colour(29, 29, 29);
+    static inline juce::Colour foreground = juce::Colour(29, 29, 29);
     static inline juce::Colour panelBorder = juce::Colour(0, 0, 0);
-    static inline juce::Colour panelShadow =
-      juce::Colour::fromRGBA(0, 0, 0, 255);
+    static inline juce::Colour shadow = juce::Colour::fromRGBA(0, 0, 0, 255);
   };
   static inline struct Fonts
   {
@@ -45,6 +44,15 @@ struct AppSettings
     static inline float outerCornerSize = 10.0f;
     static inline float innerCornerSize = 9.0f;
     static inline float borderSize = 1.0f;
+    static inline auto backgroundColour = Colours::foreground;
+    static inline auto borderColour = Colours::panelBorder;
+
+    static inline float outerShadowRadius = 5.0f;
+    static inline float innerShadowRadius = 5.0f;
+    static inline bool drawOuterShadow = true;
+    static inline bool drawInnerShadow = false;
+    static inline juce::Colour outerShadowColour = Colours::shadow;
+    static inline juce::Colour innerShadowColour = Colours::shadow;
   };
 
   static inline int oscilloscopeBufferSize = 4096;
