@@ -25,8 +25,12 @@ NeutrinoAudioProcessorEditor::NeutrinoAudioProcessorEditor(
   addAndMakeVisible(presetPanel);
   addAndMakeVisible(genericAudioProcessorEditor);
   addAndMakeVisible(keyboardComponent);
-  keyboardComponent.setLowestVisibleKey(34);
-  setSize(500, 700);
+  addAndMakeVisible(oscPannel);
+
+  keyboardComponent.setLowestVisibleKey(0);
+  keyboardComponent.setKeyWidth(21.5f);
+
+  setSize(1600, 900);
 }
 
 NeutrinoAudioProcessorEditor::~NeutrinoAudioProcessorEditor() {}
@@ -35,8 +39,7 @@ NeutrinoAudioProcessorEditor::~NeutrinoAudioProcessorEditor() {}
 void
 NeutrinoAudioProcessorEditor::paint(juce::Graphics& g)
 {
-  g.fillAll(
-    getLookAndFeel().findColour(juce::ResizableWindow::backgroundColourId));
+  g.fillAll(dmt::AppSettings::Colours::background);
 }
 
 void
@@ -44,8 +47,9 @@ NeutrinoAudioProcessorEditor::resized()
 {
   auto bounds = getLocalBounds();
 
-  genericAudioProcessorEditor.setBoundsRelative(0.0f, 0.075f, 1.0f, 0.80f);
+  genericAudioProcessorEditor.setBoundsRelative(0.7f, 0.075f, 0.3f, 0.75f);
+  oscPannel.setBoundsRelative(0.0f, 0.075f, 0.3f, 0.75f);
   // folderPanel.setBounds(bounds.removeFromTop(proportionOfHeight(0.04)));
   presetPanel.setBounds(bounds.removeFromTop(proportionOfHeight(0.05f)));
-  keyboardComponent.setBoundsRelative(0.0f, 0.9f, 1.0f, 0.1f);
+  keyboardComponent.setBoundsRelative(0.0f, 0.85f, 1.0f, 0.15f);
 }

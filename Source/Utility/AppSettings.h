@@ -6,42 +6,47 @@ namespace dmt {
 
 struct AppSettings
 {
-  static inline juce::String name = "SuPerconductor";
+  static inline juce::String name = "Neutrino";
   static inline struct Colours
   {
-    static inline juce::Colour background900 = juce::Colour(13, 13, 13);
-    static inline juce::Colour background800 = juce::Colour(26, 26, 26);
-    static inline juce::Colour background700 = juce::Colour(38, 38, 38);
-    static inline juce::Colour background600 = juce::Colour(51, 51, 51);
-    static inline juce::Colour background500 = juce::Colour(64, 64, 64);
-    static inline juce::Colour background400 = juce::Colour(77, 77, 77);
+    static inline juce::Colour background = juce::Colour(18, 18, 18);
+    static inline juce::Colour panelBackground = juce::Colour(29, 29, 29);
+    static inline juce::Colour panelBorder = juce::Colour(0, 0, 0);
+    static inline juce::Colour panelShadow =
+      juce::Colour::fromRGBA(0, 0, 0, 255);
   };
   static inline struct Fonts
   {
-    static inline juce::Typeface::Ptr regular =
+    static inline juce::Typeface::Ptr regularTypeface =
       juce::Typeface::createSystemTypefaceFor(
         BinaryData::PoppinsRegular_ttf,
         BinaryData::PoppinsRegular_ttfSize);
 
-    static inline juce::Font regular = juce::Font(regular);
+    static inline juce::Font regular = juce::Font(regularTypeface);
 
-    static inline juce::Typeface::Ptr medium =
+    static inline juce::Typeface::Ptr mediumTypeface =
       juce::Typeface::createSystemTypefaceFor(
         BinaryData::PoppinsMedium_ttf,
         BinaryData::PoppinsMedium_ttfSize);
 
-    static inline juce::Font medium = juce::Font(medium);
+    static inline juce::Font medium = juce::Font(mediumTypeface);
   };
   static inline struct FontSizes
   {
-    static inline int sliderInfoLabel = 16;
-    static inline int sliderTitleLabel = 20;
+    static inline int sliderValueLabel = 24;
+    static inline int sliderNameLabel = 32;
     static inline int editorTitle = 48;
     static inline int triggerLabel = 30;
   };
-  static inline int margin = 12;
-  static inline float size = 0.0f;
-  static inline float borderFactor = 5.0f;
+  static inline struct Panel
+  {
+    static inline float margin = 20.0f;
+    static inline float size = 0.0f;
+    static inline float outerCornerSize = 10.0f;
+    static inline float innerCornerSize = 9.0f;
+    static inline float borderSize = 1.0f;
+  };
+
   static inline int oscilloscopeBufferSize = 4096;
   static inline int oscilloscopeSamplesPerBlock = 1;
   static inline int oscilloscopeQuality = 1;
