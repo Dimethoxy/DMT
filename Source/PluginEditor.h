@@ -38,6 +38,13 @@ struct Shadow
     juce::DropShadow ds(colour, radius, offset);
     ds.drawForPath(g, target);
   }
+  void drawForPath(juce::Graphics& g, juce::Path target)
+  {
+    int cycles = (int)radius;
+    for (int i = 0; i < cycles; i++) {
+      int amount = (int)(std::sqrt((float)i / (float)cycles) * 255.0f);
+    }
+  }
   juce::Colour colour = juce::Colours::black;
   juce::Point<int> offset = { 0, 0 };
   int radius = 10;
@@ -100,6 +107,9 @@ public:
     outerShadow.colour = Settings::outerShadowColour;
     innerShadow.radius = Settings::innerShadowRadius;
     innerShadow.colour = Settings::innerShadowColour;
+
+    lineShadow.radius = 1.0f;
+    lineShadow.colour = juce::Colour(64, 0, 0);
   }
   void paint(juce::Graphics& g) override
   {
@@ -126,6 +136,11 @@ public:
     g.setColour(Settings::foregroundColour);
     g.fillRoundedRectangle(innerBounds, innerCornerSize);
 
+    auto graphPath = getPath();
+    g.setColour(juce::Colour(255, 255, 255));
+    lineShadow.drawForPath(g, graphPath);
+    g.strokePath(graphPath, juce::PathStrokeType(2.0f));
+
     if (Settings::drawInnerShadow) {
       juce::Path innerShadowPath;
       innerShadowPath.addRoundedRectangle(innerBounds, outerCornerSize);
@@ -136,13 +151,15 @@ public:
   {
     juce::Path path;
 
-    auto startX = 0.0f;
+    auto startX = 0.0f + Settings::margin + Settings::borderSize;
     auto startY = getHeight() / 2.0f;
     juce::Point<float> start(startX, startY);
+    path.startNewSubPath(start);
 
-    auto endX = getWidth();
+    auto endX = getWidth() - Settings::margin - Settings::borderSize;
     auto endY = getHeight() / 2.0f;
     juce::Point<float> end(endX, endY);
+    path.lineTo(end);
 
     return path;
   }
@@ -150,6 +167,7 @@ public:
 private:
   dmt::Shadow outerShadow;
   dmt::Shadow innerShadow;
+  dmt::Shadow lineShadow;
 };
 class OscillatorPanel : public dmt::Panel
 {

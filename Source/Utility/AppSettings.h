@@ -69,7 +69,7 @@ struct AppSettings
     static inline bool drawOuterShadow = true;
     static inline bool drawInnerShadow = true;
     static inline juce::Colour outerShadowColour = Colours::shadow;
-    static inline juce::Colour innerShadowColour = juce::Colour(255, 0, 0);
+    static inline juce::Colour innerShadowColour = juce::Colour(255, 255, 255);
     ;
   };
 
