@@ -12,7 +12,7 @@ struct AppSettings
     static inline juce::Colour background = juce::Colour(18, 18, 18);
     static inline juce::Colour foreground = juce::Colour(29, 29, 29);
     static inline juce::Colour panelBorder = juce::Colour(0, 0, 0);
-    static inline juce::Colour shadow = juce::Colour::fromRGBA(0, 0, 0, 255);
+    static inline juce::Colour shadow = juce::Colour(0, 0, 0);
   };
   static inline struct Fonts
   {
@@ -40,19 +40,37 @@ struct AppSettings
   static inline struct Panel
   {
     static inline float margin = 20.0f;
-    static inline float size = 0.0f;
     static inline float outerCornerSize = 10.0f;
     static inline float innerCornerSize = 9.0f;
-    static inline float borderSize = 1.0f;
-    static inline auto backgroundColour = Colours::foreground;
+    static inline float borderSize = 2.0f;
+    static inline auto backgroundColour = Colours::background;
+    static inline auto foregroundColour = Colours::foreground;
     static inline auto borderColour = Colours::panelBorder;
 
     static inline float outerShadowRadius = 5.0f;
     static inline float innerShadowRadius = 5.0f;
     static inline bool drawOuterShadow = true;
-    static inline bool drawInnerShadow = false;
+    static inline bool drawInnerShadow = true;
     static inline juce::Colour outerShadowColour = Colours::shadow;
     static inline juce::Colour innerShadowColour = Colours::shadow;
+  };
+  static inline struct OscillatorDisplay
+  {
+    static inline float margin = 20.0f;
+    static inline float outerCornerSize = 10.0f;
+    static inline float innerCornerSize = 9.0f;
+    static inline float borderSize = 2.0f;
+    static inline auto backgroundColour = Colours::foreground;
+    static inline auto foregroundColour = Colours::background;
+    static inline auto borderColour = juce::Colour(0, 0, 0);
+
+    static inline float outerShadowRadius = 10.0f;
+    static inline float innerShadowRadius = 100.0f;
+    static inline bool drawOuterShadow = true;
+    static inline bool drawInnerShadow = true;
+    static inline juce::Colour outerShadowColour = Colours::shadow;
+    static inline juce::Colour innerShadowColour = juce::Colour(255, 0, 0);
+    ;
   };
 
   static inline int oscilloscopeBufferSize = 4096;
