@@ -108,8 +108,8 @@ public:
     innerShadow.radius = Settings::innerShadowRadius;
     innerShadow.colour = Settings::innerShadowColour;
 
-    lineShadow.radius = 1.0f;
-    lineShadow.colour = juce::Colour(64, 0, 0);
+    lineShadow.radius = 10.0f;
+    lineShadow.colour = juce::Colour(255, 255, 255);
   }
   void paint(juce::Graphics& g) override
   {
@@ -130,34 +130,51 @@ public:
       outerShadow.drawOuterForPath(g, outerShadowPath);
     }
 
-    g.setColour(Settings::borderColour);
-    g.fillRoundedRectangle(borderBounds, outerCornerSize);
-
     g.setColour(Settings::foregroundColour);
     g.fillRoundedRectangle(innerBounds, innerCornerSize);
-
-    auto graphPath = getPath();
-    g.setColour(juce::Colour(255, 255, 255));
-    lineShadow.drawForPath(g, graphPath);
-    g.strokePath(graphPath, juce::PathStrokeType(2.0f));
 
     if (Settings::drawInnerShadow) {
       juce::Path innerShadowPath;
       innerShadowPath.addRoundedRectangle(innerBounds, outerCornerSize);
       innerShadow.drawInnerForPath(g, innerShadowPath);
     }
+
+    auto graphPath = getPath(innerBounds);
+    g.setColour(juce::Colour(255, 255, 255));
+
+    g.strokePath(graphPath, juce::PathStrokeType(4.0f));
+    graphPath.closeSubPath();
+    g.setColour(juce::Colour(128, 128, 128));
+    g.fillPath(graphPath);
+
+    g.setColour(Settings::borderColour);
+    g.drawRoundedRectangle(borderBounds.reduced(Settings::borderSize / 2.0f),
+                           outerCornerSize,
+                           Settings::borderSize);
   }
-  juce::Path getPath()
+  juce::Path getPath(juce::Rectangle<float> bounds)
   {
+    bounds.setY(bounds.getY() + (bounds.getHeight() / 10.0f));
+    bounds.setHeight(bounds.getHeight() - (bounds.getHeight() / 5.0f));
     juce::Path path;
 
-    auto startX = 0.0f + Settings::margin + Settings::borderSize;
-    auto startY = getHeight() / 2.0f;
+    auto startX = bounds.getX();
+    auto startY = bounds.getY() + (bounds.getHeight() / 2.0f);
     juce::Point<float> start(startX, startY);
     path.startNewSubPath(start);
 
-    auto endX = getWidth() - Settings::margin - Settings::borderSize;
-    auto endY = getHeight() / 2.0f;
+    auto p1x = bounds.getX() + bounds.getWidth() / 3.0f;
+    auto p1y = bounds.getY();
+    juce::Point<float> p1(p1x, p1y);
+    path.lineTo(p1);
+
+    auto p2x = bounds.getX() + bounds.getWidth() / 3.0f * 2.0f;
+    auto p2y = bounds.getY() + bounds.getHeight();
+    juce::Point<float> p2(p2x, p2y);
+    path.lineTo(p2);
+
+    auto endX = bounds.getX() + bounds.getWidth();
+    auto endY = bounds.getY() + (bounds.getHeight() / 2.0f);
     juce::Point<float> end(endX, endY);
     path.lineTo(end);
 
