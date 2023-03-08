@@ -28,7 +28,7 @@ public:
     const auto bounds = this->getLocalBounds().toFloat();
 
     g.setColour(Settings::backgroundColour);
-    g.fillRect(bounds);
+    g.fillEllipse(bounds);
 
     const auto borderSize = Settings::borderSize;
     const auto borderBounds = bounds.reduced(Settings::margin);
@@ -38,16 +38,16 @@ public:
 
     if (Settings::drawOuterShadow) {
       juce::Path outerShadowPath;
-      outerShadowPath.addRoundedRectangle(borderBounds, outerCornerSize);
+      outerShadowPath.addEllipse(borderBounds);
       outerShadow.drawOuterForPath(g, outerShadowPath);
     }
 
     g.setColour(Settings::foregroundColour);
-    g.fillRoundedRectangle(innerBounds, innerCornerSize);
+    g.fillEllipse(innerBounds);
 
     if (Settings::drawInnerShadow) {
       juce::Path innerShadowPath;
-      innerShadowPath.addRoundedRectangle(innerBounds, outerCornerSize);
+      innerShadowPath.addEllipse(innerBounds);
       innerShadow.drawInnerForPath(g, innerShadowPath);
     }
 
@@ -62,15 +62,18 @@ public:
     g.strokePath(graphPath, juce::PathStrokeType(Settings::graphSize));
 
     g.setColour(Settings::borderColour);
-    g.drawRoundedRectangle(borderBounds.reduced(Settings::borderSize / 2.0f),
-                           outerCornerSize,
-                           Settings::borderSize);
+    g.drawEllipse(borderBounds.reduced(Settings::borderSize / 2.0f),
+                  Settings::borderSize);
   }
   //============================================================================
   juce::Path getPath(juce::Rectangle<float> bounds)
   {
-     bounds.setY(bounds.getY() + (bounds.getHeight() / 10.0f));
-     bounds.setHeight(bounds.getHeight() - (bounds.getHeight() / 5.0f));
+    bounds.setY(bounds.getY() + (bounds.getHeight() / 10.0f));
+    bounds.setHeight(bounds.getHeight() - (bounds.getHeight() / 5.0f));
+
+    auto outerBounds = bounds;
+    bounds = bounds.reduced(bounds.getWidth() / 6.0f);
+
     juce::Path path;
 
     auto startX = bounds.getX();
