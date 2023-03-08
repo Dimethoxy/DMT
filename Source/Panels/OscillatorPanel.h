@@ -16,17 +16,32 @@ public:
     const auto bounds = this->getLocalBounds().toFloat();
     g.setColour(juce::Colours::white);
     g.drawRect(bounds, 1.0f);
+
+    juce::Path path = getPath(bounds);
+    g.strokePath(path, juce::PathStrokeType(2.0f));
   }
 
-  juce::Path getPath(juce::Rectangle<int> bounds)
+  juce::Path getPath(juce::Rectangle<float> bounds)
   {
+    bounds = bounds.reduced(bounds.getWidth() / 5.0f);
     juce::Path path;
 
-    int midX = bounds.getX();
-    int midY = bounds.getCentreY();
+    float midX = bounds.getX();
+    float midY = bounds.getCentreY();
+    juce::Point<float> mid(midX, midY);
+    path.startNewSubPath(mid);
 
-    int topX = bounds.getX() + bounds.getHeight();
+    int topX = bounds.getX() + bounds.getWidth();
     int topY = bounds.getY();
+    juce::Point<float> top(topX, topY);
+    path.lineTo(top);
+
+    float downX = bounds.getX() + bounds.getWidth();
+    float downY = bounds.getY() + bounds.getHeight();
+    juce::Point<float> down(downX, downY);
+    path.lineTo(down);
+
+    path.closeSubPath();
 
     return path;
   }
