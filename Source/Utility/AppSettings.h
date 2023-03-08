@@ -68,7 +68,7 @@ struct AppSettings
 
     static inline auto outerShadowRadius = 10.0f;
     static inline auto innerShadowRadius = 50.0f;
-    static inline auto drawOuterShadow = false;
+    static inline auto drawOuterShadow = true;
     static inline auto drawInnerShadow = true;
     static inline auto outerShadowColour = Colour(0, 0, 0);
     static inline auto innerShadowColour = Colour(158, 85, 252);
