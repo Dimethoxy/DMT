@@ -9,6 +9,17 @@
 
 //==============================================================================
 namespace dmt {
+class ArcButtonHitbox
+  : public juce::Component
+  , public juce::MouseListener
+{
+  void paint(juce::Graphics& g) override
+  {
+    const auto bounds = this->getLocalBounds().toFloat();
+    g.setColour(juce::Colours::white);
+    g.fillRect(bounds);
+  }
+};
 class ArcButton : public juce::Component
 {
 public:
@@ -21,13 +32,18 @@ public:
     innerShadow.radius = Settings::innerShadowRadius;
     innerShadow.colour = Settings::innerShadowColour;
   }
+  //============================================================================
   void paint(juce::Graphics& g) override
   {
     const auto bounds = this->getLocalBounds().toFloat();
-    g.setColour(juce::Colours::white);
-    juce::Path path = getPath(bounds);
+    juce::Path path = getPath();
 
-    g.setColour(Settings::foregroundColour);
+    if (isMouseOver()) {
+      g.setColour(Settings::hoverColour);
+    } else {
+      g.setColour(Settings::foregroundColour);
+    }
+
     g.fillPath(path);
 
     if (Settings::drawInnerShadow)
@@ -38,12 +54,22 @@ public:
     g.setColour(Settings::borderColour);
     g.strokePath(path, juce::PathStrokeType(Settings::borderSize));
   }
-  juce::Path getPath(juce::Rectangle<float> bounds)
+  void resized()
   {
-    bounds.reduce(bounds.getWidth() / 3.0f, bounds.getHeight() / 4.0f);
+    auto bounds = this->getLocalBounds().toFloat();
+    bounds.reduce(bounds.getWidth() / 3.75f, bounds.getHeight() / 5.5f);
+    if (!hitbox.isMouseButtonDown())
+      bounds = bounds.reduced(10.0f);
+
     auto offsetDirection = leftSided ? -1.0f : 1.0f;
     auto xOffset = bounds.getWidth() / 8.0f * offsetDirection;
     bounds.setX(bounds.getX() + xOffset);
+    hitbox.setBounds(bounds.toNearestInt());
+  }
+  //============================================================================
+  juce::Path getPath()
+  {
+    const auto bounds = hitbox.getBounds().toFloat();
     juce::Path path;
 
     float midX = leftSided ? bounds.getX() : bounds.getRight();
@@ -62,12 +88,12 @@ public:
     path.quadraticTo(bounds.getCentre(), down);
 
     path.closeSubPath();
-
     return path;
   }
-
+  //============================================================================
 private:
   bool leftSided;
+  dmt::ArcButtonHitbox hitbox;
   dmt::Shadow outerShadow;
   dmt::Shadow innerShadow;
 };
