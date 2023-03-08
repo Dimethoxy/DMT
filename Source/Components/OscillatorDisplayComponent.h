@@ -14,16 +14,15 @@ class OscillatorDisplayComponent : public juce::Component
   using Settings = dmt::AppSettings::OscillatorDisplay;
 
 public:
+  //============================================================================
   OscillatorDisplayComponent()
   {
     outerShadow.radius = Settings::outerShadowRadius;
     outerShadow.colour = Settings::outerShadowColour;
     innerShadow.radius = Settings::innerShadowRadius;
     innerShadow.colour = Settings::innerShadowColour;
-
-    lineShadow.radius = 10.0f;
-    lineShadow.colour = juce::Colour(255, 255, 255);
   }
+  //============================================================================
   void paint(juce::Graphics& g) override
   {
     const auto bounds = this->getLocalBounds().toFloat();
@@ -52,23 +51,26 @@ public:
       innerShadow.drawInnerForPath(g, innerShadowPath);
     }
 
-    auto graphPath = getPath(innerBounds);
-    g.setColour(juce::Colour(255, 255, 255));
+    auto graphPath = getPath(borderBounds.reduced(Settings::graphSize / 2.0f));
+    auto integralPath = graphPath;
+    integralPath.closeSubPath();
 
-    g.strokePath(graphPath, juce::PathStrokeType(4.0f));
-    graphPath.closeSubPath();
-    g.setColour(juce::Colour(128, 128, 128));
-    g.fillPath(graphPath);
+    g.setColour(Settings::integralColour);
+    g.fillPath(integralPath);
+
+    g.setColour(Settings::graphColor);
+    g.strokePath(graphPath, juce::PathStrokeType(Settings::graphSize));
 
     g.setColour(Settings::borderColour);
     g.drawRoundedRectangle(borderBounds.reduced(Settings::borderSize / 2.0f),
                            outerCornerSize,
                            Settings::borderSize);
   }
+  //============================================================================
   juce::Path getPath(juce::Rectangle<float> bounds)
   {
-    bounds.setY(bounds.getY() + (bounds.getHeight() / 10.0f));
-    bounds.setHeight(bounds.getHeight() - (bounds.getHeight() / 5.0f));
+     bounds.setY(bounds.getY() + (bounds.getHeight() / 10.0f));
+     bounds.setHeight(bounds.getHeight() - (bounds.getHeight() / 5.0f));
     juce::Path path;
 
     auto startX = bounds.getX();
@@ -76,13 +78,13 @@ public:
     juce::Point<float> start(startX, startY);
     path.startNewSubPath(start);
 
-    auto p1x = bounds.getX() + bounds.getWidth() / 3.0f;
+    auto p1x = bounds.getX() + bounds.getWidth() / 4.0f;
     auto p1y = bounds.getY();
     juce::Point<float> p1(p1x, p1y);
     path.lineTo(p1);
 
-    auto p2x = bounds.getX() + bounds.getWidth() / 3.0f * 2.0f;
-    auto p2y = bounds.getY() + bounds.getHeight();
+    auto p2x = bounds.getX() + bounds.getWidth() / 4.0f * 3.0f;
+    int p2y = std::floor(bounds.getY() + bounds.getHeight());
     juce::Point<float> p2(p2x, p2y);
     path.lineTo(p2);
 
@@ -93,7 +95,7 @@ public:
 
     return path;
   }
-
+  //============================================================================
 private:
   dmt::Shadow outerShadow;
   dmt::Shadow innerShadow;

@@ -6,13 +6,15 @@ namespace dmt {
 
 struct AppSettings
 {
+  using Colour = juce::Colour;
+
   static inline juce::String name = "Neutrino";
   static inline struct Colours
   {
-    static inline juce::Colour background = juce::Colour(18, 18, 18);
-    static inline juce::Colour foreground = juce::Colour(29, 29, 29);
-    static inline juce::Colour panelBorder = juce::Colour(0, 0, 0);
-    static inline juce::Colour shadow = juce::Colour(0, 0, 0);
+    static inline Colour background = Colour(18, 18, 18);
+    static inline Colour foreground = Colour(29, 29, 29);
+    static inline Colour panelBorder = Colour(0, 0, 0);
+    static inline Colour shadow = Colour(0, 0, 0);
   };
   static inline struct Fonts
   {
@@ -39,37 +41,41 @@ struct AppSettings
   };
   static inline struct Panel
   {
-    static inline float margin = 20.0f;
-    static inline float outerCornerSize = 10.0f;
-    static inline float innerCornerSize = 9.0f;
-    static inline float borderSize = 2.0f;
+    static inline auto margin = 20.0f;
+    static inline auto outerCornerSize = 10.0f;
+    static inline auto innerCornerSize = 9.0f;
+    static inline auto borderSize = 2.0f;
     static inline auto backgroundColour = Colours::background;
     static inline auto foregroundColour = Colours::foreground;
-    static inline auto borderColour = juce::Colour(0, 0, 0);
+    static inline auto borderColour = Colour(0, 0, 0);
 
-    static inline float outerShadowRadius = 5.0f;
-    static inline float innerShadowRadius = 5.0f;
-    static inline bool drawOuterShadow = true;
-    static inline bool drawInnerShadow = true;
-    static inline juce::Colour outerShadowColour = juce::Colour(0, 0, 0);
-    static inline juce::Colour innerShadowColour = juce::Colour(0, 0, 0);
+    static inline auto outerShadowRadius = 5.0f;
+    static inline auto innerShadowRadius = 5.0f;
+    static inline auto drawOuterShadow = true;
+    static inline auto drawInnerShadow = false;
+    static inline auto outerShadowColour = Colour(0, 0, 0);
+    static inline auto innerShadowColour = Colour(0, 0, 0);
   };
   static inline struct OscillatorDisplay
   {
-    static inline float margin = 20.0f;
-    static inline float outerCornerSize = 8.0f;
-    static inline float innerCornerSize = 7.0f;
-    static inline float borderSize = 2.0f;
+    static inline auto margin = 20.0f;
+    static inline auto outerCornerSize = 8.0f;
+    static inline auto innerCornerSize = 7.0f;
+    static inline auto borderSize = 2.0f;
     static inline auto backgroundColour = Colours::foreground;
     static inline auto foregroundColour = Colours::background;
-    static inline auto borderColour = juce::Colour(0, 0, 0);
+    static inline auto borderColour = Colour(158, 85, 252);
 
-    static inline float outerShadowRadius = 5.0f;
-    static inline float innerShadowRadius = 5.0f;
-    static inline bool drawOuterShadow = true;
-    static inline bool drawInnerShadow = true;
-    static inline juce::Colour outerShadowColour = juce::Colour(0, 0, 0);
-    static inline juce::Colour innerShadowColour = juce::Colour(0, 0, 0);
+    static inline auto outerShadowRadius = 10.0f;
+    static inline auto innerShadowRadius = 50.0f;
+    static inline auto drawOuterShadow = false;
+    static inline auto drawInnerShadow = true;
+    static inline auto outerShadowColour = Colour(0, 0, 0);
+    static inline auto innerShadowColour = Colour(158, 85, 252);
+
+    static inline auto graphSize = 3.0f;
+    static inline Colour graphColor = Colour(158, 85, 252);
+    static inline Colour integralColour = Colour::fromRGBA(158, 85, 252, 64);
     ;
   };
 
