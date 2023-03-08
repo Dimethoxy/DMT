@@ -2,14 +2,20 @@
 
 <Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <Filter Include="Neutrino\Source\Components">
+      <UniqueIdentifier>{21AE31CE-BF03-FB9F-ACE9-5F851F050B5C}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Neutrino\Source\Envelope">
       <UniqueIdentifier>{134AFA6C-7AFD-088D-D71B-F69981AE7574}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Neutrino\Source\Preset">
-      <UniqueIdentifier>{9B80533E-B48B-1A71-1738-265E5C16F085}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Neutrino\Source\Filter">
       <UniqueIdentifier>{857C2FBE-C52E-B768-4A38-EA0B505EF3D1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Neutrino\Source\Panels">
+      <UniqueIdentifier>{CA31D725-09E2-A367-16DE-85804562D434}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Neutrino\Source\Preset">
+      <UniqueIdentifier>{9B80533E-B48B-1A71-1738-265E5C16F085}</UniqueIdentifier>
     </Filter>
     <Filter Include="Neutrino\Source\Synth">
       <UniqueIdentifier>{986FE8CA-FFDF-1F56-DA02-50870261429A}</UniqueIdentifier>
@@ -625,10 +631,10 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Source\PluginProcessor.cpp">
+    <ClCompile Include="..\..\Source\PluginEditor.cpp">
       <Filter>Neutrino\Source</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Source\PluginEditor.cpp">
+    <ClCompile Include="..\..\Source\PluginProcessor.cpp">
       <Filter>Neutrino\Source</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\..\Ressources\JUCE\modules\juce_audio_basics\audio_play_head\juce_AudioPlayHead.cpp">
@@ -3072,8 +3078,29 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Source\Components\OscillatorDisplayComponent.h">
+      <Filter>Neutrino\Source\Components</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\Envelope\AdhEnvelope.h">
       <Filter>Neutrino\Source\Envelope</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Filter\FilterProcessor.h">
+      <Filter>Neutrino\Source\Filter</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Filter\IIRFilter.h">
+      <Filter>Neutrino\Source\Filter</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Panels\OscillatorPanel.h">
+      <Filter>Neutrino\Source\Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Panels\Panel.h">
+      <Filter>Neutrino\Source\Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PluginEditor.h">
+      <Filter>Neutrino\Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PluginProcessor.h">
+      <Filter>Neutrino\Source</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Preset\FolderManager.h">
       <Filter>Neutrino\Source\Preset</Filter>
@@ -3086,12 +3113,6 @@
     </ClInclude>
     <ClInclude Include="..\..\Source\Preset\PresetPanel.h">
       <Filter>Neutrino\Source\Preset</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Filter\FilterProcessor.h">
-      <Filter>Neutrino\Source\Filter</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Filter\IIRFilter.h">
-      <Filter>Neutrino\Source\Filter</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Synth\AnalogOscillator.h">
       <Filter>Neutrino\Source\Synth</Filter>
@@ -3114,11 +3135,8 @@
     <ClInclude Include="..\..\Source\Utility\ParameterLayout.h">
       <Filter>Neutrino\Source\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\PluginProcessor.h">
-      <Filter>Neutrino\Source</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\PluginEditor.h">
-      <Filter>Neutrino\Source</Filter>
+    <ClInclude Include="..\..\Source\Utility\Shadow.h">
+      <Filter>Neutrino\Source\Utility</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\Ressources\JUCE\modules\juce_audio_basics\audio_play_head\juce_AudioPlayHead.h">
       <Filter>JUCE Modules\juce_audio_basics\audio_play_head</Filter>

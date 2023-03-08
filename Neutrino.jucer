@@ -6,19 +6,35 @@
               cppLanguageStandard="17">
   <MAINGROUP id="M46wPq" name="Neutrino">
     <GROUP id="{2FE70917-738D-3A38-9BF5-75FAFAF8EB81}" name="Source">
+      <GROUP id="{B8616656-AB40-DC56-24C4-5C69379A0255}" name="Components">
+        <FILE id="c9qe0W" name="OscillatorDisplayComponent.h" compile="0" resource="0"
+              file="Source/Components/OscillatorDisplayComponent.h"/>
+      </GROUP>
       <GROUP id="{983A5375-DD8E-AE34-4BEC-8E3A58720E39}" name="Envelope">
         <FILE id="versba" name="AdhEnvelope.h" compile="0" resource="0" file="Source/Envelope/AdhEnvelope.h"/>
-      </GROUP>
-      <GROUP id="{5C31B0FE-1024-5EB2-F31E-69C37FDCA2EE}" name="Preset">
-        <FILE id="WGA0UU" name="FolderManager.h" compile="0" resource="0" file="Source/Preset/FolderManager.h"/>
-        <FILE id="Nrr2nM" name="FolderPanel.h" compile="0" resource="0" file="Source/Preset/FolderPanel.h"/>
-        <FILE id="FyQpTK" name="PresetManager.h" compile="0" resource="0" file="Source/Preset/PresetManager.h"/>
-        <FILE id="Mpb7EZ" name="PresetPanel.h" compile="0" resource="0" file="Source/Preset/PresetPanel.h"/>
       </GROUP>
       <GROUP id="{8E2A8B60-F105-C9DE-8288-648DD89641D4}" name="Filter">
         <FILE id="eR3ReF" name="FilterProcessor.h" compile="0" resource="0"
               file="Source/Filter/FilterProcessor.h"/>
         <FILE id="F2vUwf" name="IIRFilter.h" compile="0" resource="0" file="Source/Filter/IIRFilter.h"/>
+      </GROUP>
+      <GROUP id="{0E164C67-6D9D-FD79-A7DA-79D140D3D212}" name="Panels">
+        <FILE id="qpJv0U" name="OscillatorPanel.h" compile="0" resource="0"
+              file="Source/Panels/OscillatorPanel.h"/>
+        <FILE id="IWPKWf" name="Panel.h" compile="0" resource="0" file="Source/Panels/Panel.h"/>
+      </GROUP>
+      <FILE id="DqDOPF" name="PluginEditor.cpp" compile="1" resource="0"
+            file="Source/PluginEditor.cpp"/>
+      <FILE id="Azx0zy" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
+      <FILE id="PirRv3" name="PluginProcessor.cpp" compile="1" resource="0"
+            file="Source/PluginProcessor.cpp"/>
+      <FILE id="vWKrDw" name="PluginProcessor.h" compile="0" resource="0"
+            file="Source/PluginProcessor.h"/>
+      <GROUP id="{5C31B0FE-1024-5EB2-F31E-69C37FDCA2EE}" name="Preset">
+        <FILE id="WGA0UU" name="FolderManager.h" compile="0" resource="0" file="Source/Preset/FolderManager.h"/>
+        <FILE id="Nrr2nM" name="FolderPanel.h" compile="0" resource="0" file="Source/Preset/FolderPanel.h"/>
+        <FILE id="FyQpTK" name="PresetManager.h" compile="0" resource="0" file="Source/Preset/PresetManager.h"/>
+        <FILE id="Mpb7EZ" name="PresetPanel.h" compile="0" resource="0" file="Source/Preset/PresetPanel.h"/>
       </GROUP>
       <GROUP id="{EEE4EEAB-33EF-14D9-AEBF-119DBB5FCFBF}" name="Synth">
         <FILE id="DQisUz" name="AnalogOscillator.h" compile="0" resource="0"
@@ -33,14 +49,8 @@
         <FILE id="CaXy16" name="ChainSettings.h" compile="0" resource="0" file="Source/Utility/ChainSettings.h"/>
         <FILE id="iYcLBT" name="ParameterLayout.h" compile="0" resource="0"
               file="Source/Utility/ParameterLayout.h"/>
+        <FILE id="p4W5r4" name="Shadow.h" compile="0" resource="0" file="Source/Utility/Shadow.h"/>
       </GROUP>
-      <FILE id="PirRv3" name="PluginProcessor.cpp" compile="1" resource="0"
-            file="Source/PluginProcessor.cpp"/>
-      <FILE id="vWKrDw" name="PluginProcessor.h" compile="0" resource="0"
-            file="Source/PluginProcessor.h"/>
-      <FILE id="DqDOPF" name="PluginEditor.cpp" compile="1" resource="0"
-            file="Source/PluginEditor.cpp"/>
-      <FILE id="Azx0zy" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
     </GROUP>
     <GROUP id="{57F32CD7-2916-0410-198A-648E6A650819}" name="Fonts">
       <GROUP id="{9E6859DE-3CA2-9022-38EB-83E4441051E7}" name="Poppins">

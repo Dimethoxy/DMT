@@ -139,8 +139,8 @@
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Source\PluginProcessor.cpp"/>
     <ClCompile Include="..\..\Source\PluginEditor.cpp"/>
+    <ClCompile Include="..\..\Source\PluginProcessor.cpp"/>
     <ClCompile Include="..\..\..\..\Ressources\JUCE\modules\juce_audio_basics\audio_play_head\juce_AudioPlayHead.cpp">
       <ExcludedFromBuild>true</ExcludedFromBuild>
     </ClCompile>
@@ -2423,13 +2423,18 @@
     <ClCompile Include="..\..\JuceLibraryCode\include_juce_gui_extra.cpp"/>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Source\Components\OscillatorDisplayComponent.h"/>
     <ClInclude Include="..\..\Source\Envelope\AdhEnvelope.h"/>
+    <ClInclude Include="..\..\Source\Filter\FilterProcessor.h"/>
+    <ClInclude Include="..\..\Source\Filter\IIRFilter.h"/>
+    <ClInclude Include="..\..\Source\Panels\OscillatorPanel.h"/>
+    <ClInclude Include="..\..\Source\Panels\Panel.h"/>
+    <ClInclude Include="..\..\Source\PluginEditor.h"/>
+    <ClInclude Include="..\..\Source\PluginProcessor.h"/>
     <ClInclude Include="..\..\Source\Preset\FolderManager.h"/>
     <ClInclude Include="..\..\Source\Preset\FolderPanel.h"/>
     <ClInclude Include="..\..\Source\Preset\PresetManager.h"/>
     <ClInclude Include="..\..\Source\Preset\PresetPanel.h"/>
-    <ClInclude Include="..\..\Source\Filter\FilterProcessor.h"/>
-    <ClInclude Include="..\..\Source\Filter\IIRFilter.h"/>
     <ClInclude Include="..\..\Source\Synth\AnalogOscillator.h"/>
     <ClInclude Include="..\..\Source\Synth\AnalogWaveform.h"/>
     <ClInclude Include="..\..\Source\Synth\SynthSound.h"/>
@@ -2437,8 +2442,7 @@
     <ClInclude Include="..\..\Source\Utility\AppSettings.h"/>
     <ClInclude Include="..\..\Source\Utility\ChainSettings.h"/>
     <ClInclude Include="..\..\Source\Utility\ParameterLayout.h"/>
-    <ClInclude Include="..\..\Source\PluginProcessor.h"/>
-    <ClInclude Include="..\..\Source\PluginEditor.h"/>
+    <ClInclude Include="..\..\Source\Utility\Shadow.h"/>
     <ClInclude Include="..\..\..\..\Ressources\JUCE\modules\juce_audio_basics\audio_play_head\juce_AudioPlayHead.h"/>
     <ClInclude Include="..\..\..\..\Ressources\JUCE\modules\juce_audio_basics\buffers\juce_AudioChannelSet.h"/>
     <ClInclude Include="..\..\..\..\Ressources\JUCE\modules\juce_audio_basics\buffers\juce_AudioDataConverters.h"/>

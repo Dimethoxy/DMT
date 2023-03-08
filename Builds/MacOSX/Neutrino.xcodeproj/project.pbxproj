@@ -64,6 +64,7 @@
 		028E5D23FD3C7482E0F43A05 /* include_juce_audio_processors_ara.cpp */ /* include_juce_audio_processors_ara.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = include_juce_audio_processors_ara.cpp; path = ../../JuceLibraryCode/include_juce_audio_processors_ara.cpp; sourceTree = SOURCE_ROOT; };
 		038FAD4639DC8DBBA924443B /* juce_gui_basics */ /* juce_gui_basics */ = {isa = PBXFileReference; lastKnownFileType = folder; name = juce_gui_basics; path = "~/JUCE/modules/juce_gui_basics"; sourceTree = "<absolute>"; };
 		0548F9DBD022BD5DBC7BB8EE /* Poppins-SemiBold.ttf */ /* Poppins-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file.ttf; name = "Poppins-SemiBold.ttf"; path = "../../Fonts/Poppins/Poppins-SemiBold.ttf"; sourceTree = SOURCE_ROOT; };
+		05C2AFF4B59F31DDE70E036B /* Panel.h */ /* Panel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Panel.h; path = ../../Source/Panels/Panel.h; sourceTree = SOURCE_ROOT; };
 		0CD8D798ED19FC3012C6DDFD /* include_juce_dsp.mm */ /* include_juce_dsp.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_dsp.mm; path = ../../JuceLibraryCode/include_juce_dsp.mm; sourceTree = SOURCE_ROOT; };
 		1192C844E401FC4CAF1AB8CC /* AudioToolbox.framework */ /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		1479DEC5E7F56C43B4D1E476 /* Poppins-Medium.ttf */ /* Poppins-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file.ttf; name = "Poppins-Medium.ttf"; path = "../../Fonts/Poppins/Poppins-Medium.ttf"; sourceTree = SOURCE_ROOT; };
@@ -81,6 +82,7 @@
 		34B6447055AB6DBE68D2F7AF /* juce_gui_extra */ /* juce_gui_extra */ = {isa = PBXFileReference; lastKnownFileType = folder; name = juce_gui_extra; path = "~/JUCE/modules/juce_gui_extra"; sourceTree = "<absolute>"; };
 		39498465B706164305A2E0D9 /* PresetManager.h */ /* PresetManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PresetManager.h; path = ../../Source/Preset/PresetManager.h; sourceTree = SOURCE_ROOT; };
 		3AFE7DD15BE588CD52F77457 /* AnalogOscillator.h */ /* AnalogOscillator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AnalogOscillator.h; path = ../../Source/Synth/AnalogOscillator.h; sourceTree = SOURCE_ROOT; };
+		3B1B64A569DB7C3904180182 /* Shadow.h */ /* Shadow.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Shadow.h; path = ../../Source/Utility/Shadow.h; sourceTree = SOURCE_ROOT; };
 		412FE30B7F1BD6953A1754B3 /* Cocoa.framework */ /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		41F582972587023D517E160F /* SynthVoice.h */ /* SynthVoice.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SynthVoice.h; path = ../../Source/Synth/SynthVoice.h; sourceTree = SOURCE_ROOT; };
 		4A4E850A8DB64B2E7E5D8FEC /* Info-Standalone_Plugin.plist */ /* Info-Standalone_Plugin.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Info-Standalone_Plugin.plist"; path = "Info-Standalone_Plugin.plist"; sourceTree = SOURCE_ROOT; };
@@ -123,6 +125,7 @@
 		B4AE48985FF09853121ECBAB /* Poppins-Bold.ttf */ /* Poppins-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file.ttf; name = "Poppins-Bold.ttf"; path = "../../Fonts/Poppins/Poppins-Bold.ttf"; sourceTree = SOURCE_ROOT; };
 		B80E1C02FA5829C68341ED6A /* include_juce_audio_plugin_client_Standalone.cpp */ /* include_juce_audio_plugin_client_Standalone.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = include_juce_audio_plugin_client_Standalone.cpp; path = ../../JuceLibraryCode/include_juce_audio_plugin_client_Standalone.cpp; sourceTree = SOURCE_ROOT; };
 		B911F645CF2AA43852830347 /* PluginEditor.h */ /* PluginEditor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PluginEditor.h; path = ../../Source/PluginEditor.h; sourceTree = SOURCE_ROOT; };
+		B93B0FF669B0E6096BE33DAE /* OscillatorPanel.h */ /* OscillatorPanel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = OscillatorPanel.h; path = ../../Source/Panels/OscillatorPanel.h; sourceTree = SOURCE_ROOT; };
 		BC2CE22CE2E6CA433FAC1A9E /* SedgwickAveDisplay-Regular.ttf */ /* SedgwickAveDisplay-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file.ttf; name = "SedgwickAveDisplay-Regular.ttf"; path = "../../Fonts/Sedgwick_Ave_Display/SedgwickAveDisplay-Regular.ttf"; sourceTree = SOURCE_ROOT; };
 		BF5E3B8116A17262A0F019AB /* JuceHeader.h */ /* JuceHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = JuceHeader.h; path = ../../JuceLibraryCode/JuceHeader.h; sourceTree = SOURCE_ROOT; };
 		C0B41FEFB61FBF9A76F7061B /* include_juce_audio_utils.mm */ /* include_juce_audio_utils.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_audio_utils.mm; path = ../../JuceLibraryCode/include_juce_audio_utils.mm; sourceTree = SOURCE_ROOT; };
@@ -135,6 +138,7 @@
 		D918A32B9E76BA495361B366 /* Poppins-ExtraBold.ttf */ /* Poppins-ExtraBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file.ttf; name = "Poppins-ExtraBold.ttf"; path = "../../Fonts/Poppins/Poppins-ExtraBold.ttf"; sourceTree = SOURCE_ROOT; };
 		E1D237107F2C29F1D87F29C7 /* Poppins-LightItalic.ttf */ /* Poppins-LightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file.ttf; name = "Poppins-LightItalic.ttf"; path = "../../Fonts/Poppins/Poppins-LightItalic.ttf"; sourceTree = SOURCE_ROOT; };
 		E47BB6C837091F3AFA7CCAB6 /* Poppins-BoldItalic.ttf */ /* Poppins-BoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file.ttf; name = "Poppins-BoldItalic.ttf"; path = "../../Fonts/Poppins/Poppins-BoldItalic.ttf"; sourceTree = SOURCE_ROOT; };
+		E4E6F29DEB612BEB3D3B06E7 /* OscillatorDisplayComponent.h */ /* OscillatorDisplayComponent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = OscillatorDisplayComponent.h; path = ../../Source/Components/OscillatorDisplayComponent.h; sourceTree = SOURCE_ROOT; };
 		E55D827807BA1ED644AAB167 /* Poppins-Regular.ttf */ /* Poppins-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file.ttf; name = "Poppins-Regular.ttf"; path = "../../Fonts/Poppins/Poppins-Regular.ttf"; sourceTree = SOURCE_ROOT; };
 		EA399205460AB0A53351D87E /* include_juce_events.mm */ /* include_juce_events.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_events.mm; path = ../../JuceLibraryCode/include_juce_events.mm; sourceTree = SOURCE_ROOT; };
 		F2CE82344A95967C604E6ED6 /* juce_audio_utils */ /* juce_audio_utils */ = {isa = PBXFileReference; lastKnownFileType = folder; name = juce_audio_utils; path = "~/JUCE/modules/juce_audio_utils"; sourceTree = "<absolute>"; };
@@ -275,6 +279,7 @@
 				61C0CB1C034EFE5115DBFCDB,
 				75554C51D21CA98721726E3B,
 				D59A40D13B44183E5CE5AA81,
+				3B1B64A569DB7C3904180182,
 			);
 			name = Utility;
 			sourceTree = "<group>";
@@ -291,15 +296,17 @@
 		7E21C1DCAC9BD34AB585153E /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				F508C0869985C40203A0949B,
 				AA978DD7E50671508A44DF55,
-				DDCC724DA9A0515631862A1B,
 				C125C6DF965EF6E3B43F47E8,
-				D10294C65DE46C41CFEDA605,
-				724D9844E2B0D80AC86FEBD1,
-				8B5B8BC55BA50F3FA94AAF64,
-				7D06B7AC5D09B87AB646D139,
+				E9F42E129535C2B2C9DCE247,
 				77E21D750D944BC4D83CB07C,
 				B911F645CF2AA43852830347,
+				8B5B8BC55BA50F3FA94AAF64,
+				7D06B7AC5D09B87AB646D139,
+				DDCC724DA9A0515631862A1B,
+				D10294C65DE46C41CFEDA605,
+				724D9844E2B0D80AC86FEBD1,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -360,6 +367,15 @@
 			name = Preset;
 			sourceTree = "<group>";
 		};
+		E9F42E129535C2B2C9DCE247 /* Panels */ = {
+			isa = PBXGroup;
+			children = (
+				B93B0FF669B0E6096BE33DAE,
+				05C2AFF4B59F31DDE70E036B,
+			);
+			name = Panels;
+			sourceTree = "<group>";
+		};
 		F051C35984CD6895291777F2 /* Poppins */ = {
 			isa = PBXGroup;
 			children = (
@@ -383,6 +399,14 @@
 				F3CCE68039A70311B6B7BDA0,
 			);
 			name = Poppins;
+			sourceTree = "<group>";
+		};
+		F508C0869985C40203A0949B /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				E4E6F29DEB612BEB3D3B06E7,
+			);
+			name = Components;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -532,8 +556,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9FD7EF4FADC660245B6F3D9F,
 				37F6DB7D973D3F895C10D6F2,
+				9FD7EF4FADC660245B6F3D9F,
 				2956730CF931EF04E6496381,
 				8A6620D2AF1C3AAF464285F0,
 				901B54379276B19BE7959888,
