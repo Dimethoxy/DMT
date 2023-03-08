@@ -78,9 +78,18 @@ struct AppSettings
     static inline Colour integralColour = Colour::fromRGBA(158, 85, 252, 64);
     ;
   };
+  static inline struct ArcButton
+  {
+    static inline auto foregroundColour = Colours::background;
+    static inline auto borderSize = 2.0f;
+    static inline auto borderColour = Colour(158, 85, 252);
 
-  static inline int oscilloscopeBufferSize = 4096;
-  static inline int oscilloscopeSamplesPerBlock = 1;
-  static inline int oscilloscopeQuality = 1;
+    static inline auto outerShadowRadius = 10.0f;
+    static inline auto innerShadowRadius = 10.0f;
+    static inline auto drawOuterShadow = true;
+    static inline auto drawInnerShadow = true;
+    static inline auto outerShadowColour = Colour(0, 0, 0);
+    static inline auto innerShadowColour = Colour(158, 85, 252);
+  };
 };
 }
