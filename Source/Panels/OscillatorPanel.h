@@ -22,8 +22,8 @@ public:
     outerShadow.colour = Settings::outerShadowColour;
     innerShadow.radius = Settings::innerShadowRadius;
     innerShadow.colour = Settings::innerShadowColour;
-    fontShadow.radius = Settings::outerShadowRadius;
-    fontShadow.colour = juce::Colour(158, 85, 252);
+    fontShadow.radius = 2 * Settings::outerShadowRadius;
+    fontShadow.colour = juce::Colour(255, 255, 255);
   }
   void paint(juce::Graphics& g) override
   {
@@ -51,7 +51,6 @@ public:
     g.setColour(juce::Colours::white);
     juce::Font font =
       (AppSettings::Fonts::medium.withHeight(getHeight() * 0.5f));
-    font.setExtraKerningFactor(getHeight() * 0.0005);
     auto x = bounds.getX();
     auto y = bounds.getY() - bounds.getHeight() / 6.5f;
     auto w = bounds.getWidth();
@@ -60,13 +59,13 @@ public:
     juce::Path textPath;
     juce::GlyphArrangement glyphs;
     glyphs.addFittedText(
-      font, "Oscillator", x, y, w, h, juce::Justification::centred, 2);
+      font, "CLASSIC OSCILLATOR", x, y, w, h, juce::Justification::centred, 2);
     glyphs.createPath(textPath);
 
     fontShadow.drawOuterForPath(g, textPath);
 
-    g.setColour(juce::Colour(158, 85, 252));
-    juce::PathStrokeType strokeType(2.5f);
+    g.setColour(juce::Colour(255, 255, 255));
+    juce::PathStrokeType strokeType(2.0f);
     g.strokePath(textPath, strokeType);
     g.setColour(juce::Colour(18, 18, 18));
     g.fillPath(textPath);
