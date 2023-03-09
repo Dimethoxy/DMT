@@ -26,9 +26,9 @@ public:
   }
   void resized() override
   {
-    oscDisplay.setBoundsRelative(0.2f, 0.15f, 0.6f, 0.3f);
-    oscDisplay.setSize(oscDisplay.getHeight(), oscDisplay.getHeight());
-    oscDisplay.setCentreRelative(0.5f, 0.2f);
+    float dispalySize = 0.5f;
+    oscDisplay.setSize(getWidth() * dispalySize, getWidth() * dispalySize);
+    oscDisplay.setCentreRelative(0.5f, 0.4f);
 
     auto prevButtonX = oscDisplay.getX();
     auto prevButtonY = oscDisplay.getY() + oscDisplay.getHeight() / 2.0f;
