@@ -141,6 +141,7 @@
 		E4E6F29DEB612BEB3D3B06E7 /* OscillatorDisplayComponent.h */ /* OscillatorDisplayComponent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = OscillatorDisplayComponent.h; path = ../../Source/Components/OscillatorDisplayComponent.h; sourceTree = SOURCE_ROOT; };
 		E55D827807BA1ED644AAB167 /* Poppins-Regular.ttf */ /* Poppins-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file.ttf; name = "Poppins-Regular.ttf"; path = "../../Fonts/Poppins/Poppins-Regular.ttf"; sourceTree = SOURCE_ROOT; };
 		EA399205460AB0A53351D87E /* include_juce_events.mm */ /* include_juce_events.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_events.mm; path = ../../JuceLibraryCode/include_juce_events.mm; sourceTree = SOURCE_ROOT; };
+		EF22F20B4240570D4548EE80 /* ArcButtonComponent.h */ /* ArcButtonComponent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ArcButtonComponent.h; path = ../../Source/Components/ArcButtonComponent.h; sourceTree = SOURCE_ROOT; };
 		F2CE82344A95967C604E6ED6 /* juce_audio_utils */ /* juce_audio_utils */ = {isa = PBXFileReference; lastKnownFileType = folder; name = juce_audio_utils; path = "~/JUCE/modules/juce_audio_utils"; sourceTree = "<absolute>"; };
 		F3CCE68039A70311B6B7BDA0 /* Poppins-ThinItalic.ttf */ /* Poppins-ThinItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file.ttf; name = "Poppins-ThinItalic.ttf"; path = "../../Fonts/Poppins/Poppins-ThinItalic.ttf"; sourceTree = SOURCE_ROOT; };
 		F3FF550AC4AEDE96DAFBE6A9 /* Poppins-ExtraLight.ttf */ /* Poppins-ExtraLight.ttf */ = {isa = PBXFileReference; lastKnownFileType = file.ttf; name = "Poppins-ExtraLight.ttf"; path = "../../Fonts/Poppins/Poppins-ExtraLight.ttf"; sourceTree = SOURCE_ROOT; };
@@ -404,6 +405,7 @@
 		F508C0869985C40203A0949B /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				EF22F20B4240570D4548EE80,
 				E4E6F29DEB612BEB3D3B06E7,
 			);
 			name = Components;

@@ -5,8 +5,11 @@
               version="0.0.1" companyName="Dimethoxy" pluginCharacteristicsValue="pluginIsSynth,pluginWantsMidiIn"
               cppLanguageStandard="17">
   <MAINGROUP id="M46wPq" name="Neutrino">
+    <GROUP id="{0003B841-FC56-EFF9-31B1-DE6CA93C7610}" name="Widgets"/>
     <GROUP id="{2FE70917-738D-3A38-9BF5-75FAFAF8EB81}" name="Source">
       <GROUP id="{B8616656-AB40-DC56-24C4-5C69379A0255}" name="Components">
+        <FILE id="PYLg07" name="ArcButtonComponent.h" compile="0" resource="0"
+              file="Source/Components/ArcButtonComponent.h"/>
         <FILE id="c9qe0W" name="OscillatorDisplayComponent.h" compile="0" resource="0"
               file="Source/Components/OscillatorDisplayComponent.h"/>
       </GROUP>

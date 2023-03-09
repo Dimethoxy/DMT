@@ -2423,6 +2423,7 @@
     <ClCompile Include="..\..\JuceLibraryCode\include_juce_gui_extra.cpp"/>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Source\Components\ArcButtonComponent.h"/>
     <ClInclude Include="..\..\Source\Components\OscillatorDisplayComponent.h"/>
     <ClInclude Include="..\..\Source\Envelope\AdhEnvelope.h"/>
     <ClInclude Include="..\..\Source\Filter\FilterProcessor.h"/>

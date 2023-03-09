@@ -3078,6 +3078,9 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Source\Components\ArcButtonComponent.h">
+      <Filter>Neutrino\Source\Components</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\Components\OscillatorDisplayComponent.h">
       <Filter>Neutrino\Source\Components</Filter>
     </ClInclude>
