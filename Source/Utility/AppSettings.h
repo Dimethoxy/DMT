@@ -13,6 +13,7 @@ struct AppSettings
   {
     static inline Colour background = Colour(18, 18, 18);
     static inline Colour foreground = Colour(29, 29, 29);
+    static inline Colour topground = Colour(40, 40, 40);
     static inline Colour panelBorder = Colour(0, 0, 0);
     static inline Colour shadow = Colour(0, 0, 0);
   };
@@ -52,7 +53,7 @@ struct AppSettings
     static inline auto outerShadowRadius = 5.0f;
     static inline auto innerShadowRadius = 5.0f;
     static inline auto drawOuterShadow = true;
-    static inline auto drawInnerShadow = false;
+    static inline auto drawInnerShadow = true;
     static inline auto outerShadowColour = Colour(0, 0, 0);
     static inline auto innerShadowColour = Colour(0, 0, 0);
   };
@@ -66,11 +67,11 @@ struct AppSettings
     static inline auto foregroundColour = Colours::background;
     static inline auto borderColour = Colour(158, 85, 252);
 
-    static inline auto outerShadowRadius = 10.0f;
-    static inline auto innerShadowRadius = 50.0f;
+    static inline auto outerShadowRadius = 20.0f;
+    static inline auto innerShadowRadius = 20.0f;
     static inline auto drawOuterShadow = true;
     static inline auto drawInnerShadow = true;
-    static inline auto outerShadowColour = Colour(0, 0, 0);
+    static inline auto outerShadowColour = Colour(158, 85, 252);
     static inline auto innerShadowColour = Colour(158, 85, 252);
 
     static inline auto graphSize = 3.0f;
@@ -86,11 +87,11 @@ struct AppSettings
     static inline auto borderSize = 2.0f;
     static inline auto borderColour = Colour(158, 85, 252);
 
-    static inline auto outerShadowRadius = 10.0f;
-    static inline auto innerShadowRadius = 10.0f;
+    static inline auto outerShadowRadius = 20.0f;
+    static inline auto innerShadowRadius = 20.0f;
     static inline auto drawOuterShadow = true;
     static inline auto drawInnerShadow = true;
-    static inline auto outerShadowColour = Colour(0, 0, 0);
+    static inline auto outerShadowColour = Colour(158, 85, 252);
     static inline auto innerShadowColour = Colour(158, 85, 252);
   };
 };

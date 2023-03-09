@@ -11,27 +11,22 @@ namespace dmt {
 //==============================================================================
 class Panel : public juce::Component
 {
-public:
   using Settings = dmt::AppSettings::Panel;
+
+public:
   Panel()
   {
     outerShadow.radius = Settings::outerShadowRadius;
     outerShadow.colour = Settings::outerShadowColour;
     innerShadow.radius = Settings::innerShadowRadius;
     innerShadow.colour = Settings::innerShadowColour;
+    resized();
   }
   void paint(juce::Graphics& g) override
   {
     const auto bounds = this->getLocalBounds().toFloat();
-
     g.setColour(Settings::backgroundColour);
     g.fillRect(bounds);
-
-    const auto borderSize = Settings::borderSize;
-    const auto borderBounds = bounds.reduced(Settings::margin);
-    const auto innerBounds = borderBounds.reduced(borderSize);
-    const auto outerCornerSize = Settings::outerCornerSize;
-    const auto innerCornerSize = Settings::innerCornerSize;
 
     if (Settings::drawOuterShadow) {
       juce::Path outerShadowPath;
@@ -51,6 +46,26 @@ public:
       innerShadow.drawInnerForPath(g, innerShadowPath);
     }
   }
+
+  void resized() override
+  {
+    const auto bounds = this->getLocalBounds().toFloat();
+    borderSize = Settings::borderSize;
+    borderBounds = bounds.reduced(Settings::margin);
+    innerBounds = borderBounds.reduced(borderSize);
+    outerCornerSize = Settings::outerCornerSize;
+    innerCornerSize = Settings::innerCornerSize;
+    update();
+  }
+
+  virtual void update(){};
+
+protected:
+  float borderSize = Settings::borderSize;
+  juce::Rectangle<float> borderBounds;
+  juce::Rectangle<float> innerBounds;
+  float outerCornerSize;
+  float innerCornerSize;
 
 private:
   dmt::Shadow outerShadow;

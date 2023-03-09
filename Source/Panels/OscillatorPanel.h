@@ -11,6 +11,78 @@
 //==============================================================================
 namespace dmt {
 //==============================================================================
+class TitleTopComponent : public juce::Component
+{
+  using Settings = dmt::AppSettings::Panel;
+
+public:
+  TitleTopComponent()
+  {
+    outerShadow.radius = Settings::outerShadowRadius;
+    outerShadow.colour = Settings::outerShadowColour;
+    innerShadow.radius = Settings::innerShadowRadius;
+    innerShadow.colour = Settings::innerShadowColour;
+    fontShadow.radius = Settings::outerShadowRadius;
+    fontShadow.colour = juce::Colour(158, 85, 252);
+  }
+  void paint(juce::Graphics& g) override
+  {
+    const auto bounds = this->getLocalBounds().toFloat();
+    // g.setColour(juce::Colours::white);
+    // g.drawRect(bounds, 1.0f);
+
+    auto innerBounds = bounds.withHeight(bounds.getHeight() * 0.6f);
+
+    g.setColour(dmt::AppSettings::Colours::topground);
+    g.fillRoundedRectangle(innerBounds, 9.0f);
+    if (Settings::drawOuterShadow) {
+      juce::Path outerShadowPath;
+      outerShadowPath.addRoundedRectangle(innerBounds,
+                                          Settings::outerCornerSize);
+      outerShadow.drawOuterForPath(g, outerShadowPath);
+    }
+    if (Settings::drawInnerShadow) {
+      juce::Path innerShadowPath;
+      innerShadowPath.addRoundedRectangle(innerBounds,
+                                          Settings::innerCornerSize);
+      innerShadow.drawInnerForPath(g, innerShadowPath);
+    }
+
+    g.setColour(juce::Colours::white);
+    juce::Font font =
+      (AppSettings::Fonts::medium.withHeight(getHeight() * 0.5f));
+    font.setExtraKerningFactor(getHeight() * 0.0005);
+    auto x = bounds.getX();
+    auto y = bounds.getY() - bounds.getHeight() / 6.5f;
+    auto w = bounds.getWidth();
+    auto h = bounds.getHeight();
+
+    juce::Path textPath;
+    juce::GlyphArrangement glyphs;
+    glyphs.addFittedText(
+      font, "Oscillator", x, y, w, h, juce::Justification::centred, 2);
+    glyphs.createPath(textPath);
+
+    fontShadow.drawOuterForPath(g, textPath);
+
+    g.setColour(juce::Colour(158, 85, 252));
+    juce::PathStrokeType strokeType(2.5f);
+    g.strokePath(textPath, strokeType);
+    g.setColour(juce::Colour(18, 18, 18));
+    g.fillPath(textPath);
+  }
+
+private:
+  dmt::Shadow outerShadow;
+  dmt::Shadow innerShadow;
+  dmt::Shadow fontShadow;
+};
+//==============================================================================
+
+class AngleSlider : juce::Slider
+{
+  AngleSlider() { setSliderStyle(juce::Slider::LinearHorizontal); }
+};
 
 //==============================================================================
 class OscillatorPanel : public dmt::Panel
@@ -20,15 +92,18 @@ public:
     : prevButton(true)
     , nextButton(false)
   {
+    addAndMakeVisible(top);
     addAndMakeVisible(oscDisplay);
     addAndMakeVisible(prevButton);
     addAndMakeVisible(nextButton);
   }
-  void resized() override
+  void update() override
   {
+    top.setBounds(innerBounds.toNearestInt());
+    top.setSize(top.getWidth(), top.getHeight() * 0.15f);
     float dispalySize = 0.5f;
     oscDisplay.setSize(getWidth() * dispalySize, getWidth() * dispalySize);
-    oscDisplay.setCentreRelative(0.5f, 0.4f);
+    oscDisplay.setCentreRelative(0.5f, 0.35f);
 
     auto prevButtonX = oscDisplay.getX();
     auto prevButtonY = oscDisplay.getY() + oscDisplay.getHeight() / 2.0f;
@@ -42,6 +117,7 @@ public:
   }
 
 private:
+  dmt::TitleTopComponent top;
   dmt::OscillatorDisplayComponent oscDisplay;
   dmt::ArcButtonComponent prevButton;
   dmt::ArcButtonComponent nextButton;
