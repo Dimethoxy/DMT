@@ -6,6 +6,7 @@
 #include "../Components/OscillatorDisplayComponent.h"
 #include "../Components/TitleTopComponent.h"
 #include "../Utility/AppSettings.h"
+#include "../Widgets/LinearSliderComponent.h"
 #include "Panel.h"
 #include <JuceHeader.h>
 
@@ -15,14 +16,18 @@ namespace dmt {
 class OscillatorPanel : public dmt::Panel
 {
 public:
-  OscillatorPanel()
+  OscillatorPanel(juce::AudioProcessorValueTreeState& apvts)
     : prevButton(true)
     , nextButton(false)
+    , pwmSlider(apvts, "Pulse", "oscBias", dmt::InfoUnit::Type::Symmetry)
+    , biasSlider(apvts, "Bias", "oscBias", dmt::InfoUnit::Type::Symmetry)
   {
     addAndMakeVisible(top);
     addAndMakeVisible(oscDisplay);
     addAndMakeVisible(prevButton);
     addAndMakeVisible(nextButton);
+    addAndMakeVisible(pwmSlider);
+    addAndMakeVisible(biasSlider);
   }
   void update() override
   {
@@ -30,7 +35,7 @@ public:
     top.setSize(top.getWidth(), top.getHeight() * 0.15f);
     float dispalySize = 0.40f;
     oscDisplay.setSize(getWidth() * dispalySize, getWidth() * dispalySize);
-    oscDisplay.setCentreRelative(0.5f, 0.30f);
+    oscDisplay.setCentreRelative(0.5f, 0.27f);
 
     auto prevButtonX = oscDisplay.getX();
     auto prevButtonY = oscDisplay.getY() + oscDisplay.getHeight() / 2.0f;
@@ -41,6 +46,17 @@ public:
     auto nextButtonY = oscDisplay.getY() + oscDisplay.getHeight() / 2.0f;
     nextButton.setSize(oscDisplay.getWidth(), oscDisplay.getHeight());
     nextButton.setCentrePosition(nextButtonX, nextButtonY);
+
+    pwmSlider.setBounds(prevButton.getX() - prevButton.getWidth() / 20.0f,
+                        prevButton.getY(),
+                        prevButton.getWidth() / 4.0f,
+                        prevButton.getHeight());
+
+    biasSlider.setBounds(nextButton.getRight() + nextButton.getWidth() / 20.0f -
+                           pwmSlider.getWidth(),
+                         nextButton.getY(),
+                         nextButton.getWidth() / 4.0f,
+                         nextButton.getHeight());
   }
 
 private:
@@ -48,6 +64,8 @@ private:
   dmt::OscillatorDisplayComponent oscDisplay;
   dmt::ArcButtonComponent prevButton;
   dmt::ArcButtonComponent nextButton;
+  LinearSliderComponent pwmSlider;
+  LinearSliderComponent biasSlider;
 };
 //==============================================================================
 }

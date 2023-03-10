@@ -13,13 +13,12 @@
 NeutrinoAudioProcessorEditor::NeutrinoAudioProcessorEditor(
   NeutrinoAudioProcessor& p)
   : AudioProcessorEditor(&p)
-  ,
-
-  audioProcessor(p)
+  , audioProcessor(p)
   , presetPanel(p.getPresetManager())
   , genericAudioProcessorEditor(p)
   , keyboardComponent(p.keyboardState,
                       juce::MidiKeyboardComponent::horizontalKeyboard)
+  , oscPannel(p.apvts)
 {
   addAndMakeVisible(folderPanel);
   addAndMakeVisible(presetPanel);

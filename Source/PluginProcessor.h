@@ -32,7 +32,9 @@ public:
   //============================================================================
   void prepareToPlay(double sampleRate, int samplesPerBlock) override;
   void releaseResources() override;
-
+  //============================================================================
+  juce::AudioProcessorValueTreeState apvts;
+  //============================================================================
 #ifndef JucePlugin_PreferredChannelConfigurations
   bool isBusesLayoutSupported(const BusesLayout& layouts) const override;
 #endif
@@ -68,7 +70,7 @@ public:
 
 private:
   //============================================================================
-  juce::AudioProcessorValueTreeState apvts;
+
   std::unique_ptr<dmt::PresetManager> presetManager;
 
   juce::Synthesiser synth;

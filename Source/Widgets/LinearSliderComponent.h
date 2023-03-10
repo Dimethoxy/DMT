@@ -40,7 +40,7 @@ public:
   ~LinearSliderComponent() { setLookAndFeel(nullptr); }
   void resized()
   {
-    slider.setBoundsRelative(0.0f, 0.2f, 1.0f, 0.675f);
+    slider.setBoundsRelative(0.0f, 0.0f, 1.0f, 1.0f);
     titleLabel.setBoundsRelative(0.0f, 0.06f, 1.0f, 0.15f);
     infoLabel.setBoundsRelative(0.0f, 0.82f, 1.0f, 0.18f);
   }

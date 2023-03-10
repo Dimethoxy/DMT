@@ -9,7 +9,7 @@ struct AppSettings
   using Colour = juce::Colour;
   //==============================================================================
   static inline juce::String name = "Neutrino";
-  static inline float size = 16.0f;
+  static inline float size = 1.0f;
   //==============================================================================
   static inline struct Colours
   {
@@ -22,6 +22,11 @@ struct AppSettings
     static inline Colour accent = Colour(255, 255, 255);
     static inline Colour accentAlpha = Colour::fromRGBA(255, 255, 255, 64);
     static inline Colour font = Colour(255, 255, 255);
+  };
+  //==============================================================================
+  static inline struct LinearSlider
+  {
+    static inline float tumbSize = 1.3f;
   };
   //==============================================================================
   static inline struct Fonts
@@ -74,8 +79,8 @@ struct AppSettings
 
     static inline auto outerShadowRadius = 10.0f;
     static inline auto innerShadowRadius = 10.0f;
-    static inline auto drawOuterShadow = true;
-    static inline auto drawInnerShadow = true;
+    static inline auto drawOuterShadow = false;
+    static inline auto drawInnerShadow = false;
     static inline auto outerShadowColour = Colours::accent;
     static inline auto innerShadowColour = Colours::accent;
 
@@ -94,8 +99,8 @@ struct AppSettings
 
     static inline auto outerShadowRadius = 10.0f;
     static inline auto innerShadowRadius = 10.0f;
-    static inline auto drawOuterShadow = true;
-    static inline auto drawInnerShadow = true;
+    static inline auto drawOuterShadow = false;
+    static inline auto drawInnerShadow = false;
     static inline auto outerShadowColour = Colours::accent;
     static inline auto innerShadowColour = Colours::accent;
   };
@@ -113,7 +118,7 @@ struct AppSettings
     static inline auto fontShadowRadius = 10.0f;
     static inline auto drawOuterShadow = true;
     static inline auto drawInnerShadow = true;
-    static inline auto drawFontShadow = true;
+    static inline auto drawFontShadow = false;
     static inline auto outerShadowColour = Colour(0, 0, 0);
     static inline auto innerShadowColour = Colour(0, 0, 0);
     static inline auto fontShadowColour = Colours::accent;
