@@ -7,8 +7,10 @@ namespace dmt {
 struct AppSettings
 {
   using Colour = juce::Colour;
-
+  //==============================================================================
   static inline juce::String name = "Neutrino";
+  static inline float size = 16.0f;
+  //==============================================================================
   static inline struct Colours
   {
     // Colour(158, 85, 252);
@@ -21,6 +23,7 @@ struct AppSettings
     static inline Colour accentAlpha = Colour::fromRGBA(255, 255, 255, 64);
     static inline Colour font = Colour(255, 255, 255);
   };
+  //==============================================================================
   static inline struct Fonts
   {
     static inline juce::Typeface::Ptr regularTypeface =
@@ -36,14 +39,12 @@ struct AppSettings
         BinaryData::PoppinsMedium_ttfSize);
 
     static inline juce::Font medium = juce::Font(mediumTypeface);
+
+    static inline Colour labelFontColour = Colours::font;
+    static inline float sliderTitleLabelSize = 24.0f;
+    static inline float sliderInfoLabelSize = 24.0f;
   };
-  static inline struct FontSizes
-  {
-    static inline int sliderValueLabel = 24;
-    static inline int sliderNameLabel = 32;
-    static inline int editorTitle = 48;
-    static inline int triggerLabel = 30;
-  };
+  //==============================================================================
   static inline struct Panel
   {
     static inline auto margin = 20.0f;
@@ -117,5 +118,6 @@ struct AppSettings
     static inline auto innerShadowColour = Colour(0, 0, 0);
     static inline auto fontShadowColour = Colours::accent;
   };
+  //==============================================================================
 };
 }

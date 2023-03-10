@@ -9,3 +9,10 @@
 */
 
 #pragma once
+
+#include <JuceHeader.h>
+
+namespace dmt {
+class LookAndFeel : public juce::LookAndFeel_V4
+{};
+}

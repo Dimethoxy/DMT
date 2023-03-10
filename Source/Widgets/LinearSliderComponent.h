@@ -13,7 +13,7 @@ class LinearSliderComponent
   : public juce::Component
   , public juce::Slider::Listener
 {
-  using Settings = dmt::AppSettings;
+  using Settings = AppSettings;
 
 public:
   LinearSliderComponent(juce::AudioProcessorValueTreeState& apvts,
@@ -21,8 +21,12 @@ public:
                         juce::String param,
                         dmt::InfoUnit::Type unitType)
     : sliderAttachment(apvts, param, slider)
-    , titleLabel(name, Settings::fontSizes.sliderTitleLabel)
-    , infoLabel("Info Label", Settings::fontSizes.sliderInfoLabel)
+    , titleLabel(name,
+                 Settings::Fonts::sliderTitleLabelSize,
+                 Settings::Fonts::medium)
+    , infoLabel("Info Label",
+                Settings::Fonts::sliderInfoLabelSize,
+                Settings::Fonts::regular)
     , unitType(unitType)
   {
     slider.addListener(this);
