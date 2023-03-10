@@ -120,6 +120,7 @@
 		A0CCB0302A36295E689301F6 /* include_juce_audio_basics.mm */ /* include_juce_audio_basics.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_audio_basics.mm; path = ../../JuceLibraryCode/include_juce_audio_basics.mm; sourceTree = SOURCE_ROOT; };
 		A48B344636C7541981D140C3 /* Poppins-Italic.ttf */ /* Poppins-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file.ttf; name = "Poppins-Italic.ttf"; path = "../../Fonts/Poppins/Poppins-Italic.ttf"; sourceTree = SOURCE_ROOT; };
 		A5797355064A2A22CB4E8D03 /* BinaryData.h */ /* BinaryData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BinaryData.h; path = ../../JuceLibraryCode/BinaryData.h; sourceTree = SOURCE_ROOT; };
+		A667706E8C0E002CE09BD493 /* LinearSliderComponent.h */ /* LinearSliderComponent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = LinearSliderComponent.h; path = ../../Source/Widgets/LinearSliderComponent.h; sourceTree = SOURCE_ROOT; };
 		AA358CCCA606A592E79D7240 /* juce_dsp */ /* juce_dsp */ = {isa = PBXFileReference; lastKnownFileType = folder; name = juce_dsp; path = "~/JUCE/modules/juce_dsp"; sourceTree = "<absolute>"; };
 		AF1D40871C183EAD1F158ACC /* juce_events */ /* juce_events */ = {isa = PBXFileReference; lastKnownFileType = folder; name = juce_events; path = "~/JUCE/modules/juce_events"; sourceTree = "<absolute>"; };
 		B4AE48985FF09853121ECBAB /* Poppins-Bold.ttf */ /* Poppins-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file.ttf; name = "Poppins-Bold.ttf"; path = "../../Fonts/Poppins/Poppins-Bold.ttf"; sourceTree = SOURCE_ROOT; };
@@ -127,8 +128,10 @@
 		B911F645CF2AA43852830347 /* PluginEditor.h */ /* PluginEditor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PluginEditor.h; path = ../../Source/PluginEditor.h; sourceTree = SOURCE_ROOT; };
 		B93B0FF669B0E6096BE33DAE /* OscillatorPanel.h */ /* OscillatorPanel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = OscillatorPanel.h; path = ../../Source/Panels/OscillatorPanel.h; sourceTree = SOURCE_ROOT; };
 		BC2CE22CE2E6CA433FAC1A9E /* SedgwickAveDisplay-Regular.ttf */ /* SedgwickAveDisplay-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file.ttf; name = "SedgwickAveDisplay-Regular.ttf"; path = "../../Fonts/Sedgwick_Ave_Display/SedgwickAveDisplay-Regular.ttf"; sourceTree = SOURCE_ROOT; };
+		BE9940098C6BD36BF019AB7F /* Distortion.h */ /* Distortion.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Distortion.h; path = ../../Source/Utility/Distortion.h; sourceTree = SOURCE_ROOT; };
 		BF5E3B8116A17262A0F019AB /* JuceHeader.h */ /* JuceHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = JuceHeader.h; path = ../../JuceLibraryCode/JuceHeader.h; sourceTree = SOURCE_ROOT; };
 		C0B41FEFB61FBF9A76F7061B /* include_juce_audio_utils.mm */ /* include_juce_audio_utils.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_audio_utils.mm; path = ../../JuceLibraryCode/include_juce_audio_utils.mm; sourceTree = SOURCE_ROOT; };
+		C1754758DD0C0224FC14E27B /* Unit.h */ /* Unit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Unit.h; path = ../../Source/Utility/Unit.h; sourceTree = SOURCE_ROOT; };
 		C1C36CB489C305E836F348FC /* IIRFilter.h */ /* IIRFilter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = IIRFilter.h; path = ../../Source/Filter/IIRFilter.h; sourceTree = SOURCE_ROOT; };
 		C2961518713F3880A86AE4D7 /* include_juce_graphics.mm */ /* include_juce_graphics.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_graphics.mm; path = ../../JuceLibraryCode/include_juce_graphics.mm; sourceTree = SOURCE_ROOT; };
 		D0B3BFBF8A4212EEBF1CE7F6 /* juce_audio_devices */ /* juce_audio_devices */ = {isa = PBXFileReference; lastKnownFileType = folder; name = juce_audio_devices; path = "~/JUCE/modules/juce_audio_devices"; sourceTree = "<absolute>"; };
@@ -140,6 +143,7 @@
 		E1D237107F2C29F1D87F29C7 /* Poppins-LightItalic.ttf */ /* Poppins-LightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file.ttf; name = "Poppins-LightItalic.ttf"; path = "../../Fonts/Poppins/Poppins-LightItalic.ttf"; sourceTree = SOURCE_ROOT; };
 		E47BB6C837091F3AFA7CCAB6 /* Poppins-BoldItalic.ttf */ /* Poppins-BoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file.ttf; name = "Poppins-BoldItalic.ttf"; path = "../../Fonts/Poppins/Poppins-BoldItalic.ttf"; sourceTree = SOURCE_ROOT; };
 		E4E6F29DEB612BEB3D3B06E7 /* OscillatorDisplayComponent.h */ /* OscillatorDisplayComponent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = OscillatorDisplayComponent.h; path = ../../Source/Components/OscillatorDisplayComponent.h; sourceTree = SOURCE_ROOT; };
+		E5509DFB2061C96ABA8ED45B /* LookAndFeel.h */ /* LookAndFeel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = LookAndFeel.h; path = ../../Source/Widgets/LookAndFeel.h; sourceTree = SOURCE_ROOT; };
 		E55D827807BA1ED644AAB167 /* Poppins-Regular.ttf */ /* Poppins-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file.ttf; name = "Poppins-Regular.ttf"; path = "../../Fonts/Poppins/Poppins-Regular.ttf"; sourceTree = SOURCE_ROOT; };
 		EA399205460AB0A53351D87E /* include_juce_events.mm */ /* include_juce_events.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_events.mm; path = ../../JuceLibraryCode/include_juce_events.mm; sourceTree = SOURCE_ROOT; };
 		EF22F20B4240570D4548EE80 /* ArcButtonComponent.h */ /* ArcButtonComponent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ArcButtonComponent.h; path = ../../Source/Components/ArcButtonComponent.h; sourceTree = SOURCE_ROOT; };
@@ -151,6 +155,7 @@
 		F8D37477CAF310BC84817931 /* Poppins-SemiBoldItalic.ttf */ /* Poppins-SemiBoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file.ttf; name = "Poppins-SemiBoldItalic.ttf"; path = "../../Fonts/Poppins/Poppins-SemiBoldItalic.ttf"; sourceTree = SOURCE_ROOT; };
 		FACAB42EC39129F4EF08EF18 /* include_juce_audio_plugin_client_utils.cpp */ /* include_juce_audio_plugin_client_utils.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = include_juce_audio_plugin_client_utils.cpp; path = ../../JuceLibraryCode/include_juce_audio_plugin_client_utils.cpp; sourceTree = SOURCE_ROOT; };
 		FB5F919EDEEF0D6144ED22CF /* DiscRecording.framework */ /* DiscRecording.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DiscRecording.framework; path = System/Library/Frameworks/DiscRecording.framework; sourceTree = SDKROOT; };
+		FC4D465385FEF4A425B305B0 /* LinearSlider.h */ /* LinearSlider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = LinearSlider.h; path = ../../Source/Widgets/LinearSlider.h; sourceTree = SOURCE_ROOT; };
 		FE36874DF019AC3E1F2191BE /* IOKit.framework */ /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
 		FEF1A74283B3D94DD277F8B2 /* BinaryData.cpp */ /* BinaryData.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = BinaryData.cpp; path = ../../JuceLibraryCode/BinaryData.cpp; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
@@ -280,8 +285,10 @@
 			children = (
 				61C0CB1C034EFE5115DBFCDB,
 				75554C51D21CA98721726E3B,
+				BE9940098C6BD36BF019AB7F,
 				D59A40D13B44183E5CE5AA81,
 				3B1B64A569DB7C3904180182,
+				C1754758DD0C0224FC14E27B,
 			);
 			name = Utility;
 			sourceTree = "<group>";
@@ -309,8 +316,19 @@
 				DDCC724DA9A0515631862A1B,
 				D10294C65DE46C41CFEDA605,
 				724D9844E2B0D80AC86FEBD1,
+				8BB0933EB0FAB46DAA58E79A,
 			);
 			name = Source;
+			sourceTree = "<group>";
+		};
+		8BB0933EB0FAB46DAA58E79A /* Widgets */ = {
+			isa = PBXGroup;
+			children = (
+				FC4D465385FEF4A425B305B0,
+				A667706E8C0E002CE09BD493,
+				E5509DFB2061C96ABA8ED45B,
+			);
+			name = Widgets;
 			sourceTree = "<group>";
 		};
 		AA978DD7E50671508A44DF55 /* Envelope */ = {

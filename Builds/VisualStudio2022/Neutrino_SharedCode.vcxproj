@@ -2443,8 +2443,13 @@
     <ClInclude Include="..\..\Source\Synth\SynthVoice.h"/>
     <ClInclude Include="..\..\Source\Utility\AppSettings.h"/>
     <ClInclude Include="..\..\Source\Utility\ChainSettings.h"/>
+    <ClInclude Include="..\..\Source\Utility\Distortion.h"/>
     <ClInclude Include="..\..\Source\Utility\ParameterLayout.h"/>
     <ClInclude Include="..\..\Source\Utility\Shadow.h"/>
+    <ClInclude Include="..\..\Source\Utility\Unit.h"/>
+    <ClInclude Include="..\..\Source\Widgets\LinearSlider.h"/>
+    <ClInclude Include="..\..\Source\Widgets\LinearSliderComponent.h"/>
+    <ClInclude Include="..\..\Source\Widgets\LookAndFeel.h"/>
     <ClInclude Include="..\..\..\..\Ressources\JUCE\modules\juce_audio_basics\audio_play_head\juce_AudioPlayHead.h"/>
     <ClInclude Include="..\..\..\..\Ressources\JUCE\modules\juce_audio_basics\buffers\juce_AudioChannelSet.h"/>
     <ClInclude Include="..\..\..\..\Ressources\JUCE\modules\juce_audio_basics\buffers\juce_AudioDataConverters.h"/>

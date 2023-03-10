@@ -23,6 +23,9 @@
     <Filter Include="Neutrino\Source\Utility">
       <UniqueIdentifier>{DEE6B8DA-FBFF-3897-8BEC-4D715C818170}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Neutrino\Source\Widgets">
+      <UniqueIdentifier>{4415ECF5-9738-AEC4-D2F0-8A39F7281D54}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Neutrino\Source">
       <UniqueIdentifier>{435EE20D-CF50-D347-FADB-565BE1353B47}</UniqueIdentifier>
     </Filter>
@@ -3138,11 +3141,26 @@
     <ClInclude Include="..\..\Source\Utility\ChainSettings.h">
       <Filter>Neutrino\Source\Utility</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\Utility\Distortion.h">
+      <Filter>Neutrino\Source\Utility</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\Utility\ParameterLayout.h">
       <Filter>Neutrino\Source\Utility</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Utility\Shadow.h">
       <Filter>Neutrino\Source\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Utility\Unit.h">
+      <Filter>Neutrino\Source\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Widgets\LinearSlider.h">
+      <Filter>Neutrino\Source\Widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Widgets\LinearSliderComponent.h">
+      <Filter>Neutrino\Source\Widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Widgets\LookAndFeel.h">
+      <Filter>Neutrino\Source\Widgets</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\Ressources\JUCE\modules\juce_audio_basics\audio_play_head\juce_AudioPlayHead.h">
       <Filter>JUCE Modules\juce_audio_basics\audio_play_head</Filter>

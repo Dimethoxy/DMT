@@ -52,9 +52,17 @@
       <GROUP id="{12559DD0-2FDC-3296-2938-D5CB96F48C78}" name="Utility">
         <FILE id="Tiym79" name="AppSettings.h" compile="0" resource="0" file="Source/Utility/AppSettings.h"/>
         <FILE id="CaXy16" name="ChainSettings.h" compile="0" resource="0" file="Source/Utility/ChainSettings.h"/>
+        <FILE id="M6A6mK" name="Distortion.h" compile="0" resource="0" file="Source/Utility/Distortion.h"/>
         <FILE id="iYcLBT" name="ParameterLayout.h" compile="0" resource="0"
               file="Source/Utility/ParameterLayout.h"/>
         <FILE id="p4W5r4" name="Shadow.h" compile="0" resource="0" file="Source/Utility/Shadow.h"/>
+        <FILE id="b2xQLz" name="Unit.h" compile="0" resource="0" file="Source/Utility/Unit.h"/>
+      </GROUP>
+      <GROUP id="{0B11C71C-EE72-81F4-F249-C1EBFC0DAAB2}" name="Widgets">
+        <FILE id="GIz5q8" name="LinearSlider.h" compile="0" resource="0" file="Source/Widgets/LinearSlider.h"/>
+        <FILE id="nB47WC" name="LinearSliderComponent.h" compile="0" resource="0"
+              file="Source/Widgets/LinearSliderComponent.h"/>
+        <FILE id="LWh646" name="LookAndFeel.h" compile="0" resource="0" file="Source/Widgets/LookAndFeel.h"/>
       </GROUP>
     </GROUP>
     <GROUP id="{57F32CD7-2916-0410-198A-648E6A650819}" name="Fonts">

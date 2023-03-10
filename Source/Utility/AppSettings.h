@@ -18,7 +18,7 @@ struct AppSettings
     static inline Colour panelBorder = Colour(0, 0, 0);
     static inline Colour shadow = Colour(0, 0, 0);
     static inline Colour accent = Colour(255, 255, 255);
-    static inline Colour accentAlpha = Colour::fromRGBA(255, 255, 255, 100);
+    static inline Colour accentAlpha = Colour::fromRGBA(255, 255, 255, 64);
     static inline Colour font = Colour(255, 255, 255);
   };
   static inline struct Fonts
@@ -71,8 +71,8 @@ struct AppSettings
     static inline auto foregroundColour = Colours::background;
     static inline auto borderColour = Colours::accent;
 
-    static inline auto outerShadowRadius = 20.0f;
-    static inline auto innerShadowRadius = 20.0f;
+    static inline auto outerShadowRadius = 10.0f;
+    static inline auto innerShadowRadius = 10.0f;
     static inline auto drawOuterShadow = true;
     static inline auto drawInnerShadow = true;
     static inline auto outerShadowColour = Colours::accent;
@@ -91,8 +91,8 @@ struct AppSettings
     static inline auto borderSize = 2.0f;
     static inline auto borderColour = Colours::accent;
 
-    static inline auto outerShadowRadius = 20.0f;
-    static inline auto innerShadowRadius = 20.0f;
+    static inline auto outerShadowRadius = 10.0f;
+    static inline auto innerShadowRadius = 10.0f;
     static inline auto drawOuterShadow = true;
     static inline auto drawInnerShadow = true;
     static inline auto outerShadowColour = Colours::accent;
