@@ -11,11 +11,15 @@ struct AppSettings
   static inline juce::String name = "Neutrino";
   static inline struct Colours
   {
+    // Colour(158, 85, 252);
     static inline Colour background = Colour(18, 18, 18);
     static inline Colour foreground = Colour(29, 29, 29);
     static inline Colour topground = Colour(40, 40, 40);
     static inline Colour panelBorder = Colour(0, 0, 0);
     static inline Colour shadow = Colour(0, 0, 0);
+    static inline Colour accent = Colour(200, 200, 200);
+    static inline Colour accentAlpha = Colour::fromRGBA(200, 200, 200, 64);
+    static inline Colour font = Colour(200, 200, 200);
   };
   static inline struct Fonts
   {
@@ -65,34 +69,53 @@ struct AppSettings
     static inline auto borderSize = 2.0f;
     static inline auto backgroundColour = Colours::foreground;
     static inline auto foregroundColour = Colours::background;
-    static inline auto borderColour = Colour(158, 85, 252);
+    static inline auto borderColour = Colours::accent;
 
     static inline auto outerShadowRadius = 20.0f;
     static inline auto innerShadowRadius = 20.0f;
     static inline auto drawOuterShadow = true;
     static inline auto drawInnerShadow = true;
-    static inline auto outerShadowColour = Colour(158, 85, 252);
-    static inline auto innerShadowColour = Colour(158, 85, 252);
+    static inline auto outerShadowColour = Colours::accent;
+    static inline auto innerShadowColour = Colours::accent;
 
     static inline auto graphSize = 3.0f;
-    static inline Colour graphColor = Colour(158, 85, 252);
-    static inline Colour integralColour = Colour::fromRGBA(158, 85, 252, 64);
+    static inline Colour graphColor = Colours::accent;
+    static inline Colour integralColour = Colours::accentAlpha;
     ;
   };
   static inline struct ArcButton
   {
     static inline auto foregroundColour = Colours::background;
-    static inline auto hoverColour = Colour::fromRGBA(158, 85, 252, 64);
-    static inline auto activeColour = Colour(158, 85, 252);
+    static inline auto hoverColour = Colours::accentAlpha;
+    static inline auto activeColour = Colours::accent;
     static inline auto borderSize = 2.0f;
-    static inline auto borderColour = Colour(158, 85, 252);
+    static inline auto borderColour = Colours::accent;
 
     static inline auto outerShadowRadius = 20.0f;
     static inline auto innerShadowRadius = 20.0f;
     static inline auto drawOuterShadow = true;
     static inline auto drawInnerShadow = true;
-    static inline auto outerShadowColour = Colour(158, 85, 252);
-    static inline auto innerShadowColour = Colour(158, 85, 252);
+    static inline auto outerShadowColour = Colours::accent;
+    static inline auto innerShadowColour = Colours::accent;
+  };
+  static inline struct OscillatorTop
+  {
+    static inline auto foregroundColour = Colours::foreground;
+
+    static inline auto fontColour = Colours::background;
+    static inline auto drawFontOutline = true;
+    static inline auto fontOutlineColour = Colours::accent;
+    static inline auto fontOutlineThickness = 3.0f;
+
+    static inline auto outerShadowRadius = 10.0f;
+    static inline auto innerShadowRadius = 10.0f;
+    static inline auto fontShadowRadius = 10.0f;
+    static inline auto drawOuterShadow = true;
+    static inline auto drawInnerShadow = true;
+    static inline auto drawFontShadow = true;
+    static inline auto outerShadowColour = Colour(0, 0, 0);
+    static inline auto innerShadowColour = Colour(0, 0, 0);
+    static inline auto fontShadowColour = fontOutlineColour;
   };
 };
 }

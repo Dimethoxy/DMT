@@ -13,7 +13,7 @@ namespace dmt {
 //==============================================================================
 class TitleTopComponent : public juce::Component
 {
-  using Settings = dmt::AppSettings::Panel;
+  using Settings = dmt::AppSettings::OscillatorTop;
 
 public:
   TitleTopComponent()
@@ -22,52 +22,51 @@ public:
     outerShadow.colour = Settings::outerShadowColour;
     innerShadow.radius = Settings::innerShadowRadius;
     innerShadow.colour = Settings::innerShadowColour;
-    fontShadow.radius = 2 * Settings::outerShadowRadius;
-    fontShadow.colour = juce::Colour(255, 255, 255);
+    fontShadow.radius = Settings::outerShadowRadius;
+    fontShadow.colour = Settings::fontShadowColour;
   }
   void paint(juce::Graphics& g) override
   {
     const auto bounds = this->getLocalBounds().toFloat();
-    // g.setColour(juce::Colours::white);
-    // g.drawRect(bounds, 1.0f);
-
     auto innerBounds = bounds.withHeight(bounds.getHeight() * 0.6f);
+    auto cornerSize = dmt::AppSettings::Panel::borderSize;
 
     g.setColour(dmt::AppSettings::Colours::topground);
-    g.fillRoundedRectangle(innerBounds, 9.0f);
+    g.fillRoundedRectangle(innerBounds, cornerSize);
+
     if (Settings::drawOuterShadow) {
       juce::Path outerShadowPath;
-      outerShadowPath.addRoundedRectangle(innerBounds,
-                                          Settings::outerCornerSize);
+      outerShadowPath.addRoundedRectangle(innerBounds, cornerSize);
       outerShadow.drawOuterForPath(g, outerShadowPath);
     }
     if (Settings::drawInnerShadow) {
       juce::Path innerShadowPath;
-      innerShadowPath.addRoundedRectangle(innerBounds,
-                                          Settings::innerCornerSize);
+      innerShadowPath.addRoundedRectangle(innerBounds, cornerSize);
       innerShadow.drawInnerForPath(g, innerShadowPath);
     }
 
-    g.setColour(juce::Colours::white);
     juce::Font font =
       (AppSettings::Fonts::medium.withHeight(getHeight() * 0.5f));
     auto x = bounds.getX();
     auto y = bounds.getY() - bounds.getHeight() / 6.5f;
     auto w = bounds.getWidth();
     auto h = bounds.getHeight();
-
     juce::Path textPath;
     juce::GlyphArrangement glyphs;
     glyphs.addFittedText(
-      font, "CLASSIC OSCILLATOR", x, y, w, h, juce::Justification::centred, 2);
+      font, "Classic Oscillator", x, y, w, h, juce::Justification::centred, 2);
     glyphs.createPath(textPath);
 
-    fontShadow.drawOuterForPath(g, textPath);
+    if (Settings::drawFontShadow) {
+      fontShadow.drawOuterForPath(g, textPath);
+    }
+    if (Settings::drawFontOutline) {
+      g.setColour(Settings::fontOutlineColour);
+      juce::PathStrokeType strokeType(Settings::fontOutlineThickness);
+      g.strokePath(textPath, strokeType);
+    }
 
-    g.setColour(juce::Colour(255, 255, 255));
-    juce::PathStrokeType strokeType(2.0f);
-    g.strokePath(textPath, strokeType);
-    g.setColour(juce::Colour(18, 18, 18));
+    g.setColour(Settings::fontColour);
     g.fillPath(textPath);
   }
 
