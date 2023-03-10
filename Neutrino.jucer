@@ -12,6 +12,8 @@
               file="Source/Components/ArcButtonComponent.h"/>
         <FILE id="c9qe0W" name="OscillatorDisplayComponent.h" compile="0" resource="0"
               file="Source/Components/OscillatorDisplayComponent.h"/>
+        <FILE id="YFXkYf" name="TitleTopComponent.h" compile="0" resource="0"
+              file="Source/Components/TitleTopComponent.h"/>
       </GROUP>
       <GROUP id="{983A5375-DD8E-AE34-4BEC-8E3A58720E39}" name="Envelope">
         <FILE id="versba" name="AdhEnvelope.h" compile="0" resource="0" file="Source/Envelope/AdhEnvelope.h"/>

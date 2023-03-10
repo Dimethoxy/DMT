@@ -135,6 +135,7 @@
 		D26EC150352B6EEE685ECF7D /* juce_audio_processors */ /* juce_audio_processors */ = {isa = PBXFileReference; lastKnownFileType = folder; name = juce_audio_processors; path = "~/JUCE/modules/juce_audio_processors"; sourceTree = "<absolute>"; };
 		D362182A157FF2B330BFF0EB /* juce_graphics */ /* juce_graphics */ = {isa = PBXFileReference; lastKnownFileType = folder; name = juce_graphics; path = "~/JUCE/modules/juce_graphics"; sourceTree = "<absolute>"; };
 		D59A40D13B44183E5CE5AA81 /* ParameterLayout.h */ /* ParameterLayout.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ParameterLayout.h; path = ../../Source/Utility/ParameterLayout.h; sourceTree = SOURCE_ROOT; };
+		D6B305E0BF566B65BD5B58E2 /* TitleTopComponent.h */ /* TitleTopComponent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = TitleTopComponent.h; path = ../../Source/Components/TitleTopComponent.h; sourceTree = SOURCE_ROOT; };
 		D918A32B9E76BA495361B366 /* Poppins-ExtraBold.ttf */ /* Poppins-ExtraBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file.ttf; name = "Poppins-ExtraBold.ttf"; path = "../../Fonts/Poppins/Poppins-ExtraBold.ttf"; sourceTree = SOURCE_ROOT; };
 		E1D237107F2C29F1D87F29C7 /* Poppins-LightItalic.ttf */ /* Poppins-LightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file.ttf; name = "Poppins-LightItalic.ttf"; path = "../../Fonts/Poppins/Poppins-LightItalic.ttf"; sourceTree = SOURCE_ROOT; };
 		E47BB6C837091F3AFA7CCAB6 /* Poppins-BoldItalic.ttf */ /* Poppins-BoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file.ttf; name = "Poppins-BoldItalic.ttf"; path = "../../Fonts/Poppins/Poppins-BoldItalic.ttf"; sourceTree = SOURCE_ROOT; };
@@ -407,6 +408,7 @@
 			children = (
 				EF22F20B4240570D4548EE80,
 				E4E6F29DEB612BEB3D3B06E7,
+				D6B305E0BF566B65BD5B58E2,
 			);
 			name = Components;
 			sourceTree = "<group>";

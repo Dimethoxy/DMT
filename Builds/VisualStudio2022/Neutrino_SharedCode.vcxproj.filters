@@ -3084,6 +3084,9 @@
     <ClInclude Include="..\..\Source\Components\OscillatorDisplayComponent.h">
       <Filter>Neutrino\Source\Components</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\Components\TitleTopComponent.h">
+      <Filter>Neutrino\Source\Components</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\Envelope\AdhEnvelope.h">
       <Filter>Neutrino\Source\Envelope</Filter>
     </ClInclude>
