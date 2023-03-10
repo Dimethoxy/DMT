@@ -1,7 +1,7 @@
 
 #pragma once
 
-#include "Distortion.h"
+#include "../Utility/Distortion.h"
 #include <JuceHeader.h>
 
 namespace dmt {
@@ -21,26 +21,26 @@ struct InfoUnit
   static inline juce::String getString(dmt::InfoUnit::Type type, float value)
   {
     switch (type) {
-      case Type::Gain:
+      case dmt::InfoUnit::Type::Gain:
         return { juce::String(round(value * 10.0f) / 10.0f) + " dB" };
         break;
-      case Type::Threshold:
+      case dmt::InfoUnit::Type::Threshold:
         return { juce::String(round(value * 10.0f) / 10.0f) + " dB" };
         break;
-      case Type::Cutoff:
+      case dmt::InfoUnit::Type::Cutoff:
         return { juce::String(round(value * 10.0f) / 10.0f) + " Hz" };
         break;
-      case Type::LfoSpeed:
+      case dmt::InfoUnit::Type::LfoSpeed:
         return { juce::String(round(value * 10.0f) / 10.0f) + " %" };
         break;
-      case Type::DistortionType:
-        return { dmt::Distortion::getString(
-          static_cast<dmt::Distortion::Type>((int)value)) };
+      case dmt::InfoUnit::Type::DistortionType:
+        return { Distortion::getString(
+          static_cast<Distortion::Type>((int)value)) };
         break;
-      case Type::Symmetry:
+      case dmt::InfoUnit::Type::Symmetry:
         return { juce::String(round(value * 100.0f)) + " %" };
         break;
-      case Type::Girth:
+      case dmt::InfoUnit::Type::Girth:
         if (value == 0) {
           return juce::String("Off");
         } else if (value > 0) {
@@ -57,7 +57,7 @@ struct InfoUnit
           return string;
         }
         break;
-      case Type::Drive:
+      case dmt::InfoUnit::Type::Drive:
         return { juce::String(round(value * 10.0f) / 10.0f) + "x" };
         break;
       default:

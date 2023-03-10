@@ -1,32 +1,26 @@
 #pragma once
 
-#include <JuceHeader.h>
-#include "AppSettings.h"
+#include "../Utility/AppSettings.h"
 #include "LookAndFeel.h"
+#include <JuceHeader.h>
 
-namespace dmt
+namespace dmt {
+class LinearSlider : public juce::Slider
 {
-	class LinearSlider : public juce::Slider
-	{
-	public:
-		LinearSlider(dmt::AppSettings& a)
-			:
-			juce::Slider(),
-			a(a),
-			lnf(a)
-		{
-			setSliderStyle(juce::Slider::SliderStyle::LinearVertical);
-			setTextBoxStyle(juce::Slider::TextBoxBelow, true, 0, 0);
-			juce::Random rand;
-			setValue(10.0f * rand.nextFloat());
-			setLookAndFeel(&lnf);
-		}
-		~LinearSlider()
-		{
-			setLookAndFeel(nullptr);
-		}
-	private:
-		dmt::AppSettings& a;
-		dmt::LookAndFeel lnf;
-	};
+public:
+  LinearSlider()
+    : juce::Slider()
+    , lnf()
+  {
+    setSliderStyle(juce::Slider::SliderStyle::LinearVertical);
+    setTextBoxStyle(juce::Slider::TextBoxBelow, true, 0, 0);
+    juce::Random rand;
+    setValue(10.0f * rand.nextFloat());
+    setLookAndFeel(&lnf);
+  }
+  ~LinearSlider() { setLookAndFeel(nullptr); }
+
+private:
+  dmt::LookAndFeel lnf;
+};
 }

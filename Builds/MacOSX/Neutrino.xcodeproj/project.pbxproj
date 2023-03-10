@@ -92,6 +92,7 @@
 		603588CA813918346F17076A /* Poppins-BlackItalic.ttf */ /* Poppins-BlackItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file.ttf; name = "Poppins-BlackItalic.ttf"; path = "../../Fonts/Poppins/Poppins-BlackItalic.ttf"; sourceTree = SOURCE_ROOT; };
 		61C0CB1C034EFE5115DBFCDB /* AppSettings.h */ /* AppSettings.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AppSettings.h; path = ../../Source/Utility/AppSettings.h; sourceTree = SOURCE_ROOT; };
 		652968FE6D0E1BA6FEAE3F32 /* WebKit.framework */ /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
+		69BB19D006F260544D91F7E2 /* Label.h */ /* Label.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Label.h; path = ../../Source/Widgets/Label.h; sourceTree = SOURCE_ROOT; };
 		6AA050B526ABABE81D4A298E /* Shared Code */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libNeutrino.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		6F2A704452BE3E9559EBEF9C /* Poppins-ExtraBoldItalic.ttf */ /* Poppins-ExtraBoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file.ttf; name = "Poppins-ExtraBoldItalic.ttf"; path = "../../Fonts/Poppins/Poppins-ExtraBoldItalic.ttf"; sourceTree = SOURCE_ROOT; };
 		70FAA40307F07B6EDCA1ABF4 /* juce_audio_formats */ /* juce_audio_formats */ = {isa = PBXFileReference; lastKnownFileType = folder; name = juce_audio_formats; path = "~/JUCE/modules/juce_audio_formats"; sourceTree = "<absolute>"; };
@@ -324,6 +325,7 @@
 		8BB0933EB0FAB46DAA58E79A /* Widgets */ = {
 			isa = PBXGroup;
 			children = (
+				69BB19D006F260544D91F7E2,
 				FC4D465385FEF4A425B305B0,
 				A667706E8C0E002CE09BD493,
 				E5509DFB2061C96ABA8ED45B,

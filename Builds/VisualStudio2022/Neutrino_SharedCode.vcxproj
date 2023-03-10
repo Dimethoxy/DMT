@@ -2447,6 +2447,7 @@
     <ClInclude Include="..\..\Source\Utility\ParameterLayout.h"/>
     <ClInclude Include="..\..\Source\Utility\Shadow.h"/>
     <ClInclude Include="..\..\Source\Utility\Unit.h"/>
+    <ClInclude Include="..\..\Source\Widgets\Label.h"/>
     <ClInclude Include="..\..\Source\Widgets\LinearSlider.h"/>
     <ClInclude Include="..\..\Source\Widgets\LinearSliderComponent.h"/>
     <ClInclude Include="..\..\Source\Widgets\LookAndFeel.h"/>

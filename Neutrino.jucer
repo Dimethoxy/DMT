@@ -59,6 +59,7 @@
         <FILE id="b2xQLz" name="Unit.h" compile="0" resource="0" file="Source/Utility/Unit.h"/>
       </GROUP>
       <GROUP id="{0B11C71C-EE72-81F4-F249-C1EBFC0DAAB2}" name="Widgets">
+        <FILE id="jSJWkW" name="Label.h" compile="0" resource="0" file="Source/Widgets/Label.h"/>
         <FILE id="GIz5q8" name="LinearSlider.h" compile="0" resource="0" file="Source/Widgets/LinearSlider.h"/>
         <FILE id="nB47WC" name="LinearSliderComponent.h" compile="0" resource="0"
               file="Source/Widgets/LinearSliderComponent.h"/>

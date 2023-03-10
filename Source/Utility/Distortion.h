@@ -3,9 +3,9 @@
 #include <JuceHeader.h>
 
 namespace dmt {
-static struct Distortion
+struct Distortion
 {
-  inline static enum class Type {
+  static inline enum class Type {
     Hardclip,
     Root,
     Atan,
@@ -18,7 +18,7 @@ static struct Distortion
     Extreme
   };
 
-  inline static juce::String getString(dmt::Distortion::Type type)
+  static inline juce::String getString(dmt::Distortion::Type type)
   {
     switch (type) {
       case Type::Hardclip:
@@ -54,7 +54,7 @@ static struct Distortion
     }
   }
 
-  inline static void distortSample(float& value,
+  static inline void distortSample(float& value,
                                    dmt::Distortion::Type type,
                                    float drive)
   {
@@ -150,9 +150,9 @@ static struct Distortion
     }
   }
 
-  inline static float getNewGirthSeed() { return (float)(rand() % 100); }
+  static inline float getNewGirthSeed() { return (float)(rand() % 100); }
 
-  inline static std::vector<float> getGirthSeeds(int numSamples)
+  static inline std::vector<float> getGirthSeeds(int numSamples)
   {
     std::vector<float> girthSeeds;
     for (int i = 0; i < numSamples; i++) {
@@ -161,19 +161,19 @@ static struct Distortion
     return girthSeeds;
   }
 
-  inline static void girthSample(float& value, float girth)
+  static inline void girthSample(float& value, float girth)
   {
     value = value * ((getNewGirthSeed() / 100 * girth) + 1);
     value = std::clamp(value, -1.0f, 1.0f);
   }
 
-  inline static void girthSample(float& value, float girth, float seed)
+  static inline void girthSample(float& value, float girth, float seed)
   {
     value = value * (((seed) / 100 * girth) + 1);
     value = std::clamp(value, -1.0f, 1.0f);
   }
 
-  inline static void symmetrySample(float& value, float symmetry)
+  static inline void symmetrySample(float& value, float symmetry)
   {
     if (value > 0) {
       value += value * symmetry;
@@ -183,7 +183,7 @@ static struct Distortion
     value = std::clamp(value, -1.0f, 1.0f);
   }
 
-  inline static void processBuffer(juce::AudioBuffer<float>& buffer,
+  static inline void processBuffer(juce::AudioBuffer<float>& buffer,
                                    dmt::Distortion::Type type,
                                    float symmetry,
                                    float girth,

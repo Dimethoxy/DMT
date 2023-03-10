@@ -3153,6 +3153,9 @@
     <ClInclude Include="..\..\Source\Utility\Unit.h">
       <Filter>Neutrino\Source\Utility</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\Widgets\Label.h">
+      <Filter>Neutrino\Source\Widgets</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\Widgets\LinearSlider.h">
       <Filter>Neutrino\Source\Widgets</Filter>
     </ClInclude>
