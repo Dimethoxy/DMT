@@ -26,7 +26,7 @@ public:
   {
     const auto bounds = this->getLocalBounds().toFloat();
     auto innerBounds = bounds.withHeight(bounds.getHeight() * 0.6f);
-    auto cornerSize = dmt::AppSettings::Panel::borderSize;
+    auto cornerSize = dmt::AppSettings::Panel::innerCornerSize;
 
     g.setColour(dmt::AppSettings::Colours::topground);
     g.fillRoundedRectangle(innerBounds, cornerSize);

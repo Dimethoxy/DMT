@@ -33,9 +33,9 @@ public:
   {
     top.setBounds(innerBounds.toNearestInt());
     top.setSize(top.getWidth(), top.getHeight() * 0.15f);
-    float dispalySize = 0.40f;
+    float dispalySize = 0.35f;
     oscDisplay.setSize(getWidth() * dispalySize, getWidth() * dispalySize);
-    oscDisplay.setCentreRelative(0.5f, 0.27f);
+    oscDisplay.setCentreRelative(0.5f, 0.25f);
 
     auto prevButtonX = oscDisplay.getX();
     auto prevButtonY = oscDisplay.getY() + oscDisplay.getHeight() / 2.0f;
@@ -47,12 +47,12 @@ public:
     nextButton.setSize(oscDisplay.getWidth(), oscDisplay.getHeight());
     nextButton.setCentrePosition(nextButtonX, nextButtonY);
 
-    pwmSlider.setBounds(prevButton.getX() - prevButton.getWidth() / 20.0f,
+    pwmSlider.setBounds(prevButton.getX() - prevButton.getWidth() / 8.0f,
                         prevButton.getY(),
                         prevButton.getWidth() / 4.0f,
                         prevButton.getHeight());
 
-    biasSlider.setBounds(nextButton.getRight() + nextButton.getWidth() / 20.0f -
+    biasSlider.setBounds(nextButton.getRight() + nextButton.getWidth() / 8.0f -
                            pwmSlider.getWidth(),
                          nextButton.getY(),
                          nextButton.getWidth() / 4.0f,

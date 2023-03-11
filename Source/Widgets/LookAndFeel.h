@@ -34,12 +34,14 @@ class LookAndFeel : public juce::LookAndFeel_V4
     bounds.reduce(0.0f, yReduction);
     g.setColour(juce::Colours::white);
     // g.drawRect(bounds, 1.0f); //Debug only
-    
+
     // Calculate the Rail
-    auto startPoint = juce::Point<float>(bounds.getCentreX(),
+    auto startPoint = juce::Point<float>(
+      bounds.getCentreX(),
       bounds.getY() +
         (2.0f * Settings::LinearSlider::tumbSize) * Settings::size);
-    auto endPoint = juce::Point<float>(bounds.getCentreX(),
+    auto endPoint = juce::Point<float>(
+      bounds.getCentreX(),
       bounds.getBottom() -
         (2.0f * Settings::LinearSlider::tumbSize) * Settings::size);
     auto railWidth = Settings::size * 5.0f;

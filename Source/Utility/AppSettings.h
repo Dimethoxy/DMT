@@ -63,7 +63,7 @@ struct AppSettings
     static inline auto outerShadowRadius = 5.0f;
     static inline auto innerShadowRadius = 5.0f;
     static inline auto drawOuterShadow = true;
-    static inline auto drawInnerShadow = true;
+    static inline auto drawInnerShadow = false;
     static inline auto outerShadowColour = Colour(0, 0, 0);
     static inline auto innerShadowColour = Colour(0, 0, 0);
   };
@@ -80,7 +80,7 @@ struct AppSettings
     static inline auto outerShadowRadius = 10.0f;
     static inline auto innerShadowRadius = 10.0f;
     static inline auto drawOuterShadow = false;
-    static inline auto drawInnerShadow = false;
+    static inline auto drawInnerShadow = true;
     static inline auto outerShadowColour = Colours::accent;
     static inline auto innerShadowColour = Colours::accent;
 
@@ -100,7 +100,7 @@ struct AppSettings
     static inline auto outerShadowRadius = 10.0f;
     static inline auto innerShadowRadius = 10.0f;
     static inline auto drawOuterShadow = false;
-    static inline auto drawInnerShadow = false;
+    static inline auto drawInnerShadow = true;
     static inline auto outerShadowColour = Colours::accent;
     static inline auto innerShadowColour = Colours::accent;
   };
@@ -117,7 +117,7 @@ struct AppSettings
     static inline auto innerShadowRadius = 10.0f;
     static inline auto fontShadowRadius = 10.0f;
     static inline auto drawOuterShadow = true;
-    static inline auto drawInnerShadow = true;
+    static inline auto drawInnerShadow = false;
     static inline auto drawFontShadow = false;
     static inline auto outerShadowColour = Colour(0, 0, 0);
     static inline auto innerShadowColour = Colour(0, 0, 0);
