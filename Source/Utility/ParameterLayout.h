@@ -59,6 +59,46 @@ createParameterLayout()
                                      // defaultValue
                                      0.0f),
     //============================================================================
+    std::make_unique<ParameterFloat>("oscOctave",
+                                     "Octave",
+                                     NormalisableRange(
+                                       // rangeStart
+                                       -4.0f,
+                                       // rangeEnd
+                                       +4.0f,
+                                       // intervalValue
+                                       1.0f,
+                                       // skewFactor
+                                       1.0f),
+                                     // defaultValue
+                                     0.0f),
+    std::make_unique<ParameterFloat>("oscSemitone",
+                                     "Semitone",
+                                     NormalisableRange(
+                                       // rangeStart
+                                       -24.0f,
+                                       // rangeEnd
+                                       +24.0f,
+                                       // intervalValue
+                                       1.0f,
+                                       // skewFactor
+                                       1.0f),
+                                     // defaultValue
+                                     0.0f),
+    std::make_unique<ParameterFloat>("oscFine",
+                                     "Fine",
+                                     NormalisableRange(
+                                       // rangeStart
+                                       -100.0f,
+                                       // rangeEnd
+                                       +100.0f,
+                                       // intervalValue
+                                       1.0f,
+                                       // skewFactor
+                                       1.0f),
+                                     // defaultValue
+                                     0.0f),
+    //============================================================================
     std::make_unique<ParameterFloat>("oscAmpAttack",
                                      "Amp Attack",
                                      NormalisableRange(
