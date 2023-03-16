@@ -42,7 +42,7 @@ struct AnalogWaveform
   }
   inline float sine(float x) const noexcept
   {
-    float result = juce::dsp::FastMathApproximations::sin(x);
+    float result = std::sin(x);
     return result;
   }
   inline float square(float x) const noexcept
