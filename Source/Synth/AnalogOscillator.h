@@ -33,7 +33,10 @@ public:
       phase -= twoPi;
     }
 
-    auto samplePhase = std::pow((phase*pwmFactor), bendFactor);
+    auto bendFactor = std::pow((phase / twoPi), bendExponent);
+    jassert(bendFactor > 1.0f);
+    auto samplePhase = phase * pwmFactor * bendFactor;
+    
     if (samplePhase >= twoPi)
       return 0.0f;
     else
@@ -54,7 +57,7 @@ private:
   float phase = 0.0f;
   float dutyCycle = 0.5f;
   float pwmFactor = 1.0f;
-  float bendFactor = 1.0f;
+  float bendExponent = 1.0f;
 };
 }
 //==============================================================================
