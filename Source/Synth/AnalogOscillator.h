@@ -34,13 +34,12 @@ public:
     }
 
     auto bendFactor = std::pow((phase / twoPi), bendExponent);
-    jassert(bendFactor > 1.0f);
     auto samplePhase = phase * pwmFactor * bendFactor;
     
     if (samplePhase >= twoPi)
       return 0.0f;
     else
-      return waveform.getSample(samplePhase);
+      return waveform.getSample(samplePhase * syncFactor);
   }
   //============================================================================
   void setFrequency(float frequency) noexcept { this->frequency = frequency; }
@@ -58,6 +57,7 @@ private:
   float dutyCycle = 0.5f;
   float pwmFactor = 1.0f;
   float bendExponent = 1.0f;
+  float syncFactor = 1.0f;
 };
 }
 //==============================================================================
