@@ -4,7 +4,6 @@
 
 #include "AnalogWaveform.h"
 #include <JuceHeader.h>
-#include "../Utility/Exponential.h"
 
 //==============================================================================
 namespace dmt {
@@ -36,7 +35,7 @@ public:
 
     auto bendFactor = std::pow((phase / twoPi), bendExponent);
     auto samplePhase = phase * pwmFactor * bendFactor;
-    
+
     if (samplePhase >= twoPi)
       return 0.0f;
     else
@@ -49,16 +48,21 @@ public:
   {
     waveform.type = type;
   }
-  void setSyncFactor(float syncFactor) {
-    if(syncFactor < 1.0f) jassert("Can't set syncFactor smaller then 1.0");
+  void setSyncFactor(float syncFactor)
+  {
+    if (syncFactor < 1.0f)
+      jassert("Can't set syncFactor smaller then 1.0");
     this->syncFactor = syncFactor;
   }
-  void setBendFactor(float linearValue) {
-      this->bendFactor = dmt::linearToExponent(float linearValue);
+  void setBendFactor(float linearValue)
+  {
+    this->bendExponent = dmt::Math::linearToExponent(linearValue);
   }
-  void setPwmFactor(float pwmFactor) {
-      if(pwmFactor < 1.0f) jassert("Can't set pwmFactor smaller then 1.0");
-      this->pwmFactor = pwmFactor;
+  void setPwmFactor(float pwmFactor)
+  {
+    if (pwmFactor < 1.0f)
+      jassert("Can't set pwmFactor smaller then 1.0");
+    this->pwmFactor = pwmFactor;
   }
   //============================================================================
 private:

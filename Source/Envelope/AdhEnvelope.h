@@ -9,9 +9,7 @@
 */
 
 #pragma once
-#include <cmath>
-#include "../Utility/Exponential.h"
-using namespace std;
+#include "../Utility/Math.h"
 
 namespace dmt {
 class AhdEnvelope
@@ -91,10 +89,10 @@ private:
   {
     switch (state) {
       case State::Attack: {
-        return dmt::linearToExponent(params.attackScew);
+        return dmt::Math::linearToExponent(params.attackScew);
       }
       case State::Decay: {
-        return dmt::linearToExponent-params.decayScew);
+        return dmt::Math::linearToExponent(-params.decayScew);
       }
       default: {
         return 1.0f;

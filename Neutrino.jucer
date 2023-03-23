@@ -53,7 +53,7 @@
         <FILE id="Tiym79" name="AppSettings.h" compile="0" resource="0" file="Source/Utility/AppSettings.h"/>
         <FILE id="CaXy16" name="ChainSettings.h" compile="0" resource="0" file="Source/Utility/ChainSettings.h"/>
         <FILE id="M6A6mK" name="Distortion.h" compile="0" resource="0" file="Source/Utility/Distortion.h"/>
-        <FILE id="eccH9P" name="Exponential.h" compile="0" resource="0" file="Source/Utility/Exponential.h"/>
+        <FILE id="g7f9Dr" name="Math.h" compile="0" resource="0" file="Source/Utility/Math.h"/>
         <FILE id="iYcLBT" name="ParameterLayout.h" compile="0" resource="0"
               file="Source/Utility/ParameterLayout.h"/>
         <FILE id="p4W5r4" name="Shadow.h" compile="0" resource="0" file="Source/Utility/Shadow.h"/>
