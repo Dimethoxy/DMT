@@ -64,6 +64,7 @@
 		028E5D23FD3C7482E0F43A05 /* include_juce_audio_processors_ara.cpp */ /* include_juce_audio_processors_ara.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = include_juce_audio_processors_ara.cpp; path = ../../JuceLibraryCode/include_juce_audio_processors_ara.cpp; sourceTree = SOURCE_ROOT; };
 		0548F9DBD022BD5DBC7BB8EE /* Poppins-SemiBold.ttf */ /* Poppins-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file.ttf; name = "Poppins-SemiBold.ttf"; path = "../../Fonts/Poppins/Poppins-SemiBold.ttf"; sourceTree = SOURCE_ROOT; };
 		05C2AFF4B59F31DDE70E036B /* Panel.h */ /* Panel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Panel.h; path = ../../Source/Panels/Panel.h; sourceTree = SOURCE_ROOT; };
+		06BE1B74C941E7E0ED49464D /* Exponential.h */ /* Exponential.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Exponential.h; path = ../../Source/Utility/Exponential.h; sourceTree = SOURCE_ROOT; };
 		08B26F83C457259C7318B2BF /* juce_gui_extra */ /* juce_gui_extra */ = {isa = PBXFileReference; lastKnownFileType = folder; name = juce_gui_extra; path = /Users/davidhess/Documents/Dev/JUCE/modules/juce_gui_extra; sourceTree = "<absolute>"; };
 		0CD8D798ED19FC3012C6DDFD /* include_juce_dsp.mm */ /* include_juce_dsp.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_dsp.mm; path = ../../JuceLibraryCode/include_juce_dsp.mm; sourceTree = SOURCE_ROOT; };
 		113C3F824D1301893FF09350 /* juce_audio_processors */ /* juce_audio_processors */ = {isa = PBXFileReference; lastKnownFileType = folder; name = juce_audio_processors; path = /Users/davidhess/Documents/Dev/JUCE/modules/juce_audio_processors; sourceTree = "<absolute>"; };
@@ -287,6 +288,7 @@
 				61C0CB1C034EFE5115DBFCDB,
 				75554C51D21CA98721726E3B,
 				BE9940098C6BD36BF019AB7F,
+				06BE1B74C941E7E0ED49464D,
 				D59A40D13B44183E5CE5AA81,
 				3B1B64A569DB7C3904180182,
 				C1754758DD0C0224FC14E27B,

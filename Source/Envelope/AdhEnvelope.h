@@ -10,6 +10,7 @@
 
 #pragma once
 #include <cmath>
+#include "../Utility/Exponential.h"
 using namespace std;
 
 namespace dmt {
@@ -90,22 +91,15 @@ private:
   {
     switch (state) {
       case State::Attack: {
-        return getScewAsExponent(params.attackScew);
+        return dmt::linearToExponent(params.attackScew);
       }
       case State::Decay: {
-        return getScewAsExponent(-params.decayScew);
+        return dmt::linearToExponent-params.decayScew);
       }
       default: {
         return 1.0f;
       }
     }
-  }
-  float getScewAsExponent(int rawScew)
-  {
-    float exponentRange =
-      3.0f; // Set the range of exponents to be between -3 and 3
-    float exponent = (rawScew / 100.0f) * exponentRange;
-    return std::pow(10.0f, exponent);
   }
   int getHoldStart() { return params.attack * sampleRate; }
   int getDecayStart() { return (params.attack + params.hold) * sampleRate + 1; }

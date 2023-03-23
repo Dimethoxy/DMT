@@ -2444,6 +2444,7 @@
     <ClInclude Include="..\..\Source\Utility\AppSettings.h"/>
     <ClInclude Include="..\..\Source\Utility\ChainSettings.h"/>
     <ClInclude Include="..\..\Source\Utility\Distortion.h"/>
+    <ClInclude Include="..\..\Source\Utility\Exponential.h"/>
     <ClInclude Include="..\..\Source\Utility\ParameterLayout.h"/>
     <ClInclude Include="..\..\Source\Utility\Shadow.h"/>
     <ClInclude Include="..\..\Source\Utility\Unit.h"/>

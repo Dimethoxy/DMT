@@ -3144,6 +3144,9 @@
     <ClInclude Include="..\..\Source\Utility\Distortion.h">
       <Filter>Neutrino\Source\Utility</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\Utility\Exponential.h">
+      <Filter>Neutrino\Source\Utility</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\Utility\ParameterLayout.h">
       <Filter>Neutrino\Source\Utility</Filter>
     </ClInclude>
