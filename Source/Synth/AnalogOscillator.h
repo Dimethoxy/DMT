@@ -43,8 +43,9 @@ public:
     }
 
     if (phase > positiveCycleSize) {
-      auto normalizedPhase = phase - negativeCycleSize;
-      auto relativePhasePosition = normalizedPhase / negativeCycleSize;
+      // Map from negativeCycleSize to pi
+      bendedPhase = (phase - positiveCycleSize) / negativeCycleSize;
+      bendedPhase = bendedPhase * pi + pi;
     }
 
     auto samplePhase = bendedPhase * pwmFactor;
