@@ -19,7 +19,7 @@ public:
   OscillatorPanel(juce::AudioProcessorValueTreeState& apvts)
     : prevButton(true)
     , nextButton(false)
-    , pwmSlider(apvts, "Pulse", "oscBias", dmt::InfoUnit::Type::Symmetry)
+    , pwmSlider(apvts, "Drive", "oscDrive", dmt::InfoUnit::Type::Symmetry)
     , biasSlider(apvts, "Bias", "oscBias", dmt::InfoUnit::Type::Symmetry)
   {
     addAndMakeVisible(top);
@@ -32,10 +32,11 @@ public:
   void update() override
   {
     top.setBounds(innerBounds.toNearestInt());
-    top.setSize(top.getWidth(), top.getHeight() * 0.15f);
+    top.setSize(top.getWidth(), top.getHeight() * 0.3f);
+    top.setAlwaysOnTop(true);
     float dispalySize = 0.35f;
     oscDisplay.setSize(getWidth() * dispalySize, getWidth() * dispalySize);
-    oscDisplay.setCentreRelative(0.5f, 0.25f);
+    oscDisplay.setCentreRelative(0.5f, 0.45f);
 
     auto prevButtonX = oscDisplay.getX();
     auto prevButtonY = oscDisplay.getY() + oscDisplay.getHeight() / 2.0f;
@@ -47,15 +48,15 @@ public:
     nextButton.setSize(oscDisplay.getWidth(), oscDisplay.getHeight());
     nextButton.setCentrePosition(nextButtonX, nextButtonY);
 
-    pwmSlider.setBounds(prevButton.getX() - prevButton.getWidth() / 8.0f,
+    pwmSlider.setBounds(prevButton.getX() - prevButton.getWidth() / 4.0f,
                         prevButton.getY(),
-                        prevButton.getWidth() / 4.0f,
+                        prevButton.getWidth() / 2.0f,
                         prevButton.getHeight());
 
-    biasSlider.setBounds(nextButton.getRight() + nextButton.getWidth() / 8.0f -
+    biasSlider.setBounds(nextButton.getRight() + nextButton.getWidth() / 4.0f -
                            pwmSlider.getWidth(),
                          nextButton.getY(),
-                         nextButton.getWidth() / 4.0f,
+                         nextButton.getWidth() / 2.0f,
                          nextButton.getHeight());
   }
 

@@ -40,9 +40,15 @@ public:
   ~LinearSliderComponent() { setLookAndFeel(nullptr); }
   void resized()
   {
-    slider.setBoundsRelative(0.0f, 0.0f, 1.0f, 1.0f);
-    titleLabel.setBoundsRelative(0.0f, 0.06f, 1.0f, 0.15f);
-    infoLabel.setBoundsRelative(0.0f, 0.82f, 1.0f, 0.18f);
+    float labelSize = 0.15f;
+    titleLabel.setBoundsRelative(0.0f, 0.0f, 1.0f, labelSize);
+
+    float sliderY = 0.0f;
+    float sliderHeight = 1.0f;
+    slider.setBoundsRelative(0.0f, sliderY, 1.0f, sliderHeight);
+
+    float infoLabelY = 1.0f - labelSize;
+    infoLabel.setBoundsRelative(0.0f, infoLabelY, 1.0f, labelSize);
   }
   void sliderValueChanged(juce::Slider* slider) { updateLabel(); }
 

@@ -82,7 +82,7 @@ class LookAndFeel : public juce::LookAndFeel_V4
 
     // Draw the value rail
     g.setColour(Settings::Colours::accent);
-    g.fillRoundedRectangle(valueRail, corner);
+    //g.fillRoundedRectangle(valueRail, corner);
 
     // Draw the thumb
     g.setColour(Settings::Colours::font);

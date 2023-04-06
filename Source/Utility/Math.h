@@ -6,7 +6,8 @@
 namespace dmt {
 struct Math
 {
-  static inline float linearToExponent(float value)
+
+  static inline float linearToExponent(float value) noexcept
   {
     return (value >= 0.0f) ? (value + 1.0f) : (1.0f / -(value + 1.0f));
   }
