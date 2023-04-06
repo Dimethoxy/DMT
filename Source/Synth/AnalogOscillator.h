@@ -43,17 +43,16 @@ public:
     }
 
     if (phase > positiveCycleSize) {
-      // Map from negativeCycleSize to pi
       bendedPhase = (phase - positiveCycleSize) / negativeCycleSize;
       bendedPhase = bendedPhase * pi + pi;
     }
 
-    auto samplePhase = bendedPhase * pwmFactor;
+    auto samplePhase = bendedPhase * pwmAmount;
 
     if (samplePhase >= twoPi)
       return 0.0f;
     else
-      return waveform.getSample(samplePhase * syncFactor);
+      return waveform.getSample(samplePhase * syncAmount);
   }
   //============================================================================
   void setFrequency(float frequency) noexcept { this->frequency = frequency; }
@@ -62,21 +61,25 @@ public:
   {
     waveform.type = type;
   }
-  void setSyncFactor(float syncFactor)
+  void setSyncAmount(float syncAmount)
   {
-    if (syncFactor < 1.0f)
-      jassert("Can't set syncFactor smaller then 1.0");
-    this->syncFactor = syncFactor;
+    if (syncAmount < 1.0f)
+      jassert("Can't set syncAmount smaller then 1.0");
+    this->syncAmount = syncAmount;
   }
-  // void setBendFactor(float linearValue)
-  //{
-  //   this->bendExponent = dmt::Math::linearToExponent(linearValue);
-  // }
-  void setPwmFactor(float pwmFactor)
+  void setPwmAmount(float pwmAmount)
   {
-    if (pwmFactor < 1.0f)
-      jassert("Can't set pwmFactor smaller then 1.0");
-    this->pwmFactor = pwmFactor;
+    if (pwmAmount < 1.0f)
+      jassert("Can't set pwmAmount smaller then 1.0");
+    this->pwmAmount = pwmAmount;
+  }
+  void setPosityCycleRatio(float posityCycleRatio)
+  {
+    if (posityCycleRatio <= 0.0f)
+      jassert("Can't set posityCycleRatio smaller or equal then 0.0");
+    if (posityCycleRatio >= 1.0f)
+      jassert("Can't set posityCycleRatio greater or equal then 1.0");
+    this->posityCycleRatio = posityCycleRatio;
   }
   //============================================================================
 private:
@@ -84,9 +87,9 @@ private:
   float frequency = 50.0f;
   float sampleRate = -1.0f;
   float phase = 0.0f;
-  float pwmFactor = 1.0f;
-  float syncFactor = 1.0f;
-  float posityCycleRatio = 0.25;
+  float pwmAmount = 1.0f;
+  float syncAmount = 1.0f;
+  float posityCycleRatio = 0.5f;
 };
 }
 //==============================================================================
