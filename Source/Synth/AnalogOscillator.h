@@ -32,9 +32,22 @@ public:
     if (phase >= twoPi) {
       phase -= twoPi;
     }
+    auto bendedPhase = phase;
 
-    auto bendFactor = std::pow((phase / twoPi), bendExponent);
-    auto samplePhase = phase * pwmFactor * bendFactor;
+    float positiveCycleSize = posityCycleRatio * twoPi;
+    float negativeCycleRatio = 1.0f - posityCycleRatio;
+    float negativeCycleSize = negativeCycleRatio * twoPi;
+
+    if (phase <= positiveCycleSize) {
+      bendedPhase /= (posityCycleRatio * 2.0f);
+    }
+
+    if (phase > positiveCycleSize) {
+      auto normalizedPhase = phase - negativeCycleSize;
+      auto relativePhasePosition = normalizedPhase / negativeCycleSize;
+    }
+
+    auto samplePhase = bendedPhase * pwmFactor;
 
     if (samplePhase >= twoPi)
       return 0.0f;
@@ -54,10 +67,10 @@ public:
       jassert("Can't set syncFactor smaller then 1.0");
     this->syncFactor = syncFactor;
   }
-  void setBendFactor(float linearValue)
-  {
-    this->bendExponent = dmt::Math::linearToExponent(linearValue);
-  }
+  // void setBendFactor(float linearValue)
+  //{
+  //   this->bendExponent = dmt::Math::linearToExponent(linearValue);
+  // }
   void setPwmFactor(float pwmFactor)
   {
     if (pwmFactor < 1.0f)
@@ -70,10 +83,9 @@ private:
   float frequency = 50.0f;
   float sampleRate = -1.0f;
   float phase = 0.0f;
-  float dutyCycle = 0.5f;
   float pwmFactor = 1.0f;
-  float bendExponent = 1.0f;
   float syncFactor = 1.0f;
+  float posityCycleRatio = 0.25;
 };
 }
 //==============================================================================

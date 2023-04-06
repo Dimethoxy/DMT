@@ -37,6 +37,8 @@ struct AnalogWaveform
   }
   inline float saw(float x) const noexcept
   {
+    while (x > twoPi)
+      x -= twoPi;
     float result = 2.0f * (x / twoPi - 0.5f);
     return result;
   }
