@@ -77,7 +77,7 @@ public:
       float envelopeSample = pitchEnvelope.getNextSample();
       float newFreq = juce::mapToLog10(envelopeSample, baseFreq, freqModDepth);
       osc.setFrequency(std::clamp(newFreq, 20.0f, 20000.0f));
-
+     
       // Calculate sample
       float currentSample = osc.getNextSample();
 
