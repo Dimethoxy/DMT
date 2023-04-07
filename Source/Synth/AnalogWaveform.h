@@ -28,6 +28,8 @@ struct AnalogWaveform
   //============================================================================
   inline float triangle(float x) const noexcept
   {
+    while (x > twoPi)
+      x -= twoPi;
     float result = 2.0f * (x / twoPi - 0.5f);
     if (result > 0.5f)
       result = 1.0f - result;

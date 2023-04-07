@@ -47,7 +47,8 @@ public:
   {
     // Set oscillator frequency
     osc.setPhase(0.0f);
-    baseFreq = 12 + midiNoteNumber;
+    baseFreq = juce::MidiMessage::getMidiNoteInHertz(midiNoteNumber);
+    ;
 
     // Start envelopes
     setEnvelopes();
@@ -71,13 +72,16 @@ public:
     auto* leftChannel = outputBuffer.getWritePointer(0);
     auto* rightChannel = outputBuffer.getWritePointer(1);
     osc.setWaveformType(chainSettings->waveformType);
+    osc.setBend(chainSettings->oscBend);
+    osc.setPwm(chainSettings->oscPwm);
+    osc.setSync(chainSettings->oscSync);
     for (int sample = startSample; sample < endSample; sample++) {
       // Frequency
       float freqModDepth = baseFreq + chainSettings->modDepth;
       float envelopeSample = pitchEnvelope.getNextSample();
       float newFreq = juce::mapToLog10(envelopeSample, baseFreq, freqModDepth);
       osc.setFrequency(std::clamp(newFreq, 20.0f, 20000.0f));
-     
+
       // Calculate sample
       float currentSample = osc.getNextSample();
 

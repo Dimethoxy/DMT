@@ -6,18 +6,20 @@
 namespace dmt {
 class AnalogOscillator
 {
-  const float twoPi = juce::MathConstants<float>::twoPi;
-  const float pi = juce::MathConstants<float>::pi;
+  inline static const float twoPi = juce::MathConstants<float>::twoPi;
+  inline static const float pi = juce::MathConstants<float>::pi;
 
 public:
-  void setSampleRate(const float sampleRate) noexcept
+  inline void setSampleRate(const float sampleRate) noexcept
   {
-    const juce::Range<float> validRange(1.0f, 392000.0f);
+    float rangeEnd =
+      std::nextafter(392000.0f, std::numeric_limits<float>::max());
+    const juce::Range<float> validRange(20.0f, rangeEnd);
     jassert(validRange.contains(sampleRate));
     this->sampleRate = sampleRate;
   }
 
-  float getNextSample() noexcept
+  inline float getNextSample() noexcept
   {
     if (sampleRate <= 0.0f)
       return 0.0f;
@@ -49,45 +51,51 @@ public:
     if (samplePhase >= twoPi)
       return 0.0f;
     else
-      return waveform.getSample(samplePhase * syncAmount);
+      return waveform.getSample(samplePhase * syncModifier);
   }
 
-  void setFrequency(const float frequency) noexcept
+  inline void setFrequency(const float frequency) noexcept
   {
     const juce::NormalisableRange<float> frequencyRange(20.0f, 20000.1f);
     jassert(frequencyRange.getRange().contains(frequency));
     this->frequency = frequency;
   }
 
-  void setPhase(const float newPhase) noexcept { this->phase = newPhase; }
+  inline void setPhase(const float newPhase) noexcept
+  {
+    this->phase = newPhase;
+  }
 
-  void setWaveformType(const dmt::AnalogWaveform::Type type) noexcept
+  inline void setWaveformType(const dmt::AnalogWaveform::Type type) noexcept
   {
     waveform.type = type;
   }
 
-  void setSyncAmount(const float syncModifier)
+  inline void setSync(const float syncModifier) noexcept
   {
-    const juce::NormalisableRange<float> sourceRange(0.0f, 100.0f);
-    jassert(!sourceRange.getRange().contains(syncAmount));
-    const auto normalisedValue = sourceRange.convertTo0to1(syncAmount);
+    float rangeEnd = std::nextafter(100.0f, std::numeric_limits<float>::max());
+    const juce::NormalisableRange<float> sourceRange(0.0f, rangeEnd);
+    jassert(sourceRange.getRange().contains(syncModifier));
+    const auto normalisedValue = sourceRange.convertTo0to1(syncModifier);
     const juce::NormalisableRange<float> targetRange(1.0f, 5.0f);
-    this->syncAmount = targetRange.convertFrom0to1(normalisedValue);
+    this->syncModifier = targetRange.convertFrom0to1(normalisedValue);
   }
 
-  void setPwmAmount(const float pwmModifier) noexcept
+  inline void setPwm(const float pwmModifier) noexcept
   {
-    const juce::NormalisableRange<float> sourceRange(0.0f, 100.0f);
-    jassert(!sourceRange.getRange().contains(pwmModifier));
+    float rangeEnd = std::nextafter(100.0f, std::numeric_limits<float>::max());
+    const juce::NormalisableRange<float> sourceRange(0.0f, rangeEnd);
+    jassert(sourceRange.getRange().contains(pwmModifier));
     const auto normalisedValue = sourceRange.convertTo0to1(pwmModifier);
     const juce::NormalisableRange<float> targetRange(1.0f, 5.0f);
     this->pwmModifier = targetRange.convertFrom0to1(normalisedValue);
   }
 
-  void setBend(const float bendModifier) noexcept
+  inline void setBend(const float bendModifier) noexcept
   {
-    const juce::NormalisableRange<float> sourceRange(-100.0f, 100.0f);
-    jassert(!sourceRange.getRange().contains(bendModifier));
+    float rangeEnd = std::nextafter(100.0f, std::numeric_limits<float>::max());
+    const juce::NormalisableRange<float> sourceRange(-100.0f, rangeEnd);
+    jassert(sourceRange.getRange().contains(bendModifier));
     const auto normalisedValue = sourceRange.convertTo0to1(bendModifier);
     const juce::NormalisableRange<float> targetRange(0.1f, 0.9f);
     this->posityCycleRatio = targetRange.convertFrom0to1(normalisedValue);
@@ -99,7 +107,7 @@ private:
   float sampleRate = -1.0f;
   float phase = 0.0f;
   float pwmModifier = 1.0f;
-  float syncAmount = 1.0f;
+  float syncModifier = 1.0f;
   float posityCycleRatio = 0.5f;
 };
 }
