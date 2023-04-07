@@ -20,6 +20,9 @@ struct ChainSettings
     oscGain = apvts.getRawParameterValue("oscGain")->load();
     oscDrive = apvts.getRawParameterValue("oscDrive")->load();
     oscBias = apvts.getRawParameterValue("oscBias")->load();
+    oscBend = apvts.getRawParameterValue("oscBend")->load();
+    oscPwm = apvts.getRawParameterValue("oscPwm")->load();
+    oscSync = apvts.getRawParameterValue("oscSync")->load();
 
     ampAttack = apvts.getRawParameterValue("oscAmpAttack")->load();
     ampHold = apvts.getRawParameterValue("oscAmpHold")->load();
@@ -41,7 +44,9 @@ struct ChainSettings
   float oscGain;
   float oscDrive;
   float oscBias;
+  float oscBend;
   float oscPwm;
+  float oscSync;
 
   float ampAttack;
   float ampHold;

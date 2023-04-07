@@ -58,6 +58,45 @@ createParameterLayout()
                                        1.0f),
                                      // defaultValue
                                      0.0f),
+    std::make_unique<ParameterFloat>("oscBend",
+                                     "Osc Bend",
+                                     NormalisableRange(
+                                       // rangeStart
+                                       -100.0f,
+                                       // rangeEnd
+                                       100.0f,
+                                       // intervalValue
+                                       0.1f,
+                                       // skewFactor
+                                       1.0f),
+                                     // defaultValue
+                                     0.0f),
+    std::make_unique<ParameterFloat>("oscPwm",
+                                     "Osc PWM",
+                                     NormalisableRange(
+                                       // rangeStart
+                                       0.0f,
+                                       // rangeEnd
+                                       100.0f,
+                                       // intervalValue
+                                       0.01f,
+                                       // skewFactor
+                                       1.0f),
+                                     // defaultValue
+                                     0.0f),
+    std::make_unique<ParameterFloat>("oscSync",
+                                     "Osc Sync",
+                                     NormalisableRange(
+                                       // rangeStart
+                                       0.0f,
+                                       // rangeEnd
+                                       100.0f,
+                                       // intervalValue
+                                       0.01f,
+                                       // skewFactor
+                                       1.0f),
+                                     // defaultValue
+                                     0.0f),
     //============================================================================
     std::make_unique<ParameterFloat>("oscOctave",
                                      "Octave",

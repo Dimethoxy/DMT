@@ -73,13 +73,34 @@ public:
       jassert("Can't set pwmAmount smaller then 1.0");
     this->pwmAmount = pwmAmount;
   }
-  void setPosityCycleRatio(float posityCycleRatio)
+  /**
+   * Sets the bend modifier for the oscillator waveform.
+   *
+   * @param bendModifier    The bend modifier value in the range of -100.0f to
+   *                        100.0f. A negative value reduces the positive cycle
+   *                        length, while a positive value reduces the negative
+   *                        cycle length. A value of zero leaves the waveform
+   *                        unmodified. A JUCE assertion is triggered if the
+   *                        value is outside the allowed range.
+   */
+  void setBend(float bendModifier)
   {
-    if (posityCycleRatio <= 0.0f)
-      jassert("Can't set posityCycleRatio smaller or equal then 0.0");
-    if (posityCycleRatio >= 1.0f)
-      jassert("Can't set posityCycleRatio greater or equal then 1.0");
-    this->posityCycleRatio = posityCycleRatio;
+    // Define the valid range for the bend modifier
+    const juce::NormalisableRange<float> modifierRange(-100.0f, 100.0f);
+
+    // Check if the value is within the valid range
+    jassert(modifierRange.getRange().contains(bendModifier));
+
+    // Convert the bend modifier to a value between 0.1 and 0.9,
+    // which represents the ratio of positive cycle length to the total cycle
+    // length
+    const auto normalisedValue = modifierRange.convertTo0to1(bendModifier);
+
+    // Define the range of valid cycle ratios
+    const juce::NormalisableRange<float> cycleRange(0.1f, 0.9f);
+
+    // Convert the normalised value to a cycle ratio in the valid range
+    this->posityCycleRatio = cycleRange.convertFrom0to1(normalisedValue);
   }
   //============================================================================
 private:
