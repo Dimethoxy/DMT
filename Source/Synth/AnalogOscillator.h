@@ -19,7 +19,16 @@ public:
   {
     this->sampleRate = sampleRate;
   }
+
   //============================================================================
+  /**
+   * Calculates and returns the next sample of the oscillator waveform.
+   *
+   * If the sample rate has not been set or is less than or equal to zero,
+   * the function returns 0.0f.
+   *
+   * @return                The next sample of the oscillator waveform.
+   */
   float getNextSample() noexcept
   {
     if (sampleRate <= 0.0f)
@@ -47,32 +56,87 @@ public:
       bendedPhase = bendedPhase * pi + pi;
     }
 
-    auto samplePhase = bendedPhase * pwmAmount;
+    auto samplePhase = bendedPhase * pwmModifier;
 
     if (samplePhase >= twoPi)
       return 0.0f;
     else
       return waveform.getSample(samplePhase * syncAmount);
   }
+
   //============================================================================
-  void setFrequency(float frequency) noexcept { this->frequency = frequency; }
-  void setPhase(float newPhase) { this->phase = newPhase; }
-  void setWaveformType(dmt::AnalogWaveform::Type type) noexcept
+  /**
+   * Sets the frequency of the oscillator waveform.
+   *
+   * @param frequency       The frequency value in Hz. A JUCE assertion is
+   *                        triggered if the frequency is outside the allowed
+   *                        range.
+   */
+  void setFrequency(const float frequency) noexcept
+  {
+    const juce::Range<float> frequencyRange(20.0f, 20000.0f);
+    jassert(frequencyRange.contains(frequency));
+    this->frequency = frequency;
+  }
+
+  //============================================================================
+  /**
+   * Sets the phase of the oscillator waveform.
+   *
+   * @param newPhase        The phase value in radians.
+   */
+  void setPhase(const float newPhase) noexcept { this->phase = newPhase; }
+
+  //============================================================================
+  /**
+   * Sets the type of the oscillator waveform.
+   *
+   * @param type            The waveform type to set.
+   */
+  void setWaveformType(const dmt::AnalogWaveform::Type type) noexcept
   {
     waveform.type = type;
   }
-  void setSyncAmount(float syncAmount)
+
+  //============================================================================
+  /**
+   * Sets the amount of oscillator sync for the oscillator waveform.
+   *
+   * @param syncModifier    The sync modifier value in the range of 0.0f to
+   *                        100.0f. The value specifies the percentage of the
+   *                        max amount of 5 syncs. A JUCE assertion is triggered
+   *                        if the value is outside the allowed range.
+   */
+  void setSyncAmount(const float syncModifier)
   {
-    if (syncAmount < 1.0f)
-      jassert("Can't set syncAmount smaller then 1.0");
-    this->syncAmount = syncAmount;
+    const juce::NormalisableRange<float> sourceRange(0.0f, 100.0f);
+    jassert(sourceRange.getRange().contains(syncAmount));
+    const auto normalisedValue = sourceRange.convertTo0to1(syncAmount);
+    const juce::NormalisableRange<float> targetRange(1.0f, 5.0f);
+    this->syncAmount = targetRange.convertFrom0to1(normalisedValue);
   }
-  void setPwmAmount(float pwmAmount)
+
+  //============================================================================
+  /**
+   * Sets the amount of pulse-width modulation (PWM) for the oscillator
+   * waveform.
+   *
+   * @param pwmModifier     The PWM modifier value in the range of 0.0f to
+   *                        100.0f. The value specifies the percentage of time
+   *                        that the waveform spends in its positive cycle.
+   *                        A JUCE assertion is triggered if the value is
+   *                        outside the allowed range.
+   */
+  void setPwmAmount(const float pwmModifier) noexcept
   {
-    if (pwmAmount < 1.0f)
-      jassert("Can't set pwmAmount smaller then 1.0");
-    this->pwmAmount = pwmAmount;
+    const juce::NormalisableRange<float> sourceRange(0.0f, 100.0f);
+    jassert(sourceRange.getRange().contains(pwmModifier));
+    const auto normalisedValue = sourceRange.convertTo0to1(pwmModifier);
+    const juce::NormalisableRange<float> targetRange(1.0f, 5.0f);
+    this->pwmModifier = targetRange.convertFrom0to1(normalisedValue);
   }
+
+  //============================================================================
   /**
    * Sets the bend modifier for the oscillator waveform.
    *
@@ -83,24 +147,13 @@ public:
    *                        unmodified. A JUCE assertion is triggered if the
    *                        value is outside the allowed range.
    */
-  void setBend(float bendModifier)
+  void setBend(const float bendModifier) noexcept
   {
-    // Define the valid range for the bend modifier
-    const juce::NormalisableRange<float> modifierRange(-100.0f, 100.0f);
-
-    // Check if the value is within the valid range
-    jassert(modifierRange.getRange().contains(bendModifier));
-
-    // Convert the bend modifier to a value between 0.1 and 0.9,
-    // which represents the ratio of positive cycle length to the total cycle
-    // length
-    const auto normalisedValue = modifierRange.convertTo0to1(bendModifier);
-
-    // Define the range of valid cycle ratios
-    const juce::NormalisableRange<float> cycleRange(0.1f, 0.9f);
-
-    // Convert the normalised value to a cycle ratio in the valid range
-    this->posityCycleRatio = cycleRange.convertFrom0to1(normalisedValue);
+    const juce::NormalisableRange<float> sourceRange(-100.0f, 100.0f);
+    jassert(sourceRange.getRange().contains(bendModifier));
+    const auto normalisedValue = sourceRange.convertTo0to1(bendModifier);
+    const juce::NormalisableRange<float> targetRange(0.1f, 0.9f);
+    this->posityCycleRatio = targetRange.convertFrom0to1(normalisedValue);
   }
   //============================================================================
 private:
@@ -108,7 +161,7 @@ private:
   float frequency = 50.0f;
   float sampleRate = -1.0f;
   float phase = 0.0f;
-  float pwmAmount = 1.0f;
+  float pwmModifier = 1.0f;
   float syncAmount = 1.0f;
   float posityCycleRatio = 0.5f;
 };
