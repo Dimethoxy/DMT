@@ -77,9 +77,11 @@ public:
     osc.setSync(chainSettings->oscSync);
     for (int sample = startSample; sample < endSample; sample++) {
       // Frequency
-        int semitones = (8 * chainSettings.oscOctave) + chainSettings.oscSemitones;
-        auto baseFreq = juce::MidiMessage::getMidiNoteInHertz(note + semitones);
-      float freqModDepth = chainSettings.oscOctave * baseFreq + chainSettings->modDepth; 
+      int semitones =
+        (8 * chainSettings->oscOctave) + chainSettings->oscSemitone;
+      float baseFreq = juce::MidiMessage::getMidiNoteInHertz(note + semitones);
+      float freqModDepth =
+        chainSettings->oscOctave * baseFreq + chainSettings->modDepth;
       float envelopeSample = pitchEnvelope.getNextSample();
       float newFreq = juce::mapToLog10(envelopeSample, baseFreq, freqModDepth);
       osc.setFrequency(std::clamp(newFreq, 20.0f, 20000.0f));
