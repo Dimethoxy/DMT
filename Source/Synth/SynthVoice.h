@@ -47,7 +47,7 @@ public:
   {
     // Set oscillator frequency
     osc.setPhase(0.0f);
-    baseFreq = juce::MidiMessage::getMidiNoteInHertz(midiNoteNumber);
+    note = midiNoteNumber;
     ;
 
     // Start envelopes
@@ -77,7 +77,9 @@ public:
     osc.setSync(chainSettings->oscSync);
     for (int sample = startSample; sample < endSample; sample++) {
       // Frequency
-      float freqModDepth = baseFreq + chainSettings->modDepth;
+        int semitones = (8 * chainSettings.oscOctave) + chainSettings.oscSemitones;
+        auto baseFreq = juce::MidiMessage::getMidiNoteInHertz(note + semitones);
+      float freqModDepth = chainSettings.oscOctave * baseFreq + chainSettings->modDepth; 
       float envelopeSample = pitchEnvelope.getNextSample();
       float newFreq = juce::mapToLog10(envelopeSample, baseFreq, freqModDepth);
       osc.setFrequency(std::clamp(newFreq, 20.0f, 20000.0f));
@@ -126,7 +128,7 @@ private:
   dmt::AnalogOscillator osc;
   dmt::AhdEnvelope gainEnvelope;
   dmt::AhdEnvelope pitchEnvelope;
-  float baseFreq = 0.0f;
+  int note = 0;
   float pitchDepth = 0.7;
   bool isPrepared = false;
 

@@ -17,8 +17,12 @@ struct ChainSettings
     waveformType = static_cast<dmt::AnalogWaveform::Type>(
       apvts.getRawParameterValue("waveformType")->load());
 
+    
+      
     oscGain = apvts.getRawParameterValue("oscGain")->load();
-    oscDrive = apvts.getRawParameterValue("oscDrive")->load();
+      oscOctave = apvts.getRawParameterValue("oscOctave")->load();
+      oscSemitones = apvts.getRawParameterValue("oscSemitones")->load();
+      oscDrive = apvts.getRawParameterValue("oscDrive")->load();
     oscBias = apvts.getRawParameterValue("oscBias")->load();
     oscBend = apvts.getRawParameterValue("oscBend")->load();
     oscPwm = apvts.getRawParameterValue("oscPwm")->load();
