@@ -76,36 +76,12 @@ public:
     osc.setPwm(chainSettings->oscPwm);
     osc.setSync(chainSettings->oscSync);
     for (int sample = startSample; sample < endSample; sample++) {
-      // Frequency
-      int semitones =
-        (8 * chainSettings->oscOctave) + chainSettings->oscSemitone;
-      float baseFreq = juce::MidiMessage::getMidiNoteInHertz(note + semitones);
-      float freqModDepth =
-        chainSettings->oscOctave * baseFreq + chainSettings->modDepth;
-      float envelopeSample = pitchEnvelope.getNextSample();
-      float newFreq = juce::mapToLog10(envelopeSample, baseFreq, freqModDepth);
-      osc.setFrequency(std::clamp(newFreq, 20.0f, 20000.0f));
-
-      // Calculate sample
-      float currentSample = osc.getNextSample();
-
-      // Bias
-      float bias = chainSettings->oscBias;
-      float sign = (currentSample > 0.0f) ? 1.0f : -1.0f;
-      currentSample = Math::tanh(chainSettings->oscDrive * currentSample);
-
-      // Distortion
-      currentSample = currentSample + sign * currentSample * bias;
-
-      // Gain
-      float envGain = gainEnvelope.getNextSample();
-      float oscGain =
-        juce::Decibels::decibelsToGain(chainSettings->oscGain, -96.0f);
-      currentSample = currentSample * envGain * oscGain;
-
-      // Write final sample
-      leftChannel[sample] = currentSample;
-      rightChannel[sample] = currentSample;
+        osc.setFrequency(getFrequency());
+        float currentSample = osc.getNextSample();
+        distort(currentSample);
+        gain(currentSample);
+        leftChannel[sample] = currentSample;
+        rightChannel[sample] = currentSample;
     }
   }
   //============================================================================
@@ -151,6 +127,29 @@ private:
     envParameters.decayScew = chainSettings->modScew;
     pitchEnvelope.setParameters(envParameters);
   }
+    float getFrequency(){
+        int semitones =
+          (8 * chainSettings->oscOctave) + chainSettings->oscSemitone;
+        float baseFreq = juce::MidiMessage::getMidiNoteInHertz(note + semitones);
+        float freqModDepth =
+          chainSettings->oscOctave * baseFreq + chainSettings->modDepth;
+        float envelopeSample = pitchEnvelope.getNextSample();
+        float newFreq = juce::mapToLog10(envelopeSample, baseFreq, freqModDepth);
+        return std::clamp(newFreq, 20.0f, 20000.0f);
+    }
+    void distort(float& currentSample){
+        //Distortion
+        float bias = chainSettings->oscBias;
+        float sign = (currentSample > 0.0f) ? 1.0f : -1.0f;
+        currentSample = Math::tanh(chainSettings->oscDrive * currentSample);
+        currentSample = currentSample + sign * currentSample * bias;
+    }
+    void gain(float& currentSample){
+        float envGain = gainEnvelope.getNextSample();
+        float oscGain =
+          juce::Decibels::decibelsToGain(chainSettings->oscGain, -96.0f);
+        currentSample = currentSample * envGain * oscGain;
+    }
 };
 
 }
