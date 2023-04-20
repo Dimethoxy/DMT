@@ -4,28 +4,63 @@
 
 #include "../Synth/AnalogOscillator.h"
 #include "../Utility/AppSettings.h"
+#include "../Utility/ChainSettings.h"
 #include "../Utility/Shadow.h"
 #include <JuceHeader.h>
 
 //==============================================================================
 namespace dmt {
 //==============================================================================
-class OscillatorDisplayComponent : public juce::Component
+class OscillatorDisplayComponent
+  : public juce::Component
+  , public juce::Timer
 {
   using Settings = dmt::AppSettings::OscillatorDisplay;
   const int resolution = 100;
 
 public:
   //============================================================================
-  OscillatorDisplayComponent()
+  OscillatorDisplayComponent(juce::AudioProcessorValueTreeState& apvts)
+    : apvts(apvts)
+    , chainSettings(apvts)
   {
     outerShadow.radius = Settings::outerShadowRadius;
     outerShadow.colour = Settings::outerShadowColour;
     innerShadow.radius = Settings::innerShadowRadius;
     innerShadow.colour = Settings::innerShadowColour;
-    osc.setSampleRate((float)resolution);
+    osc.setSampleRate((float)resolution + 1.0f);
     osc.setFrequency(1.0f);
-    buildTable();
+    updateDisplay(chainSettings);
+    startTimerHz(60);
+  }
+  void timerCallback()
+  {
+    dmt::ChainSettings newChainSettings(apvts);
+    if (isParametersChanged(newChainSettings)) {
+      chainSettings = newChainSettings;
+      osc.setWaveformType(chainSettings.waveformType);
+      osc.setBend(chainSettings.oscBend);
+      osc.setPwm(chainSettings.oscPwm);
+      osc.setSync(chainSettings.oscSync);
+      this->buildTable();
+      this->repaint();
+    }
+  }
+  void updateDisplay(dmt::ChainSettings& newChainSettings)
+  {
+    chainSettings = newChainSettings;
+    osc.setWaveformType(chainSettings.waveformType);
+    osc.setBend(chainSettings.oscBend);
+    osc.setPwm(chainSettings.oscPwm);
+    osc.setSync(chainSettings.oscSync);
+    this->buildTable();
+    this->repaint();
+  }
+  void buildTable()
+  {
+    osc.setPhase(0.0f);
+    table.initialise([&](size_t index) { return (float)osc.getNextSample(); },
+                     resolution);
   }
   //============================================================================
   void paint(juce::Graphics& g) override
@@ -70,6 +105,18 @@ public:
     g.drawEllipse(borderBounds.reduced(Settings::borderSize / 2.0f),
                   Settings::borderSize);
   }
+
+  //============================================================================
+private:
+  dmt::Shadow outerShadow;
+  dmt::Shadow innerShadow;
+  dmt::Shadow lineShadow;
+
+  dmt::AnalogOscillator osc;
+  juce::dsp::LookupTable<float> table;
+  dmt::ChainSettings chainSettings;
+  juce::AudioProcessorValueTreeState& apvts;
+
   //============================================================================
   juce::Path getPath(juce::Rectangle<float> bounds)
   {
@@ -91,7 +138,7 @@ public:
     for (int i = 0; i < width; i++) {
       auto x = bounds.getX() + i;
       auto y = bounds.getY() + (bounds.getHeight() / 2.0f) -
-               (table[i / width * 100] * bounds.getHeight() / 2.0f);
+               (table[i / width * 100.0f] * bounds.getHeight() / 2.0f);
       juce::Point<float> p(x, y);
       path.lineTo(p);
     }
@@ -105,23 +152,18 @@ public:
   }
   //============================================================================
 
-  void buildTable()
+  bool isParametersChanged(dmt::ChainSettings& newChainSettings)
   {
-    osc.setPhase(0.0f);
-    table.initialise([&](size_t index) { return (float)osc.getNextSample(); },
-                     resolution);
+    bool waveformChanged =
+      chainSettings.waveformType != newChainSettings.waveformType;
+    bool driveChanged = chainSettings.oscDrive != newChainSettings.oscDrive;
+    bool biasChanged = chainSettings.oscBias != newChainSettings.oscBias;
+    bool bendChanged = chainSettings.oscBend != newChainSettings.oscBend;
+    bool pwmChanged = chainSettings.oscPwm != newChainSettings.oscPwm;
+    bool syncChanged = chainSettings.oscSync != newChainSettings.oscSync;
+    return waveformChanged || driveChanged || biasChanged || bendChanged ||
+           pwmChanged || syncChanged;
   }
-
-  //============================================================================
-private:
-  dmt::Shadow outerShadow;
-  dmt::Shadow innerShadow;
-  dmt::Shadow lineShadow;
-
-  dmt::AnalogOscillator osc;
-  juce::dsp::LookupTable<float> table;
-  juce::Path graphPath;
-  juce::Path integralPath;
+  //==============================================================================
 };
-//==============================================================================
 }

@@ -17,10 +17,12 @@ class OscillatorPanel : public dmt::Panel
 {
 public:
   OscillatorPanel(juce::AudioProcessorValueTreeState& apvts)
-    : prevButton(true)
+    : oscDisplay(apvts)
+    , prevButton(true)
     , nextButton(false)
     , pwmSlider(apvts, "Drive", "oscDrive", dmt::InfoUnit::Type::Symmetry)
     , biasSlider(apvts, "Bias", "oscBias", dmt::InfoUnit::Type::Symmetry)
+
   {
     addAndMakeVisible(top);
     addAndMakeVisible(oscDisplay);

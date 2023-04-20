@@ -106,7 +106,7 @@ private:
   inline const float getSyncedPhase(float rawPhase) const noexcept
   {
     float syncedPhase = rawPhase * syncModifier;
-    if (syncedPhase >= twoPi) {
+    while (syncedPhase >= twoPi) {
       syncedPhase -= twoPi;
     }
     return syncedPhase;
