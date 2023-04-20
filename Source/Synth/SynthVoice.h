@@ -67,21 +67,21 @@ public:
     if (!isVoiceActive() || !isPrepared)
       return;
 
-    // Render oscillator
-    auto endSample = numSamples + startSample;
-    auto* leftChannel = outputBuffer.getWritePointer(0);
-    auto* rightChannel = outputBuffer.getWritePointer(1);
     osc.setWaveformType(chainSettings->waveformType);
     osc.setBend(chainSettings->oscBend);
     osc.setPwm(chainSettings->oscPwm);
     osc.setSync(chainSettings->oscSync);
+
+    auto endSample = numSamples + startSample;
+    auto* leftChannel = outputBuffer.getWritePointer(0);
+    auto* rightChannel = outputBuffer.getWritePointer(1);
     for (int sample = startSample; sample < endSample; sample++) {
-        osc.setFrequency(getFrequency());
-        float currentSample = osc.getNextSample();
-        distort(currentSample);
-        gain(currentSample);
-        leftChannel[sample] = currentSample;
-        rightChannel[sample] = currentSample;
+      osc.setFrequency(getFrequency());
+      float currentSample = osc.getNextSample();
+      distort(currentSample);
+      gain(currentSample);
+      leftChannel[sample] = currentSample;
+      rightChannel[sample] = currentSample;
     }
   }
   //============================================================================
@@ -100,7 +100,7 @@ public:
       func();
     }
   }
-
+  //============================================================================
 private:
   std::unique_ptr<dmt::ChainSettings> chainSettings;
   dmt::AnalogOscillator osc;
@@ -111,7 +111,34 @@ private:
   bool isPrepared = false;
 
   std::vector<std::function<void()>> onNoteReceivers;
+  //============================================================================
+  float getFrequency()
+  {
+    int semitones = (8 * chainSettings->oscOctave) + chainSettings->oscSemitone;
+    float baseFreq = juce::MidiMessage::getMidiNoteInHertz(note + semitones);
+    float freqModDepth =
+      chainSettings->oscOctave * baseFreq + chainSettings->modDepth;
+    float envelopeSample = pitchEnvelope.getNextSample();
+    float newFreq = juce::mapToLog10(envelopeSample, baseFreq, freqModDepth);
+    return std::clamp(newFreq, 20.0f, 20000.0f);
+  }
 
+  void distort(float& currentSample)
+  {
+    float bias = chainSettings->oscBias;
+    float sign = (currentSample > 0.0f) ? 1.0f : -1.0f;
+    currentSample = Math::tanh(chainSettings->oscDrive * currentSample);
+    currentSample = currentSample + sign * currentSample * bias;
+  }
+
+  void gain(float& currentSample)
+  {
+    float envGain = gainEnvelope.getNextSample();
+    float oscGain =
+      juce::Decibels::decibelsToGain(chainSettings->oscGain, -96.0f);
+    currentSample = currentSample * envGain * oscGain;
+  }
+  //============================================================================
   void setEnvelopes()
   {
     dmt::AhdEnvelope::Parameters envParameters;
@@ -127,29 +154,7 @@ private:
     envParameters.decayScew = chainSettings->modScew;
     pitchEnvelope.setParameters(envParameters);
   }
-    float getFrequency(){
-        int semitones =
-          (8 * chainSettings->oscOctave) + chainSettings->oscSemitone;
-        float baseFreq = juce::MidiMessage::getMidiNoteInHertz(note + semitones);
-        float freqModDepth =
-          chainSettings->oscOctave * baseFreq + chainSettings->modDepth;
-        float envelopeSample = pitchEnvelope.getNextSample();
-        float newFreq = juce::mapToLog10(envelopeSample, baseFreq, freqModDepth);
-        return std::clamp(newFreq, 20.0f, 20000.0f);
-    }
-    void distort(float& currentSample){
-        //Distortion
-        float bias = chainSettings->oscBias;
-        float sign = (currentSample > 0.0f) ? 1.0f : -1.0f;
-        currentSample = Math::tanh(chainSettings->oscDrive * currentSample);
-        currentSample = currentSample + sign * currentSample * bias;
-    }
-    void gain(float& currentSample){
-        float envGain = gainEnvelope.getNextSample();
-        float oscGain =
-          juce::Decibels::decibelsToGain(chainSettings->oscGain, -96.0f);
-        currentSample = currentSample * envGain * oscGain;
-    }
+  //============================================================================
 };
 
 }
