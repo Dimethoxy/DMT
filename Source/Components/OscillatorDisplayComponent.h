@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include "../Synth/AnalogOscillator.h"
 #include "../Utility/AppSettings.h"
 #include "../Utility/Shadow.h"
 #include <JuceHeader.h>
@@ -12,6 +13,7 @@ namespace dmt {
 class OscillatorDisplayComponent : public juce::Component
 {
   using Settings = dmt::AppSettings::OscillatorDisplay;
+  const int resolution = 100;
 
 public:
   //============================================================================
@@ -21,6 +23,9 @@ public:
     outerShadow.colour = Settings::outerShadowColour;
     innerShadow.radius = Settings::innerShadowRadius;
     innerShadow.colour = Settings::innerShadowColour;
+    osc.setSampleRate((float)resolution);
+    osc.setFrequency(1.0f);
+    buildTable();
   }
   //============================================================================
   void paint(juce::Graphics& g) override
@@ -81,15 +86,15 @@ public:
     juce::Point<float> start(startX, startY);
     path.startNewSubPath(start);
 
-    auto p1x = bounds.getX() + bounds.getWidth() / 4.0f;
-    auto p1y = bounds.getY();
-    juce::Point<float> p1(p1x, p1y);
-    path.lineTo(p1);
+    auto width = bounds.getWidth();
 
-    auto p2x = bounds.getX() + bounds.getWidth() / 4.0f * 3.0f;
-    int p2y = std::floor(bounds.getY() + bounds.getHeight());
-    juce::Point<float> p2(p2x, p2y);
-    path.lineTo(p2);
+    for (int i = 0; i < width; i++) {
+      auto x = bounds.getX() + i;
+      auto y = bounds.getY() + (bounds.getHeight() / 2.0f) -
+               (table[i / width * 100] * bounds.getHeight() / 2.0f);
+      juce::Point<float> p(x, y);
+      path.lineTo(p);
+    }
 
     auto endX = bounds.getX() + bounds.getWidth();
     auto endY = bounds.getY() + (bounds.getHeight() / 2.0f);
@@ -99,10 +104,24 @@ public:
     return path;
   }
   //============================================================================
+
+  void buildTable()
+  {
+    osc.setPhase(0.0f);
+    table.initialise([&](size_t index) { return (float)osc.getNextSample(); },
+                     resolution);
+  }
+
+  //============================================================================
 private:
   dmt::Shadow outerShadow;
   dmt::Shadow innerShadow;
   dmt::Shadow lineShadow;
+
+  dmt::AnalogOscillator osc;
+  juce::dsp::LookupTable<float> table;
+  juce::Path graphPath;
+  juce::Path integralPath;
 };
 //==============================================================================
 }

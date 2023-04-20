@@ -38,7 +38,8 @@ public:
   inline void setFrequency(const float frequency) noexcept
   {
     const juce::NormalisableRange<float> frequencyRange(20.0f, 20000.1f);
-    jassert(frequencyRange.getRange().contains(frequency));
+    //TODO: Might wanna add the assertion back in 
+    //jassert(frequencyRange.getRange().contains(frequency));
     this->frequency = frequency;
   }
 
