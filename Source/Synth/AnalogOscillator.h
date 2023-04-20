@@ -6,6 +6,7 @@
 namespace dmt {
 class AnalogOscillator
 {
+  using Math = juce::dsp::FastMathApproximations;
   inline static const float twoPi = juce::MathConstants<float>::twoPi;
   inline static const float pi = juce::MathConstants<float>::pi;
 
@@ -31,21 +32,15 @@ public:
 
     if (phase >= twoPi / pwmModifier)
       return 0.0f;
-    else
-      return waveform.getSample(bendedPhase);
+
+    float sample = waveform.getSample(bendedPhase);
+    distortSample(sample);
+    return std::clamp(sample, -1.0f, +1.0f);
   }
 
   inline void setFrequency(const float frequency) noexcept
   {
-    const juce::NormalisableRange<float> frequencyRange(20.0f, 20000.1f);
-    //TODO: Might wanna add the assertion back in 
-    //jassert(frequencyRange.getRange().contains(frequency));
     this->frequency = frequency;
-  }
-
-  inline void setPhase(const float newPhase) noexcept
-  {
-    this->phase = newPhase;
   }
 
   inline void setWaveformType(const dmt::AnalogWaveform::Type type) noexcept
@@ -53,24 +48,16 @@ public:
     waveform.type = type;
   }
 
-  inline void setSync(const float syncModifier) noexcept
+  inline void setDrive(const float newDrive) noexcept
   {
-    float rangeEnd = std::nextafter(100.0f, std::numeric_limits<float>::max());
-    const juce::NormalisableRange<float> sourceRange(0.0f, rangeEnd);
-    jassert(sourceRange.getRange().contains(syncModifier));
-    const auto normalisedValue = sourceRange.convertTo0to1(syncModifier);
-    const juce::NormalisableRange<float> targetRange(1.0f, 5.0f);
-    this->syncModifier = targetRange.convertFrom0to1(normalisedValue);
+    this->drive = newDrive;
   }
 
-  inline void setPwm(const float pwmModifier) noexcept
+  inline void setBias(const float newBias) noexcept { this->bias = newBias; }
+
+  inline void setPhase(const float newPhase) noexcept
   {
-    float rangeEnd = std::nextafter(100.0f, std::numeric_limits<float>::max());
-    const juce::NormalisableRange<float> sourceRange(0.0f, rangeEnd);
-    jassert(sourceRange.getRange().contains(pwmModifier));
-    const auto normalisedValue = sourceRange.convertTo0to1(pwmModifier);
-    const juce::NormalisableRange<float> targetRange(1.0f, 5.0f);
-    this->pwmModifier = targetRange.convertFrom0to1(normalisedValue);
+    this->phase = newPhase;
   }
 
   inline void setBend(const float bendModifier) noexcept
@@ -83,11 +70,34 @@ public:
     this->posityCycleRatio = targetRange.convertFrom0to1(normalisedValue);
   }
 
+  inline void setPwm(const float pwmModifier) noexcept
+  {
+    float rangeEnd = std::nextafter(100.0f, std::numeric_limits<float>::max());
+    const juce::NormalisableRange<float> sourceRange(0.0f, rangeEnd);
+    jassert(sourceRange.getRange().contains(pwmModifier));
+    const auto normalisedValue = sourceRange.convertTo0to1(pwmModifier);
+    const juce::NormalisableRange<float> targetRange(1.0f, 5.0f);
+    this->pwmModifier = targetRange.convertFrom0to1(normalisedValue);
+  }
+
+  inline void setSync(const float syncModifier) noexcept
+  {
+    float rangeEnd = std::nextafter(100.0f, std::numeric_limits<float>::max());
+    const juce::NormalisableRange<float> sourceRange(0.0f, rangeEnd);
+    jassert(sourceRange.getRange().contains(syncModifier));
+    const auto normalisedValue = sourceRange.convertTo0to1(syncModifier);
+    const juce::NormalisableRange<float> targetRange(1.0f, 5.0f);
+    this->syncModifier = targetRange.convertFrom0to1(normalisedValue);
+  }
+
 private:
   dmt::AnalogWaveform waveform;
   float frequency = 50.0f;
   float sampleRate = -1.0f;
   float phase = 0.0f;
+
+  float drive = 0.0f;
+  float bias = 0.0f;
   float pwmModifier = 1.0f;
   float syncModifier = 1.0f;
   float posityCycleRatio = 0.5f;
@@ -129,6 +139,23 @@ private:
       bendedPhase = bendedPhase * pi + pi;
     }
     return bendedPhase;
+  }
+
+  inline const void distortSample(float& sample) const noexcept
+  {
+    const float tanhConstant = 0.7615941559558;
+    float sign = (sample > 0.0f) ? 1.0f : -1.0f;
+
+    if (drive >= 1.0f) {
+      sample = Math::tanh(drive * sample);
+    } else {
+      float invertedDrive = 1.0f - drive;
+      float wetSample = drive * Math::tanh(sample);
+      float drySample = invertedDrive * sample * 0.7615941559558;
+      sample = wetSample + drySample;
+    }
+
+    sample = sample + bias;
   }
 };
 }

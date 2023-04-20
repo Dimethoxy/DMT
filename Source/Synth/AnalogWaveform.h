@@ -35,7 +35,7 @@ struct AnalogWaveform
       result = 1.0f - result;
     if (result < -0.5f)
       result = -1.0f - result;
-    return result;
+    return 2 * result;
   }
   inline float saw(float x) const noexcept
   {

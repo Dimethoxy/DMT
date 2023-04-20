@@ -12,7 +12,6 @@ namespace dmt {
 //==============================================================================
 class SynthVoice : public juce::SynthesiserVoice
 {
-  using Math = juce::dsp::FastMathApproximations;
 
 public:
   //============================================================================
@@ -68,6 +67,8 @@ public:
       return;
 
     osc.setWaveformType(chainSettings->waveformType);
+    osc.setDrive(chainSettings->oscDrive);
+    osc.setBias(chainSettings->oscBias);
     osc.setBend(chainSettings->oscBend);
     osc.setPwm(chainSettings->oscPwm);
     osc.setSync(chainSettings->oscSync);
@@ -78,7 +79,6 @@ public:
     for (int sample = startSample; sample < endSample; sample++) {
       osc.setFrequency(getFrequency());
       float currentSample = osc.getNextSample();
-      distort(currentSample);
       gain(currentSample);
       leftChannel[sample] = currentSample;
       rightChannel[sample] = currentSample;
@@ -121,14 +121,6 @@ private:
     float envelopeSample = pitchEnvelope.getNextSample();
     float newFreq = juce::mapToLog10(envelopeSample, baseFreq, freqModDepth);
     return std::clamp(newFreq, 20.0f, 20000.0f);
-  }
-
-  void distort(float& currentSample)
-  {
-    float bias = chainSettings->oscBias;
-    float sign = (currentSample > 0.0f) ? 1.0f : -1.0f;
-    currentSample = Math::tanh(chainSettings->oscDrive * currentSample);
-    currentSample = currentSample + sign * currentSample * bias;
   }
 
   void gain(float& currentSample)

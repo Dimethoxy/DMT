@@ -36,7 +36,7 @@ createParameterLayout()
                                      "Osc Drive",
                                      NormalisableRange(
                                        // rangeStart
-                                       1.0f,
+                                       0.0f,
                                        // rangeEnd
                                        10.0f,
                                        // intervalValue

@@ -16,7 +16,7 @@ class OscillatorDisplayComponent
   , public juce::Timer
 {
   using Settings = dmt::AppSettings::OscillatorDisplay;
-  const int resolution = 100;
+  const int resolution = 256;
 
 public:
   //============================================================================
@@ -39,6 +39,8 @@ public:
     if (isParametersChanged(newChainSettings)) {
       chainSettings = newChainSettings;
       osc.setWaveformType(chainSettings.waveformType);
+      osc.setDrive(chainSettings.oscDrive);
+      osc.setBias(chainSettings.oscBias);
       osc.setBend(chainSettings.oscBend);
       osc.setPwm(chainSettings.oscPwm);
       osc.setSync(chainSettings.oscSync);
@@ -138,7 +140,7 @@ private:
     for (int i = 0; i < width; i++) {
       auto x = bounds.getX() + i;
       auto y = bounds.getY() + (bounds.getHeight() / 2.0f) -
-               (table[i / width * 100.0f] * bounds.getHeight() / 2.0f);
+               (table[i / width * resolution] * bounds.getHeight() / 2.0f);
       juce::Point<float> p(x, y);
       path.lineTo(p);
     }
