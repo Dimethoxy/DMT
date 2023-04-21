@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include "../Components/TitleTopComponent.h"
 #include "../Utility/AppSettings.h"
 #include "../Utility/Shadow.h"
 #include <JuceHeader.h>
@@ -64,9 +65,9 @@ public:
     update();
   }
 
-  virtual void update() = 0;
+  virtual void update(){};
 
-  virtual juce::String getName() = 0;
+  virtual juce::String getName() { return "Panel"; };
 
 protected:
   float borderSize = Settings::borderSize;

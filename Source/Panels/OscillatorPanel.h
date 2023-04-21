@@ -4,7 +4,6 @@
 
 #include "../Components/ArcButtonComponent.h"
 #include "../Components/OscillatorDisplayComponent.h"
-#include "../Components/TitleTopComponent.h"
 #include "../Utility/AppSettings.h"
 #include "../Widgets/LinearSliderComponent.h"
 #include "Panel.h"
