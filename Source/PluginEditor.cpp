@@ -44,6 +44,7 @@ NeutrinoAudioProcessorEditor::paint(juce::Graphics& g)
 void
 NeutrinoAudioProcessorEditor::resized()
 {
+  dmt::AppSettings::size = getHeight() / 900.0f;
   auto bounds = getLocalBounds();
 
   genericAudioProcessorEditor.setBoundsRelative(0.7f, 0.075f, 0.3f, 0.75f);

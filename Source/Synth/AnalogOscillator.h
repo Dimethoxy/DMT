@@ -144,7 +144,6 @@ private:
   inline const void distortSample(float& sample) const noexcept
   {
     const float tanhConstant = 0.7615941559558;
-    float sign = (sample > 0.0f) ? 1.0f : -1.0f;
 
     if (drive >= 1.0f) {
       sample = Math::tanh(drive * sample);

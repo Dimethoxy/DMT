@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <JUCERPROJECT id="X0QZwP" name="Neutrino" projectType="audioplug" useAppConfig="0"
-              addUsingNamespaceToJuceHeader="0" jucerFormatVersion="1" pluginFormats="buildStandalone"
+              addUsingNamespaceToJuceHeader="0" jucerFormatVersion="1" pluginFormats="buildStandalone,buildVST3"
               version="0.0.1" companyName="Dimethoxy" pluginCharacteristicsValue="pluginIsSynth,pluginWantsMidiIn"
               cppLanguageStandard="17">
   <MAINGROUP id="M46wPq" name="Neutrino">
@@ -14,6 +14,8 @@
               file="Source/Components/OscillatorDisplayComponent.h"/>
         <FILE id="YFXkYf" name="TitleTopComponent.h" compile="0" resource="0"
               file="Source/Components/TitleTopComponent.h"/>
+        <FILE id="Bp3jLz" name="VoiceTopComponent.h" compile="0" resource="0"
+              file="Source/Components/VoiceTopComponent.h"/>
       </GROUP>
       <GROUP id="{983A5375-DD8E-AE34-4BEC-8E3A58720E39}" name="Envelope">
         <FILE id="versba" name="AdhEnvelope.h" compile="0" resource="0" file="Source/Envelope/AdhEnvelope.h"/>
@@ -27,6 +29,7 @@
         <FILE id="qpJv0U" name="OscillatorPanel.h" compile="0" resource="0"
               file="Source/Panels/OscillatorPanel.h"/>
         <FILE id="IWPKWf" name="Panel.h" compile="0" resource="0" file="Source/Panels/Panel.h"/>
+        <FILE id="V1T1az" name="VoicePanel.h" compile="0" resource="0" file="Source/Panels/VoicePanel.h"/>
       </GROUP>
       <FILE id="DqDOPF" name="PluginEditor.cpp" compile="1" resource="0"
             file="Source/PluginEditor.cpp"/>

@@ -3090,6 +3090,9 @@
     <ClInclude Include="..\..\Source\Components\TitleTopComponent.h">
       <Filter>Neutrino\Source\Components</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\Components\VoiceTopComponent.h">
+      <Filter>Neutrino\Source\Components</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\Envelope\AdhEnvelope.h">
       <Filter>Neutrino\Source\Envelope</Filter>
     </ClInclude>
@@ -3103,6 +3106,9 @@
       <Filter>Neutrino\Source\Panels</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Panels\Panel.h">
+      <Filter>Neutrino\Source\Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Panels\VoicePanel.h">
       <Filter>Neutrino\Source\Panels</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\PluginEditor.h">

@@ -24,7 +24,6 @@ public:
     , biasSlider(apvts, "Bias", "oscBias", dmt::InfoUnit::Type::Symmetry)
 
   {
-    addAndMakeVisible(top);
     addAndMakeVisible(oscDisplay);
     addAndMakeVisible(prevButton);
     addAndMakeVisible(nextButton);
@@ -33,9 +32,6 @@ public:
   }
   void update() override
   {
-    top.setBounds(innerBounds.toNearestInt());
-    top.setSize(top.getWidth(), top.getHeight() * 0.3f);
-    top.setAlwaysOnTop(true);
     float dispalySize = 0.35f;
     oscDisplay.setSize(getWidth() * dispalySize, getWidth() * dispalySize);
     oscDisplay.setCentreRelative(0.5f, 0.45f);
@@ -61,9 +57,9 @@ public:
                          nextButton.getWidth() / 2.0f,
                          nextButton.getHeight());
   }
+  juce::String getName() override { return "Classic Oscillator"; }
 
 private:
-  dmt::TitleTopComponent top;
   dmt::OscillatorDisplayComponent oscDisplay;
   dmt::ArcButtonComponent prevButton;
   dmt::ArcButtonComponent nextButton;

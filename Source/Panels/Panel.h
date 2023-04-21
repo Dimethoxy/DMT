@@ -15,7 +15,9 @@ class Panel : public juce::Component
 
 public:
   Panel()
+    : top(getName())
   {
+    addAndMakeVisible(top);
     outerShadow.radius = Settings::outerShadowRadius;
     outerShadow.colour = Settings::outerShadowColour;
     innerShadow.radius = Settings::innerShadowRadius;
@@ -55,10 +57,16 @@ public:
     innerBounds = borderBounds.reduced(borderSize);
     outerCornerSize = Settings::outerCornerSize;
     innerCornerSize = Settings::innerCornerSize;
+
+    top.setBounds(innerBounds.toNearestInt());
+    top.setSize(top.getWidth(), top.getHeight() * 0.3f);
+    top.setAlwaysOnTop(true);
     update();
   }
 
-  virtual void update(){};
+  virtual void update() = 0;
+
+  virtual juce::String getName() = 0;
 
 protected:
   float borderSize = Settings::borderSize;
@@ -68,6 +76,7 @@ protected:
   float innerCornerSize;
 
 private:
+  dmt::TitleTopComponent top;
   dmt::Shadow outerShadow;
   dmt::Shadow innerShadow;
 };

@@ -33,37 +33,6 @@ public:
     updateDisplay(chainSettings);
     startTimerHz(60);
   }
-  void timerCallback()
-  {
-    dmt::ChainSettings newChainSettings(apvts);
-    if (isParametersChanged(newChainSettings)) {
-      chainSettings = newChainSettings;
-      osc.setWaveformType(chainSettings.waveformType);
-      osc.setDrive(chainSettings.oscDrive);
-      osc.setBias(chainSettings.oscBias);
-      osc.setBend(chainSettings.oscBend);
-      osc.setPwm(chainSettings.oscPwm);
-      osc.setSync(chainSettings.oscSync);
-      this->buildTable();
-      this->repaint();
-    }
-  }
-  void updateDisplay(dmt::ChainSettings& newChainSettings)
-  {
-    chainSettings = newChainSettings;
-    osc.setWaveformType(chainSettings.waveformType);
-    osc.setBend(chainSettings.oscBend);
-    osc.setPwm(chainSettings.oscPwm);
-    osc.setSync(chainSettings.oscSync);
-    this->buildTable();
-    this->repaint();
-  }
-  void buildTable()
-  {
-    osc.setPhase(0.0f);
-    table.initialise([&](size_t index) { return (float)osc.getNextSample(); },
-                     resolution);
-  }
   //============================================================================
   void paint(juce::Graphics& g) override
   {
@@ -119,7 +88,55 @@ private:
   dmt::ChainSettings chainSettings;
   juce::AudioProcessorValueTreeState& apvts;
 
-  //============================================================================
+  //==============================================================================
+  void timerCallback()
+  {
+    dmt::ChainSettings newChainSettings(apvts);
+    if (isParametersChanged(newChainSettings)) {
+      chainSettings = newChainSettings;
+      osc.setWaveformType(chainSettings.waveformType);
+      osc.setDrive(chainSettings.oscDrive);
+      osc.setBias(chainSettings.oscBias);
+      osc.setBend(chainSettings.oscBend);
+      osc.setPwm(chainSettings.oscPwm);
+      osc.setSync(chainSettings.oscSync);
+      this->buildTable();
+      this->repaint();
+    }
+  }
+
+  void updateDisplay(dmt::ChainSettings& newChainSettings)
+  {
+    chainSettings = newChainSettings;
+    osc.setWaveformType(chainSettings.waveformType);
+    osc.setBend(chainSettings.oscBend);
+    osc.setPwm(chainSettings.oscPwm);
+    osc.setSync(chainSettings.oscSync);
+    this->buildTable();
+    this->repaint();
+  }
+
+  void buildTable()
+  {
+    osc.setPhase(0.0f);
+    table.initialise([&](size_t index) { return (float)osc.getNextSample(); },
+                     resolution);
+  }
+
+  bool isParametersChanged(dmt::ChainSettings& newChainSettings)
+  {
+    bool waveformChanged =
+      chainSettings.waveformType != newChainSettings.waveformType;
+    bool driveChanged = chainSettings.oscDrive != newChainSettings.oscDrive;
+    bool biasChanged = chainSettings.oscBias != newChainSettings.oscBias;
+    bool bendChanged = chainSettings.oscBend != newChainSettings.oscBend;
+    bool pwmChanged = chainSettings.oscPwm != newChainSettings.oscPwm;
+    bool syncChanged = chainSettings.oscSync != newChainSettings.oscSync;
+    return waveformChanged || driveChanged || biasChanged || bendChanged ||
+           pwmChanged || syncChanged;
+  }
+
+  //==============================================================================
   juce::Path getPath(juce::Rectangle<float> bounds)
   {
     bounds.setY(bounds.getY() + (bounds.getHeight() / 10.0f));
@@ -152,20 +169,7 @@ private:
 
     return path;
   }
-  //============================================================================
 
-  bool isParametersChanged(dmt::ChainSettings& newChainSettings)
-  {
-    bool waveformChanged =
-      chainSettings.waveformType != newChainSettings.waveformType;
-    bool driveChanged = chainSettings.oscDrive != newChainSettings.oscDrive;
-    bool biasChanged = chainSettings.oscBias != newChainSettings.oscBias;
-    bool bendChanged = chainSettings.oscBend != newChainSettings.oscBend;
-    bool pwmChanged = chainSettings.oscPwm != newChainSettings.oscPwm;
-    bool syncChanged = chainSettings.oscSync != newChainSettings.oscSync;
-    return waveformChanged || driveChanged || biasChanged || bendChanged ||
-           pwmChanged || syncChanged;
-  }
-  //==============================================================================
+  //============================================================================
 };
 }

@@ -13,6 +13,7 @@
 			buildPhases = (
 			);
 			dependencies = (
+				8C6BD381DABD15DE651495F3,
 				EAAC9FDD87CFCCFBB1A20718,
 				28EF2B8F1D903B36E9C76BB3,
 			);
@@ -23,6 +24,7 @@
 
 /* Begin PBXBuildFile section */
 		0891E602A12B10E844EA2004 /* CoreAudioKit.framework */ = {isa = PBXBuildFile; fileRef = 95E4BF25431C1E4A7E03814B; };
+		0BA9D87C421C78CA52F0B6FF /* VST3 */ = {isa = PBXBuildFile; fileRef = 7A03ADCFDBB73F303F8B64C1; };
 		139223163350F0632C92AE10 /* DiscRecording.framework */ = {isa = PBXBuildFile; fileRef = FB5F919EDEEF0D6144ED22CF; };
 		16C225383E003CC3535D2249 /* include_juce_gui_basics.mm */ = {isa = PBXBuildFile; fileRef = 58FC77B611133B41C7564D42; };
 		1A5CA11F2DB66E931C2C2D55 /* IOKit.framework */ = {isa = PBXBuildFile; fileRef = FE36874DF019AC3E1F2191BE; };
@@ -32,6 +34,7 @@
 		37F6DB7D973D3F895C10D6F2 /* PluginEditor.cpp */ = {isa = PBXBuildFile; fileRef = 77E21D750D944BC4D83CB07C; };
 		56E54190BDB79AC1F9BE8093 /* include_juce_audio_processors.mm */ = {isa = PBXBuildFile; fileRef = 92F7412BFA94370B245BD62C; };
 		5FD6E0BC9EAECD9AECDFB4E2 /* include_juce_data_structures.mm */ = {isa = PBXBuildFile; fileRef = 7F2FA0C481C1FD75A4D44475; };
+		75CAA8328CB2C1437389CB7C /* include_juce_audio_plugin_client_VST3.cpp */ = {isa = PBXBuildFile; fileRef = 9C83F11858F54854F409E90E; };
 		7F0F9B34CC5EDA8C4CFED5F7 /* QuartzCore.framework */ = {isa = PBXBuildFile; fileRef = 870EB6DDF75DF2EF4225FD94; };
 		862BA3E8F4C64B35FFD29E99 /* include_juce_audio_processors_ara.cpp */ = {isa = PBXBuildFile; fileRef = 028E5D23FD3C7482E0F43A05; };
 		87F403971BEDD788345B8866 /* CoreAudio.framework */ = {isa = PBXBuildFile; fileRef = 746FBE17F0417838B3DD8BC2; };
@@ -74,6 +77,7 @@
 		202C4AF02181A66CC6C5340B /* include_juce_audio_plugin_client_VST_utils.mm */ /* include_juce_audio_plugin_client_VST_utils.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_audio_plugin_client_VST_utils.mm; path = ../../JuceLibraryCode/include_juce_audio_plugin_client_VST_utils.mm; sourceTree = SOURCE_ROOT; };
 		277098F01028D0F74C0BD4E6 /* juce_audio_basics */ /* juce_audio_basics */ = {isa = PBXFileReference; lastKnownFileType = folder; name = juce_audio_basics; path = "~/JUCE/modules/juce_audio_basics"; sourceTree = "<absolute>"; };
 		2890D2844CCA0B1AEB17AA70 /* Poppins-MediumItalic.ttf */ /* Poppins-MediumItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file.ttf; name = "Poppins-MediumItalic.ttf"; path = "../../Fonts/Poppins/Poppins-MediumItalic.ttf"; sourceTree = SOURCE_ROOT; };
+		2B2DE8578452FB663516FCF9 /* VoiceTopComponent.h */ /* VoiceTopComponent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = VoiceTopComponent.h; path = ../../Source/Components/VoiceTopComponent.h; sourceTree = SOURCE_ROOT; };
 		2C4E073A8E1BBF50ED079C32 /* CoreMIDI.framework */ /* CoreMIDI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMIDI.framework; path = System/Library/Frameworks/CoreMIDI.framework; sourceTree = SDKROOT; };
 		2D962EB1E34F9CC796A4EA75 /* Accelerate.framework */ /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		2F69762E53B87F28DEE9FC74 /* FolderPanel.h */ /* FolderPanel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = FolderPanel.h; path = ../../Source/Preset/FolderPanel.h; sourceTree = SOURCE_ROOT; };
@@ -95,6 +99,7 @@
 		652968FE6D0E1BA6FEAE3F32 /* WebKit.framework */ /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		69BB19D006F260544D91F7E2 /* Label.h */ /* Label.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Label.h; path = ../../Source/Widgets/Label.h; sourceTree = SOURCE_ROOT; };
 		6AA050B526ABABE81D4A298E /* Shared Code */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libNeutrino.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		6BFC408EABFA54261E138A21 /* VoicePanel.h */ /* VoicePanel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = VoicePanel.h; path = ../../Source/Panels/VoicePanel.h; sourceTree = SOURCE_ROOT; };
 		6F2A704452BE3E9559EBEF9C /* Poppins-ExtraBoldItalic.ttf */ /* Poppins-ExtraBoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file.ttf; name = "Poppins-ExtraBoldItalic.ttf"; path = "../../Fonts/Poppins/Poppins-ExtraBoldItalic.ttf"; sourceTree = SOURCE_ROOT; };
 		70FAA40307F07B6EDCA1ABF4 /* juce_audio_formats */ /* juce_audio_formats */ = {isa = PBXFileReference; lastKnownFileType = folder; name = juce_audio_formats; path = "~/JUCE/modules/juce_audio_formats"; sourceTree = "<absolute>"; };
 		717EB9364B5B9EE6B3CCDF75 /* Poppins-ExtraLightItalic.ttf */ /* Poppins-ExtraLightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file.ttf; name = "Poppins-ExtraLightItalic.ttf"; path = "../../Fonts/Poppins/Poppins-ExtraLightItalic.ttf"; sourceTree = SOURCE_ROOT; };
@@ -103,6 +108,7 @@
 		76A1DF13C21EF350A6930041 /* juce_core */ /* juce_core */ = {isa = PBXFileReference; lastKnownFileType = folder; name = juce_core; path = "~/JUCE/modules/juce_core"; sourceTree = "<absolute>"; };
 		77E21D750D944BC4D83CB07C /* PluginEditor.cpp */ /* PluginEditor.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = PluginEditor.cpp; path = ../../Source/PluginEditor.cpp; sourceTree = SOURCE_ROOT; };
 		7850AE00A5B94E6D4E9AE156 /* include_juce_audio_processors_lv2_libs.cpp */ /* include_juce_audio_processors_lv2_libs.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = include_juce_audio_processors_lv2_libs.cpp; path = ../../JuceLibraryCode/include_juce_audio_processors_lv2_libs.cpp; sourceTree = SOURCE_ROOT; };
+		7A03ADCFDBB73F303F8B64C1 /* VST3 */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Neutrino.vst3; sourceTree = BUILT_PRODUCTS_DIR; };
 		7B8A487782C46E48B2B4F3C4 /* FolderManager.h */ /* FolderManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = FolderManager.h; path = ../../Source/Preset/FolderManager.h; sourceTree = SOURCE_ROOT; };
 		7D06B7AC5D09B87AB646D139 /* PluginProcessor.h */ /* PluginProcessor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PluginProcessor.h; path = ../../Source/PluginProcessor.h; sourceTree = SOURCE_ROOT; };
 		7D44D6F63147933713AB0BA8 /* include_juce_audio_formats.mm */ /* include_juce_audio_formats.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_audio_formats.mm; path = ../../JuceLibraryCode/include_juce_audio_formats.mm; sourceTree = SOURCE_ROOT; };
@@ -112,12 +118,14 @@
 		870EB6DDF75DF2EF4225FD94 /* QuartzCore.framework */ /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		8B10B379D113FE4E31E7D2C1 /* Poppins-Light.ttf */ /* Poppins-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file.ttf; name = "Poppins-Light.ttf"; path = "../../Fonts/Poppins/Poppins-Light.ttf"; sourceTree = SOURCE_ROOT; };
 		8B5B8BC55BA50F3FA94AAF64 /* PluginProcessor.cpp */ /* PluginProcessor.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = PluginProcessor.cpp; path = ../../Source/PluginProcessor.cpp; sourceTree = SOURCE_ROOT; };
+		8C6DF3A705E0D055EDDE02DD /* Info-VST3.plist */ /* Info-VST3.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Info-VST3.plist"; path = "Info-VST3.plist"; sourceTree = SOURCE_ROOT; };
 		92F7412BFA94370B245BD62C /* include_juce_audio_processors.mm */ /* include_juce_audio_processors.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_audio_processors.mm; path = ../../JuceLibraryCode/include_juce_audio_processors.mm; sourceTree = SOURCE_ROOT; };
 		934F59786AEF7A9BE390DDF1 /* FilterProcessor.h */ /* FilterProcessor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = FilterProcessor.h; path = ../../Source/Filter/FilterProcessor.h; sourceTree = SOURCE_ROOT; };
 		93C79E7B5CEAE2A33CDD3BC0 /* juce_audio_plugin_client */ /* juce_audio_plugin_client */ = {isa = PBXFileReference; lastKnownFileType = folder; name = juce_audio_plugin_client; path = "~/JUCE/modules/juce_audio_plugin_client"; sourceTree = "<absolute>"; };
 		95E4BF25431C1E4A7E03814B /* CoreAudioKit.framework */ /* CoreAudioKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudioKit.framework; path = System/Library/Frameworks/CoreAudioKit.framework; sourceTree = SDKROOT; };
 		9A551637CDA5C09948566C5A /* include_juce_audio_plugin_client_ARA.cpp */ /* include_juce_audio_plugin_client_ARA.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = include_juce_audio_plugin_client_ARA.cpp; path = ../../JuceLibraryCode/include_juce_audio_plugin_client_ARA.cpp; sourceTree = SOURCE_ROOT; };
 		9C04CCB3B2A17CFA6BB29F34 /* AdhEnvelope.h */ /* AdhEnvelope.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AdhEnvelope.h; path = ../../Source/Envelope/AdhEnvelope.h; sourceTree = SOURCE_ROOT; };
+		9C83F11858F54854F409E90E /* include_juce_audio_plugin_client_VST3.cpp */ /* include_juce_audio_plugin_client_VST3.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = include_juce_audio_plugin_client_VST3.cpp; path = ../../JuceLibraryCode/include_juce_audio_plugin_client_VST3.cpp; sourceTree = SOURCE_ROOT; };
 		9D9FEE8FFDA7780F9EEBA169 /* juce_data_structures */ /* juce_data_structures */ = {isa = PBXFileReference; lastKnownFileType = folder; name = juce_data_structures; path = "~/JUCE/modules/juce_data_structures"; sourceTree = "<absolute>"; };
 		A0CCB0302A36295E689301F6 /* include_juce_audio_basics.mm */ /* include_juce_audio_basics.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_audio_basics.mm; path = ../../JuceLibraryCode/include_juce_audio_basics.mm; sourceTree = SOURCE_ROOT; };
 		A48B344636C7541981D140C3 /* Poppins-Italic.ttf */ /* Poppins-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file.ttf; name = "Poppins-Italic.ttf"; path = "../../Fonts/Poppins/Poppins-Italic.ttf"; sourceTree = SOURCE_ROOT; };
@@ -163,6 +171,24 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		440D1643BE51A1A0F218CFD4 = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B6536B668EB24B5A9ADCD176,
+				B2396ADE34271E4AF5D3CD23,
+				FD9B76F4975C96B8EE08634D,
+				87F403971BEDD788345B8866,
+				0891E602A12B10E844EA2004,
+				8913AA9B92BB34DFD8461835,
+				139223163350F0632C92AE10,
+				88D670FDC2319A8B0E180C30,
+				1A5CA11F2DB66E931C2C2D55,
+				7F0F9B34CC5EDA8C4CFED5F7,
+				BB85AA0DB484856CE3060228,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		95010B625867C35244AF4C64 = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -205,6 +231,7 @@
 		23ABF0FBB07F3BC246EDE1E9 /* Products */ = {
 			isa = PBXGroup;
 			children = (
+				7A03ADCFDBB73F303F8B64C1,
 				51E8A26E4FC1537AAC861CA9,
 				6AA050B526ABABE81D4A298E,
 			);
@@ -252,6 +279,7 @@
 				B80E1C02FA5829C68341ED6A,
 				FACAB42EC39129F4EF08EF18,
 				202C4AF02181A66CC6C5340B,
+				9C83F11858F54854F409E90E,
 				92F7412BFA94370B245BD62C,
 				028E5D23FD3C7482E0F43A05,
 				7850AE00A5B94E6D4E9AE156,
@@ -299,6 +327,7 @@
 		779214D38D8F2F44ECE1EF98 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				8C6DF3A705E0D055EDDE02DD,
 				4A4E850A8DB64B2E7E5D8FEC,
 				7DCF68FAF7DAEF25907FE94B,
 			);
@@ -396,6 +425,7 @@
 			children = (
 				B93B0FF669B0E6096BE33DAE,
 				05C2AFF4B59F31DDE70E036B,
+				6BFC408EABFA54261E138A21,
 			);
 			name = Panels;
 			sourceTree = "<group>";
@@ -431,6 +461,7 @@
 				EF22F20B4240570D4548EE80,
 				E4E6F29DEB612BEB3D3B06E7,
 				D6B305E0BF566B65BD5B58E2,
+				2B2DE8578452FB663516FCF9,
 			);
 			name = Components;
 			sourceTree = "<group>";
@@ -438,6 +469,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		229E169BA1FCC4F2433E1495 /* Neutrino - VST3 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E5D42E193785443AC2CC8EAB;
+			buildPhases = (
+				01395609B219FECF08262A97,
+				D7CB531C5AB760C5D04D92E5,
+				440D1643BE51A1A0F218CFD4,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				556E11715DA8700D5D016702,
+			);
+			name = "Neutrino - VST3";
+			productName = Neutrino;
+			productReference = 7A03ADCFDBB73F303F8B64C1;
+			productType = "com.apple.product-type.bundle";
+		};
 		B1362B1D2F3CA421B0F1DBF4 /* Neutrino - Shared Code */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = F223796A9C4B6DE16CD37DA2;
@@ -480,6 +529,28 @@
 				LastUpgradeCheck = 1340;
 				ORGANIZATIONNAME = "Dimethoxy";
 				TargetAttributes = {
+					229E169BA1FCC4F2433E1495 = {
+						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 0;
+							};
+							com.apple.HardenedRuntime = {
+								enabled = 0;
+							};
+							com.apple.InAppPurchase = {
+								enabled = 0;
+							};
+							com.apple.InterAppAudio = {
+								enabled = 0;
+							};
+							com.apple.Push = {
+								enabled = 0;
+							};
+							com.apple.Sandbox = {
+								enabled = 0;
+							};
+						};
+					};
 					6C241674BC5DC17295BF8EA1 = {
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
@@ -560,6 +631,7 @@
 			projectRoot = "";
 			targets = (
 				6C241674BC5DC17295BF8EA1,
+				229E169BA1FCC4F2433E1495,
 				DCE168D73F205CCD9EE309D7,
 				B1362B1D2F3CA421B0F1DBF4,
 			);
@@ -567,6 +639,14 @@
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		01395609B219FECF08262A97 = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B27F8737379F0AB2E7B24069,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		83777F30A803E1FB00F8293A = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -605,6 +685,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		D7CB531C5AB760C5D04D92E5 = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				75CAA8328CB2C1437389CB7C,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F179A7ED274503490AF39AFB = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -619,6 +707,14 @@
 		28EF2B8F1D903B36E9C76BB3 = {
 			isa = PBXTargetDependency;
 			target = B1362B1D2F3CA421B0F1DBF4;
+		};
+		556E11715DA8700D5D016702 = {
+			isa = PBXTargetDependency;
+			target = B1362B1D2F3CA421B0F1DBF4;
+		};
+		8C6BD381DABD15DE651495F3 = {
+			isa = PBXTargetDependency;
+			target = 229E169BA1FCC4F2433E1495;
 		};
 		924270E798F8A98E2E2DADFD = {
 			isa = PBXTargetDependency;
@@ -666,7 +762,7 @@
 					"JUCE_VST3_CAN_REPLACE_VST2=0",
 					"JUCE_STRICT_REFCOUNTEDPOINTER=1",
 					"JucePlugin_Build_VST=0",
-					"JucePlugin_Build_VST3=0",
+					"JucePlugin_Build_VST3=1",
 					"JucePlugin_Build_AU=0",
 					"JucePlugin_Build_AUv3=0",
 					"JucePlugin_Build_AAX=0",
@@ -723,6 +819,7 @@
 				);
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				HEADER_SEARCH_PATHS = (
+					"$(HOME)/JUCE/modules/juce_audio_processors/format_types/VST3_SDK",
 					"$(SRCROOT)/../../JuceLibraryCode",
 					"$(HOME)/JUCE/modules",
 					"$(HOME)/JUCE/modules/juce_audio_plugin_client/AU",
@@ -731,13 +828,129 @@
 				INSTALL_PATH = "@executable_path/../Frameworks";
 				LLVM_LTO = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
-				MTL_HEADER_SEARCH_PATHS = "$(SRCROOT)/../../JuceLibraryCode $(HOME)/JUCE/modules $(HOME)/JUCE/modules/juce_audio_plugin_client/AU";
+				MTL_HEADER_SEARCH_PATHS = "$(HOME)/JUCE/modules/juce_audio_processors/format_types/VST3_SDK $(SRCROOT)/../../JuceLibraryCode $(HOME)/JUCE/modules $(HOME)/JUCE/modules/juce_audio_plugin_client/AU";
 				OTHER_LDFLAGS = "-weak_framework Metal -weak_framework MetalKit";
 				PRODUCT_BUNDLE_IDENTIFIER = com.Dimethoxy.Neutrino;
 				PRODUCT_NAME = "Neutrino";
 				SKIP_INSTALL = YES;
 				USE_HEADERMAP = NO;
 				VALID_ARCHS = "i386 x86_64 arm64 arm64e";
+			};
+			name = Release;
+		};
+		0E2D49A01C818FAD22AB313B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_LINK_OBJC_RUNTIME = NO;
+				COMBINE_HIDPI_IMAGES = YES;
+				CONFIGURATION_BUILD_DIR = "$(PROJECT_DIR)/build/$(CONFIGURATION)";
+				DEAD_CODE_STRIPPING = YES;
+				DEPLOYMENT_LOCATION = YES;
+				DSTROOT = /;
+				EXCLUDED_ARCHS = "";
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"_NDEBUG=1",
+					"NDEBUG=1",
+					"JUCE_DISPLAY_SPLASH_SCREEN=0",
+					"JUCE_USE_DARK_SPLASH_SCREEN=1",
+					"JUCE_PROJUCER_VERSION=0x70005",
+					"JUCE_MODULE_AVAILABLE_juce_audio_basics=1",
+					"JUCE_MODULE_AVAILABLE_juce_audio_devices=1",
+					"JUCE_MODULE_AVAILABLE_juce_audio_formats=1",
+					"JUCE_MODULE_AVAILABLE_juce_audio_plugin_client=1",
+					"JUCE_MODULE_AVAILABLE_juce_audio_processors=1",
+					"JUCE_MODULE_AVAILABLE_juce_audio_utils=1",
+					"JUCE_MODULE_AVAILABLE_juce_core=1",
+					"JUCE_MODULE_AVAILABLE_juce_data_structures=1",
+					"JUCE_MODULE_AVAILABLE_juce_dsp=1",
+					"JUCE_MODULE_AVAILABLE_juce_events=1",
+					"JUCE_MODULE_AVAILABLE_juce_graphics=1",
+					"JUCE_MODULE_AVAILABLE_juce_gui_basics=1",
+					"JUCE_MODULE_AVAILABLE_juce_gui_extra=1",
+					"JUCE_GLOBAL_MODULE_SETTINGS_INCLUDED=1",
+					"JUCE_VST3_CAN_REPLACE_VST2=0",
+					"JUCE_STRICT_REFCOUNTEDPOINTER=1",
+					"JucePlugin_Build_VST=0",
+					"JucePlugin_Build_VST3=1",
+					"JucePlugin_Build_AU=0",
+					"JucePlugin_Build_AUv3=0",
+					"JucePlugin_Build_AAX=0",
+					"JucePlugin_Build_Standalone=0",
+					"JucePlugin_Build_Unity=0",
+					"JucePlugin_Build_LV2=0",
+					"JucePlugin_Enable_IAA=0",
+					"JucePlugin_Enable_ARA=0",
+					"JucePlugin_Name=\\\"Neutrino\\\"",
+					"JucePlugin_Desc=\\\"Neutrino\\\"",
+					"JucePlugin_Manufacturer=\\\"Dimethoxy\\\"",
+					"JucePlugin_ManufacturerWebsite=\\\"www.Dimethoxy.com\\\"",
+					"JucePlugin_ManufacturerEmail=\\\"\\\"",
+					"JucePlugin_ManufacturerCode=0x4d616e75",
+					"JucePlugin_PluginCode=0x5830717a",
+					"JucePlugin_IsSynth=1",
+					"JucePlugin_WantsMidiInput=1",
+					"JucePlugin_ProducesMidiOutput=0",
+					"JucePlugin_IsMidiEffect=0",
+					"JucePlugin_EditorRequiresKeyboardFocus=0",
+					"JucePlugin_Version=0.0.1",
+					"JucePlugin_VersionCode=0x1",
+					"JucePlugin_VersionString=\\\"0.0.1\\\"",
+					"JucePlugin_VSTUniqueID=JucePlugin_PluginCode",
+					"JucePlugin_VSTCategory=kPlugCategSynth",
+					"JucePlugin_Vst3Category=\\\"Instrument|Synth\\\"",
+					"JucePlugin_AUMainType=\\'aumu\\'",
+					"JucePlugin_AUSubType=JucePlugin_PluginCode",
+					"JucePlugin_AUExportPrefix=NeutrinoAU",
+					"JucePlugin_AUExportPrefixQuoted=\\\"NeutrinoAU\\\"",
+					"JucePlugin_AUManufacturerCode=JucePlugin_ManufacturerCode",
+					"JucePlugin_CFBundleIdentifier=com.Dimethoxy.Neutrino",
+					"JucePlugin_AAXIdentifier=com.Dimethoxy.Neutrino",
+					"JucePlugin_AAXManufacturerCode=JucePlugin_ManufacturerCode",
+					"JucePlugin_AAXProductId=JucePlugin_PluginCode",
+					"JucePlugin_AAXCategory=2048",
+					"JucePlugin_AAXDisableBypass=0",
+					"JucePlugin_AAXDisableMultiMono=0",
+					"JucePlugin_IAAType=0x61757269",
+					"JucePlugin_IAASubType=JucePlugin_PluginCode",
+					"JucePlugin_IAAName=\\\"Dimethoxy:\\ Neutrino\\\"",
+					"JucePlugin_VSTNumMidiInputs=16",
+					"JucePlugin_VSTNumMidiOutputs=16",
+					"JucePlugin_ARAContentTypes=0",
+					"JucePlugin_ARATransformationFlags=0",
+					"JucePlugin_ARAFactoryID=\\\"com.Dimethoxy.Neutrino.factory\\\"",
+					"JucePlugin_ARADocumentArchiveID=\\\"com.Dimethoxy.Neutrino.aradocumentarchive.0.0.1\\\"",
+					"JucePlugin_ARACompatibleArchiveIDs=\\\"\\\"",
+					"JUCE_STANDALONE_APPLICATION=JucePlugin_Build_Standalone",
+					"JUCER_XCODE_MAC_F6D2F4CF=1",
+					"JUCE_APP_VERSION=0.0.1",
+					"JUCE_APP_VERSION_HEX=0x1",
+				);
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GENERATE_PKGINFO_FILE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(HOME)/JUCE/modules/juce_audio_processors/format_types/VST3_SDK",
+					"$(SRCROOT)/../../JuceLibraryCode",
+					"$(HOME)/JUCE/modules",
+					"$(HOME)/JUCE/modules/juce_audio_plugin_client/AU",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = Info-VST3.plist;
+				INFOPLIST_PREPROCESS = NO;
+				INSTALL_PATH = "$(HOME)/Library/Audio/Plug-Ins/VST3/";
+				LIBRARY_STYLE = Bundle;
+				LLVM_LTO = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MTL_HEADER_SEARCH_PATHS = "$(HOME)/JUCE/modules/juce_audio_processors/format_types/VST3_SDK $(SRCROOT)/../../JuceLibraryCode $(HOME)/JUCE/modules $(HOME)/JUCE/modules/juce_audio_plugin_client/AU";
+				OTHER_LDFLAGS = "-bundle -lNeutrino -weak_framework Metal -weak_framework MetalKit";
+				PRODUCT_BUNDLE_IDENTIFIER = com.Dimethoxy.Neutrino;
+				PRODUCT_NAME = "Neutrino";
+				USE_HEADERMAP = NO;
+				VALID_ARCHS = "i386 x86_64 arm64 arm64e";
+				WRAPPER_EXTENSION = vst3;
 			};
 			name = Release;
 		};
@@ -824,7 +1037,7 @@
 					"JUCE_VST3_CAN_REPLACE_VST2=0",
 					"JUCE_STRICT_REFCOUNTEDPOINTER=1",
 					"JucePlugin_Build_VST=0",
-					"JucePlugin_Build_VST3=0",
+					"JucePlugin_Build_VST3=1",
 					"JucePlugin_Build_AU=0",
 					"JucePlugin_Build_AUv3=0",
 					"JucePlugin_Build_AAX=0",
@@ -881,6 +1094,7 @@
 				);
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				HEADER_SEARCH_PATHS = (
+					"$(HOME)/JUCE/modules/juce_audio_processors/format_types/VST3_SDK",
 					"$(SRCROOT)/../../JuceLibraryCode",
 					"$(HOME)/JUCE/modules",
 					"$(HOME)/JUCE/modules/juce_audio_plugin_client/AU",
@@ -888,7 +1102,7 @@
 				);
 				INSTALL_PATH = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
-				MTL_HEADER_SEARCH_PATHS = "$(SRCROOT)/../../JuceLibraryCode $(HOME)/JUCE/modules $(HOME)/JUCE/modules/juce_audio_plugin_client/AU";
+				MTL_HEADER_SEARCH_PATHS = "$(HOME)/JUCE/modules/juce_audio_processors/format_types/VST3_SDK $(SRCROOT)/../../JuceLibraryCode $(HOME)/JUCE/modules $(HOME)/JUCE/modules/juce_audio_plugin_client/AU";
 				OTHER_LDFLAGS = "-weak_framework Metal -weak_framework MetalKit";
 				PRODUCT_BUNDLE_IDENTIFIER = com.Dimethoxy.Neutrino;
 				PRODUCT_NAME = "Neutrino";
@@ -1052,6 +1266,7 @@
 				);
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				HEADER_SEARCH_PATHS = (
+					"$(HOME)/JUCE/modules/juce_audio_processors/format_types/VST3_SDK",
 					"$(SRCROOT)/../../JuceLibraryCode",
 					"$(HOME)/JUCE/modules",
 					"$(HOME)/JUCE/modules/juce_audio_plugin_client/AU",
@@ -1061,7 +1276,7 @@
 				INFOPLIST_PREPROCESS = NO;
 				LLVM_LTO = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
-				MTL_HEADER_SEARCH_PATHS = "$(SRCROOT)/../../JuceLibraryCode $(HOME)/JUCE/modules $(HOME)/JUCE/modules/juce_audio_plugin_client/AU";
+				MTL_HEADER_SEARCH_PATHS = "$(HOME)/JUCE/modules/juce_audio_processors/format_types/VST3_SDK $(SRCROOT)/../../JuceLibraryCode $(HOME)/JUCE/modules $(HOME)/JUCE/modules/juce_audio_plugin_client/AU";
 				OTHER_LDFLAGS = "-lNeutrino -weak_framework Metal -weak_framework MetalKit";
 				PRODUCT_BUNDLE_IDENTIFIER = com.Dimethoxy.Neutrino;
 				PRODUCT_NAME = "Neutrino";
@@ -1161,6 +1376,7 @@
 				);
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				HEADER_SEARCH_PATHS = (
+					"$(HOME)/JUCE/modules/juce_audio_processors/format_types/VST3_SDK",
 					"$(SRCROOT)/../../JuceLibraryCode",
 					"$(HOME)/JUCE/modules",
 					"$(HOME)/JUCE/modules/juce_audio_plugin_client/AU",
@@ -1169,12 +1385,127 @@
 				INFOPLIST_FILE = Info-Standalone_Plugin.plist;
 				INFOPLIST_PREPROCESS = NO;
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
-				MTL_HEADER_SEARCH_PATHS = "$(SRCROOT)/../../JuceLibraryCode $(HOME)/JUCE/modules $(HOME)/JUCE/modules/juce_audio_plugin_client/AU";
+				MTL_HEADER_SEARCH_PATHS = "$(HOME)/JUCE/modules/juce_audio_processors/format_types/VST3_SDK $(SRCROOT)/../../JuceLibraryCode $(HOME)/JUCE/modules $(HOME)/JUCE/modules/juce_audio_plugin_client/AU";
 				OTHER_LDFLAGS = "-lNeutrino -weak_framework Metal -weak_framework MetalKit";
 				PRODUCT_BUNDLE_IDENTIFIER = com.Dimethoxy.Neutrino;
 				PRODUCT_NAME = "Neutrino";
 				USE_HEADERMAP = NO;
 				VALID_ARCHS = "i386 x86_64 arm64 arm64e";
+			};
+			name = Debug;
+		};
+		CC56EA9A1C3205A3BD75D9C6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_LINK_OBJC_RUNTIME = NO;
+				COMBINE_HIDPI_IMAGES = YES;
+				CONFIGURATION_BUILD_DIR = "$(PROJECT_DIR)/build/$(CONFIGURATION)";
+				COPY_PHASE_STRIP = NO;
+				DEPLOYMENT_LOCATION = YES;
+				DSTROOT = /;
+				EXCLUDED_ARCHS = "";
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"_DEBUG=1",
+					"DEBUG=1",
+					"JUCE_DISPLAY_SPLASH_SCREEN=0",
+					"JUCE_USE_DARK_SPLASH_SCREEN=1",
+					"JUCE_PROJUCER_VERSION=0x70005",
+					"JUCE_MODULE_AVAILABLE_juce_audio_basics=1",
+					"JUCE_MODULE_AVAILABLE_juce_audio_devices=1",
+					"JUCE_MODULE_AVAILABLE_juce_audio_formats=1",
+					"JUCE_MODULE_AVAILABLE_juce_audio_plugin_client=1",
+					"JUCE_MODULE_AVAILABLE_juce_audio_processors=1",
+					"JUCE_MODULE_AVAILABLE_juce_audio_utils=1",
+					"JUCE_MODULE_AVAILABLE_juce_core=1",
+					"JUCE_MODULE_AVAILABLE_juce_data_structures=1",
+					"JUCE_MODULE_AVAILABLE_juce_dsp=1",
+					"JUCE_MODULE_AVAILABLE_juce_events=1",
+					"JUCE_MODULE_AVAILABLE_juce_graphics=1",
+					"JUCE_MODULE_AVAILABLE_juce_gui_basics=1",
+					"JUCE_MODULE_AVAILABLE_juce_gui_extra=1",
+					"JUCE_GLOBAL_MODULE_SETTINGS_INCLUDED=1",
+					"JUCE_VST3_CAN_REPLACE_VST2=0",
+					"JUCE_STRICT_REFCOUNTEDPOINTER=1",
+					"JucePlugin_Build_VST=0",
+					"JucePlugin_Build_VST3=1",
+					"JucePlugin_Build_AU=0",
+					"JucePlugin_Build_AUv3=0",
+					"JucePlugin_Build_AAX=0",
+					"JucePlugin_Build_Standalone=0",
+					"JucePlugin_Build_Unity=0",
+					"JucePlugin_Build_LV2=0",
+					"JucePlugin_Enable_IAA=0",
+					"JucePlugin_Enable_ARA=0",
+					"JucePlugin_Name=\\\"Neutrino\\\"",
+					"JucePlugin_Desc=\\\"Neutrino\\\"",
+					"JucePlugin_Manufacturer=\\\"Dimethoxy\\\"",
+					"JucePlugin_ManufacturerWebsite=\\\"www.Dimethoxy.com\\\"",
+					"JucePlugin_ManufacturerEmail=\\\"\\\"",
+					"JucePlugin_ManufacturerCode=0x4d616e75",
+					"JucePlugin_PluginCode=0x5830717a",
+					"JucePlugin_IsSynth=1",
+					"JucePlugin_WantsMidiInput=1",
+					"JucePlugin_ProducesMidiOutput=0",
+					"JucePlugin_IsMidiEffect=0",
+					"JucePlugin_EditorRequiresKeyboardFocus=0",
+					"JucePlugin_Version=0.0.1",
+					"JucePlugin_VersionCode=0x1",
+					"JucePlugin_VersionString=\\\"0.0.1\\\"",
+					"JucePlugin_VSTUniqueID=JucePlugin_PluginCode",
+					"JucePlugin_VSTCategory=kPlugCategSynth",
+					"JucePlugin_Vst3Category=\\\"Instrument|Synth\\\"",
+					"JucePlugin_AUMainType=\\'aumu\\'",
+					"JucePlugin_AUSubType=JucePlugin_PluginCode",
+					"JucePlugin_AUExportPrefix=NeutrinoAU",
+					"JucePlugin_AUExportPrefixQuoted=\\\"NeutrinoAU\\\"",
+					"JucePlugin_AUManufacturerCode=JucePlugin_ManufacturerCode",
+					"JucePlugin_CFBundleIdentifier=com.Dimethoxy.Neutrino",
+					"JucePlugin_AAXIdentifier=com.Dimethoxy.Neutrino",
+					"JucePlugin_AAXManufacturerCode=JucePlugin_ManufacturerCode",
+					"JucePlugin_AAXProductId=JucePlugin_PluginCode",
+					"JucePlugin_AAXCategory=2048",
+					"JucePlugin_AAXDisableBypass=0",
+					"JucePlugin_AAXDisableMultiMono=0",
+					"JucePlugin_IAAType=0x61757269",
+					"JucePlugin_IAASubType=JucePlugin_PluginCode",
+					"JucePlugin_IAAName=\\\"Dimethoxy:\\ Neutrino\\\"",
+					"JucePlugin_VSTNumMidiInputs=16",
+					"JucePlugin_VSTNumMidiOutputs=16",
+					"JucePlugin_ARAContentTypes=0",
+					"JucePlugin_ARATransformationFlags=0",
+					"JucePlugin_ARAFactoryID=\\\"com.Dimethoxy.Neutrino.factory\\\"",
+					"JucePlugin_ARADocumentArchiveID=\\\"com.Dimethoxy.Neutrino.aradocumentarchive.0.0.1\\\"",
+					"JucePlugin_ARACompatibleArchiveIDs=\\\"\\\"",
+					"JUCE_STANDALONE_APPLICATION=JucePlugin_Build_Standalone",
+					"JUCER_XCODE_MAC_F6D2F4CF=1",
+					"JUCE_APP_VERSION=0.0.1",
+					"JUCE_APP_VERSION_HEX=0x1",
+				);
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GENERATE_PKGINFO_FILE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(HOME)/JUCE/modules/juce_audio_processors/format_types/VST3_SDK",
+					"$(SRCROOT)/../../JuceLibraryCode",
+					"$(HOME)/JUCE/modules",
+					"$(HOME)/JUCE/modules/juce_audio_plugin_client/AU",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = Info-VST3.plist;
+				INFOPLIST_PREPROCESS = NO;
+				INSTALL_PATH = "$(HOME)/Library/Audio/Plug-Ins/VST3/";
+				LIBRARY_STYLE = Bundle;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MTL_HEADER_SEARCH_PATHS = "$(HOME)/JUCE/modules/juce_audio_processors/format_types/VST3_SDK $(SRCROOT)/../../JuceLibraryCode $(HOME)/JUCE/modules $(HOME)/JUCE/modules/juce_audio_plugin_client/AU";
+				OTHER_LDFLAGS = "-bundle -lNeutrino -weak_framework Metal -weak_framework MetalKit";
+				PRODUCT_BUNDLE_IDENTIFIER = com.Dimethoxy.Neutrino;
+				PRODUCT_NAME = "Neutrino";
+				USE_HEADERMAP = NO;
+				VALID_ARCHS = "i386 x86_64 arm64 arm64e";
+				WRAPPER_EXTENSION = vst3;
 			};
 			name = Debug;
 		};
@@ -1195,6 +1526,15 @@
 			buildConfigurations = (
 				1BA6D7261A3B48DDD28642D5,
 				43FD283F030CDFDE38C91465,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		E5D42E193785443AC2CC8EAB = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CC56EA9A1C3205A3BD75D9C6,
+				0E2D49A01C818FAD22AB313B,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;

@@ -13,7 +13,8 @@ class TitleTopComponent : public juce::Component
   using Settings = dmt::AppSettings::OscillatorTop;
 
 public:
-  TitleTopComponent()
+  TitleTopComponent(juce::String& name)
+    : name(name)
   {
     outerShadow.radius = Settings::outerShadowRadius;
     outerShadow.colour = Settings::outerShadowColour;
@@ -68,8 +69,10 @@ public:
   }
 
 private:
+  juce::String& name;
   dmt::Shadow outerShadow;
   dmt::Shadow innerShadow;
   dmt::Shadow fontShadow;
 };
+//==============================================================================
 }

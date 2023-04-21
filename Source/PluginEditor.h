@@ -9,6 +9,7 @@
 #pragma once
 
 #include "./Panels/OscillatorPanel.h"
+#include "./Panels/VoicePanel.h"
 #include "./Preset/FolderManager.h"
 #include "./Preset/FolderPanel.h"
 #include "./Preset/PresetPanel.h"
@@ -34,6 +35,7 @@ private:
   juce::MidiKeyboardComponent keyboardComponent;
   dmt::PresetPanel presetPanel;
   dmt::FolderPanel folderPanel;
+  dmt::VoicePanel voicePannel;
   dmt::OscillatorPanel oscPannel;
 
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(NeutrinoAudioProcessorEditor)

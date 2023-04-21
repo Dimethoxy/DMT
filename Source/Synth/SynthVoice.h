@@ -119,7 +119,8 @@ private:
     float freqModDepth =
       chainSettings->oscOctave * baseFreq + chainSettings->modDepth;
     float envelopeSample = pitchEnvelope.getNextSample();
-    float newFreq = juce::mapToLog10(envelopeSample, baseFreq, freqModDepth);
+    float newFreq =
+      juce::mapToLog10(envelopeSample, baseFreq, baseFreq+freqModDepth);
     return std::clamp(newFreq, 20.0f, 20000.0f);
   }
 
