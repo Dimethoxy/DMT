@@ -1,0 +1,22 @@
+\hypertarget{_math_8h_source}{}\doxysection{Math.\+h}
+\label{_math_8h_source}\index{Utility/Math.h@{Utility/Math.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//==============================================================================}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{comment}{//==============================================================================}}
+\DoxyCodeLine{00006\ \textcolor{keyword}{namespace\ }dmt\ \{}
+\DoxyCodeLine{00007\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structdmt_1_1_math}{Math}}}
+\DoxyCodeLine{00008\ \{}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{float}\ linearToExponent(\textcolor{keywordtype}{float}\ value)\ \textcolor{keyword}{noexcept}}
+\DoxyCodeLine{00011\ \ \ \{}
+\DoxyCodeLine{00012\ \ \ \ \ \textcolor{keywordflow}{return}\ (value\ >=\ 0.0f)\ ?\ (value\ +\ 1.0f)\ :\ (1.0f\ /\ -\/(value\ +\ 1.0f));}
+\DoxyCodeLine{00013\ \ \ \}}
+\DoxyCodeLine{00014\ \};}
+\DoxyCodeLine{00015\ \textcolor{comment}{//==============================================================================}}
+\DoxyCodeLine{00016\ \}}
+
+\end{DoxyCode}

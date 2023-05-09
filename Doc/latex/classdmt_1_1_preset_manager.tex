@@ -1,0 +1,75 @@
+\hypertarget{classdmt_1_1_preset_manager}{}\doxysection{dmt\+::Preset\+Manager Class Reference}
+\label{classdmt_1_1_preset_manager}\index{dmt::PresetManager@{dmt::PresetManager}}
+Inheritance diagram for dmt\+::Preset\+Manager\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classdmt_1_1_preset_manager}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classdmt_1_1_preset_manager_a3e76b4ca99a7a4c71abd2b0f1da04c72}\label{classdmt_1_1_preset_manager_a3e76b4ca99a7a4c71abd2b0f1da04c72}} 
+{\bfseries Preset\+Manager} (juce\+::\+Audio\+Processor\+Value\+Tree\+State \&apvts)
+\item 
+\mbox{\Hypertarget{classdmt_1_1_preset_manager_af077e95f634074923349b28245f7232b}\label{classdmt_1_1_preset_manager_af077e95f634074923349b28245f7232b}} 
+void {\bfseries save\+Preset} (const juce\+::\+String \&preset\+Name)
+\item 
+\mbox{\Hypertarget{classdmt_1_1_preset_manager_aa5078d6bbd37f9ff33472c5ef03ce380}\label{classdmt_1_1_preset_manager_aa5078d6bbd37f9ff33472c5ef03ce380}} 
+void {\bfseries load\+Preset} (const juce\+::\+String \&preset\+Name)
+\item 
+\mbox{\Hypertarget{classdmt_1_1_preset_manager_a303ef3eba97c16679cb3708a2ae5f572}\label{classdmt_1_1_preset_manager_a303ef3eba97c16679cb3708a2ae5f572}} 
+void {\bfseries load\+Init\+Preset} ()
+\item 
+\mbox{\Hypertarget{classdmt_1_1_preset_manager_ae9e5e3422994a2de5c766f6bd404a343}\label{classdmt_1_1_preset_manager_ae9e5e3422994a2de5c766f6bd404a343}} 
+void {\bfseries delete\+Preset} (const juce\+::\+String \&preset\+Name)
+\item 
+\mbox{\Hypertarget{classdmt_1_1_preset_manager_a3650c59a737985b69829fd7088d9ebf2}\label{classdmt_1_1_preset_manager_a3650c59a737985b69829fd7088d9ebf2}} 
+int {\bfseries load\+Next\+Preset} ()
+\item 
+\mbox{\Hypertarget{classdmt_1_1_preset_manager_a60232e529a8ddaa0cd1f54255a8ceb0c}\label{classdmt_1_1_preset_manager_a60232e529a8ddaa0cd1f54255a8ceb0c}} 
+int {\bfseries load\+Previous\+Preset} ()
+\item 
+\mbox{\Hypertarget{classdmt_1_1_preset_manager_a2b3c5d1f82e5e4d954a95fbc6b64b345}\label{classdmt_1_1_preset_manager_a2b3c5d1f82e5e4d954a95fbc6b64b345}} 
+juce\+::\+String\+Array {\bfseries get\+Preset\+List} ()
+\item 
+\mbox{\Hypertarget{classdmt_1_1_preset_manager_a16feb50b0b9e8083a2ab9a96070f266a}\label{classdmt_1_1_preset_manager_a16feb50b0b9e8083a2ab9a96070f266a}} 
+juce\+::\+String {\bfseries get\+Current\+Preset} () const
+\item 
+\mbox{\Hypertarget{classdmt_1_1_preset_manager_a89b2c76a379ca84c30b0d53890d61a7f}\label{classdmt_1_1_preset_manager_a89b2c76a379ca84c30b0d53890d61a7f}} 
+void {\bfseries value\+Tree\+Redirected} (juce\+::\+Value\+Tree \&tree\+Which\+Has\+Been\+Changed) override
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static const juce\+::\+File \& \mbox{\hyperlink{classdmt_1_1_preset_manager_a82e1c750aeba27b092addc3e9dcdc302}{default\+Directory}}
+\item 
+\mbox{\Hypertarget{classdmt_1_1_preset_manager_a9294d6ddd85b3ba31f0abebcc310eb21}\label{classdmt_1_1_preset_manager_a9294d6ddd85b3ba31f0abebcc310eb21}} 
+static const juce\+::\+String \& {\bfseries extension} = \char`\"{}preset\char`\"{}
+\item 
+\mbox{\Hypertarget{classdmt_1_1_preset_manager_afa360c17b5297a9440610a71125fbb7b}\label{classdmt_1_1_preset_manager_afa360c17b5297a9440610a71125fbb7b}} 
+static const juce\+::\+String \& {\bfseries preset\+Name\+Property} = \char`\"{}preset\+Name\char`\"{}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classdmt_1_1_preset_manager_a82e1c750aeba27b092addc3e9dcdc302}\label{classdmt_1_1_preset_manager_a82e1c750aeba27b092addc3e9dcdc302}} 
+\index{dmt::PresetManager@{dmt::PresetManager}!defaultDirectory@{defaultDirectory}}
+\index{defaultDirectory@{defaultDirectory}!dmt::PresetManager@{dmt::PresetManager}}
+\doxysubsubsection{\texorpdfstring{defaultDirectory}{defaultDirectory}}
+{\footnotesize\ttfamily const juce\+::\+File\& dmt\+::\+Preset\+Manager\+::default\+Directory\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{=}
+\DoxyCodeLine{\ \ \ \ juce::File::getSpecialLocation(}
+\DoxyCodeLine{\ \ \ \ \ \ juce::File::SpecialLocationType::userDocumentsDirectory)}
+\DoxyCodeLine{\ \ \ \ \ \ .getChildFile(ProjectInfo::companyName)}
+\DoxyCodeLine{\ \ \ \ \ \ .getChildFile(ProjectInfo::projectName)}
+
+\end{DoxyCode}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Preset/Preset\+Manager.\+h\end{DoxyCompactItemize}

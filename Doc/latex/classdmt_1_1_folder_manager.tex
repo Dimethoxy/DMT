@@ -1,0 +1,45 @@
+\hypertarget{classdmt_1_1_folder_manager}{}\doxysection{dmt\+::Folder\+Manager Class Reference}
+\label{classdmt_1_1_folder_manager}\index{dmt::FolderManager@{dmt::FolderManager}}
+Inheritance diagram for dmt\+::Folder\+Manager\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classdmt_1_1_folder_manager}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classdmt_1_1_folder_manager_a7558b15b21c4d453243ec92e727ff091}\label{classdmt_1_1_folder_manager_a7558b15b21c4d453243ec92e727ff091}} 
+{\bfseries Folder\+Manager} (juce\+::\+Audio\+Processor\+Value\+Tree\+State \&apvts)
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static const juce\+::\+File \& \mbox{\hyperlink{classdmt_1_1_folder_manager_a2a3346fb0a64528fc75aa74fd6aea024}{default\+Directory}}
+\item 
+\mbox{\Hypertarget{classdmt_1_1_folder_manager_a3354592d0afbf272caea80197036a072}\label{classdmt_1_1_folder_manager_a3354592d0afbf272caea80197036a072}} 
+static const juce\+::\+String \& {\bfseries folder\+Name\+Property} = \char`\"{}folder\+Name\char`\"{}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classdmt_1_1_folder_manager_a2a3346fb0a64528fc75aa74fd6aea024}\label{classdmt_1_1_folder_manager_a2a3346fb0a64528fc75aa74fd6aea024}} 
+\index{dmt::FolderManager@{dmt::FolderManager}!defaultDirectory@{defaultDirectory}}
+\index{defaultDirectory@{defaultDirectory}!dmt::FolderManager@{dmt::FolderManager}}
+\doxysubsubsection{\texorpdfstring{defaultDirectory}{defaultDirectory}}
+{\footnotesize\ttfamily const juce\+::\+File\& dmt\+::\+Folder\+Manager\+::default\+Directory\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{=}
+\DoxyCodeLine{\ \ \ \ juce::File::getSpecialLocation(}
+\DoxyCodeLine{\ \ \ \ \ \ juce::File::SpecialLocationType::commonDocumentsDirectory)}
+\DoxyCodeLine{\ \ \ \ \ \ .getChildFile(ProjectInfo::companyName)}
+\DoxyCodeLine{\ \ \ \ \ \ .getChildFile(ProjectInfo::projectName)}
+
+\end{DoxyCode}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Preset/Folder\+Manager.\+h\end{DoxyCompactItemize}

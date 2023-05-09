@@ -1,0 +1,57 @@
+\hypertarget{_folder_manager_8h_source}{}\doxysection{Folder\+Manager.\+h}
+\label{_folder_manager_8h_source}\index{Preset/FolderManager.h@{Preset/FolderManager.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00002\ \textcolor{comment}{\ \ ==============================================================================}}
+\DoxyCodeLine{00003\ \textcolor{comment}{}}
+\DoxyCodeLine{00004\ \textcolor{comment}{\ \ \ \ FolderManager.h}}
+\DoxyCodeLine{00005\ \textcolor{comment}{\ \ \ \ Created:\ 28\ Dec\ 2022\ 3:02:41pm}}
+\DoxyCodeLine{00006\ \textcolor{comment}{\ \ \ \ Author:\ \ Lunix}}
+\DoxyCodeLine{00007\ \textcolor{comment}{}}
+\DoxyCodeLine{00008\ \textcolor{comment}{\ \ ==============================================================================}}
+\DoxyCodeLine{00009\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ <JuceHeader.h>}}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{comment}{//==============================================================================}}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \textcolor{keyword}{namespace\ }dmt\ \{}
+\DoxyCodeLine{00018\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classdmt_1_1_folder_manager}{FolderManager}}\ :\ juce::ValueTree::Listener}
+\DoxyCodeLine{00019\ \{}
+\DoxyCodeLine{00020\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00021\ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ juce::File\&\ defaultDirectory\ =}
+\DoxyCodeLine{00022\ \ \ \ \ juce::File::getSpecialLocation(}
+\DoxyCodeLine{00023\ \ \ \ \ \ \ juce::File::SpecialLocationType::commonDocumentsDirectory)}
+\DoxyCodeLine{00024\ \ \ \ \ \ \ .getChildFile(ProjectInfo::companyName)}
+\DoxyCodeLine{00025\ \ \ \ \ \ \ .getChildFile(ProjectInfo::projectName);}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ juce::String\&\ folderNameProperty\ =\ \textcolor{stringliteral}{"{}folderName"{}};}
+\DoxyCodeLine{00028\ }
+\DoxyCodeLine{00029\ \ \ \mbox{\hyperlink{classdmt_1_1_folder_manager}{FolderManager}}(juce::AudioProcessorValueTreeState\&\ apvts)}
+\DoxyCodeLine{00030\ \ \ \ \ :\ valueTreeState(apvts)}
+\DoxyCodeLine{00031\ \ \ \{}
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{comment}{//\ Create\ default\ directory}}
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keywordflow}{if}\ (!defaultDirectory.exists())\ \{}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\ result\ =\ defaultDirectory.createDirectory();}
+\DoxyCodeLine{00035\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (result.failed())\ \{}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ \ \ DBG(\textcolor{stringliteral}{"{}Could\ not\ create\ preset\ directory:\ "{}}\ +\ result.getErrorMessage());}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \ \ jassertfalse;}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00039\ \ \ \ \ \}}
+\DoxyCodeLine{00040\ \ \ \ \ valueTreeState.state.addListener(\textcolor{keyword}{this});}
+\DoxyCodeLine{00041\ \ \ \ \ currentFolder.referTo(}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ valueTreeState.state.getPropertyAsValue(folderNameProperty,\ \textcolor{keyword}{nullptr}));}
+\DoxyCodeLine{00043\ \ \ \}}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00045\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00046\ \ \ \textcolor{comment}{//==============================================================================}}
+\DoxyCodeLine{00047\ \ \ juce::AudioProcessorValueTreeState\&\ valueTreeState;}
+\DoxyCodeLine{00048\ \ \ juce::StringArray\ folderList;}
+\DoxyCodeLine{00049\ \ \ juce::Value\ currentFolder;}
+\DoxyCodeLine{00050\ \};}
+\DoxyCodeLine{00051\ \}}
+
+\end{DoxyCode}

@@ -1,0 +1,94 @@
+\hypertarget{_folder_panel_8h_source}{}\doxysection{Folder\+Panel.\+h}
+\label{_folder_panel_8h_source}\index{Preset/FolderPanel.h@{Preset/FolderPanel.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00002\ \textcolor{comment}{\ \ ==============================================================================}}
+\DoxyCodeLine{00003\ \textcolor{comment}{}}
+\DoxyCodeLine{00004\ \textcolor{comment}{\ \ \ \ FolderPanel.h}}
+\DoxyCodeLine{00005\ \textcolor{comment}{\ \ \ \ Created:\ 28\ Dec\ 2022\ 3:02:30pm}}
+\DoxyCodeLine{00006\ \textcolor{comment}{\ \ \ \ Author:\ \ Lunix}}
+\DoxyCodeLine{00007\ \textcolor{comment}{}}
+\DoxyCodeLine{00008\ \textcolor{comment}{\ \ ==============================================================================}}
+\DoxyCodeLine{00009\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ <JuceHeader.h>}}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{comment}{//==============================================================================}}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \textcolor{keyword}{namespace\ }dmt\ \{}
+\DoxyCodeLine{00018\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classdmt_1_1_folder_panel}{FolderPanel}}}
+\DoxyCodeLine{00019\ \ \ :\ \textcolor{keyword}{public}\ juce::Component}
+\DoxyCodeLine{00020\ \ \ ,\ juce::Button::Listener}
+\DoxyCodeLine{00021\ \ \ ,\ juce::ComboBox::Listener}
+\DoxyCodeLine{00022\ \{}
+\DoxyCodeLine{00023\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00024\ \ \ \mbox{\hyperlink{classdmt_1_1_folder_panel}{FolderPanel}}()}
+\DoxyCodeLine{00025\ \ \ \{}
+\DoxyCodeLine{00026\ \ \ \ \ configureButton(newButton,\ \textcolor{stringliteral}{"{}New"{}});}
+\DoxyCodeLine{00027\ \ \ \ \ configureButton(previousFolderButton,\ \textcolor{stringliteral}{"{}<"{}});}
+\DoxyCodeLine{00028\ \ \ \ \ configureButton(nextFolderButton,\ \textcolor{stringliteral}{"{}>"{}});}
+\DoxyCodeLine{00029\ \ \ \ \ configureButton(deleteButton,\ \textcolor{stringliteral}{"{}Delete"{}});}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00031\ \ \ \ \ folderListBox.setTextWhenNothingSelected(\textcolor{stringliteral}{"{}No\ Folder\ Selected"{}});}
+\DoxyCodeLine{00032\ \ \ \ \ folderListBox.setTextWhenNoChoicesAvailable(\textcolor{stringliteral}{"{}No\ Folder\ Available"{}});}
+\DoxyCodeLine{00033\ \ \ \ \ folderListBox.setMouseCursor(juce::MouseCursor::PointingHandCursor);}
+\DoxyCodeLine{00034\ \ \ \ \ addAndMakeVisible(folderListBox);}
+\DoxyCodeLine{00035\ \ \ \ \ folderListBox.addListener(\textcolor{keyword}{this});}
+\DoxyCodeLine{00036\ \ \ \}}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00038\ \ \ \mbox{\hyperlink{classdmt_1_1_folder_panel}{\string~FolderPanel}}()\textcolor{keyword}{\ override}}
+\DoxyCodeLine{00039\ \textcolor{keyword}{\ \ }\{}
+\DoxyCodeLine{00040\ \ \ \ \ newButton.removeListener(\textcolor{keyword}{this});}
+\DoxyCodeLine{00041\ \ \ \ \ previousFolderButton.removeListener(\textcolor{keyword}{this});}
+\DoxyCodeLine{00042\ \ \ \ \ nextFolderButton.removeListener(\textcolor{keyword}{this});}
+\DoxyCodeLine{00043\ \ \ \ \ deleteButton.removeListener(\textcolor{keyword}{this});}
+\DoxyCodeLine{00044\ \ \ \ \ folderListBox.removeListener(\textcolor{keyword}{this});}
+\DoxyCodeLine{00045\ \ \ \}}
+\DoxyCodeLine{00046\ }
+\DoxyCodeLine{00047\ \ \ \textcolor{keywordtype}{void}\ paint(juce::Graphics\&)\textcolor{keyword}{\ override\ }\{\}}
+\DoxyCodeLine{00048\ }
+\DoxyCodeLine{00049\ \ \ \textcolor{keywordtype}{void}\ resized()\textcolor{keyword}{\ override}}
+\DoxyCodeLine{00050\ \textcolor{keyword}{\ \ }\{}
+\DoxyCodeLine{00051\ \ \ \ \ \textcolor{keyword}{auto}\ padding\ =\ 1;}
+\DoxyCodeLine{00052\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\ container\ =\ getLocalBounds().reduced(padding);}
+\DoxyCodeLine{00053\ \ \ \ \ \textcolor{keyword}{auto}\ bounds\ =\ container;}
+\DoxyCodeLine{00054\ }
+\DoxyCodeLine{00055\ \ \ \ \ newButton.setBounds(}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ bounds.removeFromLeft(container.proportionOfWidth(0.2)).reduced(padding));}
+\DoxyCodeLine{00057\ \ \ \ \ previousFolderButton.setBounds(}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ bounds.removeFromLeft(container.proportionOfWidth(0.1)).reduced(padding));}
+\DoxyCodeLine{00059\ \ \ \ \ folderListBox.setBounds(}
+\DoxyCodeLine{00060\ \ \ \ \ \ \ bounds.removeFromLeft(container.proportionOfWidth(0.4)).reduced(padding));}
+\DoxyCodeLine{00061\ \ \ \ \ nextFolderButton.setBounds(}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ bounds.removeFromLeft(container.proportionOfWidth(0.1)).reduced(padding));}
+\DoxyCodeLine{00063\ \ \ \ \ deleteButton.setBounds(bounds.reduced(padding));}
+\DoxyCodeLine{00064\ \ \ \}}
+\DoxyCodeLine{00065\ }
+\DoxyCodeLine{00066\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00067\ \ \ \textcolor{keywordtype}{void}\ buttonClicked(juce::Button*\ button)\textcolor{keyword}{\ override\ }\{\}}
+\DoxyCodeLine{00068\ }
+\DoxyCodeLine{00069\ \ \ \textcolor{keywordtype}{void}\ comboBoxChanged(juce::ComboBox*\ comboBoxThatHasChanged)\textcolor{keyword}{\ override\ }\{\}}
+\DoxyCodeLine{00070\ }
+\DoxyCodeLine{00071\ \ \ \textcolor{keywordtype}{void}\ configureButton(juce::Button\&\ button,\ \textcolor{keyword}{const}\ juce::String\&\ buttontext)}
+\DoxyCodeLine{00072\ \ \ \{}
+\DoxyCodeLine{00073\ \ \ \ \ button.setButtonText(buttontext);}
+\DoxyCodeLine{00074\ \ \ \ \ button.setMouseCursor(juce::MouseCursor::PointingHandCursor);}
+\DoxyCodeLine{00075\ \ \ \ \ addAndMakeVisible(button);}
+\DoxyCodeLine{00076\ \ \ \ \ button.addListener(\textcolor{keyword}{this});}
+\DoxyCodeLine{00077\ \ \ \}}
+\DoxyCodeLine{00078\ }
+\DoxyCodeLine{00079\ \ \ juce::TextButton\ newButton;}
+\DoxyCodeLine{00080\ \ \ juce::TextButton\ previousFolderButton;}
+\DoxyCodeLine{00081\ \ \ juce::TextButton\ nextFolderButton;}
+\DoxyCodeLine{00082\ \ \ juce::TextButton\ deleteButton;}
+\DoxyCodeLine{00083\ }
+\DoxyCodeLine{00084\ \ \ juce::ComboBox\ folderListBox;}
+\DoxyCodeLine{00085\ }
+\DoxyCodeLine{00086\ \ \ JUCE\_DECLARE\_NON\_COPYABLE\_WITH\_LEAK\_DETECTOR(\mbox{\hyperlink{classdmt_1_1_folder_panel}{FolderPanel}})}
+\DoxyCodeLine{00087\ \};}
+\DoxyCodeLine{00088\ \}}
+
+\end{DoxyCode}

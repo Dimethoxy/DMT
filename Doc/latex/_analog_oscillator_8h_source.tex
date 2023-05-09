@@ -1,0 +1,166 @@
+\hypertarget{_analog_oscillator_8h_source}{}\doxysection{Analog\+Oscillator.\+h}
+\label{_analog_oscillator_8h_source}\index{Synth/AnalogOscillator.h@{Synth/AnalogOscillator.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ "{}AnalogWaveform.h"{}}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ <JuceHeader.h>}}
+\DoxyCodeLine{00005\ }
+\DoxyCodeLine{00006\ \textcolor{keyword}{namespace\ }dmt\ \{}
+\DoxyCodeLine{00007\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classdmt_1_1_analog_oscillator}{AnalogOscillator}}}
+\DoxyCodeLine{00008\ \{}
+\DoxyCodeLine{00009\ \ \ \textcolor{keyword}{using\ }Math\ =\ juce::dsp::FastMathApproximations;}
+\DoxyCodeLine{00010\ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{float}\ twoPi\ =\ juce::MathConstants<float>::twoPi;}
+\DoxyCodeLine{00011\ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{float}\ pi\ =\ juce::MathConstants<float>::pi;}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00014\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ setSampleRate(\textcolor{keyword}{const}\ \textcolor{keywordtype}{float}\ sampleRate)\ \textcolor{keyword}{noexcept}}
+\DoxyCodeLine{00015\ \ \ \{}
+\DoxyCodeLine{00016\ \ \ \ \ \textcolor{keywordtype}{float}\ rangeEnd\ =}
+\DoxyCodeLine{00017\ \ \ \ \ \ \ std::nextafter(392000.0f,\ std::numeric\_limits<float>::max());}
+\DoxyCodeLine{00018\ \ \ \ \ \textcolor{keyword}{const}\ juce::Range<float>\ validRange(20.0f,\ rangeEnd);}
+\DoxyCodeLine{00019\ \ \ \ \ jassert(validRange.contains(sampleRate));}
+\DoxyCodeLine{00020\ \ \ \ \ this-\/>sampleRate\ =\ sampleRate;}
+\DoxyCodeLine{00021\ \ \ \}}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00023\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{float}\ getNextSample()\ \textcolor{keyword}{noexcept}}
+\DoxyCodeLine{00024\ \ \ \{}
+\DoxyCodeLine{00025\ \ \ \ \ \textcolor{keywordflow}{if}\ (sampleRate\ <=\ 0.0f)}
+\DoxyCodeLine{00026\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 0.0f;}
+\DoxyCodeLine{00027\ }
+\DoxyCodeLine{00028\ \ \ \ \ advancePhase();}
+\DoxyCodeLine{00029\ }
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keyword}{auto}\ syncedPhase\ =\ getSyncedPhase(phase\ *\ pwmModifier);}
+\DoxyCodeLine{00031\ \ \ \ \ \textcolor{keyword}{auto}\ bendedPhase\ =\ getBendedPhase(syncedPhase);}
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keywordflow}{if}\ (phase\ >=\ twoPi\ /\ pwmModifier)}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 0.0f;}
+\DoxyCodeLine{00035\ }
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keywordtype}{float}\ sample\ =\ waveform.getSample(bendedPhase);}
+\DoxyCodeLine{00037\ \ \ \ \ distortSample(sample);}
+\DoxyCodeLine{00038\ \ \ \ \ \textcolor{keywordflow}{return}\ std::clamp(sample,\ -\/1.0f,\ +1.0f);}
+\DoxyCodeLine{00039\ \ \ \}}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00041\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ setFrequency(\textcolor{keyword}{const}\ \textcolor{keywordtype}{float}\ frequency)\ \textcolor{keyword}{noexcept}}
+\DoxyCodeLine{00042\ \ \ \{}
+\DoxyCodeLine{00043\ \ \ \ \ this-\/>frequency\ =\ frequency;}
+\DoxyCodeLine{00044\ \ \ \}}
+\DoxyCodeLine{00045\ }
+\DoxyCodeLine{00046\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ setWaveformType(\textcolor{keyword}{const}\ dmt::AnalogWaveform::Type\ type)\ \textcolor{keyword}{noexcept}}
+\DoxyCodeLine{00047\ \ \ \{}
+\DoxyCodeLine{00048\ \ \ \ \ waveform.type\ =\ type;}
+\DoxyCodeLine{00049\ \ \ \}}
+\DoxyCodeLine{00050\ }
+\DoxyCodeLine{00051\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ setDrive(\textcolor{keyword}{const}\ \textcolor{keywordtype}{float}\ newDrive)\ \textcolor{keyword}{noexcept}}
+\DoxyCodeLine{00052\ \ \ \{}
+\DoxyCodeLine{00053\ \ \ \ \ this-\/>drive\ =\ newDrive;}
+\DoxyCodeLine{00054\ \ \ \}}
+\DoxyCodeLine{00055\ }
+\DoxyCodeLine{00056\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ setBias(\textcolor{keyword}{const}\ \textcolor{keywordtype}{float}\ newBias)\ \textcolor{keyword}{noexcept}\ \{\ this-\/>bias\ =\ newBias;\ \}}
+\DoxyCodeLine{00057\ }
+\DoxyCodeLine{00058\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ setPhase(\textcolor{keyword}{const}\ \textcolor{keywordtype}{float}\ newPhase)\ \textcolor{keyword}{noexcept}}
+\DoxyCodeLine{00059\ \ \ \{}
+\DoxyCodeLine{00060\ \ \ \ \ this-\/>phase\ =\ newPhase;}
+\DoxyCodeLine{00061\ \ \ \}}
+\DoxyCodeLine{00062\ }
+\DoxyCodeLine{00063\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ setBend(\textcolor{keyword}{const}\ \textcolor{keywordtype}{float}\ bendModifier)\ \textcolor{keyword}{noexcept}}
+\DoxyCodeLine{00064\ \ \ \{}
+\DoxyCodeLine{00065\ \ \ \ \ \textcolor{keywordtype}{float}\ rangeEnd\ =\ std::nextafter(100.0f,\ std::numeric\_limits<float>::max());}
+\DoxyCodeLine{00066\ \ \ \ \ \textcolor{keyword}{const}\ juce::NormalisableRange<float>\ sourceRange(-\/100.0f,\ rangeEnd);}
+\DoxyCodeLine{00067\ \ \ \ \ jassert(sourceRange.getRange().contains(bendModifier));}
+\DoxyCodeLine{00068\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\ normalisedValue\ =\ sourceRange.convertTo0to1(bendModifier);}
+\DoxyCodeLine{00069\ \ \ \ \ \textcolor{keyword}{const}\ juce::NormalisableRange<float>\ targetRange(0.1f,\ 0.9f);}
+\DoxyCodeLine{00070\ \ \ \ \ this-\/>posityCycleRatio\ =\ targetRange.convertFrom0to1(normalisedValue);}
+\DoxyCodeLine{00071\ \ \ \}}
+\DoxyCodeLine{00072\ }
+\DoxyCodeLine{00073\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ setPwm(\textcolor{keyword}{const}\ \textcolor{keywordtype}{float}\ pwmModifier)\ \textcolor{keyword}{noexcept}}
+\DoxyCodeLine{00074\ \ \ \{}
+\DoxyCodeLine{00075\ \ \ \ \ \textcolor{keywordtype}{float}\ rangeEnd\ =\ std::nextafter(100.0f,\ std::numeric\_limits<float>::max());}
+\DoxyCodeLine{00076\ \ \ \ \ \textcolor{keyword}{const}\ juce::NormalisableRange<float>\ sourceRange(0.0f,\ rangeEnd);}
+\DoxyCodeLine{00077\ \ \ \ \ jassert(sourceRange.getRange().contains(pwmModifier));}
+\DoxyCodeLine{00078\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\ normalisedValue\ =\ sourceRange.convertTo0to1(pwmModifier);}
+\DoxyCodeLine{00079\ \ \ \ \ \textcolor{keyword}{const}\ juce::NormalisableRange<float>\ targetRange(1.0f,\ 5.0f);}
+\DoxyCodeLine{00080\ \ \ \ \ this-\/>pwmModifier\ =\ targetRange.convertFrom0to1(normalisedValue);}
+\DoxyCodeLine{00081\ \ \ \}}
+\DoxyCodeLine{00082\ }
+\DoxyCodeLine{00083\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ setSync(\textcolor{keyword}{const}\ \textcolor{keywordtype}{float}\ syncModifier)\ \textcolor{keyword}{noexcept}}
+\DoxyCodeLine{00084\ \ \ \{}
+\DoxyCodeLine{00085\ \ \ \ \ \textcolor{keywordtype}{float}\ rangeEnd\ =\ std::nextafter(100.0f,\ std::numeric\_limits<float>::max());}
+\DoxyCodeLine{00086\ \ \ \ \ \textcolor{keyword}{const}\ juce::NormalisableRange<float>\ sourceRange(0.0f,\ rangeEnd);}
+\DoxyCodeLine{00087\ \ \ \ \ jassert(sourceRange.getRange().contains(syncModifier));}
+\DoxyCodeLine{00088\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\ normalisedValue\ =\ sourceRange.convertTo0to1(syncModifier);}
+\DoxyCodeLine{00089\ \ \ \ \ \textcolor{keyword}{const}\ juce::NormalisableRange<float>\ targetRange(1.0f,\ 5.0f);}
+\DoxyCodeLine{00090\ \ \ \ \ this-\/>syncModifier\ =\ targetRange.convertFrom0to1(normalisedValue);}
+\DoxyCodeLine{00091\ \ \ \}}
+\DoxyCodeLine{00092\ }
+\DoxyCodeLine{00093\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00094\ \ \ \mbox{\hyperlink{structdmt_1_1_analog_waveform}{dmt::AnalogWaveform}}\ waveform;}
+\DoxyCodeLine{00095\ \ \ \textcolor{keywordtype}{float}\ frequency\ =\ 50.0f;}
+\DoxyCodeLine{00096\ \ \ \textcolor{keywordtype}{float}\ sampleRate\ =\ -\/1.0f;}
+\DoxyCodeLine{00097\ \ \ \textcolor{keywordtype}{float}\ phase\ =\ 0.0f;}
+\DoxyCodeLine{00098\ }
+\DoxyCodeLine{00099\ \ \ \textcolor{keywordtype}{float}\ drive\ =\ 0.0f;}
+\DoxyCodeLine{00100\ \ \ \textcolor{keywordtype}{float}\ bias\ =\ 0.0f;}
+\DoxyCodeLine{00101\ \ \ \textcolor{keywordtype}{float}\ pwmModifier\ =\ 1.0f;}
+\DoxyCodeLine{00102\ \ \ \textcolor{keywordtype}{float}\ syncModifier\ =\ 1.0f;}
+\DoxyCodeLine{00103\ \ \ \textcolor{keywordtype}{float}\ posityCycleRatio\ =\ 0.5f;}
+\DoxyCodeLine{00104\ }
+\DoxyCodeLine{00105\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ advancePhase()\ \textcolor{keyword}{noexcept}}
+\DoxyCodeLine{00106\ \ \ \{}
+\DoxyCodeLine{00107\ \ \ \ \ \textcolor{keywordtype}{float}\ cycleLength\ =\ sampleRate\ /\ frequency;}
+\DoxyCodeLine{00108\ \ \ \ \ \textcolor{keywordtype}{float}\ phaseDelta\ =\ twoPi\ /\ cycleLength;}
+\DoxyCodeLine{00109\ \ \ \ \ phase\ +=\ phaseDelta;}
+\DoxyCodeLine{00110\ }
+\DoxyCodeLine{00111\ \ \ \ \ \textcolor{keywordflow}{if}\ (phase\ >=\ twoPi)\ \{}
+\DoxyCodeLine{00112\ \ \ \ \ \ \ phase\ -\/=\ twoPi;}
+\DoxyCodeLine{00113\ \ \ \ \ \}}
+\DoxyCodeLine{00114\ \ \ \}}
+\DoxyCodeLine{00115\ }
+\DoxyCodeLine{00116\ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{float}\ getSyncedPhase(\textcolor{keywordtype}{float}\ rawPhase)\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}}
+\DoxyCodeLine{00117\ \ \ \{}
+\DoxyCodeLine{00118\ \ \ \ \ \textcolor{keywordtype}{float}\ syncedPhase\ =\ rawPhase\ *\ syncModifier;}
+\DoxyCodeLine{00119\ \ \ \ \ \textcolor{keywordflow}{while}\ (syncedPhase\ >=\ twoPi)\ \{}
+\DoxyCodeLine{00120\ \ \ \ \ \ \ syncedPhase\ -\/=\ twoPi;}
+\DoxyCodeLine{00121\ \ \ \ \ \}}
+\DoxyCodeLine{00122\ \ \ \ \ \textcolor{keywordflow}{return}\ syncedPhase;}
+\DoxyCodeLine{00123\ \ \ \}}
+\DoxyCodeLine{00124\ }
+\DoxyCodeLine{00125\ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{float}\ getBendedPhase(\textcolor{keywordtype}{float}\ rawPhase)\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}}
+\DoxyCodeLine{00126\ \ \ \{}
+\DoxyCodeLine{00127\ \ \ \ \ \textcolor{keyword}{auto}\ bendedPhase\ =\ rawPhase;}
+\DoxyCodeLine{00128\ }
+\DoxyCodeLine{00129\ \ \ \ \ \textcolor{keywordtype}{float}\ positiveCycleSize\ =\ posityCycleRatio\ *\ twoPi;}
+\DoxyCodeLine{00130\ \ \ \ \ \textcolor{keywordtype}{float}\ negativeCycleRatio\ =\ 1.0f\ -\/\ posityCycleRatio;}
+\DoxyCodeLine{00131\ \ \ \ \ \textcolor{keywordtype}{float}\ negativeCycleSize\ =\ negativeCycleRatio\ *\ twoPi;}
+\DoxyCodeLine{00132\ }
+\DoxyCodeLine{00133\ \ \ \ \ \textcolor{keywordflow}{if}\ (rawPhase\ <=\ positiveCycleSize)\ \{}
+\DoxyCodeLine{00134\ \ \ \ \ \ \ bendedPhase\ /=\ (posityCycleRatio\ *\ 2.0f);}
+\DoxyCodeLine{00135\ \ \ \ \ \}}
+\DoxyCodeLine{00136\ }
+\DoxyCodeLine{00137\ \ \ \ \ \textcolor{keywordflow}{if}\ (rawPhase\ >\ positiveCycleSize)\ \{}
+\DoxyCodeLine{00138\ \ \ \ \ \ \ bendedPhase\ =\ (rawPhase\ -\/\ positiveCycleSize)\ /\ negativeCycleSize;}
+\DoxyCodeLine{00139\ \ \ \ \ \ \ bendedPhase\ =\ bendedPhase\ *\ pi\ +\ pi;}
+\DoxyCodeLine{00140\ \ \ \ \ \}}
+\DoxyCodeLine{00141\ \ \ \ \ \textcolor{keywordflow}{return}\ bendedPhase;}
+\DoxyCodeLine{00142\ \ \ \}}
+\DoxyCodeLine{00143\ }
+\DoxyCodeLine{00144\ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{void}\ distortSample(\textcolor{keywordtype}{float}\&\ sample)\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}}
+\DoxyCodeLine{00145\ \ \ \{}
+\DoxyCodeLine{00146\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{float}\ tanhConstant\ =\ 0.7615941559558;}
+\DoxyCodeLine{00147\ }
+\DoxyCodeLine{00148\ \ \ \ \ \textcolor{keywordflow}{if}\ (drive\ >=\ 1.0f)\ \{}
+\DoxyCodeLine{00149\ \ \ \ \ \ \ sample\ =\ Math::tanh(drive\ *\ sample);}
+\DoxyCodeLine{00150\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00151\ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ invertedDrive\ =\ 1.0f\ -\/\ drive;}
+\DoxyCodeLine{00152\ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ wetSample\ =\ drive\ *\ Math::tanh(sample);}
+\DoxyCodeLine{00153\ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ drySample\ =\ invertedDrive\ *\ sample\ *\ 0.7615941559558;}
+\DoxyCodeLine{00154\ \ \ \ \ \ \ sample\ =\ wetSample\ +\ drySample;}
+\DoxyCodeLine{00155\ \ \ \ \ \}}
+\DoxyCodeLine{00156\ }
+\DoxyCodeLine{00157\ \ \ \ \ sample\ =\ sample\ +\ bias;}
+\DoxyCodeLine{00158\ \ \ \}}
+\DoxyCodeLine{00159\ \};}
+\DoxyCodeLine{00160\ \}}
+
+\end{DoxyCode}

@@ -1,0 +1,32 @@
+\hypertarget{_linear_slider_8h_source}{}\doxysection{Linear\+Slider.\+h}
+\label{_linear_slider_8h_source}\index{Widgets/LinearSlider.h@{Widgets/LinearSlider.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ "{}../Utility/AppSettings.h"{}}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ "{}LookAndFeel.h"{}}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ <JuceHeader.h>}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{keyword}{namespace\ }dmt\ \{}
+\DoxyCodeLine{00008\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classdmt_1_1_linear_slider}{LinearSlider}}\ :\ \textcolor{keyword}{public}\ juce::Slider}
+\DoxyCodeLine{00009\ \{}
+\DoxyCodeLine{00010\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00011\ \ \ \mbox{\hyperlink{classdmt_1_1_linear_slider}{LinearSlider}}()}
+\DoxyCodeLine{00012\ \ \ \ \ :\ juce::Slider()}
+\DoxyCodeLine{00013\ \ \ \ \ ,\ lnf()}
+\DoxyCodeLine{00014\ \ \ \{}
+\DoxyCodeLine{00015\ \ \ \ \ setSliderStyle(juce::Slider::SliderStyle::LinearVertical);}
+\DoxyCodeLine{00016\ \ \ \ \ setTextBoxStyle(juce::Slider::TextBoxBelow,\ \textcolor{keyword}{true},\ 0,\ 0);}
+\DoxyCodeLine{00017\ \ \ \ \ juce::Random\ rand;}
+\DoxyCodeLine{00018\ \ \ \ \ setValue(10.0f\ *\ rand.nextFloat());}
+\DoxyCodeLine{00019\ \ \ \ \ setLookAndFeel(\&lnf);}
+\DoxyCodeLine{00020\ \ \ \}}
+\DoxyCodeLine{00021\ \ \ \mbox{\hyperlink{classdmt_1_1_linear_slider}{\string~LinearSlider}}()\ \{\ setLookAndFeel(\textcolor{keyword}{nullptr});\ \}}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00023\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00024\ \ \ \mbox{\hyperlink{classdmt_1_1_look_and_feel}{dmt::LookAndFeel}}\ lnf;}
+\DoxyCodeLine{00025\ \};}
+\DoxyCodeLine{00026\ \}}
+
+\end{DoxyCode}

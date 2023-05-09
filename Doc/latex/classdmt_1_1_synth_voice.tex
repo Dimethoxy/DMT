@@ -1,0 +1,46 @@
+\hypertarget{classdmt_1_1_synth_voice}{}\doxysection{dmt\+::Synth\+Voice Class Reference}
+\label{classdmt_1_1_synth_voice}\index{dmt::SynthVoice@{dmt::SynthVoice}}
+Inheritance diagram for dmt\+::Synth\+Voice\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classdmt_1_1_synth_voice}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classdmt_1_1_synth_voice_a8999886bc57c2dcb72a7cfba9559561e}\label{classdmt_1_1_synth_voice_a8999886bc57c2dcb72a7cfba9559561e}} 
+bool {\bfseries can\+Play\+Sound} (juce\+::\+Synthesiser\+Sound $\ast$sound) override
+\item 
+\mbox{\Hypertarget{classdmt_1_1_synth_voice_af8ac28d4a744076703dbc47a4c90cb9f}\label{classdmt_1_1_synth_voice_af8ac28d4a744076703dbc47a4c90cb9f}} 
+void {\bfseries controller\+Moved} (int controller\+Number, int new\+Controller\+Value) override
+\item 
+\mbox{\Hypertarget{classdmt_1_1_synth_voice_a20bdd361e4634db1ccf1e2ff658d2564}\label{classdmt_1_1_synth_voice_a20bdd361e4634db1ccf1e2ff658d2564}} 
+void {\bfseries pitch\+Wheel\+Moved} (int new\+Pitch\+Wheel\+Value) override
+\item 
+\mbox{\Hypertarget{classdmt_1_1_synth_voice_ab31c407c568c031d6263ae118891032d}\label{classdmt_1_1_synth_voice_ab31c407c568c031d6263ae118891032d}} 
+void {\bfseries prepare\+To\+Play} (double sample\+Rate, int samples\+Per\+Block, int output\+Channels)
+\item 
+\mbox{\Hypertarget{classdmt_1_1_synth_voice_aa69db86ef2918b6d11dddd51f3a3e7a8}\label{classdmt_1_1_synth_voice_aa69db86ef2918b6d11dddd51f3a3e7a8}} 
+void {\bfseries start\+Note} (int midi\+Note\+Number, float velocity, juce\+::\+Synthesiser\+Sound $\ast$sound, int current\+Pitch\+Wheel\+Position) override
+\item 
+\mbox{\Hypertarget{classdmt_1_1_synth_voice_ac909bc0db841ada2b6416327de778500}\label{classdmt_1_1_synth_voice_ac909bc0db841ada2b6416327de778500}} 
+void {\bfseries stop\+Note} (float velocity, bool allow\+Tail\+Off) override
+\item 
+\mbox{\Hypertarget{classdmt_1_1_synth_voice_a00da7029004dcd36f45e5a13a77bece5}\label{classdmt_1_1_synth_voice_a00da7029004dcd36f45e5a13a77bece5}} 
+void {\bfseries render\+Next\+Block} (juce\+::\+Audio\+Buffer$<$ float $>$ \&output\+Buffer, int start\+Sample, int num\+Samples) override
+\item 
+\mbox{\Hypertarget{classdmt_1_1_synth_voice_a009f0ca30d5c724119d7c5b875b2af46}\label{classdmt_1_1_synth_voice_a009f0ca30d5c724119d7c5b875b2af46}} 
+void {\bfseries set\+Chain\+Settings} (\mbox{\hyperlink{structdmt_1_1_chain_settings}{dmt\+::\+Chain\+Settings}} chain\+Settings)
+\item 
+\mbox{\Hypertarget{classdmt_1_1_synth_voice_a1483bc5591c9731c59d917ab1bfc568f}\label{classdmt_1_1_synth_voice_a1483bc5591c9731c59d917ab1bfc568f}} 
+void {\bfseries add\+On\+Note\+Receivers} (std\+::function$<$ void()$>$ callback\+Function)
+\item 
+\mbox{\Hypertarget{classdmt_1_1_synth_voice_a5758eff130a5449939300e6181ae60c2}\label{classdmt_1_1_synth_voice_a5758eff130a5449939300e6181ae60c2}} 
+void {\bfseries call\+On\+Note\+Receivers} ()
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Synth/Synth\+Voice.\+h\end{DoxyCompactItemize}

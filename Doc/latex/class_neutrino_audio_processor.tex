@@ -1,0 +1,83 @@
+\hypertarget{class_neutrino_audio_processor}{}\doxysection{Neutrino\+Audio\+Processor Class Reference}
+\label{class_neutrino_audio_processor}\index{NeutrinoAudioProcessor@{NeutrinoAudioProcessor}}
+Inheritance diagram for Neutrino\+Audio\+Processor\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_neutrino_audio_processor}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_neutrino_audio_processor_a31899cd4028e5e6ddc1be626680baf25}\label{class_neutrino_audio_processor_a31899cd4028e5e6ddc1be626680baf25}} 
+void {\bfseries prepare\+To\+Play} (double sample\+Rate, int samples\+Per\+Block) override
+\item 
+\mbox{\Hypertarget{class_neutrino_audio_processor_aa9cc4799995fd4676f237858c5e5bd66}\label{class_neutrino_audio_processor_aa9cc4799995fd4676f237858c5e5bd66}} 
+void {\bfseries release\+Resources} () override
+\item 
+\mbox{\Hypertarget{class_neutrino_audio_processor_ade322f20c479a736dbee095fb8edc3fa}\label{class_neutrino_audio_processor_ade322f20c479a736dbee095fb8edc3fa}} 
+bool {\bfseries is\+Buses\+Layout\+Supported} (const Buses\+Layout \&layouts) const override
+\item 
+\mbox{\Hypertarget{class_neutrino_audio_processor_a05812fd9663220d0bdb60f5487167f5b}\label{class_neutrino_audio_processor_a05812fd9663220d0bdb60f5487167f5b}} 
+void {\bfseries process\+Block} (juce\+::\+Audio\+Buffer$<$ float $>$ \&, juce\+::\+Midi\+Buffer \&) override
+\item 
+\mbox{\Hypertarget{class_neutrino_audio_processor_a4ceb7e2124f4bdbac455118a73d2ec88}\label{class_neutrino_audio_processor_a4ceb7e2124f4bdbac455118a73d2ec88}} 
+juce\+::\+Audio\+Processor\+Editor $\ast$ {\bfseries create\+Editor} () override
+\item 
+\mbox{\Hypertarget{class_neutrino_audio_processor_ae5a5e24b491e47f75ba628b06f03fb3f}\label{class_neutrino_audio_processor_ae5a5e24b491e47f75ba628b06f03fb3f}} 
+bool {\bfseries has\+Editor} () const override
+\item 
+\mbox{\Hypertarget{class_neutrino_audio_processor_ab790bb3e4e571e350b0412a250b6ddf7}\label{class_neutrino_audio_processor_ab790bb3e4e571e350b0412a250b6ddf7}} 
+const juce\+::\+String {\bfseries get\+Name} () const override
+\item 
+\mbox{\Hypertarget{class_neutrino_audio_processor_ae73ceaf1b997b02b9d42139cf27f7375}\label{class_neutrino_audio_processor_ae73ceaf1b997b02b9d42139cf27f7375}} 
+bool {\bfseries accepts\+Midi} () const override
+\item 
+\mbox{\Hypertarget{class_neutrino_audio_processor_ae5e109965de2cc23a47c8f9796bcb6e3}\label{class_neutrino_audio_processor_ae5e109965de2cc23a47c8f9796bcb6e3}} 
+bool {\bfseries produces\+Midi} () const override
+\item 
+\mbox{\Hypertarget{class_neutrino_audio_processor_a6523f6ab0764bdf4a57168680fe1acac}\label{class_neutrino_audio_processor_a6523f6ab0764bdf4a57168680fe1acac}} 
+bool {\bfseries is\+Midi\+Effect} () const override
+\item 
+\mbox{\Hypertarget{class_neutrino_audio_processor_a384a67efe3dc7ae5366e17949470a5a3}\label{class_neutrino_audio_processor_a384a67efe3dc7ae5366e17949470a5a3}} 
+double {\bfseries get\+Tail\+Length\+Seconds} () const override
+\item 
+\mbox{\Hypertarget{class_neutrino_audio_processor_a57e0685c50618d5a7e6d28d9a0b2063d}\label{class_neutrino_audio_processor_a57e0685c50618d5a7e6d28d9a0b2063d}} 
+int {\bfseries get\+Num\+Programs} () override
+\item 
+\mbox{\Hypertarget{class_neutrino_audio_processor_afef53ee746a21609694d7335653b7932}\label{class_neutrino_audio_processor_afef53ee746a21609694d7335653b7932}} 
+int {\bfseries get\+Current\+Program} () override
+\item 
+\mbox{\Hypertarget{class_neutrino_audio_processor_a235a1b94e484fd36fedb27ecca989809}\label{class_neutrino_audio_processor_a235a1b94e484fd36fedb27ecca989809}} 
+void {\bfseries set\+Current\+Program} (int index) override
+\item 
+\mbox{\Hypertarget{class_neutrino_audio_processor_a1847ada01f0d7328429182cf6abd989d}\label{class_neutrino_audio_processor_a1847ada01f0d7328429182cf6abd989d}} 
+const juce\+::\+String {\bfseries get\+Program\+Name} (int index) override
+\item 
+\mbox{\Hypertarget{class_neutrino_audio_processor_a4b68eea0cde1cde2dce199843093d27d}\label{class_neutrino_audio_processor_a4b68eea0cde1cde2dce199843093d27d}} 
+void {\bfseries change\+Program\+Name} (int index, const juce\+::\+String \&new\+Name) override
+\item 
+\mbox{\Hypertarget{class_neutrino_audio_processor_aa9e7ffaf2b6862ed62f9d57e3625ae8c}\label{class_neutrino_audio_processor_aa9e7ffaf2b6862ed62f9d57e3625ae8c}} 
+void {\bfseries get\+State\+Information} (juce\+::\+Memory\+Block \&dest\+Data) override
+\item 
+\mbox{\Hypertarget{class_neutrino_audio_processor_ab2c64dea4ee213487b23b6a997940af8}\label{class_neutrino_audio_processor_ab2c64dea4ee213487b23b6a997940af8}} 
+void {\bfseries set\+State\+Information} (const void $\ast$data, int size\+In\+Bytes) override
+\item 
+\mbox{\Hypertarget{class_neutrino_audio_processor_a34d7896c4b3c5b87e0828a1070a11359}\label{class_neutrino_audio_processor_a34d7896c4b3c5b87e0828a1070a11359}} 
+\mbox{\hyperlink{classdmt_1_1_preset_manager}{dmt\+::\+Preset\+Manager}} \& {\bfseries get\+Preset\+Manager} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_neutrino_audio_processor_a564a592098a6984ff133fcc0095489d5}\label{class_neutrino_audio_processor_a564a592098a6984ff133fcc0095489d5}} 
+juce\+::\+Audio\+Processor\+Value\+Tree\+State {\bfseries apvts}
+\item 
+\mbox{\Hypertarget{class_neutrino_audio_processor_aa4bbe178f36233b36234ec2293a66a5d}\label{class_neutrino_audio_processor_aa4bbe178f36233b36234ec2293a66a5d}} 
+juce\+::\+Midi\+Keyboard\+State {\bfseries keyboard\+State}
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Plugin\+Processor.\+h\item 
+Plugin\+Processor.\+cpp\end{DoxyCompactItemize}

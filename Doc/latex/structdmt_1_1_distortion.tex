@@ -1,0 +1,53 @@
+\hypertarget{structdmt_1_1_distortion}{}\doxysection{dmt\+::Distortion Struct Reference}
+\label{structdmt_1_1_distortion}\index{dmt::Distortion@{dmt::Distortion}}
+\doxysubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structdmt_1_1_distortion_a1b8dfb27a4bb5cac97c33963b95b02d1}\label{structdmt_1_1_distortion_a1b8dfb27a4bb5cac97c33963b95b02d1}} 
+enum class {\bfseries Type} \{ \newline
+{\bfseries Hardclip}
+, {\bfseries Root}
+, {\bfseries Atan}
+, {\bfseries Crunch}
+, \newline
+{\bfseries Bitcrush}
+, {\bfseries Sine}
+, {\bfseries Cosine}
+, {\bfseries Expand}
+, \newline
+{\bfseries Weird}
+, {\bfseries Extreme}
+ \}
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structdmt_1_1_distortion_aba8ac3d4ad35883960a7a5b461f3d0ec}\label{structdmt_1_1_distortion_aba8ac3d4ad35883960a7a5b461f3d0ec}} 
+static juce\+::\+String {\bfseries get\+String} (dmt\+::\+Distortion\+::\+Type type)
+\item 
+\mbox{\Hypertarget{structdmt_1_1_distortion_ac6f96a950a374d2751a9bc6edbc0e5a3}\label{structdmt_1_1_distortion_ac6f96a950a374d2751a9bc6edbc0e5a3}} 
+static void {\bfseries distort\+Sample} (float \&value, dmt\+::\+Distortion\+::\+Type type, float drive)
+\item 
+\mbox{\Hypertarget{structdmt_1_1_distortion_ac905e75dda171daee4cae2d2761af0f5}\label{structdmt_1_1_distortion_ac905e75dda171daee4cae2d2761af0f5}} 
+static float {\bfseries get\+New\+Girth\+Seed} ()
+\item 
+\mbox{\Hypertarget{structdmt_1_1_distortion_aed1a3cfc73f27ae70dfdf74932aff62f}\label{structdmt_1_1_distortion_aed1a3cfc73f27ae70dfdf74932aff62f}} 
+static std\+::vector$<$ float $>$ {\bfseries get\+Girth\+Seeds} (int num\+Samples)
+\item 
+\mbox{\Hypertarget{structdmt_1_1_distortion_ad8c1f37aa03b37ff69328a4e0b4a612a}\label{structdmt_1_1_distortion_ad8c1f37aa03b37ff69328a4e0b4a612a}} 
+static void {\bfseries girth\+Sample} (float \&value, float girth)
+\item 
+\mbox{\Hypertarget{structdmt_1_1_distortion_aaf9affa66f2c888e354cd548653eb622}\label{structdmt_1_1_distortion_aaf9affa66f2c888e354cd548653eb622}} 
+static void {\bfseries girth\+Sample} (float \&value, float girth, float seed)
+\item 
+\mbox{\Hypertarget{structdmt_1_1_distortion_a71a7cdf6ee843a70e1ee8fd8ee02e7b7}\label{structdmt_1_1_distortion_a71a7cdf6ee843a70e1ee8fd8ee02e7b7}} 
+static void {\bfseries symmetry\+Sample} (float \&value, float symmetry)
+\item 
+\mbox{\Hypertarget{structdmt_1_1_distortion_ae317deac0e43ef8cc590e45048498ac8}\label{structdmt_1_1_distortion_ae317deac0e43ef8cc590e45048498ac8}} 
+static void {\bfseries process\+Buffer} (juce\+::\+Audio\+Buffer$<$ float $>$ \&buffer, dmt\+::\+Distortion\+::\+Type type, float symmetry, float girth, float drive)
+\end{DoxyCompactItemize}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Utility/Distortion.\+h\end{DoxyCompactItemize}

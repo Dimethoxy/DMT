@@ -24,6 +24,7 @@ NeutrinoAudioProcessorEditor::NeutrinoAudioProcessorEditor(
   addAndMakeVisible(presetPanel);
   addAndMakeVisible(genericAudioProcessorEditor);
   addAndMakeVisible(keyboardComponent);
+  addAndMakeVisible(voicePannel);
   addAndMakeVisible(oscPannel);
 
   keyboardComponent.setLowestVisibleKey(0);
@@ -48,7 +49,8 @@ NeutrinoAudioProcessorEditor::resized()
   auto bounds = getLocalBounds();
 
   genericAudioProcessorEditor.setBoundsRelative(0.7f, 0.075f, 0.3f, 0.75f);
-  oscPannel.setBoundsRelative(0.0f, 0.075f, 0.25f, 0.4f);
+  voicePannel.setBoundsRelative(0.0f, 0.075f, 0.25f, 0.35f);
+  oscPannel.setBoundsRelative(0.0f, 0.40f, 0.25f, 0.4f);
   // folderPanel.setBounds(bounds.removeFromTop(proportionOfHeight(0.04)));
   presetPanel.setBounds(bounds.removeFromTop(proportionOfHeight(0.05f)));
   keyboardComponent.setBoundsRelative(0.0f, 0.85f, 1.0f, 0.15f);

@@ -25,11 +25,10 @@ public:
     innerShadow.colour = Settings::innerShadowColour;
     resized();
   }
+
   void paint(juce::Graphics& g) override
   {
     const auto bounds = this->getLocalBounds().toFloat();
-    g.setColour(Settings::backgroundColour);
-    g.fillRect(bounds);
 
     if (Settings::drawOuterShadow) {
       juce::Path outerShadowPath;

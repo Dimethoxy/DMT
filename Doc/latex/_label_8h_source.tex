@@ -1,0 +1,34 @@
+\hypertarget{_label_8h_source}{}\doxysection{Label.\+h}
+\label{_label_8h_source}\index{Widgets/Label.h@{Widgets/Label.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ "{}../Utility/AppSettings.h"{}}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ <JuceHeader.h>}}
+\DoxyCodeLine{00005\ }
+\DoxyCodeLine{00006\ \textcolor{keyword}{namespace\ }dmt\ \{}
+\DoxyCodeLine{00007\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classdmt_1_1_label}{Label}}\ :\ \textcolor{keyword}{public}\ juce::Label}
+\DoxyCodeLine{00008\ \{}
+\DoxyCodeLine{00009\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00010\ \ \ \mbox{\hyperlink{classdmt_1_1_label}{Label}}(juce::String\ name,\ \textcolor{keywordtype}{float}\ fontSize,\ juce::Font\ font)}
+\DoxyCodeLine{00011\ \ \ \ \ :\ fontSize(fontSize)}
+\DoxyCodeLine{00012\ \ \ \{}
+\DoxyCodeLine{00013\ \ \ \ \ setText(name,\ juce::NotificationType::dontSendNotification);}
+\DoxyCodeLine{00014\ \ \ \ \ setJustificationType(juce::Justification::centredTop);}
+\DoxyCodeLine{00015\ \ \ \ \ setColour(juce::Label::ColourIds::textColourId,}
+\DoxyCodeLine{00016\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ AppSettings::Fonts::labelFontColour);}
+\DoxyCodeLine{00017\ \ \ \ \ setFont(font);}
+\DoxyCodeLine{00018\ \ \ \}}
+\DoxyCodeLine{00019\ \ \ \textcolor{keywordtype}{void}\ resized()}
+\DoxyCodeLine{00020\ \ \ \{}
+\DoxyCodeLine{00021\ \ \ \ \ setFont(getFont().withHeight(fontSize\ *\ AppSettings::size));}
+\DoxyCodeLine{00022\ \ \ \}}
+\DoxyCodeLine{00023\ }
+\DoxyCodeLine{00024\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00025\ \ \ \textcolor{keywordtype}{float}\ fontSize;}
+\DoxyCodeLine{00026\ \ \ \textcolor{keywordtype}{bool}\ isTitle\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00027\ \};}
+\DoxyCodeLine{00028\ \}}
+
+\end{DoxyCode}

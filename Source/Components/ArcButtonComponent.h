@@ -1,13 +1,3 @@
-/*
-  ==============================================================================
-
-    ArcButtonComponent.h
-    Created: 9 Mar 2023 4:26:23am
-    Author:  Lunix
-
-  ==============================================================================
-*/
-
 #pragma once
 
 #include "../Utility/AppSettings.h"
@@ -16,13 +6,39 @@
 
 //==============================================================================
 namespace dmt {
-//==============================================================================
+/**
+ * @class ArcButtonComponent
+ *
+ * @brief Represents a custom arc-shaped button component.
+ *
+ * The ArcButtonComponent class is a custom component that displays an
+ * arc-shaped button. It inherits from the juce::Component class and implements
+ * the juce::MouseListener interface. The button can be left-sided or
+ * right-sided based on the constructor parameter.
+ */
 class ArcButtonComponent
   : public juce::Component
   , juce::MouseListener
 {
 public:
+  /**
+   * @brief Alias for the settings related to the ArcButtonComponent.
+   *
+   * The Settings alias is used to refer to the global settings specific to the
+   * ArcButtonComponent. It is derived from the dmt::AppSettings::ArcButton
+   * namespace.
+   *
+   * @param leftSided If true the arc will point to the left, otherwise it will
+   * point to the right
+   */
   using Settings = dmt::AppSettings::ArcButton;
+
+  /*
+   * @brief Constructs an ArcButtonComponent object.
+   *
+   * @param leftSided Determines whether the button is left-sided or
+   * right-sided.
+   */
   ArcButtonComponent(bool leftSided)
   {
     this->leftSided = leftSided;
@@ -31,15 +47,39 @@ public:
     innerShadow.radius = Settings::innerShadowRadius;
     innerShadow.colour = Settings::innerShadowColour;
   }
-  //============================================================================
+
+  /**
+   * @copydoc juce::MouseListener::mouseEnter()
+   */
   void mouseEnter(const juce::MouseEvent& event) override
   {
+
     updateState(event);
   }
+
+  /**
+   * @copydoc juce::MouseListener::mouseEnter()
+   */
   void mouseExit(const juce::MouseEvent& event) override { updateState(event); }
+
+  /**
+   * @copydoc juce::MouseListener::mouseDown()
+   */
   void mouseDown(const juce::MouseEvent& event) override { updateState(event); }
+
+  /**
+   * @copydoc juce::MouseListener::mouseUp()
+   */
   void mouseUp(const juce::MouseEvent& event) override { updateState(event); }
+
+  /**
+   * @copydoc juce::MouseListener::mouseMove()
+   */
   void mouseMove(const juce::MouseEvent& event) override { updateState(event); }
+
+  /**
+   * @copydoc juce::MouseListener::mouseDrag()
+   */
   void mouseDrag(const juce::MouseEvent& event) override { updateState(event); }
 
   void updateState(const juce::MouseEvent& event)
