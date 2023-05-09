@@ -1,5 +1,5 @@
 \hypertarget{_filter_processor_8h_source}{}\doxysection{Filter\+Processor.\+h}
-\label{_filter_processor_8h_source}\index{Filter/FilterProcessor.h@{Filter/FilterProcessor.h}}
+\label{_filter_processor_8h_source}\index{Source/Dsp/Filter/FilterProcessor.h@{Source/Dsp/Filter/FilterProcessor.h}}
 
 \begin{DoxyCode}{0}
 \DoxyCodeLine{00001\ \textcolor{comment}{//==============================================================================}}
@@ -12,51 +12,54 @@
 \DoxyCodeLine{00008\ }
 \DoxyCodeLine{00009\ \textcolor{comment}{//==============================================================================}}
 \DoxyCodeLine{00010\ \textcolor{keyword}{namespace\ }dmt\ \{}
-\DoxyCodeLine{00011\ }
-\DoxyCodeLine{00012\ \textcolor{comment}{//==============================================================================}}
-\DoxyCodeLine{00013\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classdmt_1_1_filter_processor}{FilterProcessor}}}
-\DoxyCodeLine{00014\ \{}
-\DoxyCodeLine{00015\ \textcolor{keyword}{public}:}
-\DoxyCodeLine{00016\ \ \ \textcolor{keywordtype}{void}\ onNote()}
-\DoxyCodeLine{00017\ \ \ \{}
-\DoxyCodeLine{00018\ \ \ \ \ \textcolor{comment}{//\ Reset\ Envelope}}
-\DoxyCodeLine{00019\ \ \ \}}
-\DoxyCodeLine{00020\ \ \ \textcolor{keywordtype}{void}\ prepare(\textcolor{keywordtype}{double}\ sampleRate)}
-\DoxyCodeLine{00021\ \ \ \{}
-\DoxyCodeLine{00022\ \ \ \ \ this-\/>sampleRate\ =\ sampleRate;}
-\DoxyCodeLine{00023\ \ \ \ \ this-\/>filter.sampleRate\ =\ sampleRate;}
-\DoxyCodeLine{00024\ \ \ \}}
-\DoxyCodeLine{00025\ \ \ \textcolor{keywordtype}{void}\ processBlock(juce::AudioBuffer<float>\&\ outputBuffer,}
-\DoxyCodeLine{00026\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ startSample,}
-\DoxyCodeLine{00027\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ numSamples)}
-\DoxyCodeLine{00028\ \ \ \{}
-\DoxyCodeLine{00029\ \ \ \ \ \textcolor{keyword}{auto}\ endSample\ =\ numSamples\ +\ startSample;}
-\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keyword}{auto}*\ leftChannel\ =\ outputBuffer.getWritePointer(0);}
-\DoxyCodeLine{00031\ \ \ \ \ \textcolor{keyword}{auto}*\ rightChannel\ =\ outputBuffer.getWritePointer(1);}
-\DoxyCodeLine{00032\ }
-\DoxyCodeLine{00033\ \ \ \ \ filter.type\ =\ chainSettings-\/>filterType;}
-\DoxyCodeLine{00034\ \ \ \ \ \textcolor{keywordtype}{float}\ filterBaseCutoff\ =\ chainSettings-\/>filterCutoff;}
-\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keyword}{auto}\ coefficients\ =\ filter.makeCoefficients(}
-\DoxyCodeLine{00036\ \ \ \ \ \ \ filterBaseCutoff,\ chainSettings-\/>filterQ,\ chainSettings-\/>filterGain);}
-\DoxyCodeLine{00037\ \ \ \ \ filter.base.setCoefficients(coefficients);}
-\DoxyCodeLine{00038\ }
-\DoxyCodeLine{00039\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ sample\ =\ startSample;\ sample\ <\ endSample;\ sample++)\ \{}
-\DoxyCodeLine{00040\ \ \ \ \ \ \ \textcolor{comment}{//\ leftChannel[sample]\ =}}
-\DoxyCodeLine{00041\ \ \ \ \ \ \ \textcolor{comment}{//\ \ \ filter.base.processSingleSampleRaw(leftChannel[sample]);}}
-\DoxyCodeLine{00042\ \ \ \ \ \ \ rightChannel[sample]\ =\ leftChannel[sample];}
-\DoxyCodeLine{00043\ \ \ \ \ \}}
-\DoxyCodeLine{00044\ \ \ \}}
-\DoxyCodeLine{00045\ \ \ \textcolor{comment}{//============================================================================}}
-\DoxyCodeLine{00046\ \ \ \textcolor{keywordtype}{void}\ setChainSettings(\mbox{\hyperlink{structdmt_1_1_chain_settings}{dmt::ChainSettings}}\ chainSettings)}
-\DoxyCodeLine{00047\ \ \ \{}
-\DoxyCodeLine{00048\ \ \ \ \ this-\/>chainSettings\ =\ std::make\_unique<dmt::ChainSettings>(chainSettings);}
-\DoxyCodeLine{00049\ \ \ \};}
-\DoxyCodeLine{00050\ }
-\DoxyCodeLine{00051\ \textcolor{keyword}{private}:}
-\DoxyCodeLine{00052\ \ \ \textcolor{keywordtype}{float}\ sampleRate\ =\ -\/1;}
-\DoxyCodeLine{00053\ \ \ std::unique\_ptr<dmt::ChainSettings>\ chainSettings;}
-\DoxyCodeLine{00054\ \ \ \mbox{\hyperlink{structdmt_1_1_i_i_r_filter_state}{dmt::IIRFilterState}}\ filter;}
-\DoxyCodeLine{00055\ \};}
-\DoxyCodeLine{00056\ \}}
+\DoxyCodeLine{00011\ \textcolor{keyword}{namespace\ }dsp\ \{}
+\DoxyCodeLine{00012\ \textcolor{keyword}{namespace\ }filter\ \{}
+\DoxyCodeLine{00013\ \textcolor{comment}{//==============================================================================}}
+\DoxyCodeLine{00014\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classdmt_1_1dsp_1_1filter_1_1_filter_processor}{FilterProcessor}}}
+\DoxyCodeLine{00015\ \{}
+\DoxyCodeLine{00016\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00017\ \ \ \textcolor{keywordtype}{void}\ onNote()}
+\DoxyCodeLine{00018\ \ \ \{}
+\DoxyCodeLine{00019\ \ \ \ \ \textcolor{comment}{//\ Reset\ Envelope}}
+\DoxyCodeLine{00020\ \ \ \}}
+\DoxyCodeLine{00021\ \ \ \textcolor{keywordtype}{void}\ prepare(\textcolor{keywordtype}{double}\ sampleRate)}
+\DoxyCodeLine{00022\ \ \ \{}
+\DoxyCodeLine{00023\ \ \ \ \ this-\/>sampleRate\ =\ sampleRate;}
+\DoxyCodeLine{00024\ \ \ \ \ this-\/>filter.sampleRate\ =\ sampleRate;}
+\DoxyCodeLine{00025\ \ \ \}}
+\DoxyCodeLine{00026\ \ \ \textcolor{keywordtype}{void}\ processBlock(juce::AudioBuffer<float>\&\ outputBuffer,}
+\DoxyCodeLine{00027\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ startSample,}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ numSamples)}
+\DoxyCodeLine{00029\ \ \ \{}
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keyword}{auto}\ endSample\ =\ numSamples\ +\ startSample;}
+\DoxyCodeLine{00031\ \ \ \ \ \textcolor{keyword}{auto}*\ leftChannel\ =\ outputBuffer.getWritePointer(0);}
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{keyword}{auto}*\ rightChannel\ =\ outputBuffer.getWritePointer(1);}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00034\ \ \ \ \ filter.type\ =\ chainSettings-\/>filterType;}
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keywordtype}{float}\ filterBaseCutoff\ =\ chainSettings-\/>filterCutoff;}
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keyword}{auto}\ coefficients\ =\ filter.makeCoefficients(}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ filterBaseCutoff,\ chainSettings-\/>filterQ,\ chainSettings-\/>filterGain);}
+\DoxyCodeLine{00038\ \ \ \ \ filter.base.setCoefficients(coefficients);}
+\DoxyCodeLine{00039\ }
+\DoxyCodeLine{00040\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ sample\ =\ startSample;\ sample\ <\ endSample;\ sample++)\ \{}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \textcolor{comment}{//\ leftChannel[sample]\ =}}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \textcolor{comment}{//\ \ \ filter.base.processSingleSampleRaw(leftChannel[sample]);}}
+\DoxyCodeLine{00043\ \ \ \ \ \ \ rightChannel[sample]\ =\ leftChannel[sample];}
+\DoxyCodeLine{00044\ \ \ \ \ \}}
+\DoxyCodeLine{00045\ \ \ \}}
+\DoxyCodeLine{00046\ \ \ \textcolor{comment}{//============================================================================}}
+\DoxyCodeLine{00047\ \ \ \textcolor{keywordtype}{void}\ setChainSettings(\mbox{\hyperlink{structdmt_1_1_chain_settings}{dmt::ChainSettings}}\ chainSettings)}
+\DoxyCodeLine{00048\ \ \ \{}
+\DoxyCodeLine{00049\ \ \ \ \ this-\/>chainSettings\ =\ std::make\_unique<dmt::ChainSettings>(chainSettings);}
+\DoxyCodeLine{00050\ \ \ \};}
+\DoxyCodeLine{00051\ }
+\DoxyCodeLine{00052\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00053\ \ \ \textcolor{keywordtype}{float}\ sampleRate\ =\ -\/1;}
+\DoxyCodeLine{00054\ \ \ std::unique\_ptr<dmt::ChainSettings>\ chainSettings;}
+\DoxyCodeLine{00055\ \ \ dmt::IIRFilterState\ filter;}
+\DoxyCodeLine{00056\ \};}
+\DoxyCodeLine{00057\ \}\ \textcolor{comment}{//\ namespace\ filter}}
+\DoxyCodeLine{00058\ \}\ \textcolor{comment}{//\ namespace\ dsp}}
+\DoxyCodeLine{00059\ \}\ \textcolor{comment}{//\ namespace\ dmt}}
 
 \end{DoxyCode}

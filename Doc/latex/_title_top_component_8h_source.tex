@@ -1,5 +1,5 @@
 \hypertarget{_title_top_component_8h_source}{}\doxysection{Title\+Top\+Component.\+h}
-\label{_title_top_component_8h_source}\index{Components/TitleTopComponent.h@{Components/TitleTopComponent.h}}
+\label{_title_top_component_8h_source}\index{Source/Gui/Componnets/TitleTopComponent.h@{Source/Gui/Componnets/TitleTopComponent.h}}
 
 \begin{DoxyCode}{0}
 \DoxyCodeLine{00001\ \textcolor{comment}{//==============================================================================}}
@@ -11,74 +11,78 @@
 \DoxyCodeLine{00007\ }
 \DoxyCodeLine{00008\ \textcolor{comment}{//==============================================================================}}
 \DoxyCodeLine{00009\ \textcolor{keyword}{namespace\ }dmt\ \{}
-\DoxyCodeLine{00010\ \textcolor{comment}{//==============================================================================}}
-\DoxyCodeLine{00011\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classdmt_1_1_title_top_component}{TitleTopComponent}}\ :\ \textcolor{keyword}{public}\ juce::Component}
-\DoxyCodeLine{00012\ \{}
-\DoxyCodeLine{00013\ \ \ \textcolor{keyword}{using\ }Settings\ =\ dmt::AppSettings::OscillatorTop;}
-\DoxyCodeLine{00014\ }
-\DoxyCodeLine{00015\ \textcolor{keyword}{public}:}
-\DoxyCodeLine{00016\ \ \ \mbox{\hyperlink{classdmt_1_1_title_top_component}{TitleTopComponent}}(juce::String\&\ name)}
-\DoxyCodeLine{00017\ \ \ \ \ :\ name(name)}
-\DoxyCodeLine{00018\ \ \ \{}
-\DoxyCodeLine{00019\ \ \ \ \ outerShadow.radius\ =\ Settings::outerShadowRadius;}
-\DoxyCodeLine{00020\ \ \ \ \ outerShadow.colour\ =\ Settings::outerShadowColour;}
-\DoxyCodeLine{00021\ \ \ \ \ innerShadow.radius\ =\ Settings::innerShadowRadius;}
-\DoxyCodeLine{00022\ \ \ \ \ innerShadow.colour\ =\ Settings::innerShadowColour;}
-\DoxyCodeLine{00023\ \ \ \ \ fontShadow.radius\ =\ Settings::outerShadowRadius;}
-\DoxyCodeLine{00024\ \ \ \ \ fontShadow.colour\ =\ Settings::fontShadowColour;}
-\DoxyCodeLine{00025\ \ \ \}}
-\DoxyCodeLine{00026\ \ \ \textcolor{keywordtype}{void}\ paint(juce::Graphics\&\ g)\textcolor{keyword}{\ override}}
-\DoxyCodeLine{00027\ \textcolor{keyword}{\ \ }\{}
-\DoxyCodeLine{00028\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\ bounds\ =\ this-\/>getLocalBounds().toFloat();}
-\DoxyCodeLine{00029\ \ \ \ \ \textcolor{keyword}{auto}\ innerBounds\ =\ bounds.withHeight(bounds.getHeight()\ *\ 0.6f);}
-\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keyword}{auto}\ cornerSize\ =\ dmt::AppSettings::Panel::innerCornerSize;}
-\DoxyCodeLine{00031\ }
-\DoxyCodeLine{00032\ \ \ \ \ g.setColour(dmt::AppSettings::Colours::topground);}
-\DoxyCodeLine{00033\ \ \ \ \ g.fillRoundedRectangle(innerBounds,\ cornerSize);}
-\DoxyCodeLine{00034\ }
-\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keywordflow}{if}\ (Settings::drawOuterShadow)\ \{}
-\DoxyCodeLine{00036\ \ \ \ \ \ \ juce::Path\ outerShadowPath;}
-\DoxyCodeLine{00037\ \ \ \ \ \ \ outerShadowPath.addRoundedRectangle(innerBounds,\ cornerSize);}
-\DoxyCodeLine{00038\ \ \ \ \ \ \ outerShadow.drawOuterForPath(g,\ outerShadowPath);}
-\DoxyCodeLine{00039\ \ \ \ \ \}}
-\DoxyCodeLine{00040\ \ \ \ \ \textcolor{keywordflow}{if}\ (Settings::drawInnerShadow)\ \{}
-\DoxyCodeLine{00041\ \ \ \ \ \ \ juce::Path\ innerShadowPath;}
-\DoxyCodeLine{00042\ \ \ \ \ \ \ innerShadowPath.addRoundedRectangle(innerBounds,\ cornerSize);}
-\DoxyCodeLine{00043\ \ \ \ \ \ \ innerShadow.drawInnerForPath(g,\ innerShadowPath);}
-\DoxyCodeLine{00044\ \ \ \ \ \}}
-\DoxyCodeLine{00045\ }
-\DoxyCodeLine{00046\ \ \ \ \ juce::Font\ font\ =}
-\DoxyCodeLine{00047\ \ \ \ \ \ \ (AppSettings::Fonts::medium.withHeight(getHeight()\ *\ 0.5f));}
-\DoxyCodeLine{00048\ \ \ \ \ \textcolor{keyword}{auto}\ x\ =\ bounds.getX();}
-\DoxyCodeLine{00049\ \ \ \ \ \textcolor{keyword}{auto}\ y\ =\ bounds.getY()\ -\/\ bounds.getHeight()\ /\ 6.5f;}
-\DoxyCodeLine{00050\ \ \ \ \ \textcolor{keyword}{auto}\ w\ =\ bounds.getWidth();}
-\DoxyCodeLine{00051\ \ \ \ \ \textcolor{keyword}{auto}\ h\ =\ bounds.getHeight();}
-\DoxyCodeLine{00052\ \ \ \ \ juce::Path\ textPath;}
-\DoxyCodeLine{00053\ \ \ \ \ juce::GlyphArrangement\ glyphs;}
-\DoxyCodeLine{00054\ \ \ \ \ glyphs.addFittedText(}
-\DoxyCodeLine{00055\ \ \ \ \ \ \ font,\ \textcolor{stringliteral}{"{}Classic\ Oscillator"{}},\ x,\ y,\ w,\ h,\ juce::Justification::centred,\ 2);}
-\DoxyCodeLine{00056\ \ \ \ \ glyphs.createPath(textPath);}
-\DoxyCodeLine{00057\ }
-\DoxyCodeLine{00058\ \ \ \ \ \textcolor{keywordflow}{if}\ (Settings::drawFontShadow)\ \{}
-\DoxyCodeLine{00059\ \ \ \ \ \ \ fontShadow.drawOuterForPath(g,\ textPath);}
-\DoxyCodeLine{00060\ \ \ \ \ \}}
-\DoxyCodeLine{00061\ \ \ \ \ \textcolor{keywordflow}{if}\ (Settings::drawFontOutline)\ \{}
-\DoxyCodeLine{00062\ \ \ \ \ \ \ g.setColour(Settings::fontOutlineColour);}
-\DoxyCodeLine{00063\ \ \ \ \ \ \ juce::PathStrokeType\ strokeType(Settings::fontOutlineThickness);}
-\DoxyCodeLine{00064\ \ \ \ \ \ \ g.strokePath(textPath,\ strokeType);}
-\DoxyCodeLine{00065\ \ \ \ \ \}}
-\DoxyCodeLine{00066\ }
-\DoxyCodeLine{00067\ \ \ \ \ g.setColour(Settings::fontColour);}
-\DoxyCodeLine{00068\ \ \ \ \ g.fillPath(textPath);}
-\DoxyCodeLine{00069\ \ \ \}}
-\DoxyCodeLine{00070\ }
-\DoxyCodeLine{00071\ \textcolor{keyword}{private}:}
-\DoxyCodeLine{00072\ \ \ juce::String\&\ name;}
-\DoxyCodeLine{00073\ \ \ \mbox{\hyperlink{structdmt_1_1_shadow}{dmt::Shadow}}\ outerShadow;}
-\DoxyCodeLine{00074\ \ \ \mbox{\hyperlink{structdmt_1_1_shadow}{dmt::Shadow}}\ innerShadow;}
-\DoxyCodeLine{00075\ \ \ \mbox{\hyperlink{structdmt_1_1_shadow}{dmt::Shadow}}\ fontShadow;}
-\DoxyCodeLine{00076\ \};}
-\DoxyCodeLine{00077\ \textcolor{comment}{//==============================================================================}}
-\DoxyCodeLine{00078\ \}}
+\DoxyCodeLine{00010\ \textcolor{keyword}{namespace\ }gui\ \{}
+\DoxyCodeLine{00011\ \textcolor{keyword}{namespace\ }components\ \{}
+\DoxyCodeLine{00012\ \textcolor{comment}{//==============================================================================}}
+\DoxyCodeLine{00013\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classdmt_1_1gui_1_1components_1_1_title_top_component}{TitleTopComponent}}\ :\ \textcolor{keyword}{public}\ juce::Component}
+\DoxyCodeLine{00014\ \{}
+\DoxyCodeLine{00015\ \ \ \textcolor{keyword}{using\ }Settings\ =\ dmt::AppSettings::OscillatorTop;}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00018\ \ \ \mbox{\hyperlink{classdmt_1_1gui_1_1components_1_1_title_top_component}{TitleTopComponent}}(juce::String\&\ name)}
+\DoxyCodeLine{00019\ \ \ \ \ :\ name(name)}
+\DoxyCodeLine{00020\ \ \ \{}
+\DoxyCodeLine{00021\ \ \ \ \ outerShadow.radius\ =\ Settings::outerShadowRadius;}
+\DoxyCodeLine{00022\ \ \ \ \ outerShadow.colour\ =\ Settings::outerShadowColour;}
+\DoxyCodeLine{00023\ \ \ \ \ innerShadow.radius\ =\ Settings::innerShadowRadius;}
+\DoxyCodeLine{00024\ \ \ \ \ innerShadow.colour\ =\ Settings::innerShadowColour;}
+\DoxyCodeLine{00025\ \ \ \ \ fontShadow.radius\ =\ Settings::outerShadowRadius;}
+\DoxyCodeLine{00026\ \ \ \ \ fontShadow.colour\ =\ Settings::fontShadowColour;}
+\DoxyCodeLine{00027\ \ \ \}}
+\DoxyCodeLine{00028\ \ \ \textcolor{keywordtype}{void}\ paint(juce::Graphics\&\ g)\textcolor{keyword}{\ override}}
+\DoxyCodeLine{00029\ \textcolor{keyword}{\ \ }\{}
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\ bounds\ =\ this-\/>getLocalBounds().toFloat();}
+\DoxyCodeLine{00031\ \ \ \ \ \textcolor{keyword}{auto}\ innerBounds\ =\ bounds.withHeight(bounds.getHeight()\ *\ 0.6f);}
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{keyword}{auto}\ cornerSize\ =\ dmt::AppSettings::Panel::innerCornerSize;}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00034\ \ \ \ \ g.setColour(dmt::AppSettings::Colours::topground);}
+\DoxyCodeLine{00035\ \ \ \ \ g.fillRoundedRectangle(innerBounds,\ cornerSize);}
+\DoxyCodeLine{00036\ }
+\DoxyCodeLine{00037\ \ \ \ \ \textcolor{keywordflow}{if}\ (Settings::drawOuterShadow)\ \{}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ juce::Path\ outerShadowPath;}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ outerShadowPath.addRoundedRectangle(innerBounds,\ cornerSize);}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ outerShadow.drawOuterForPath(g,\ outerShadowPath);}
+\DoxyCodeLine{00041\ \ \ \ \ \}}
+\DoxyCodeLine{00042\ \ \ \ \ \textcolor{keywordflow}{if}\ (Settings::drawInnerShadow)\ \{}
+\DoxyCodeLine{00043\ \ \ \ \ \ \ juce::Path\ innerShadowPath;}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ innerShadowPath.addRoundedRectangle(innerBounds,\ cornerSize);}
+\DoxyCodeLine{00045\ \ \ \ \ \ \ innerShadow.drawInnerForPath(g,\ innerShadowPath);}
+\DoxyCodeLine{00046\ \ \ \ \ \}}
+\DoxyCodeLine{00047\ }
+\DoxyCodeLine{00048\ \ \ \ \ juce::Font\ font\ =}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ (AppSettings::Fonts::medium.withHeight(getHeight()\ *\ 0.5f));}
+\DoxyCodeLine{00050\ \ \ \ \ \textcolor{keyword}{auto}\ x\ =\ bounds.getX();}
+\DoxyCodeLine{00051\ \ \ \ \ \textcolor{keyword}{auto}\ y\ =\ bounds.getY()\ -\/\ bounds.getHeight()\ /\ 6.5f;}
+\DoxyCodeLine{00052\ \ \ \ \ \textcolor{keyword}{auto}\ w\ =\ bounds.getWidth();}
+\DoxyCodeLine{00053\ \ \ \ \ \textcolor{keyword}{auto}\ h\ =\ bounds.getHeight();}
+\DoxyCodeLine{00054\ \ \ \ \ juce::Path\ textPath;}
+\DoxyCodeLine{00055\ \ \ \ \ juce::GlyphArrangement\ glyphs;}
+\DoxyCodeLine{00056\ \ \ \ \ glyphs.addFittedText(}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ font,\ \textcolor{stringliteral}{"{}Classic\ Oscillator"{}},\ x,\ y,\ w,\ h,\ juce::Justification::centred,\ 2);}
+\DoxyCodeLine{00058\ \ \ \ \ glyphs.createPath(textPath);}
+\DoxyCodeLine{00059\ }
+\DoxyCodeLine{00060\ \ \ \ \ \textcolor{keywordflow}{if}\ (Settings::drawFontShadow)\ \{}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ fontShadow.drawOuterForPath(g,\ textPath);}
+\DoxyCodeLine{00062\ \ \ \ \ \}}
+\DoxyCodeLine{00063\ \ \ \ \ \textcolor{keywordflow}{if}\ (Settings::drawFontOutline)\ \{}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ g.setColour(Settings::fontOutlineColour);}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ juce::PathStrokeType\ strokeType(Settings::fontOutlineThickness);}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ g.strokePath(textPath,\ strokeType);}
+\DoxyCodeLine{00067\ \ \ \ \ \}}
+\DoxyCodeLine{00068\ }
+\DoxyCodeLine{00069\ \ \ \ \ g.setColour(Settings::fontColour);}
+\DoxyCodeLine{00070\ \ \ \ \ g.fillPath(textPath);}
+\DoxyCodeLine{00071\ \ \ \}}
+\DoxyCodeLine{00072\ }
+\DoxyCodeLine{00073\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00074\ \ \ juce::String\&\ name;}
+\DoxyCodeLine{00075\ \ \ \mbox{\hyperlink{structdmt_1_1_shadow}{dmt::Shadow}}\ outerShadow;}
+\DoxyCodeLine{00076\ \ \ \mbox{\hyperlink{structdmt_1_1_shadow}{dmt::Shadow}}\ innerShadow;}
+\DoxyCodeLine{00077\ \ \ \mbox{\hyperlink{structdmt_1_1_shadow}{dmt::Shadow}}\ fontShadow;}
+\DoxyCodeLine{00078\ \};}
+\DoxyCodeLine{00079\ \textcolor{comment}{//==============================================================================}}
+\DoxyCodeLine{00080\ \}\ \textcolor{comment}{//\ namespace\ dmt}}
+\DoxyCodeLine{00081\ \}\ \textcolor{comment}{//\ namespace\ gui}}
+\DoxyCodeLine{00082\ \}\ \textcolor{comment}{//\ namespace\ components}}
 
 \end{DoxyCode}

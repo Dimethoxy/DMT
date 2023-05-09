@@ -1,5 +1,5 @@
 \hypertarget{_panel_8h_source}{}\doxysection{Panel.\+h}
-\label{_panel_8h_source}\index{Panels/Panel.h@{Panels/Panel.h}}
+\label{_panel_8h_source}\index{Source/Gui/Panels/Panel.h@{Source/Gui/Panels/Panel.h}}
 
 \begin{DoxyCode}{0}
 \DoxyCodeLine{00001\ \textcolor{comment}{//==============================================================================}}
@@ -13,78 +13,82 @@
 \DoxyCodeLine{00009\ }
 \DoxyCodeLine{00010\ \textcolor{comment}{//==============================================================================}}
 \DoxyCodeLine{00011\ \textcolor{keyword}{namespace\ }dmt\ \{}
-\DoxyCodeLine{00012\ \textcolor{comment}{//==============================================================================}}
-\DoxyCodeLine{00013\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classdmt_1_1_panel}{Panel}}\ :\ \textcolor{keyword}{public}\ juce::Component}
-\DoxyCodeLine{00014\ \{}
-\DoxyCodeLine{00015\ \ \ \textcolor{keyword}{using\ }Settings\ =\ dmt::AppSettings::Panel;}
-\DoxyCodeLine{00016\ }
-\DoxyCodeLine{00017\ \textcolor{keyword}{public}:}
-\DoxyCodeLine{00018\ \ \ \mbox{\hyperlink{classdmt_1_1_panel}{Panel}}()}
-\DoxyCodeLine{00019\ \ \ \ \ :\ top(getName())}
-\DoxyCodeLine{00020\ \ \ \{}
-\DoxyCodeLine{00021\ \ \ \ \ addAndMakeVisible(top);}
-\DoxyCodeLine{00022\ \ \ \ \ outerShadow.radius\ =\ Settings::outerShadowRadius;}
-\DoxyCodeLine{00023\ \ \ \ \ outerShadow.colour\ =\ Settings::outerShadowColour;}
-\DoxyCodeLine{00024\ \ \ \ \ innerShadow.radius\ =\ Settings::innerShadowRadius;}
-\DoxyCodeLine{00025\ \ \ \ \ innerShadow.colour\ =\ Settings::innerShadowColour;}
-\DoxyCodeLine{00026\ \ \ \ \ resized();}
-\DoxyCodeLine{00027\ \ \ \}}
-\DoxyCodeLine{00028\ }
-\DoxyCodeLine{00029\ \ \ \textcolor{keywordtype}{void}\ paint(juce::Graphics\&\ g)\textcolor{keyword}{\ override}}
-\DoxyCodeLine{00030\ \textcolor{keyword}{\ \ }\{}
-\DoxyCodeLine{00031\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\ bounds\ =\ this-\/>getLocalBounds().toFloat();}
-\DoxyCodeLine{00032\ }
-\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keywordflow}{if}\ (Settings::drawOuterShadow)\ \{}
-\DoxyCodeLine{00034\ \ \ \ \ \ \ juce::Path\ outerShadowPath;}
-\DoxyCodeLine{00035\ \ \ \ \ \ \ outerShadowPath.addRoundedRectangle(borderBounds,\ outerCornerSize);}
-\DoxyCodeLine{00036\ \ \ \ \ \ \ outerShadow.drawOuterForPath(g,\ outerShadowPath);}
-\DoxyCodeLine{00037\ \ \ \ \ \}}
-\DoxyCodeLine{00038\ }
-\DoxyCodeLine{00039\ \ \ \ \ g.setColour(Settings::borderColour);}
-\DoxyCodeLine{00040\ \ \ \ \ g.fillRoundedRectangle(borderBounds,\ outerCornerSize);}
-\DoxyCodeLine{00041\ }
-\DoxyCodeLine{00042\ \ \ \ \ g.setColour(Settings::foregroundColour);}
-\DoxyCodeLine{00043\ \ \ \ \ g.fillRoundedRectangle(innerBounds,\ innerCornerSize);}
-\DoxyCodeLine{00044\ }
-\DoxyCodeLine{00045\ \ \ \ \ \textcolor{keywordflow}{if}\ (Settings::drawInnerShadow)\ \{}
-\DoxyCodeLine{00046\ \ \ \ \ \ \ juce::Path\ innerShadowPath;}
-\DoxyCodeLine{00047\ \ \ \ \ \ \ innerShadowPath.addRoundedRectangle(innerBounds,\ outerCornerSize);}
-\DoxyCodeLine{00048\ \ \ \ \ \ \ innerShadow.drawInnerForPath(g,\ innerShadowPath);}
-\DoxyCodeLine{00049\ \ \ \ \ \}}
-\DoxyCodeLine{00050\ \ \ \}}
-\DoxyCodeLine{00051\ }
-\DoxyCodeLine{00052\ \ \ \textcolor{keywordtype}{void}\ resized()\textcolor{keyword}{\ override}}
-\DoxyCodeLine{00053\ \textcolor{keyword}{\ \ }\{}
-\DoxyCodeLine{00054\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\ bounds\ =\ this-\/>getLocalBounds().toFloat();}
-\DoxyCodeLine{00055\ \ \ \ \ borderSize\ =\ Settings::borderSize;}
-\DoxyCodeLine{00056\ \ \ \ \ borderBounds\ =\ bounds.reduced(Settings::margin);}
-\DoxyCodeLine{00057\ \ \ \ \ innerBounds\ =\ borderBounds.reduced(borderSize);}
-\DoxyCodeLine{00058\ \ \ \ \ outerCornerSize\ =\ Settings::outerCornerSize;}
-\DoxyCodeLine{00059\ \ \ \ \ innerCornerSize\ =\ Settings::innerCornerSize;}
-\DoxyCodeLine{00060\ }
-\DoxyCodeLine{00061\ \ \ \ \ top.setBounds(innerBounds.toNearestInt());}
-\DoxyCodeLine{00062\ \ \ \ \ top.setSize(top.getWidth(),\ top.getHeight()\ *\ 0.3f);}
-\DoxyCodeLine{00063\ \ \ \ \ top.setAlwaysOnTop(\textcolor{keyword}{true});}
-\DoxyCodeLine{00064\ \ \ \ \ update();}
-\DoxyCodeLine{00065\ \ \ \}}
-\DoxyCodeLine{00066\ }
-\DoxyCodeLine{00067\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ update()\{\};}
+\DoxyCodeLine{00012\ \textcolor{keyword}{namespace\ }gui\ \{}
+\DoxyCodeLine{00013\ \textcolor{keyword}{namespace\ }panels\ \{}
+\DoxyCodeLine{00014\ \textcolor{comment}{//==============================================================================}}
+\DoxyCodeLine{00015\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classdmt_1_1gui_1_1panels_1_1_panel}{Panel}}\ :\ \textcolor{keyword}{public}\ juce::Component}
+\DoxyCodeLine{00016\ \{}
+\DoxyCodeLine{00017\ \ \ \textcolor{keyword}{using\ }Settings\ =\ dmt::AppSettings::Panel;}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00020\ \ \ \mbox{\hyperlink{classdmt_1_1gui_1_1panels_1_1_panel}{Panel}}()}
+\DoxyCodeLine{00021\ \ \ \ \ :\ top(getName())}
+\DoxyCodeLine{00022\ \ \ \{}
+\DoxyCodeLine{00023\ \ \ \ \ addAndMakeVisible(top);}
+\DoxyCodeLine{00024\ \ \ \ \ outerShadow.radius\ =\ Settings::outerShadowRadius;}
+\DoxyCodeLine{00025\ \ \ \ \ outerShadow.colour\ =\ Settings::outerShadowColour;}
+\DoxyCodeLine{00026\ \ \ \ \ innerShadow.radius\ =\ Settings::innerShadowRadius;}
+\DoxyCodeLine{00027\ \ \ \ \ innerShadow.colour\ =\ Settings::innerShadowColour;}
+\DoxyCodeLine{00028\ \ \ \ \ resized();}
+\DoxyCodeLine{00029\ \ \ \}}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00031\ \ \ \textcolor{keywordtype}{void}\ paint(juce::Graphics\&\ g)\textcolor{keyword}{\ override}}
+\DoxyCodeLine{00032\ \textcolor{keyword}{\ \ }\{}
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\ bounds\ =\ this-\/>getLocalBounds().toFloat();}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keywordflow}{if}\ (Settings::drawOuterShadow)\ \{}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ juce::Path\ outerShadowPath;}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ outerShadowPath.addRoundedRectangle(borderBounds,\ outerCornerSize);}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ outerShadow.drawOuterForPath(g,\ outerShadowPath);}
+\DoxyCodeLine{00039\ \ \ \ \ \}}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00041\ \ \ \ \ g.setColour(Settings::borderColour);}
+\DoxyCodeLine{00042\ \ \ \ \ g.fillRoundedRectangle(borderBounds,\ outerCornerSize);}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00044\ \ \ \ \ g.setColour(Settings::foregroundColour);}
+\DoxyCodeLine{00045\ \ \ \ \ g.fillRoundedRectangle(innerBounds,\ innerCornerSize);}
+\DoxyCodeLine{00046\ }
+\DoxyCodeLine{00047\ \ \ \ \ \textcolor{keywordflow}{if}\ (Settings::drawInnerShadow)\ \{}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ juce::Path\ innerShadowPath;}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ innerShadowPath.addRoundedRectangle(innerBounds,\ outerCornerSize);}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ innerShadow.drawInnerForPath(g,\ innerShadowPath);}
+\DoxyCodeLine{00051\ \ \ \ \ \}}
+\DoxyCodeLine{00052\ \ \ \}}
+\DoxyCodeLine{00053\ }
+\DoxyCodeLine{00054\ \ \ \textcolor{keywordtype}{void}\ resized()\textcolor{keyword}{\ override}}
+\DoxyCodeLine{00055\ \textcolor{keyword}{\ \ }\{}
+\DoxyCodeLine{00056\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\ bounds\ =\ this-\/>getLocalBounds().toFloat();}
+\DoxyCodeLine{00057\ \ \ \ \ borderSize\ =\ Settings::borderSize;}
+\DoxyCodeLine{00058\ \ \ \ \ borderBounds\ =\ bounds.reduced(Settings::margin);}
+\DoxyCodeLine{00059\ \ \ \ \ innerBounds\ =\ borderBounds.reduced(borderSize);}
+\DoxyCodeLine{00060\ \ \ \ \ outerCornerSize\ =\ Settings::outerCornerSize;}
+\DoxyCodeLine{00061\ \ \ \ \ innerCornerSize\ =\ Settings::innerCornerSize;}
+\DoxyCodeLine{00062\ }
+\DoxyCodeLine{00063\ \ \ \ \ top.setBounds(innerBounds.toNearestInt());}
+\DoxyCodeLine{00064\ \ \ \ \ top.setSize(top.getWidth(),\ top.getHeight()\ *\ 0.3f);}
+\DoxyCodeLine{00065\ \ \ \ \ top.setAlwaysOnTop(\textcolor{keyword}{true});}
+\DoxyCodeLine{00066\ \ \ \ \ update();}
+\DoxyCodeLine{00067\ \ \ \}}
 \DoxyCodeLine{00068\ }
-\DoxyCodeLine{00069\ \ \ \textcolor{keyword}{virtual}\ juce::String\ getName()\ \{\ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}Panel"{}};\ \};}
+\DoxyCodeLine{00069\ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ update()\{\};}
 \DoxyCodeLine{00070\ }
-\DoxyCodeLine{00071\ \textcolor{keyword}{protected}:}
-\DoxyCodeLine{00072\ \ \ \textcolor{keywordtype}{float}\ borderSize\ =\ Settings::borderSize;}
-\DoxyCodeLine{00073\ \ \ juce::Rectangle<float>\ borderBounds;}
-\DoxyCodeLine{00074\ \ \ juce::Rectangle<float>\ innerBounds;}
-\DoxyCodeLine{00075\ \ \ \textcolor{keywordtype}{float}\ outerCornerSize;}
-\DoxyCodeLine{00076\ \ \ \textcolor{keywordtype}{float}\ innerCornerSize;}
-\DoxyCodeLine{00077\ }
-\DoxyCodeLine{00078\ \textcolor{keyword}{private}:}
-\DoxyCodeLine{00079\ \ \ \mbox{\hyperlink{classdmt_1_1_title_top_component}{dmt::TitleTopComponent}}\ top;}
-\DoxyCodeLine{00080\ \ \ \mbox{\hyperlink{structdmt_1_1_shadow}{dmt::Shadow}}\ outerShadow;}
-\DoxyCodeLine{00081\ \ \ \mbox{\hyperlink{structdmt_1_1_shadow}{dmt::Shadow}}\ innerShadow;}
-\DoxyCodeLine{00082\ \};}
-\DoxyCodeLine{00083\ \textcolor{comment}{//==============================================================================}}
-\DoxyCodeLine{00084\ \}}
+\DoxyCodeLine{00071\ \ \ \textcolor{keyword}{virtual}\ juce::String\ getName()\ \{\ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}Panel"{}};\ \};}
+\DoxyCodeLine{00072\ }
+\DoxyCodeLine{00073\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00074\ \ \ \textcolor{keywordtype}{float}\ borderSize\ =\ Settings::borderSize;}
+\DoxyCodeLine{00075\ \ \ juce::Rectangle<float>\ borderBounds;}
+\DoxyCodeLine{00076\ \ \ juce::Rectangle<float>\ innerBounds;}
+\DoxyCodeLine{00077\ \ \ \textcolor{keywordtype}{float}\ outerCornerSize;}
+\DoxyCodeLine{00078\ \ \ \textcolor{keywordtype}{float}\ innerCornerSize;}
+\DoxyCodeLine{00079\ }
+\DoxyCodeLine{00080\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00081\ \ \ dmt::TitleTopComponent\ top;}
+\DoxyCodeLine{00082\ \ \ \mbox{\hyperlink{structdmt_1_1_shadow}{dmt::Shadow}}\ outerShadow;}
+\DoxyCodeLine{00083\ \ \ \mbox{\hyperlink{structdmt_1_1_shadow}{dmt::Shadow}}\ innerShadow;}
+\DoxyCodeLine{00084\ \};}
+\DoxyCodeLine{00085\ \textcolor{comment}{//==============================================================================}}
+\DoxyCodeLine{00086\ \}\ \textcolor{comment}{//\ namespace\ panels}}
+\DoxyCodeLine{00087\ \}\ \textcolor{comment}{//\ namespace\ gui}}
+\DoxyCodeLine{00088\ \}\ \textcolor{comment}{//\ namespace\ dmt}}
 
 \end{DoxyCode}

@@ -1,21 +1,24 @@
 var indexSectionsWithContent =
 {
-  0: "acdfilmnopstv",
+  0: "acdfgilmnoprstuv",
   1: "acdfilmnopstv",
-  2: "s"
+  2: "agmpru",
+  3: "s"
 };
 
 var indexSectionNames =
 {
   0: "all",
   1: "classes",
-  2: "typedefs"
+  2: "functions",
+  3: "typedefs"
 };
 
 var indexSectionLabels =
 {
   0: "All",
   1: "Classes",
-  2: "Typedefs"
+  2: "Functions",
+  3: "Typedefs"
 };
 

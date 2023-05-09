@@ -1,5 +1,5 @@
 \hypertarget{_preset_manager_8h_source}{}\doxysection{Preset\+Manager.\+h}
-\label{_preset_manager_8h_source}\index{Preset/PresetManager.h@{Preset/PresetManager.h}}
+\label{_preset_manager_8h_source}\index{Source/Gui/Preset/PresetManager.h@{Source/Gui/Preset/PresetManager.h}}
 
 \begin{DoxyCode}{0}
 \DoxyCodeLine{00001\ \textcolor{comment}{/*}}
@@ -20,154 +20,158 @@
 \DoxyCodeLine{00016\ }
 \DoxyCodeLine{00017\ \textcolor{comment}{//==============================================================================}}
 \DoxyCodeLine{00018\ \textcolor{keyword}{namespace\ }dmt\ \{}
-\DoxyCodeLine{00019\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classdmt_1_1_preset_manager}{PresetManager}}\ :\ juce::ValueTree::Listener}
-\DoxyCodeLine{00020\ \{}
-\DoxyCodeLine{00021\ \textcolor{keyword}{public}:}
-\DoxyCodeLine{00022\ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ juce::File\&\ defaultDirectory\ =}
-\DoxyCodeLine{00023\ \ \ \ \ juce::File::getSpecialLocation(}
-\DoxyCodeLine{00024\ \ \ \ \ \ \ juce::File::SpecialLocationType::userDocumentsDirectory)}
-\DoxyCodeLine{00025\ \ \ \ \ \ \ .getChildFile(ProjectInfo::companyName)}
-\DoxyCodeLine{00026\ \ \ \ \ \ \ .getChildFile(ProjectInfo::projectName);}
-\DoxyCodeLine{00027\ }
-\DoxyCodeLine{00028\ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ juce::String\&\ extension\ =\ \textcolor{stringliteral}{"{}preset"{}};}
-\DoxyCodeLine{00029\ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ juce::String\&\ presetNameProperty\ =\ \textcolor{stringliteral}{"{}presetName"{}};}
-\DoxyCodeLine{00030\ }
-\DoxyCodeLine{00031\ \ \ \textcolor{comment}{//==============================================================================}}
-\DoxyCodeLine{00032\ \ \ \mbox{\hyperlink{classdmt_1_1_preset_manager}{PresetManager}}(juce::AudioProcessorValueTreeState\&\ apvts)}
-\DoxyCodeLine{00033\ \ \ \ \ :\ valueTreeState(apvts)}
-\DoxyCodeLine{00034\ \ \ \{}
-\DoxyCodeLine{00035\ \ \ \ \ \textcolor{comment}{//\ Create\ default\ directory}}
-\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keywordflow}{if}\ (!defaultDirectory.exists())\ \{}
-\DoxyCodeLine{00037\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\ result\ =\ defaultDirectory.createDirectory();}
-\DoxyCodeLine{00038\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (result.failed())\ \{}
-\DoxyCodeLine{00039\ \ \ \ \ \ \ \ \ DBG(\textcolor{stringliteral}{"{}Could\ not\ create\ preset\ directory:\ "{}}\ +\ result.getErrorMessage());}
-\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ jassertfalse;}
-\DoxyCodeLine{00041\ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00042\ \ \ \ \ \}}
-\DoxyCodeLine{00043\ \ \ \ \ valueTreeState.state.addListener(\textcolor{keyword}{this});}
-\DoxyCodeLine{00044\ \ \ \ \ currentPreset.referTo(}
-\DoxyCodeLine{00045\ \ \ \ \ \ \ valueTreeState.state.getPropertyAsValue(presetNameProperty,\ \textcolor{keyword}{nullptr}));}
-\DoxyCodeLine{00046\ \ \ \}}
-\DoxyCodeLine{00047\ }
-\DoxyCodeLine{00048\ \ \ \textcolor{comment}{//==============================================================================}}
-\DoxyCodeLine{00049\ \ \ \textcolor{keywordtype}{void}\ savePreset(\textcolor{keyword}{const}\ juce::String\&\ presetName)}
-\DoxyCodeLine{00050\ \ \ \{}
-\DoxyCodeLine{00051\ \ \ \ \ \textcolor{keywordflow}{if}\ (presetName.isEmpty())}
-\DoxyCodeLine{00052\ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
-\DoxyCodeLine{00053\ \ \ \ \ currentPreset.setValue(presetName);}
-\DoxyCodeLine{00054\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\ xml\ =\ valueTreeState.copyState().createXml();}
-\DoxyCodeLine{00055\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\ presetFile\ =}
-\DoxyCodeLine{00056\ \ \ \ \ \ \ defaultDirectory.getChildFile(presetName\ +\ \textcolor{stringliteral}{"{}."{}}\ +\ extension);}
-\DoxyCodeLine{00057\ \ \ \ \ \textcolor{keywordflow}{if}\ (!xml-\/>writeTo(presetFile))\ \{}
-\DoxyCodeLine{00058\ \ \ \ \ \ \ DBG(\textcolor{stringliteral}{"{}Could\ not\ create\ preset\ file:\ "{}}\ +\ presetFile.getFullPathName());}
-\DoxyCodeLine{00059\ \ \ \ \ \ \ jassertfalse;}
-\DoxyCodeLine{00060\ \ \ \ \ \}}
-\DoxyCodeLine{00061\ \ \ \}}
-\DoxyCodeLine{00062\ }
-\DoxyCodeLine{00063\ \ \ \textcolor{keywordtype}{void}\ loadPreset(\textcolor{keyword}{const}\ juce::String\&\ presetName)}
-\DoxyCodeLine{00064\ \ \ \{}
-\DoxyCodeLine{00065\ \ \ \ \ \textcolor{keywordflow}{if}\ (presetName.isEmpty())}
-\DoxyCodeLine{00066\ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
-\DoxyCodeLine{00067\ }
-\DoxyCodeLine{00068\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\ presetFile\ =}
-\DoxyCodeLine{00069\ \ \ \ \ \ \ defaultDirectory.getChildFile(presetName\ +\ \textcolor{stringliteral}{"{}."{}}\ +\ extension);}
-\DoxyCodeLine{00070\ \ \ \ \ \textcolor{keywordflow}{if}\ (!presetFile.existsAsFile())\ \{}
-\DoxyCodeLine{00071\ \ \ \ \ \ \ DBG(\textcolor{stringliteral}{"{}Preset\ file\ does\ not\ exist:\ "{}}\ +\ presetFile.getFullPathName());}
-\DoxyCodeLine{00072\ \ \ \ \ \ \ jassertfalse;}
-\DoxyCodeLine{00073\ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
-\DoxyCodeLine{00074\ \ \ \ \ \}}
-\DoxyCodeLine{00075\ }
-\DoxyCodeLine{00076\ \ \ \ \ juce::XmlDocument\ xmlDocument\{\ presetFile\ \};}
-\DoxyCodeLine{00077\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\ valueTreeToLoad\ =}
-\DoxyCodeLine{00078\ \ \ \ \ \ \ juce::ValueTree::fromXml(*xmlDocument.getDocumentElement());}
-\DoxyCodeLine{00079\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ valueTreeToLoad.getNumChildren();\ i++)\ \{}
-\DoxyCodeLine{00080\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\ parameterChildToLoad\ =\ valueTreeToLoad.getChild(i);}
-\DoxyCodeLine{00081\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\ parameterId\ =\ parameterChildToLoad.getProperty(\textcolor{stringliteral}{"{}id"{}});}
-\DoxyCodeLine{00082\ \ \ \ \ \ \ \textcolor{keyword}{auto}\ parameterTree\ =}
-\DoxyCodeLine{00083\ \ \ \ \ \ \ \ \ valueTreeState.state.getChildWithProperty(\textcolor{stringliteral}{"{}id"{}},\ parameterId);}
-\DoxyCodeLine{00084\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (parameterTree.isValid())\ \{}
-\DoxyCodeLine{00085\ \ \ \ \ \ \ \ \ parameterTree.copyPropertiesFrom(parameterChildToLoad,\ \textcolor{keyword}{nullptr});}
-\DoxyCodeLine{00086\ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00087\ \ \ \ \ \}}
-\DoxyCodeLine{00088\ \ \ \ \ currentPreset.setValue(presetName);}
-\DoxyCodeLine{00089\ \ \ \}}
-\DoxyCodeLine{00090\ }
-\DoxyCodeLine{00091\ \ \ \textcolor{keywordtype}{void}\ loadInitPreset()}
-\DoxyCodeLine{00092\ \ \ \{}
-\DoxyCodeLine{00093\ \ \ \ \ \textcolor{comment}{//\ valueTreeState.}}
-\DoxyCodeLine{00094\ \ \ \}}
-\DoxyCodeLine{00095\ }
-\DoxyCodeLine{00096\ \ \ \textcolor{keywordtype}{void}\ deletePreset(\textcolor{keyword}{const}\ juce::String\&\ presetName)}
-\DoxyCodeLine{00097\ \ \ \{}
-\DoxyCodeLine{00098\ \ \ \ \ \textcolor{keywordflow}{if}\ (presetName.isEmpty())}
-\DoxyCodeLine{00099\ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
-\DoxyCodeLine{00100\ }
-\DoxyCodeLine{00101\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\ presetFile\ =}
-\DoxyCodeLine{00102\ \ \ \ \ \ \ defaultDirectory.getChildFile(presetName\ +\ \textcolor{stringliteral}{"{}."{}}\ +\ extension);}
-\DoxyCodeLine{00103\ \ \ \ \ \textcolor{keywordflow}{if}\ (!presetFile.existsAsFile())\ \{}
-\DoxyCodeLine{00104\ \ \ \ \ \ \ DBG(\textcolor{stringliteral}{"{}Preset\ file\ does\ not\ exist:\ "{}}\ +\ presetFile.getFullPathName());}
-\DoxyCodeLine{00105\ \ \ \ \ \ \ jassertfalse;}
-\DoxyCodeLine{00106\ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
-\DoxyCodeLine{00107\ \ \ \ \ \}}
-\DoxyCodeLine{00108\ \ \ \ \ \textcolor{keywordflow}{if}\ (!presetFile.deleteFile())\ \{}
-\DoxyCodeLine{00109\ \ \ \ \ \ \ DBG(\textcolor{stringliteral}{"{}Could\ not\ delete\ preset\ file:\ "{}}\ +\ presetFile.getFullPathName());}
-\DoxyCodeLine{00110\ \ \ \ \ \ \ jassertfalse;}
-\DoxyCodeLine{00111\ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
-\DoxyCodeLine{00112\ \ \ \ \ \}}
-\DoxyCodeLine{00113\ \ \ \ \ currentPreset\ =\ \textcolor{stringliteral}{"{}"{}};}
-\DoxyCodeLine{00114\ \ \ \}}
-\DoxyCodeLine{00115\ }
-\DoxyCodeLine{00116\ \ \ \textcolor{comment}{//==============================================================================}}
-\DoxyCodeLine{00117\ \ \ \textcolor{keywordtype}{int}\ loadNextPreset()}
-\DoxyCodeLine{00118\ \ \ \{}
-\DoxyCodeLine{00119\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\ presetList\ =\ getPresetList();}
-\DoxyCodeLine{00120\ \ \ \ \ \textcolor{keywordflow}{if}\ (presetList.isEmpty())}
-\DoxyCodeLine{00121\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ -\/1;}
-\DoxyCodeLine{00122\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\ currentIndex\ =\ presetList.indexOf(currentPreset.toString());}
-\DoxyCodeLine{00123\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\ nextIndex\ =}
-\DoxyCodeLine{00124\ \ \ \ \ \ \ (currentIndex\ ==\ (presetList.size()\ -\/\ 1))\ ?\ 0\ :\ currentIndex\ +\ 1;}
-\DoxyCodeLine{00125\ \ \ \ \ loadPreset(presetList[nextIndex]);}
-\DoxyCodeLine{00126\ \ \ \ \ \textcolor{keywordflow}{return}\ nextIndex;}
-\DoxyCodeLine{00127\ \ \ \}}
-\DoxyCodeLine{00128\ }
-\DoxyCodeLine{00129\ \ \ \textcolor{keywordtype}{int}\ loadPreviousPreset()}
-\DoxyCodeLine{00130\ \ \ \{}
-\DoxyCodeLine{00131\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\ presetList\ =\ getPresetList();}
-\DoxyCodeLine{00132\ \ \ \ \ \textcolor{keywordflow}{if}\ (presetList.isEmpty())}
-\DoxyCodeLine{00133\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ -\/1;}
-\DoxyCodeLine{00134\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\ currentIndex\ =\ presetList.indexOf(currentPreset.toString());}
-\DoxyCodeLine{00135\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\ previousIndex\ =}
-\DoxyCodeLine{00136\ \ \ \ \ \ \ (currentIndex\ ==\ 0)\ ?\ presetList.size()\ -\/\ 1\ :\ currentIndex\ -\/\ 1;}
-\DoxyCodeLine{00137\ \ \ \ \ loadPreset(presetList[previousIndex]);}
-\DoxyCodeLine{00138\ \ \ \ \ \textcolor{keywordflow}{return}\ previousIndex;}
-\DoxyCodeLine{00139\ \ \ \}}
-\DoxyCodeLine{00140\ }
-\DoxyCodeLine{00141\ \ \ \textcolor{comment}{//==============================================================================}}
-\DoxyCodeLine{00142\ \ \ juce::StringArray\ getPresetList()}
-\DoxyCodeLine{00143\ \ \ \{}
-\DoxyCodeLine{00144\ \ \ \ \ juce::StringArray\ presetList;}
-\DoxyCodeLine{00145\ \ \ \ \ \textcolor{keyword}{auto}\ fileArray\ =\ defaultDirectory.findChildFiles(}
-\DoxyCodeLine{00146\ \ \ \ \ \ \ juce::File::TypesOfFileToFind::findFiles,\ \textcolor{keyword}{false},\ \textcolor{stringliteral}{"{}*."{}}\ +\ extension);}
-\DoxyCodeLine{00147\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{const}\ \textcolor{keyword}{auto}\&\ file\ :\ fileArray)\ \{}
-\DoxyCodeLine{00148\ \ \ \ \ \ \ presetList.add(file.getFileNameWithoutExtension());}
-\DoxyCodeLine{00149\ \ \ \ \ \}}
-\DoxyCodeLine{00150\ \ \ \ \ \textcolor{keywordflow}{return}\ presetList;}
-\DoxyCodeLine{00151\ \ \ \}}
-\DoxyCodeLine{00152\ }
-\DoxyCodeLine{00153\ \ \ juce::String\ getCurrentPreset()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ currentPreset.toString();\ \}}
+\DoxyCodeLine{00019\ \textcolor{keyword}{namespace\ }gui\ \{}
+\DoxyCodeLine{00020\ \textcolor{keyword}{namespace\ }preset\ \{}
+\DoxyCodeLine{00021\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classdmt_1_1gui_1_1preset_1_1_preset_manager}{PresetManager}}\ :\ juce::ValueTree::Listener}
+\DoxyCodeLine{00022\ \{}
+\DoxyCodeLine{00023\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00024\ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ juce::File\&\ defaultDirectory\ =}
+\DoxyCodeLine{00025\ \ \ \ \ juce::File::getSpecialLocation(}
+\DoxyCodeLine{00026\ \ \ \ \ \ \ juce::File::SpecialLocationType::userDocumentsDirectory)}
+\DoxyCodeLine{00027\ \ \ \ \ \ \ .getChildFile(ProjectInfo::companyName)}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ .getChildFile(ProjectInfo::projectName);}
+\DoxyCodeLine{00029\ }
+\DoxyCodeLine{00030\ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ juce::String\&\ extension\ =\ \textcolor{stringliteral}{"{}preset"{}};}
+\DoxyCodeLine{00031\ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ juce::String\&\ presetNameProperty\ =\ \textcolor{stringliteral}{"{}presetName"{}};}
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00033\ \ \ \textcolor{comment}{//==============================================================================}}
+\DoxyCodeLine{00034\ \ \ \mbox{\hyperlink{classdmt_1_1gui_1_1preset_1_1_preset_manager}{PresetManager}}(juce::AudioProcessorValueTreeState\&\ apvts)}
+\DoxyCodeLine{00035\ \ \ \ \ :\ valueTreeState(apvts)}
+\DoxyCodeLine{00036\ \ \ \{}
+\DoxyCodeLine{00037\ \ \ \ \ \textcolor{comment}{//\ Create\ default\ directory}}
+\DoxyCodeLine{00038\ \ \ \ \ \textcolor{keywordflow}{if}\ (!defaultDirectory.exists())\ \{}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\ result\ =\ defaultDirectory.createDirectory();}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (result.failed())\ \{}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \ \ DBG(\textcolor{stringliteral}{"{}Could\ not\ create\ preset\ directory:\ "{}}\ +\ result.getErrorMessage());}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \ \ jassertfalse;}
+\DoxyCodeLine{00043\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00044\ \ \ \ \ \}}
+\DoxyCodeLine{00045\ \ \ \ \ valueTreeState.state.addListener(\textcolor{keyword}{this});}
+\DoxyCodeLine{00046\ \ \ \ \ currentPreset.referTo(}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ valueTreeState.state.getPropertyAsValue(presetNameProperty,\ \textcolor{keyword}{nullptr}));}
+\DoxyCodeLine{00048\ \ \ \}}
+\DoxyCodeLine{00049\ }
+\DoxyCodeLine{00050\ \ \ \textcolor{comment}{//==============================================================================}}
+\DoxyCodeLine{00051\ \ \ \textcolor{keywordtype}{void}\ savePreset(\textcolor{keyword}{const}\ juce::String\&\ presetName)}
+\DoxyCodeLine{00052\ \ \ \{}
+\DoxyCodeLine{00053\ \ \ \ \ \textcolor{keywordflow}{if}\ (presetName.isEmpty())}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00055\ \ \ \ \ currentPreset.setValue(presetName);}
+\DoxyCodeLine{00056\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\ xml\ =\ valueTreeState.copyState().createXml();}
+\DoxyCodeLine{00057\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\ presetFile\ =}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ defaultDirectory.getChildFile(presetName\ +\ \textcolor{stringliteral}{"{}."{}}\ +\ extension);}
+\DoxyCodeLine{00059\ \ \ \ \ \textcolor{keywordflow}{if}\ (!xml-\/>writeTo(presetFile))\ \{}
+\DoxyCodeLine{00060\ \ \ \ \ \ \ DBG(\textcolor{stringliteral}{"{}Could\ not\ create\ preset\ file:\ "{}}\ +\ presetFile.getFullPathName());}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ jassertfalse;}
+\DoxyCodeLine{00062\ \ \ \ \ \}}
+\DoxyCodeLine{00063\ \ \ \}}
+\DoxyCodeLine{00064\ }
+\DoxyCodeLine{00065\ \ \ \textcolor{keywordtype}{void}\ loadPreset(\textcolor{keyword}{const}\ juce::String\&\ presetName)}
+\DoxyCodeLine{00066\ \ \ \{}
+\DoxyCodeLine{00067\ \ \ \ \ \textcolor{keywordflow}{if}\ (presetName.isEmpty())}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00069\ }
+\DoxyCodeLine{00070\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\ presetFile\ =}
+\DoxyCodeLine{00071\ \ \ \ \ \ \ defaultDirectory.getChildFile(presetName\ +\ \textcolor{stringliteral}{"{}."{}}\ +\ extension);}
+\DoxyCodeLine{00072\ \ \ \ \ \textcolor{keywordflow}{if}\ (!presetFile.existsAsFile())\ \{}
+\DoxyCodeLine{00073\ \ \ \ \ \ \ DBG(\textcolor{stringliteral}{"{}Preset\ file\ does\ not\ exist:\ "{}}\ +\ presetFile.getFullPathName());}
+\DoxyCodeLine{00074\ \ \ \ \ \ \ jassertfalse;}
+\DoxyCodeLine{00075\ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00076\ \ \ \ \ \}}
+\DoxyCodeLine{00077\ }
+\DoxyCodeLine{00078\ \ \ \ \ juce::XmlDocument\ xmlDocument\{\ presetFile\ \};}
+\DoxyCodeLine{00079\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\ valueTreeToLoad\ =}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ juce::ValueTree::fromXml(*xmlDocument.getDocumentElement());}
+\DoxyCodeLine{00081\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ valueTreeToLoad.getNumChildren();\ i++)\ \{}
+\DoxyCodeLine{00082\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\ parameterChildToLoad\ =\ valueTreeToLoad.getChild(i);}
+\DoxyCodeLine{00083\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\ parameterId\ =\ parameterChildToLoad.getProperty(\textcolor{stringliteral}{"{}id"{}});}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \textcolor{keyword}{auto}\ parameterTree\ =}
+\DoxyCodeLine{00085\ \ \ \ \ \ \ \ \ valueTreeState.state.getChildWithProperty(\textcolor{stringliteral}{"{}id"{}},\ parameterId);}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (parameterTree.isValid())\ \{}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ \ \ parameterTree.copyPropertiesFrom(parameterChildToLoad,\ \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00089\ \ \ \ \ \}}
+\DoxyCodeLine{00090\ \ \ \ \ currentPreset.setValue(presetName);}
+\DoxyCodeLine{00091\ \ \ \}}
+\DoxyCodeLine{00092\ }
+\DoxyCodeLine{00093\ \ \ \textcolor{keywordtype}{void}\ loadInitPreset()}
+\DoxyCodeLine{00094\ \ \ \{}
+\DoxyCodeLine{00095\ \ \ \ \ \textcolor{comment}{//\ valueTreeState.}}
+\DoxyCodeLine{00096\ \ \ \}}
+\DoxyCodeLine{00097\ }
+\DoxyCodeLine{00098\ \ \ \textcolor{keywordtype}{void}\ deletePreset(\textcolor{keyword}{const}\ juce::String\&\ presetName)}
+\DoxyCodeLine{00099\ \ \ \{}
+\DoxyCodeLine{00100\ \ \ \ \ \textcolor{keywordflow}{if}\ (presetName.isEmpty())}
+\DoxyCodeLine{00101\ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00102\ }
+\DoxyCodeLine{00103\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\ presetFile\ =}
+\DoxyCodeLine{00104\ \ \ \ \ \ \ defaultDirectory.getChildFile(presetName\ +\ \textcolor{stringliteral}{"{}."{}}\ +\ extension);}
+\DoxyCodeLine{00105\ \ \ \ \ \textcolor{keywordflow}{if}\ (!presetFile.existsAsFile())\ \{}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ DBG(\textcolor{stringliteral}{"{}Preset\ file\ does\ not\ exist:\ "{}}\ +\ presetFile.getFullPathName());}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ jassertfalse;}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00109\ \ \ \ \ \}}
+\DoxyCodeLine{00110\ \ \ \ \ \textcolor{keywordflow}{if}\ (!presetFile.deleteFile())\ \{}
+\DoxyCodeLine{00111\ \ \ \ \ \ \ DBG(\textcolor{stringliteral}{"{}Could\ not\ delete\ preset\ file:\ "{}}\ +\ presetFile.getFullPathName());}
+\DoxyCodeLine{00112\ \ \ \ \ \ \ jassertfalse;}
+\DoxyCodeLine{00113\ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00114\ \ \ \ \ \}}
+\DoxyCodeLine{00115\ \ \ \ \ currentPreset\ =\ \textcolor{stringliteral}{"{}"{}};}
+\DoxyCodeLine{00116\ \ \ \}}
+\DoxyCodeLine{00117\ }
+\DoxyCodeLine{00118\ \ \ \textcolor{comment}{//==============================================================================}}
+\DoxyCodeLine{00119\ \ \ \textcolor{keywordtype}{int}\ loadNextPreset()}
+\DoxyCodeLine{00120\ \ \ \{}
+\DoxyCodeLine{00121\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\ presetList\ =\ getPresetList();}
+\DoxyCodeLine{00122\ \ \ \ \ \textcolor{keywordflow}{if}\ (presetList.isEmpty())}
+\DoxyCodeLine{00123\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ -\/1;}
+\DoxyCodeLine{00124\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\ currentIndex\ =\ presetList.indexOf(currentPreset.toString());}
+\DoxyCodeLine{00125\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\ nextIndex\ =}
+\DoxyCodeLine{00126\ \ \ \ \ \ \ (currentIndex\ ==\ (presetList.size()\ -\/\ 1))\ ?\ 0\ :\ currentIndex\ +\ 1;}
+\DoxyCodeLine{00127\ \ \ \ \ loadPreset(presetList[nextIndex]);}
+\DoxyCodeLine{00128\ \ \ \ \ \textcolor{keywordflow}{return}\ nextIndex;}
+\DoxyCodeLine{00129\ \ \ \}}
+\DoxyCodeLine{00130\ }
+\DoxyCodeLine{00131\ \ \ \textcolor{keywordtype}{int}\ loadPreviousPreset()}
+\DoxyCodeLine{00132\ \ \ \{}
+\DoxyCodeLine{00133\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\ presetList\ =\ getPresetList();}
+\DoxyCodeLine{00134\ \ \ \ \ \textcolor{keywordflow}{if}\ (presetList.isEmpty())}
+\DoxyCodeLine{00135\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ -\/1;}
+\DoxyCodeLine{00136\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\ currentIndex\ =\ presetList.indexOf(currentPreset.toString());}
+\DoxyCodeLine{00137\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\ previousIndex\ =}
+\DoxyCodeLine{00138\ \ \ \ \ \ \ (currentIndex\ ==\ 0)\ ?\ presetList.size()\ -\/\ 1\ :\ currentIndex\ -\/\ 1;}
+\DoxyCodeLine{00139\ \ \ \ \ loadPreset(presetList[previousIndex]);}
+\DoxyCodeLine{00140\ \ \ \ \ \textcolor{keywordflow}{return}\ previousIndex;}
+\DoxyCodeLine{00141\ \ \ \}}
+\DoxyCodeLine{00142\ }
+\DoxyCodeLine{00143\ \ \ \textcolor{comment}{//==============================================================================}}
+\DoxyCodeLine{00144\ \ \ juce::StringArray\ getPresetList()}
+\DoxyCodeLine{00145\ \ \ \{}
+\DoxyCodeLine{00146\ \ \ \ \ juce::StringArray\ presetList;}
+\DoxyCodeLine{00147\ \ \ \ \ \textcolor{keyword}{auto}\ fileArray\ =\ defaultDirectory.findChildFiles(}
+\DoxyCodeLine{00148\ \ \ \ \ \ \ juce::File::TypesOfFileToFind::findFiles,\ \textcolor{keyword}{false},\ \textcolor{stringliteral}{"{}*."{}}\ +\ extension);}
+\DoxyCodeLine{00149\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{const}\ \textcolor{keyword}{auto}\&\ file\ :\ fileArray)\ \{}
+\DoxyCodeLine{00150\ \ \ \ \ \ \ presetList.add(file.getFileNameWithoutExtension());}
+\DoxyCodeLine{00151\ \ \ \ \ \}}
+\DoxyCodeLine{00152\ \ \ \ \ \textcolor{keywordflow}{return}\ presetList;}
+\DoxyCodeLine{00153\ \ \ \}}
 \DoxyCodeLine{00154\ }
-\DoxyCodeLine{00155\ \ \ \textcolor{keywordtype}{void}\ valueTreeRedirected(juce::ValueTree\&\ treeWhichHasBeenChanged)\textcolor{keyword}{\ override}}
-\DoxyCodeLine{00156\ \textcolor{keyword}{\ \ }\{}
-\DoxyCodeLine{00157\ \ \ \ \ currentPreset.referTo(}
-\DoxyCodeLine{00158\ \ \ \ \ \ \ valueTreeState.state.getPropertyAsValue(presetNameProperty,\ \textcolor{keyword}{nullptr}));}
-\DoxyCodeLine{00159\ \ \ \}}
-\DoxyCodeLine{00160\ }
-\DoxyCodeLine{00161\ \textcolor{keyword}{private}:}
-\DoxyCodeLine{00162\ \ \ \textcolor{comment}{//==============================================================================}}
-\DoxyCodeLine{00163\ \ \ juce::AudioProcessorValueTreeState\&\ valueTreeState;}
-\DoxyCodeLine{00164\ \ \ juce::StringArray\ presetList;}
-\DoxyCodeLine{00165\ \ \ juce::Value\ currentPreset;}
-\DoxyCodeLine{00166\ \};}
-\DoxyCodeLine{00167\ \}}
+\DoxyCodeLine{00155\ \ \ juce::String\ getCurrentPreset()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ currentPreset.toString();\ \}}
+\DoxyCodeLine{00156\ }
+\DoxyCodeLine{00157\ \ \ \textcolor{keywordtype}{void}\ valueTreeRedirected(juce::ValueTree\&\ treeWhichHasBeenChanged)\textcolor{keyword}{\ override}}
+\DoxyCodeLine{00158\ \textcolor{keyword}{\ \ }\{}
+\DoxyCodeLine{00159\ \ \ \ \ currentPreset.referTo(}
+\DoxyCodeLine{00160\ \ \ \ \ \ \ valueTreeState.state.getPropertyAsValue(presetNameProperty,\ \textcolor{keyword}{nullptr}));}
+\DoxyCodeLine{00161\ \ \ \}}
+\DoxyCodeLine{00162\ }
+\DoxyCodeLine{00163\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00164\ \ \ \textcolor{comment}{//==============================================================================}}
+\DoxyCodeLine{00165\ \ \ juce::AudioProcessorValueTreeState\&\ valueTreeState;}
+\DoxyCodeLine{00166\ \ \ juce::StringArray\ presetList;}
+\DoxyCodeLine{00167\ \ \ juce::Value\ currentPreset;}
+\DoxyCodeLine{00168\ \};}
+\DoxyCodeLine{00169\ \}\ \textcolor{comment}{//\ namespace\ preset}}
+\DoxyCodeLine{00170\ \}\ \textcolor{comment}{//\ namespace\ gui}}
+\DoxyCodeLine{00171\ \}\ \textcolor{comment}{//\ namespace\ dmt}}
 
 \end{DoxyCode}

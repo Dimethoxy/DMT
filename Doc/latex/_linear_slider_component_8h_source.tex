@@ -1,5 +1,5 @@
 \hypertarget{_linear_slider_component_8h_source}{}\doxysection{Linear\+Slider\+Component.\+h}
-\label{_linear_slider_component_8h_source}\index{Widgets/LinearSliderComponent.h@{Widgets/LinearSliderComponent.h}}
+\label{_linear_slider_component_8h_source}\index{Source/Gui/Widgets/LinearSliderComponent.h@{Source/Gui/Widgets/LinearSliderComponent.h}}
 
 \begin{DoxyCode}{0}
 \DoxyCodeLine{00001\ }
@@ -13,63 +13,67 @@
 \DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ <JuceHeader.h>}}
 \DoxyCodeLine{00010\ }
 \DoxyCodeLine{00011\ \textcolor{keyword}{namespace\ }dmt\ \{}
-\DoxyCodeLine{00012\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classdmt_1_1_linear_slider_component}{LinearSliderComponent}}}
-\DoxyCodeLine{00013\ \ \ :\ \textcolor{keyword}{public}\ juce::Component}
-\DoxyCodeLine{00014\ \ \ ,\ \textcolor{keyword}{public}\ juce::Slider::Listener}
-\DoxyCodeLine{00015\ \{}
-\DoxyCodeLine{00016\ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{structdmt_1_1_app_settings}{Settings}}\ =\ \mbox{\hyperlink{structdmt_1_1_app_settings}{AppSettings}};}
-\DoxyCodeLine{00017\ }
-\DoxyCodeLine{00018\ \textcolor{keyword}{public}:}
-\DoxyCodeLine{00019\ \ \ \mbox{\hyperlink{classdmt_1_1_linear_slider_component}{LinearSliderComponent}}(juce::AudioProcessorValueTreeState\&\ apvts,}
-\DoxyCodeLine{00020\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ juce::String\ name,}
-\DoxyCodeLine{00021\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ juce::String\ param,}
-\DoxyCodeLine{00022\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ dmt::InfoUnit::Type\ unitType)}
-\DoxyCodeLine{00023\ \ \ \ \ :\ sliderAttachment(apvts,\ param,\ slider)}
-\DoxyCodeLine{00024\ \ \ \ \ ,\ titleLabel(name,}
-\DoxyCodeLine{00025\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Settings::Fonts::sliderTitleLabelSize,}
-\DoxyCodeLine{00026\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Settings::Fonts::medium)}
-\DoxyCodeLine{00027\ \ \ \ \ ,\ infoLabel(\textcolor{stringliteral}{"{}Info\ Label"{}},}
-\DoxyCodeLine{00028\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Settings::Fonts::sliderInfoLabelSize,}
-\DoxyCodeLine{00029\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Settings::Fonts::regular)}
-\DoxyCodeLine{00030\ \ \ \ \ ,\ unitType(unitType)}
-\DoxyCodeLine{00031\ \ \ \{}
-\DoxyCodeLine{00032\ \ \ \ \ slider.addListener(\textcolor{keyword}{this});}
-\DoxyCodeLine{00033\ \ \ \ \ updateLabel();}
-\DoxyCodeLine{00034\ \ \ \ \ addAndMakeVisible(slider);}
-\DoxyCodeLine{00035\ \ \ \ \ addAndMakeVisible(titleLabel);}
-\DoxyCodeLine{00036\ \ \ \ \ addAndMakeVisible(infoLabel);}
-\DoxyCodeLine{00037\ \ \ \ \ setLookAndFeel(\&lnf);}
-\DoxyCodeLine{00038\ \ \ \}}
-\DoxyCodeLine{00039\ }
-\DoxyCodeLine{00040\ \ \ \mbox{\hyperlink{classdmt_1_1_linear_slider_component}{\string~LinearSliderComponent}}()\ \{\ setLookAndFeel(\textcolor{keyword}{nullptr});\ \}}
-\DoxyCodeLine{00041\ \ \ \textcolor{keywordtype}{void}\ resized()}
-\DoxyCodeLine{00042\ \ \ \{}
-\DoxyCodeLine{00043\ \ \ \ \ \textcolor{keywordtype}{float}\ labelSize\ =\ 0.15f;}
-\DoxyCodeLine{00044\ \ \ \ \ titleLabel.setBoundsRelative(0.0f,\ 0.0f,\ 1.0f,\ labelSize);}
-\DoxyCodeLine{00045\ }
-\DoxyCodeLine{00046\ \ \ \ \ \textcolor{keywordtype}{float}\ sliderY\ =\ 0.0f;}
-\DoxyCodeLine{00047\ \ \ \ \ \textcolor{keywordtype}{float}\ sliderHeight\ =\ 1.0f;}
-\DoxyCodeLine{00048\ \ \ \ \ slider.setBoundsRelative(0.0f,\ sliderY,\ 1.0f,\ sliderHeight);}
-\DoxyCodeLine{00049\ }
-\DoxyCodeLine{00050\ \ \ \ \ \textcolor{keywordtype}{float}\ infoLabelY\ =\ 1.0f\ -\/\ labelSize;}
-\DoxyCodeLine{00051\ \ \ \ \ infoLabel.setBoundsRelative(0.0f,\ infoLabelY,\ 1.0f,\ labelSize);}
-\DoxyCodeLine{00052\ \ \ \}}
-\DoxyCodeLine{00053\ \ \ \textcolor{keywordtype}{void}\ sliderValueChanged(juce::Slider*\ slider)\ \{\ updateLabel();\ \}}
-\DoxyCodeLine{00054\ }
-\DoxyCodeLine{00055\ \textcolor{keyword}{private}:}
-\DoxyCodeLine{00056\ \ \ \mbox{\hyperlink{classdmt_1_1_linear_slider}{dmt::LinearSlider}}\ slider;}
-\DoxyCodeLine{00057\ \ \ juce::AudioProcessorValueTreeState::SliderAttachment\ sliderAttachment;}
-\DoxyCodeLine{00058\ \ \ \mbox{\hyperlink{classdmt_1_1_label}{dmt::Label}}\ titleLabel;}
-\DoxyCodeLine{00059\ \ \ \mbox{\hyperlink{classdmt_1_1_label}{dmt::Label}}\ infoLabel;}
-\DoxyCodeLine{00060\ \ \ \mbox{\hyperlink{classdmt_1_1_look_and_feel}{dmt::LookAndFeel}}\ lnf;}
-\DoxyCodeLine{00061\ \ \ dmt::InfoUnit::Type\ unitType;}
-\DoxyCodeLine{00062\ }
-\DoxyCodeLine{00063\ \ \ \textcolor{keywordtype}{void}\ updateLabel()}
-\DoxyCodeLine{00064\ \ \ \{}
-\DoxyCodeLine{00065\ \ \ \ \ \textcolor{keyword}{auto}\ text\ =\ dmt::InfoUnit::getString(unitType,\ slider.getValue());}
-\DoxyCodeLine{00066\ \ \ \ \ infoLabel.setText(text,\ juce::NotificationType::dontSendNotification);}
-\DoxyCodeLine{00067\ \ \ \}}
-\DoxyCodeLine{00068\ \};}
-\DoxyCodeLine{00069\ \}}
+\DoxyCodeLine{00012\ \textcolor{keyword}{namespace\ }gui\ \{}
+\DoxyCodeLine{00013\ \textcolor{keyword}{namespace\ }widgets\ \{}
+\DoxyCodeLine{00014\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classdmt_1_1gui_1_1widgets_1_1_linear_slider_component}{LinearSliderComponent}}}
+\DoxyCodeLine{00015\ \ \ :\ \textcolor{keyword}{public}\ juce::Component}
+\DoxyCodeLine{00016\ \ \ ,\ \textcolor{keyword}{public}\ juce::Slider::Listener}
+\DoxyCodeLine{00017\ \{}
+\DoxyCodeLine{00018\ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{structdmt_1_1_app_settings}{Settings}}\ =\ \mbox{\hyperlink{structdmt_1_1_app_settings}{AppSettings}};}
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00020\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00021\ \ \ \mbox{\hyperlink{classdmt_1_1gui_1_1widgets_1_1_linear_slider_component}{LinearSliderComponent}}(juce::AudioProcessorValueTreeState\&\ apvts,}
+\DoxyCodeLine{00022\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ juce::String\ name,}
+\DoxyCodeLine{00023\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ juce::String\ param,}
+\DoxyCodeLine{00024\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ dmt::InfoUnit::Type\ unitType)}
+\DoxyCodeLine{00025\ \ \ \ \ :\ sliderAttachment(apvts,\ param,\ slider)}
+\DoxyCodeLine{00026\ \ \ \ \ ,\ titleLabel(name,}
+\DoxyCodeLine{00027\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Settings::Fonts::sliderTitleLabelSize,}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Settings::Fonts::medium)}
+\DoxyCodeLine{00029\ \ \ \ \ ,\ infoLabel(\textcolor{stringliteral}{"{}Info\ Label"{}},}
+\DoxyCodeLine{00030\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Settings::Fonts::sliderInfoLabelSize,}
+\DoxyCodeLine{00031\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Settings::Fonts::regular)}
+\DoxyCodeLine{00032\ \ \ \ \ ,\ unitType(unitType)}
+\DoxyCodeLine{00033\ \ \ \{}
+\DoxyCodeLine{00034\ \ \ \ \ slider.addListener(\textcolor{keyword}{this});}
+\DoxyCodeLine{00035\ \ \ \ \ updateLabel();}
+\DoxyCodeLine{00036\ \ \ \ \ addAndMakeVisible(slider);}
+\DoxyCodeLine{00037\ \ \ \ \ addAndMakeVisible(titleLabel);}
+\DoxyCodeLine{00038\ \ \ \ \ addAndMakeVisible(infoLabel);}
+\DoxyCodeLine{00039\ \ \ \ \ setLookAndFeel(\&lnf);}
+\DoxyCodeLine{00040\ \ \ \}}
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00042\ \ \ \mbox{\hyperlink{classdmt_1_1gui_1_1widgets_1_1_linear_slider_component}{\string~LinearSliderComponent}}()\ \{\ setLookAndFeel(\textcolor{keyword}{nullptr});\ \}}
+\DoxyCodeLine{00043\ \ \ \textcolor{keywordtype}{void}\ resized()}
+\DoxyCodeLine{00044\ \ \ \{}
+\DoxyCodeLine{00045\ \ \ \ \ \textcolor{keywordtype}{float}\ labelSize\ =\ 0.15f;}
+\DoxyCodeLine{00046\ \ \ \ \ titleLabel.setBoundsRelative(0.0f,\ 0.0f,\ 1.0f,\ labelSize);}
+\DoxyCodeLine{00047\ }
+\DoxyCodeLine{00048\ \ \ \ \ \textcolor{keywordtype}{float}\ sliderY\ =\ 0.0f;}
+\DoxyCodeLine{00049\ \ \ \ \ \textcolor{keywordtype}{float}\ sliderHeight\ =\ 1.0f;}
+\DoxyCodeLine{00050\ \ \ \ \ slider.setBoundsRelative(0.0f,\ sliderY,\ 1.0f,\ sliderHeight);}
+\DoxyCodeLine{00051\ }
+\DoxyCodeLine{00052\ \ \ \ \ \textcolor{keywordtype}{float}\ infoLabelY\ =\ 1.0f\ -\/\ labelSize;}
+\DoxyCodeLine{00053\ \ \ \ \ infoLabel.setBoundsRelative(0.0f,\ infoLabelY,\ 1.0f,\ labelSize);}
+\DoxyCodeLine{00054\ \ \ \}}
+\DoxyCodeLine{00055\ \ \ \textcolor{keywordtype}{void}\ sliderValueChanged(juce::Slider*\ slider)\ \{\ updateLabel();\ \}}
+\DoxyCodeLine{00056\ }
+\DoxyCodeLine{00057\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00058\ \ \ dmt::LinearSlider\ slider;}
+\DoxyCodeLine{00059\ \ \ juce::AudioProcessorValueTreeState::SliderAttachment\ sliderAttachment;}
+\DoxyCodeLine{00060\ \ \ dmt::Label\ titleLabel;}
+\DoxyCodeLine{00061\ \ \ dmt::Label\ infoLabel;}
+\DoxyCodeLine{00062\ \ \ dmt::LookAndFeel\ lnf;}
+\DoxyCodeLine{00063\ \ \ dmt::InfoUnit::Type\ unitType;}
+\DoxyCodeLine{00064\ }
+\DoxyCodeLine{00065\ \ \ \textcolor{keywordtype}{void}\ updateLabel()}
+\DoxyCodeLine{00066\ \ \ \{}
+\DoxyCodeLine{00067\ \ \ \ \ \textcolor{keyword}{auto}\ text\ =\ dmt::InfoUnit::getString(unitType,\ slider.getValue());}
+\DoxyCodeLine{00068\ \ \ \ \ infoLabel.setText(text,\ juce::NotificationType::dontSendNotification);}
+\DoxyCodeLine{00069\ \ \ \}}
+\DoxyCodeLine{00070\ \};}
+\DoxyCodeLine{00071\ \}\ \textcolor{comment}{//\ namespace\ widgets}}
+\DoxyCodeLine{00072\ \}\ \textcolor{comment}{//\ namespace\ gui}}
+\DoxyCodeLine{00073\ \}\ \textcolor{comment}{//\ namespace\ dmt}}
 
 \end{DoxyCode}

@@ -1,122 +1,75 @@
 \hypertarget{_arc_button_component_8h_source}{}\doxysection{Arc\+Button\+Component.\+h}
-\label{_arc_button_component_8h_source}\index{Components/ArcButtonComponent.h@{Components/ArcButtonComponent.h}}
+\label{_arc_button_component_8h_source}\index{Source/Gui/Componnets/ArcButtonComponent.h@{Source/Gui/Componnets/ArcButtonComponent.h}}
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00001\ \textcolor{comment}{//==============================================================================}}
 \DoxyCodeLine{00002\ }
-\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ "{}../Utility/AppSettings.h"{}}}
-\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ "{}../Utility/Shadow.h"{}}}
-\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ <JuceHeader.h>}}
-\DoxyCodeLine{00006\ }
-\DoxyCodeLine{00007\ \textcolor{comment}{//==============================================================================}}
-\DoxyCodeLine{00008\ \textcolor{keyword}{namespace\ }dmt\ \{}
-\DoxyCodeLine{00019\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classdmt_1_1_arc_button_component}{ArcButtonComponent}}}
-\DoxyCodeLine{00020\ \ \ :\ \textcolor{keyword}{public}\ juce::Component}
-\DoxyCodeLine{00021\ \ \ ,\ juce::MouseListener}
-\DoxyCodeLine{00022\ \{}
-\DoxyCodeLine{00023\ \textcolor{keyword}{public}:}
-\DoxyCodeLine{00031\ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{classdmt_1_1_arc_button_component_a5c558bbd314d9a6ceaaf026cd573b950}{Settings}}\ =\ dmt::AppSettings::ArcButton;}
-\DoxyCodeLine{00032\ \ \ \mbox{\hyperlink{classdmt_1_1_arc_button_component}{ArcButtonComponent}}(\textcolor{keywordtype}{bool}\ leftSided)}
-\DoxyCodeLine{00033\ \ \ \{}
-\DoxyCodeLine{00034\ \ \ \ \ this-\/>leftSided\ =\ leftSided;}
-\DoxyCodeLine{00035\ \ \ \ \ outerShadow.radius\ =\ Settings::outerShadowRadius;}
-\DoxyCodeLine{00036\ \ \ \ \ outerShadow.colour\ =\ Settings::outerShadowColour;}
-\DoxyCodeLine{00037\ \ \ \ \ innerShadow.radius\ =\ Settings::innerShadowRadius;}
-\DoxyCodeLine{00038\ \ \ \ \ innerShadow.colour\ =\ Settings::innerShadowColour;}
-\DoxyCodeLine{00039\ \ \ \}}
-\DoxyCodeLine{00040\ \ \ \textcolor{comment}{//============================================================================}}
-\DoxyCodeLine{00041\ \ \ \textcolor{keywordtype}{void}\ mouseEnter(\textcolor{keyword}{const}\ juce::MouseEvent\&\ event)\textcolor{keyword}{\ override}}
-\DoxyCodeLine{00042\ \textcolor{keyword}{\ \ }\{}
-\DoxyCodeLine{00043\ \ \ \ \ updateState(event);}
-\DoxyCodeLine{00044\ \ \ \}}
-\DoxyCodeLine{00045\ \ \ \textcolor{keywordtype}{void}\ mouseExit(\textcolor{keyword}{const}\ juce::MouseEvent\&\ event)\textcolor{keyword}{\ override\ }\{\ updateState(event);\ \}}
-\DoxyCodeLine{00046\ \ \ \textcolor{keywordtype}{void}\ mouseDown(\textcolor{keyword}{const}\ juce::MouseEvent\&\ event)\textcolor{keyword}{\ override\ }\{\ updateState(event);\ \}}
-\DoxyCodeLine{00047\ \ \ \textcolor{keywordtype}{void}\ mouseUp(\textcolor{keyword}{const}\ juce::MouseEvent\&\ event)\textcolor{keyword}{\ override\ }\{\ updateState(event);\ \}}
-\DoxyCodeLine{00048\ \ \ \textcolor{keywordtype}{void}\ mouseMove(\textcolor{keyword}{const}\ juce::MouseEvent\&\ event)\textcolor{keyword}{\ override\ }\{\ updateState(event);\ \}}
-\DoxyCodeLine{00049\ \ \ \textcolor{keywordtype}{void}\ mouseDrag(\textcolor{keyword}{const}\ juce::MouseEvent\&\ event)\textcolor{keyword}{\ override\ }\{\ updateState(event);\ \}}
-\DoxyCodeLine{00050\ }
-\DoxyCodeLine{00051\ \ \ \textcolor{keywordtype}{void}\ updateState(\textcolor{keyword}{const}\ juce::MouseEvent\&\ event)}
-\DoxyCodeLine{00052\ \ \ \{}
-\DoxyCodeLine{00053\ \ \ \ \ juce::Path\ path\ =\ getPath();}
-\DoxyCodeLine{00054\ \ \ \ \ \textcolor{keywordflow}{if}\ (path.contains(event.getPosition().toFloat()))\ \{}
-\DoxyCodeLine{00055\ \ \ \ \ \ \ hover\ =\ \textcolor{keyword}{true};}
-\DoxyCodeLine{00056\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (isMouseButtonDown())\ \{}
-\DoxyCodeLine{00057\ \ \ \ \ \ \ \ \ clicked\ =\ \textcolor{keyword}{true};}
-\DoxyCodeLine{00058\ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
-\DoxyCodeLine{00059\ \ \ \ \ \ \ \ \ clicked\ =\ \textcolor{keyword}{false};}
-\DoxyCodeLine{00060\ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00061\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
-\DoxyCodeLine{00062\ \ \ \ \ \ \ hover\ =\ \textcolor{keyword}{false};}
-\DoxyCodeLine{00063\ \ \ \ \ \}}
-\DoxyCodeLine{00064\ \ \ \ \ resized();}
-\DoxyCodeLine{00065\ \ \ \ \ repaint();}
-\DoxyCodeLine{00066\ \ \ \}}
-\DoxyCodeLine{00067\ \ \ \textcolor{comment}{//============================================================================}}
-\DoxyCodeLine{00068\ \ \ \textcolor{keywordtype}{void}\ paint(juce::Graphics\&\ g)\textcolor{keyword}{\ override}}
-\DoxyCodeLine{00069\ \textcolor{keyword}{\ \ }\{}
-\DoxyCodeLine{00070\ \ \ \ \ juce::Path\ path\ =\ getPath();}
-\DoxyCodeLine{00071\ }
-\DoxyCodeLine{00072\ \ \ \ \ \textcolor{keywordflow}{if}\ (hover)\ \{}
-\DoxyCodeLine{00073\ \ \ \ \ \ \ g.setColour(Settings::hoverColour);}
-\DoxyCodeLine{00074\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
-\DoxyCodeLine{00075\ \ \ \ \ \ \ g.setColour(Settings::foregroundColour);}
-\DoxyCodeLine{00076\ \ \ \ \ \}}
-\DoxyCodeLine{00077\ }
-\DoxyCodeLine{00078\ \ \ \ \ g.fillPath(path);}
-\DoxyCodeLine{00079\ }
-\DoxyCodeLine{00080\ \ \ \ \ \textcolor{keywordflow}{if}\ (Settings::drawInnerShadow)}
-\DoxyCodeLine{00081\ \ \ \ \ \ \ innerShadow.drawInnerForPath(g,\ path);}
-\DoxyCodeLine{00082\ \ \ \ \ \textcolor{keywordflow}{if}\ (Settings::drawOuterShadow)}
-\DoxyCodeLine{00083\ \ \ \ \ \ \ outerShadow.drawOuterForPath(g,\ path);}
-\DoxyCodeLine{00084\ }
-\DoxyCodeLine{00085\ \ \ \ \ g.setColour(Settings::borderColour);}
-\DoxyCodeLine{00086\ \ \ \ \ g.strokePath(path,\ juce::PathStrokeType(Settings::borderSize));}
-\DoxyCodeLine{00087\ \ \ \}}
-\DoxyCodeLine{00088\ \ \ \textcolor{keywordtype}{void}\ resized()}
-\DoxyCodeLine{00089\ \ \ \{}
-\DoxyCodeLine{00090\ \ \ \ \ \textcolor{keyword}{auto}\ bounds\ =\ this-\/>getLocalBounds().toFloat();}
-\DoxyCodeLine{00091\ \ \ \ \ bounds.reduce(bounds.getWidth()\ /\ 3.75f,\ bounds.getHeight()\ /\ 5.5f);}
-\DoxyCodeLine{00092\ \ \ \ \ \textcolor{keywordflow}{if}\ (!clicked)}
-\DoxyCodeLine{00093\ \ \ \ \ \ \ bounds\ =\ bounds.reduced(10.0f);}
-\DoxyCodeLine{00094\ }
-\DoxyCodeLine{00095\ \ \ \ \ \textcolor{keyword}{auto}\ offsetDirection\ =\ leftSided\ ?\ -\/1.0f\ :\ 1.0f;}
-\DoxyCodeLine{00096\ \ \ \ \ \textcolor{keyword}{auto}\ xOffset\ =\ bounds.getWidth()\ /\ 8.0f\ *\ offsetDirection;}
-\DoxyCodeLine{00097\ \ \ \ \ bounds.setX(bounds.getX()\ +\ xOffset);}
-\DoxyCodeLine{00098\ \ \ \ \ pathBounds\ =\ bounds.toNearestInt();}
-\DoxyCodeLine{00099\ \ \ \}}
-\DoxyCodeLine{00100\ \ \ \textcolor{comment}{//============================================================================}}
-\DoxyCodeLine{00101\ \ \ juce::Path\ getPath()}
-\DoxyCodeLine{00102\ \ \ \{}
-\DoxyCodeLine{00103\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\ bounds\ =\ pathBounds.toFloat();}
-\DoxyCodeLine{00104\ \ \ \ \ juce::Path\ path;}
-\DoxyCodeLine{00105\ }
-\DoxyCodeLine{00106\ \ \ \ \ \textcolor{keywordtype}{float}\ midX\ =\ leftSided\ ?\ bounds.getX()\ :\ bounds.getRight();}
-\DoxyCodeLine{00107\ \ \ \ \ \textcolor{keywordtype}{float}\ midY\ =\ bounds.getCentreY();}
-\DoxyCodeLine{00108\ \ \ \ \ juce::Point<float>\ mid(midX,\ midY);}
-\DoxyCodeLine{00109\ \ \ \ \ path.startNewSubPath(mid);}
-\DoxyCodeLine{00110\ }
-\DoxyCodeLine{00111\ \ \ \ \ \textcolor{keywordtype}{int}\ topX\ =\ leftSided\ ?\ bounds.getRight()\ :\ bounds.getX();}
-\DoxyCodeLine{00112\ \ \ \ \ \textcolor{keywordtype}{int}\ topY\ =\ bounds.getY();}
-\DoxyCodeLine{00113\ \ \ \ \ juce::Point<float>\ top(topX,\ topY);}
-\DoxyCodeLine{00114\ \ \ \ \ path.lineTo(top);}
-\DoxyCodeLine{00115\ }
-\DoxyCodeLine{00116\ \ \ \ \ \textcolor{keywordtype}{float}\ downX\ =\ leftSided\ ?\ bounds.getRight()\ :\ bounds.getX();}
-\DoxyCodeLine{00117\ \ \ \ \ \textcolor{keywordtype}{float}\ downY\ =\ bounds.getY()\ +\ bounds.getHeight();}
-\DoxyCodeLine{00118\ \ \ \ \ juce::Point<float>\ down(downX,\ downY);}
-\DoxyCodeLine{00119\ \ \ \ \ path.quadraticTo(bounds.getCentre(),\ down);}
-\DoxyCodeLine{00120\ }
-\DoxyCodeLine{00121\ \ \ \ \ path.closeSubPath();}
-\DoxyCodeLine{00122\ \ \ \ \ \textcolor{keywordflow}{return}\ path;}
-\DoxyCodeLine{00123\ \ \ \}}
-\DoxyCodeLine{00124\ \ \ \textcolor{comment}{//============================================================================}}
-\DoxyCodeLine{00125\ \textcolor{keyword}{private}:}
-\DoxyCodeLine{00126\ \ \ \textcolor{keywordtype}{bool}\ hover\ =\ \textcolor{keyword}{false};}
-\DoxyCodeLine{00127\ \ \ \textcolor{keywordtype}{bool}\ clicked\ =\ \textcolor{keyword}{false};}
-\DoxyCodeLine{00128\ \ \ \textcolor{keywordtype}{bool}\ leftSided;}
-\DoxyCodeLine{00129\ \ \ juce::Rectangle<int>\ pathBounds;}
-\DoxyCodeLine{00130\ \ \ \mbox{\hyperlink{structdmt_1_1_shadow}{dmt::Shadow}}\ outerShadow;}
-\DoxyCodeLine{00131\ \ \ \mbox{\hyperlink{structdmt_1_1_shadow}{dmt::Shadow}}\ innerShadow;}
-\DoxyCodeLine{00132\ \};}
-\DoxyCodeLine{00133\ \}}
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}../Utility/AppSettings.h"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}../Utility/Shadow.h"{}}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ <JuceHeader.h>}}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ \textcolor{comment}{//==============================================================================}}
+\DoxyCodeLine{00010\ \textcolor{keyword}{namespace\ }dmt\ \{}
+\DoxyCodeLine{00011\ \textcolor{keyword}{namespace\ }gui\ \{}
+\DoxyCodeLine{00012\ \textcolor{keyword}{namespace\ }components\ \{}
+\DoxyCodeLine{00023\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classdmt_1_1gui_1_1components_1_1_arc_button_component}{ArcButtonComponent}}}
+\DoxyCodeLine{00024\ \ \ :\ \textcolor{keyword}{public}\ juce::Component}
+\DoxyCodeLine{00025\ \ \ ,\ juce::MouseListener}
+\DoxyCodeLine{00026\ \{}
+\DoxyCodeLine{00027\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00037\ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{classdmt_1_1gui_1_1components_1_1_arc_button_component_ad92d921a253702d8f7cf1d631bf115cd}{Settings}}\ =\ dmt::AppSettings::ArcButton;}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00039\ \ \ \textcolor{comment}{//============================================================================}}
+\DoxyCodeLine{00046\ \textcolor{comment}{}\ \ \mbox{\hyperlink{classdmt_1_1gui_1_1components_1_1_arc_button_component}{ArcButtonComponent}}(\textcolor{keywordtype}{bool}\ leftSided)\ \textcolor{keyword}{noexcept};}
+\DoxyCodeLine{00047\ \ \ ;}
+\DoxyCodeLine{00048\ }
+\DoxyCodeLine{00049\ \ \ \textcolor{comment}{//============================================================================}}
+\DoxyCodeLine{00060\ \textcolor{comment}{}\ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classdmt_1_1gui_1_1components_1_1_arc_button_component_aadd56dc8a5ab2a18350182d12ed942d9}{paint}}(juce::Graphics\&\ g)\ \textcolor{keyword}{noexcept}\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00061\ }
+\DoxyCodeLine{00062\ \ \ \textcolor{comment}{//============================================================================}}
+\DoxyCodeLine{00071\ \textcolor{comment}{}\ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classdmt_1_1gui_1_1components_1_1_arc_button_component_a905d9334638e81cdcfc4fdce88f27093}{resized}}()\ noexcept\ override;}
+\DoxyCodeLine{00072\ }
+\DoxyCodeLine{00073\ protected:}
+\DoxyCodeLine{00074\ \ \ \textcolor{comment}{//============================================================================}}
+\DoxyCodeLine{00086\ \textcolor{comment}{}\ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classdmt_1_1gui_1_1components_1_1_arc_button_component_a857f4fa87a43408490ad38f3b40bc61a}{mouseEnter}}(const\ juce::MouseEvent\&\ event)\ noexcept\ override;}
+\DoxyCodeLine{00087\ }
+\DoxyCodeLine{00088\ \ \ \textcolor{comment}{//============================================================================}}
+\DoxyCodeLine{00100\ \textcolor{comment}{}\ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classdmt_1_1gui_1_1components_1_1_arc_button_component_ae8c697823b4b0f6c46e9181a8321ea2e}{mouseExit}}(const\ juce::MouseEvent\&\ event)\ noexcept\ override;}
+\DoxyCodeLine{00101\ }
+\DoxyCodeLine{00102\ \ \ \textcolor{comment}{//============================================================================}}
+\DoxyCodeLine{00112\ \textcolor{comment}{}\ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classdmt_1_1gui_1_1components_1_1_arc_button_component_a47fa2437d9132bd16d4c03e2acc42ed6}{mouseDown}}(const\ juce::MouseEvent\&\ event)\ noexcept\ override;}
+\DoxyCodeLine{00113\ }
+\DoxyCodeLine{00114\ \ \ \textcolor{comment}{//============================================================================}}
+\DoxyCodeLine{00124\ \textcolor{comment}{}\ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classdmt_1_1gui_1_1components_1_1_arc_button_component_ad6b7520d8591c801c28a8153487ad7b8}{mouseUp}}(const\ juce::MouseEvent\&\ event)\ noexcept\ override;}
+\DoxyCodeLine{00125\ }
+\DoxyCodeLine{00126\ \ \ \textcolor{comment}{//============================================================================}}
+\DoxyCodeLine{00136\ \textcolor{comment}{}\ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classdmt_1_1gui_1_1components_1_1_arc_button_component_ae775f291a2e8e325a57c4f9a50f690a0}{mouseMove}}(const\ juce::MouseEvent\&\ event)\ noexcept\ override;}
+\DoxyCodeLine{00137\ }
+\DoxyCodeLine{00138\ \ \ \textcolor{comment}{//============================================================================}}
+\DoxyCodeLine{00148\ \textcolor{comment}{}\ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classdmt_1_1gui_1_1components_1_1_arc_button_component_a27310e9657a6c50678cc6c297c1c86ec}{mouseDrag}}(const\ juce::MouseEvent\&\ event)\ noexcept\ override;}
+\DoxyCodeLine{00149\ }
+\DoxyCodeLine{00150\ \ \ \textcolor{comment}{//============================================================================}}
+\DoxyCodeLine{00160\ \textcolor{comment}{}\ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classdmt_1_1gui_1_1components_1_1_arc_button_component_af9f273fbe75c84bc8c3c3ad70cee08a5}{updateState}}(const\ juce::MouseEvent\&\ event)\ noexcept;}
+\DoxyCodeLine{00161\ }
+\DoxyCodeLine{00162\ \ \ \textcolor{comment}{//============================================================================}}
+\DoxyCodeLine{00171\ \textcolor{comment}{}\ \ const\ juce::Path\ \mbox{\hyperlink{classdmt_1_1gui_1_1components_1_1_arc_button_component_a78f04643ea997a32e4ebb49331d3a5ae}{getPath}}()\ const\ noexcept;}
+\DoxyCodeLine{00172\ }
+\DoxyCodeLine{00173\ private:}
+\DoxyCodeLine{00174\ \ \ \textcolor{comment}{//============================================================================}}
+\DoxyCodeLine{00175\ \ \ \textcolor{keywordtype}{bool}\ hover\ =\ false;}
+\DoxyCodeLine{00176\ \ \ \textcolor{keywordtype}{bool}\ clicked\ =\ false;}
+\DoxyCodeLine{00177\ \ \ \textcolor{keywordtype}{bool}\ leftSided;}
+\DoxyCodeLine{00178\ \ \ \textcolor{comment}{//============================================================================}}
+\DoxyCodeLine{00179\ \ \ juce::Rectangle<\textcolor{keywordtype}{int}>\ pathBounds;}
+\DoxyCodeLine{00180\ \ \ \textcolor{comment}{//============================================================================}}
+\DoxyCodeLine{00181\ \ \ dmt::\mbox{\hyperlink{structdmt_1_1_shadow}{Shadow}}\ outerShadow;}
+\DoxyCodeLine{00182\ \ \ dmt::\mbox{\hyperlink{structdmt_1_1_shadow}{Shadow}}\ innerShadow;}
+\DoxyCodeLine{00183\ \ \ \textcolor{comment}{//============================================================================}}
+\DoxyCodeLine{00184\ \};}
+\DoxyCodeLine{00185\ \}\ \textcolor{comment}{//\ namespace\ components}}
+\DoxyCodeLine{00186\ \}\ \textcolor{comment}{//\ namespace\ gui}}
+\DoxyCodeLine{00187\ \}\ \textcolor{comment}{//\ namespace\ dmt}}
 
 \end{DoxyCode}

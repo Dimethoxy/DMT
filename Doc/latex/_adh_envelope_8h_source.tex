@@ -1,5 +1,5 @@
 \hypertarget{_adh_envelope_8h_source}{}\doxysection{Adh\+Envelope.\+h}
-\label{_adh_envelope_8h_source}\index{Envelope/AdhEnvelope.h@{Envelope/AdhEnvelope.h}}
+\label{_adh_envelope_8h_source}\index{Source/Dsp/Envelope/AdhEnvelope.h@{Source/Dsp/Envelope/AdhEnvelope.h}}
 
 \begin{DoxyCode}{0}
 \DoxyCodeLine{00001\ \textcolor{comment}{/*}}
@@ -16,104 +16,108 @@
 \DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}../Utility/Math.h"{}}}
 \DoxyCodeLine{00013\ }
 \DoxyCodeLine{00014\ \textcolor{keyword}{namespace\ }dmt\ \{}
-\DoxyCodeLine{00015\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classdmt_1_1_ahd_envelope}{AhdEnvelope}}}
-\DoxyCodeLine{00016\ \{}
-\DoxyCodeLine{00017\ \textcolor{keyword}{public}:}
-\DoxyCodeLine{00018\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structdmt_1_1_ahd_envelope_1_1_parameters}{Parameters}}}
-\DoxyCodeLine{00019\ \ \ \{}
-\DoxyCodeLine{00020\ \ \ \ \ \textcolor{keywordtype}{float}\ attack\ =\ 0.015f;}
-\DoxyCodeLine{00021\ \ \ \ \ \textcolor{keywordtype}{float}\ hold\ =\ 0.08f;}
-\DoxyCodeLine{00022\ \ \ \ \ \textcolor{keywordtype}{float}\ decay\ =\ 0.5f;}
-\DoxyCodeLine{00023\ }
-\DoxyCodeLine{00024\ \ \ \ \ \textcolor{comment}{//\ Negative\ scew\ =\ curve\ pulled\ up}}
-\DoxyCodeLine{00025\ \ \ \ \ \textcolor{keywordtype}{float}\ attackScew\ =\ 0;}
-\DoxyCodeLine{00026\ \ \ \ \ \textcolor{keywordtype}{float}\ decayScew\ =\ 10;}
-\DoxyCodeLine{00027\ \ \ \};}
-\DoxyCodeLine{00028\ }
-\DoxyCodeLine{00029\ \ \ \textcolor{keyword}{enum\ class}\ State}
-\DoxyCodeLine{00030\ \ \ \{}
-\DoxyCodeLine{00031\ \ \ \ \ Attack,}
-\DoxyCodeLine{00032\ \ \ \ \ Hold,}
-\DoxyCodeLine{00033\ \ \ \ \ Decay,}
-\DoxyCodeLine{00034\ \ \ \ \ Idle}
-\DoxyCodeLine{00035\ \ \ \};}
-\DoxyCodeLine{00036\ }
-\DoxyCodeLine{00037\ \ \ \mbox{\hyperlink{classdmt_1_1_ahd_envelope}{AhdEnvelope}}()\ \{\}}
+\DoxyCodeLine{00015\ \textcolor{keyword}{namespace\ }dsp\ \{}
+\DoxyCodeLine{00016\ \textcolor{keyword}{namespace\ }envelope\ \{}
+\DoxyCodeLine{00017\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classdmt_1_1dsp_1_1envelope_1_1_ahd_envelope}{AhdEnvelope}}}
+\DoxyCodeLine{00018\ \{}
+\DoxyCodeLine{00019\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00020\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structdmt_1_1dsp_1_1envelope_1_1_ahd_envelope_1_1_parameters}{Parameters}}}
+\DoxyCodeLine{00021\ \ \ \{}
+\DoxyCodeLine{00022\ \ \ \ \ \textcolor{keywordtype}{float}\ attack\ =\ 0.015f;}
+\DoxyCodeLine{00023\ \ \ \ \ \textcolor{keywordtype}{float}\ hold\ =\ 0.08f;}
+\DoxyCodeLine{00024\ \ \ \ \ \textcolor{keywordtype}{float}\ decay\ =\ 0.5f;}
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00026\ \ \ \ \ \textcolor{comment}{//\ Negative\ scew\ =\ curve\ pulled\ up}}
+\DoxyCodeLine{00027\ \ \ \ \ \textcolor{keywordtype}{float}\ attackScew\ =\ 0;}
+\DoxyCodeLine{00028\ \ \ \ \ \textcolor{keywordtype}{float}\ decayScew\ =\ 10;}
+\DoxyCodeLine{00029\ \ \ \};}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00031\ \ \ \textcolor{keyword}{enum\ class}\ State}
+\DoxyCodeLine{00032\ \ \ \{}
+\DoxyCodeLine{00033\ \ \ \ \ Attack,}
+\DoxyCodeLine{00034\ \ \ \ \ Hold,}
+\DoxyCodeLine{00035\ \ \ \ \ Decay,}
+\DoxyCodeLine{00036\ \ \ \ \ Idle}
+\DoxyCodeLine{00037\ \ \ \};}
 \DoxyCodeLine{00038\ }
-\DoxyCodeLine{00039\ \ \ \textcolor{keywordtype}{void}\ setParameters(Parameters\ params)\ \{\ this-\/>params\ =\ params;\ \}}
-\DoxyCodeLine{00040\ \ \ \textcolor{keywordtype}{void}\ setSampleRate(\textcolor{keywordtype}{float}\ sampleRate)\ \{\ this-\/>sampleRate\ =\ sampleRate;\ \}}
-\DoxyCodeLine{00041\ \ \ \textcolor{keywordtype}{void}\ noteOn()\ \{\ sampleIndex\ =\ 0;\ \}}
-\DoxyCodeLine{00042\ }
-\DoxyCodeLine{00043\ \ \ State\ getState()}
-\DoxyCodeLine{00044\ \ \ \{}
-\DoxyCodeLine{00045\ \ \ \ \ \textcolor{keywordflow}{if}\ (sampleIndex\ <\ getHoldStart())}
-\DoxyCodeLine{00046\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ State::Attack;}
-\DoxyCodeLine{00047\ \ \ \ \ \textcolor{keywordflow}{if}\ (sampleIndex\ <\ getDecayStart())}
-\DoxyCodeLine{00048\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ State::Hold;}
-\DoxyCodeLine{00049\ \ \ \ \ \textcolor{keywordflow}{if}\ (sampleIndex\ <\ getDecayEnd())}
-\DoxyCodeLine{00050\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ State::Decay;}
-\DoxyCodeLine{00051\ \ \ \ \ \textcolor{keywordflow}{else}}
-\DoxyCodeLine{00052\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ State::Idle;}
-\DoxyCodeLine{00053\ \ \ \}}
-\DoxyCodeLine{00054\ }
-\DoxyCodeLine{00055\ \ \ \textcolor{keywordtype}{float}\ getNextSample()}
-\DoxyCodeLine{00056\ \ \ \{}
-\DoxyCodeLine{00057\ \ \ \ \ \textcolor{keyword}{auto}\ state\ =\ getState();}
-\DoxyCodeLine{00058\ \ \ \ \ \textcolor{keywordtype}{float}\ result\ =\ getValue(state);}
-\DoxyCodeLine{00059\ \ \ \ \ sampleIndex++;}
-\DoxyCodeLine{00060\ \ \ \ \ \textcolor{keywordflow}{return}\ result;}
-\DoxyCodeLine{00061\ \ \ \}}
-\DoxyCodeLine{00062\ }
-\DoxyCodeLine{00063\ \textcolor{keyword}{private}:}
-\DoxyCodeLine{00064\ \ \ \textcolor{keywordtype}{float}\ getValue(State\ state)}
-\DoxyCodeLine{00065\ \ \ \{}
-\DoxyCodeLine{00066\ \ \ \ \ \textcolor{keywordflow}{switch}\ (state)\ \{}
-\DoxyCodeLine{00067\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ State::Attack:\ \{}
-\DoxyCodeLine{00068\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ normalizedPosition\ =\ sampleIndex\ /\ sampleRate;}
-\DoxyCodeLine{00069\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ scew\ =\ getScew(State::Attack);}
-\DoxyCodeLine{00070\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ value\ =\ std::pow(normalizedPosition\ /\ params.attack,\ scew);}
-\DoxyCodeLine{00071\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ value;}
-\DoxyCodeLine{00072\ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00073\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ State::Hold:\ \{}
-\DoxyCodeLine{00074\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 1.0f;}
-\DoxyCodeLine{00075\ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00076\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ State::Decay:\ \{}
-\DoxyCodeLine{00077\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ decayStart\ =\ getDecayStart();}
-\DoxyCodeLine{00078\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ normalizedPosition\ =\ (sampleIndex\ -\/\ decayStart)\ /\ sampleRate;}
-\DoxyCodeLine{00079\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ scew\ =\ getScew(State::Decay);}
-\DoxyCodeLine{00080\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ value\ =\ 1.0f\ -\/\ std::pow(normalizedPosition\ /\ params.decay,\ scew);}
-\DoxyCodeLine{00081\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ value;}
-\DoxyCodeLine{00082\ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00083\ \ \ \ \ \ \ \textcolor{keywordflow}{default}:\ \{}
-\DoxyCodeLine{00084\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 0.0f;}
-\DoxyCodeLine{00085\ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00086\ \ \ \ \ \}}
-\DoxyCodeLine{00087\ \ \ \}}
-\DoxyCodeLine{00088\ \ \ \textcolor{keywordtype}{float}\ getScew(State\ state)}
-\DoxyCodeLine{00089\ \ \ \{}
-\DoxyCodeLine{00090\ \ \ \ \ \textcolor{keywordflow}{switch}\ (state)\ \{}
-\DoxyCodeLine{00091\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ State::Attack:\ \{}
-\DoxyCodeLine{00092\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ dmt::Math::linearToExponent(params.attackScew);}
-\DoxyCodeLine{00093\ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00094\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ State::Decay:\ \{}
-\DoxyCodeLine{00095\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ dmt::Math::linearToExponent(-\/params.decayScew);}
-\DoxyCodeLine{00096\ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00097\ \ \ \ \ \ \ \textcolor{keywordflow}{default}:\ \{}
-\DoxyCodeLine{00098\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 1.0f;}
-\DoxyCodeLine{00099\ \ \ \ \ \ \ \}}
-\DoxyCodeLine{00100\ \ \ \ \ \}}
-\DoxyCodeLine{00101\ \ \ \}}
-\DoxyCodeLine{00102\ \ \ \textcolor{keywordtype}{int}\ getHoldStart()\ \{\ \textcolor{keywordflow}{return}\ params.attack\ *\ sampleRate;\ \}}
-\DoxyCodeLine{00103\ \ \ \textcolor{keywordtype}{int}\ getDecayStart()\ \{\ \textcolor{keywordflow}{return}\ (params.attack\ +\ params.hold)\ *\ sampleRate\ +\ 1;\ \}}
-\DoxyCodeLine{00104\ \ \ \textcolor{keywordtype}{int}\ getDecayEnd()}
-\DoxyCodeLine{00105\ \ \ \{}
-\DoxyCodeLine{00106\ \ \ \ \ \textcolor{keywordflow}{return}\ (params.attack\ +\ params.hold\ +\ params.decay)\ *\ sampleRate;}
-\DoxyCodeLine{00107\ \ \ \}}
-\DoxyCodeLine{00108\ \ \ \textcolor{keywordtype}{float}\ sampleRate\ =\ -\/1.0f;}
-\DoxyCodeLine{00109\ \ \ Parameters\ params;}
-\DoxyCodeLine{00110\ \ \ \textcolor{keywordtype}{int}\ sampleIndex\ =\ 0;}
-\DoxyCodeLine{00111\ \};}
-\DoxyCodeLine{00112\ }
-\DoxyCodeLine{00113\ \}}
+\DoxyCodeLine{00039\ \ \ \mbox{\hyperlink{classdmt_1_1dsp_1_1envelope_1_1_ahd_envelope}{AhdEnvelope}}()\ \{\}}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00041\ \ \ \textcolor{keywordtype}{void}\ setParameters(Parameters\ params)\ \{\ this-\/>params\ =\ params;\ \}}
+\DoxyCodeLine{00042\ \ \ \textcolor{keywordtype}{void}\ setSampleRate(\textcolor{keywordtype}{float}\ sampleRate)\ \{\ this-\/>sampleRate\ =\ sampleRate;\ \}}
+\DoxyCodeLine{00043\ \ \ \textcolor{keywordtype}{void}\ noteOn()\ \{\ sampleIndex\ =\ 0;\ \}}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00045\ \ \ State\ getState()}
+\DoxyCodeLine{00046\ \ \ \{}
+\DoxyCodeLine{00047\ \ \ \ \ \textcolor{keywordflow}{if}\ (sampleIndex\ <\ getHoldStart())}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ State::Attack;}
+\DoxyCodeLine{00049\ \ \ \ \ \textcolor{keywordflow}{if}\ (sampleIndex\ <\ getDecayStart())}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ State::Hold;}
+\DoxyCodeLine{00051\ \ \ \ \ \textcolor{keywordflow}{if}\ (sampleIndex\ <\ getDecayEnd())}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ State::Decay;}
+\DoxyCodeLine{00053\ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ State::Idle;}
+\DoxyCodeLine{00055\ \ \ \}}
+\DoxyCodeLine{00056\ }
+\DoxyCodeLine{00057\ \ \ \textcolor{keywordtype}{float}\ getNextSample()}
+\DoxyCodeLine{00058\ \ \ \{}
+\DoxyCodeLine{00059\ \ \ \ \ \textcolor{keyword}{auto}\ state\ =\ getState();}
+\DoxyCodeLine{00060\ \ \ \ \ \textcolor{keywordtype}{float}\ result\ =\ getValue(state);}
+\DoxyCodeLine{00061\ \ \ \ \ sampleIndex++;}
+\DoxyCodeLine{00062\ \ \ \ \ \textcolor{keywordflow}{return}\ result;}
+\DoxyCodeLine{00063\ \ \ \}}
+\DoxyCodeLine{00064\ }
+\DoxyCodeLine{00065\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00066\ \ \ \textcolor{keywordtype}{float}\ getValue(State\ state)}
+\DoxyCodeLine{00067\ \ \ \{}
+\DoxyCodeLine{00068\ \ \ \ \ \textcolor{keywordflow}{switch}\ (state)\ \{}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ State::Attack:\ \{}
+\DoxyCodeLine{00070\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ normalizedPosition\ =\ sampleIndex\ /\ sampleRate;}
+\DoxyCodeLine{00071\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ scew\ =\ getScew(State::Attack);}
+\DoxyCodeLine{00072\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ value\ =\ std::pow(normalizedPosition\ /\ params.attack,\ scew);}
+\DoxyCodeLine{00073\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ value;}
+\DoxyCodeLine{00074\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00075\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ State::Hold:\ \{}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 1.0f;}
+\DoxyCodeLine{00077\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ State::Decay:\ \{}
+\DoxyCodeLine{00079\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ decayStart\ =\ getDecayStart();}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ normalizedPosition\ =\ (sampleIndex\ -\/\ decayStart)\ /\ sampleRate;}
+\DoxyCodeLine{00081\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ scew\ =\ getScew(State::Decay);}
+\DoxyCodeLine{00082\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ value\ =\ 1.0f\ -\/\ std::pow(normalizedPosition\ /\ params.decay,\ scew);}
+\DoxyCodeLine{00083\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ value;}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00085\ \ \ \ \ \ \ \textcolor{keywordflow}{default}:\ \{}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 0.0f;}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00088\ \ \ \ \ \}}
+\DoxyCodeLine{00089\ \ \ \}}
+\DoxyCodeLine{00090\ \ \ \textcolor{keywordtype}{float}\ getScew(State\ state)}
+\DoxyCodeLine{00091\ \ \ \{}
+\DoxyCodeLine{00092\ \ \ \ \ \textcolor{keywordflow}{switch}\ (state)\ \{}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ State::Attack:\ \{}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ dmt::Math::linearToExponent(params.attackScew);}
+\DoxyCodeLine{00095\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00096\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ State::Decay:\ \{}
+\DoxyCodeLine{00097\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ dmt::Math::linearToExponent(-\/params.decayScew);}
+\DoxyCodeLine{00098\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00099\ \ \ \ \ \ \ \textcolor{keywordflow}{default}:\ \{}
+\DoxyCodeLine{00100\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 1.0f;}
+\DoxyCodeLine{00101\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00102\ \ \ \ \ \}}
+\DoxyCodeLine{00103\ \ \ \}}
+\DoxyCodeLine{00104\ \ \ \textcolor{keywordtype}{int}\ getHoldStart()\ \{\ \textcolor{keywordflow}{return}\ params.attack\ *\ sampleRate;\ \}}
+\DoxyCodeLine{00105\ \ \ \textcolor{keywordtype}{int}\ getDecayStart()\ \{\ \textcolor{keywordflow}{return}\ (params.attack\ +\ params.hold)\ *\ sampleRate\ +\ 1;\ \}}
+\DoxyCodeLine{00106\ \ \ \textcolor{keywordtype}{int}\ getDecayEnd()}
+\DoxyCodeLine{00107\ \ \ \{}
+\DoxyCodeLine{00108\ \ \ \ \ \textcolor{keywordflow}{return}\ (params.attack\ +\ params.hold\ +\ params.decay)\ *\ sampleRate;}
+\DoxyCodeLine{00109\ \ \ \}}
+\DoxyCodeLine{00110\ \ \ \textcolor{keywordtype}{float}\ sampleRate\ =\ -\/1.0f;}
+\DoxyCodeLine{00111\ \ \ Parameters\ params;}
+\DoxyCodeLine{00112\ \ \ \textcolor{keywordtype}{int}\ sampleIndex\ =\ 0;}
+\DoxyCodeLine{00113\ \};}
+\DoxyCodeLine{00114\ }
+\DoxyCodeLine{00115\ \}\ \textcolor{comment}{//\ namespace\ envelope}}
+\DoxyCodeLine{00116\ \}\ \textcolor{comment}{//\ namespace\ dsp}}
+\DoxyCodeLine{00117\ \}\ \textcolor{comment}{//\ namespace\ dmt}}
 
 \end{DoxyCode}

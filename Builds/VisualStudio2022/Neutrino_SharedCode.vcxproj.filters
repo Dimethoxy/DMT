@@ -634,6 +634,9 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Source\Components\ArcButtonComponent.cpp">
+      <Filter>Neutrino\Source\Components</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\PluginEditor.cpp">
       <Filter>Neutrino\Source</Filter>
     </ClCompile>

@@ -1,5 +1,5 @@
 \hypertarget{_i_i_r_filter_8h_source}{}\doxysection{IIRFilter.\+h}
-\label{_i_i_r_filter_8h_source}\index{Filter/IIRFilter.h@{Filter/IIRFilter.h}}
+\label{_i_i_r_filter_8h_source}\index{Source/Dsp/Filter/IIRFilter.h@{Source/Dsp/Filter/IIRFilter.h}}
 
 \begin{DoxyCode}{0}
 \DoxyCodeLine{00001\ \textcolor{comment}{//==============================================================================}}
@@ -9,58 +9,62 @@
 \DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ <JuceHeader.h>}}
 \DoxyCodeLine{00006\ }
 \DoxyCodeLine{00007\ \textcolor{keyword}{namespace\ }dmt\ \{}
-\DoxyCodeLine{00008\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structdmt_1_1_i_i_r_filter_state}{IIRFilterState}}}
-\DoxyCodeLine{00009\ \{}
-\DoxyCodeLine{00010\ \ \ \textcolor{keyword}{using\ }IIRCoefficients\ =\ juce::IIRCoefficients;}
-\DoxyCodeLine{00011\ \ \ \textcolor{keyword}{enum\ class}\ Type}
-\DoxyCodeLine{00012\ \ \ \{}
-\DoxyCodeLine{00013\ \ \ \ \ LowPass,}
-\DoxyCodeLine{00014\ \ \ \ \ HighPass,}
-\DoxyCodeLine{00015\ \ \ \ \ BandPass,}
-\DoxyCodeLine{00016\ \ \ \ \ Notch,}
-\DoxyCodeLine{00017\ \ \ \ \ AllPass,}
-\DoxyCodeLine{00018\ \ \ \ \ LowShelf,}
-\DoxyCodeLine{00019\ \ \ \ \ HighShelf,}
-\DoxyCodeLine{00020\ \ \ \ \ Peak,}
-\DoxyCodeLine{00021\ \ \ \};}
-\DoxyCodeLine{00022\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keyword}{inline}\ juce::StringArray\ typeNames\ =\ \{\ \textcolor{stringliteral}{"{}LowPass"{}},\ \ \ \textcolor{stringliteral}{"{}HighPass"{}},}
-\DoxyCodeLine{00023\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}BandPass"{}},\ \ \textcolor{stringliteral}{"{}Notch"{}},}
-\DoxyCodeLine{00024\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}AllPass"{}},\ \ \ \textcolor{stringliteral}{"{}LowShelf"{}},}
-\DoxyCodeLine{00025\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}HighShelf"{}},\ \textcolor{stringliteral}{"{}Peak"{}}\ \};}
-\DoxyCodeLine{00026\ }
-\DoxyCodeLine{00027\ \ \ juce::IIRCoefficients\ makeCoefficients(\textcolor{keywordtype}{float}\ cutoff,\ \textcolor{keywordtype}{float}\ q,\ \textcolor{keywordtype}{float}\ gain)}
-\DoxyCodeLine{00028\ \ \ \{}
-\DoxyCodeLine{00029\ \ \ \ \ \textcolor{keywordflow}{switch}\ (type)\ \{}
-\DoxyCodeLine{00030\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ Type::LowPass:}
-\DoxyCodeLine{00031\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ IIRCoefficients::makeLowPass(sampleRate,\ cutoff,\ q);}
-\DoxyCodeLine{00032\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
-\DoxyCodeLine{00033\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ Type::HighPass:}
-\DoxyCodeLine{00034\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ IIRCoefficients::makeHighPass(sampleRate,\ cutoff,\ q);}
-\DoxyCodeLine{00035\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
-\DoxyCodeLine{00036\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ Type::BandPass:}
-\DoxyCodeLine{00037\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ IIRCoefficients::makeBandPass(sampleRate,\ cutoff,\ q);}
-\DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
-\DoxyCodeLine{00039\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ Type::Notch:}
-\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ IIRCoefficients::makeNotchFilter(sampleRate,\ cutoff,\ q);}
-\DoxyCodeLine{00041\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
-\DoxyCodeLine{00042\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ Type::AllPass:}
-\DoxyCodeLine{00043\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ IIRCoefficients::makeAllPass(sampleRate,\ cutoff,\ q);}
-\DoxyCodeLine{00044\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
-\DoxyCodeLine{00045\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ Type::LowShelf:}
-\DoxyCodeLine{00046\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ IIRCoefficients::makeLowShelf(sampleRate,\ cutoff,\ q,\ gain);}
-\DoxyCodeLine{00047\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
-\DoxyCodeLine{00048\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ Type::HighShelf:}
-\DoxyCodeLine{00049\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ IIRCoefficients::makeHighShelf(sampleRate,\ cutoff,\ q,\ gain);}
-\DoxyCodeLine{00050\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
-\DoxyCodeLine{00051\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ Type::Peak:}
-\DoxyCodeLine{00052\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ IIRCoefficients::makePeakFilter(sampleRate,\ cutoff,\ q,\ gain);}
-\DoxyCodeLine{00053\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
-\DoxyCodeLine{00054\ \ \ \ \ \}}
-\DoxyCodeLine{00055\ \ \ \}}
-\DoxyCodeLine{00056\ \ \ \textcolor{keywordtype}{float}\ sampleRate\ =\ -\/1;}
-\DoxyCodeLine{00057\ \ \ Type\ type\ =\ Type::LowPass;}
-\DoxyCodeLine{00058\ \ \ juce::SingleThreadedIIRFilter::IIRFilterBase\ base;}
-\DoxyCodeLine{00059\ \};}
-\DoxyCodeLine{00060\ \}}
+\DoxyCodeLine{00008\ \textcolor{keyword}{namespace\ }dsp\ \{}
+\DoxyCodeLine{00009\ \textcolor{keyword}{namespace\ }filter\ \{}
+\DoxyCodeLine{00010\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structdmt_1_1dsp_1_1filter_1_1_i_i_r_filter_state}{IIRFilterState}}}
+\DoxyCodeLine{00011\ \{}
+\DoxyCodeLine{00012\ \ \ \textcolor{keyword}{using\ }IIRCoefficients\ =\ juce::IIRCoefficients;}
+\DoxyCodeLine{00013\ \ \ \textcolor{keyword}{enum\ class}\ Type}
+\DoxyCodeLine{00014\ \ \ \{}
+\DoxyCodeLine{00015\ \ \ \ \ LowPass,}
+\DoxyCodeLine{00016\ \ \ \ \ HighPass,}
+\DoxyCodeLine{00017\ \ \ \ \ BandPass,}
+\DoxyCodeLine{00018\ \ \ \ \ Notch,}
+\DoxyCodeLine{00019\ \ \ \ \ AllPass,}
+\DoxyCodeLine{00020\ \ \ \ \ LowShelf,}
+\DoxyCodeLine{00021\ \ \ \ \ HighShelf,}
+\DoxyCodeLine{00022\ \ \ \ \ Peak,}
+\DoxyCodeLine{00023\ \ \ \};}
+\DoxyCodeLine{00024\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keyword}{inline}\ juce::StringArray\ typeNames\ =\ \{\ \textcolor{stringliteral}{"{}LowPass"{}},\ \ \ \textcolor{stringliteral}{"{}HighPass"{}},}
+\DoxyCodeLine{00025\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}BandPass"{}},\ \ \textcolor{stringliteral}{"{}Notch"{}},}
+\DoxyCodeLine{00026\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}AllPass"{}},\ \ \ \textcolor{stringliteral}{"{}LowShelf"{}},}
+\DoxyCodeLine{00027\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}HighShelf"{}},\ \textcolor{stringliteral}{"{}Peak"{}}\ \};}
+\DoxyCodeLine{00028\ }
+\DoxyCodeLine{00029\ \ \ juce::IIRCoefficients\ makeCoefficients(\textcolor{keywordtype}{float}\ cutoff,\ \textcolor{keywordtype}{float}\ q,\ \textcolor{keywordtype}{float}\ gain)}
+\DoxyCodeLine{00030\ \ \ \{}
+\DoxyCodeLine{00031\ \ \ \ \ \textcolor{keywordflow}{switch}\ (type)\ \{}
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ Type::LowPass:}
+\DoxyCodeLine{00033\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ IIRCoefficients::makeLowPass(sampleRate,\ cutoff,\ q);}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00035\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ Type::HighPass:}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ IIRCoefficients::makeHighPass(sampleRate,\ cutoff,\ q);}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ Type::BandPass:}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ IIRCoefficients::makeBandPass(sampleRate,\ cutoff,\ q);}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ Type::Notch:}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ IIRCoefficients::makeNotchFilter(sampleRate,\ cutoff,\ q);}
+\DoxyCodeLine{00043\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ Type::AllPass:}
+\DoxyCodeLine{00045\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ IIRCoefficients::makeAllPass(sampleRate,\ cutoff,\ q);}
+\DoxyCodeLine{00046\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ Type::LowShelf:}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ IIRCoefficients::makeLowShelf(sampleRate,\ cutoff,\ q,\ gain);}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ Type::HighShelf:}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ IIRCoefficients::makeHighShelf(sampleRate,\ cutoff,\ q,\ gain);}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ Type::Peak:}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ IIRCoefficients::makePeakFilter(sampleRate,\ cutoff,\ q,\ gain);}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00056\ \ \ \ \ \}}
+\DoxyCodeLine{00057\ \ \ \}}
+\DoxyCodeLine{00058\ \ \ \textcolor{keywordtype}{float}\ sampleRate\ =\ -\/1;}
+\DoxyCodeLine{00059\ \ \ Type\ type\ =\ Type::LowPass;}
+\DoxyCodeLine{00060\ \ \ juce::SingleThreadedIIRFilter::IIRFilterBase\ base;}
+\DoxyCodeLine{00061\ \};}
+\DoxyCodeLine{00062\ \}\ \textcolor{comment}{//\ namespace\ filter}}
+\DoxyCodeLine{00063\ \}\ \textcolor{comment}{//\ namespace\ dsp}}
+\DoxyCodeLine{00064\ \}\ \textcolor{comment}{//\ namespace\ dmt}}
 
 \end{DoxyCode}

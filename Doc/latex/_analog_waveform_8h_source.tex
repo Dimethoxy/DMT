@@ -1,5 +1,5 @@
 \hypertarget{_analog_waveform_8h_source}{}\doxysection{Analog\+Waveform.\+h}
-\label{_analog_waveform_8h_source}\index{Synth/AnalogWaveform.h@{Synth/AnalogWaveform.h}}
+\label{_analog_waveform_8h_source}\index{Source/Dsp/Synth/AnalogWaveform.h@{Source/Dsp/Synth/AnalogWaveform.h}}
 
 \begin{DoxyCode}{0}
 \DoxyCodeLine{00001\ \textcolor{comment}{//==============================================================================}}
@@ -10,71 +10,75 @@
 \DoxyCodeLine{00006\ }
 \DoxyCodeLine{00007\ \textcolor{comment}{//==============================================================================}}
 \DoxyCodeLine{00008\ \textcolor{keyword}{namespace\ }dmt\ \{}
-\DoxyCodeLine{00009\ \textcolor{comment}{//==============================================================================}}
-\DoxyCodeLine{00010\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structdmt_1_1_analog_waveform}{AnalogWaveform}}}
-\DoxyCodeLine{00011\ \{}
-\DoxyCodeLine{00012\ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{float}\ twoPi\ =\ juce::MathConstants<float>::twoPi;}
-\DoxyCodeLine{00013\ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{float}\ pi\ =\ juce::MathConstants<float>::pi;}
-\DoxyCodeLine{00014\ \ \ \textcolor{comment}{//============================================================================}}
-\DoxyCodeLine{00015\ \ \ \textcolor{keyword}{enum\ class}\ Type}
-\DoxyCodeLine{00016\ \ \ \{}
-\DoxyCodeLine{00017\ \ \ \ \ Sine,}
-\DoxyCodeLine{00018\ \ \ \ \ Saw,}
-\DoxyCodeLine{00019\ \ \ \ \ Triangle,}
-\DoxyCodeLine{00020\ \ \ \ \ Square}
-\DoxyCodeLine{00021\ \ \ \};}
-\DoxyCodeLine{00022\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keyword}{inline}\ juce::StringArray\ waveformNames\ =\ \{\ \textcolor{stringliteral}{"{}Sine"{}},}
-\DoxyCodeLine{00023\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}Saw"{}},}
-\DoxyCodeLine{00024\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}Triangle"{}},}
-\DoxyCodeLine{00025\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}Square"{}}\ \};}
-\DoxyCodeLine{00026\ \ \ \textcolor{comment}{//============================================================================}}
-\DoxyCodeLine{00027\ \ \ Type\ type\ =\ Type::Sine;}
+\DoxyCodeLine{00009\ \textcolor{keyword}{namespace\ }dsp\ \{}
+\DoxyCodeLine{00010\ \textcolor{keyword}{namespace\ }synth\ \{}
+\DoxyCodeLine{00011\ \textcolor{comment}{//==============================================================================}}
+\DoxyCodeLine{00012\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structdmt_1_1dsp_1_1synth_1_1_analog_waveform}{AnalogWaveform}}}
+\DoxyCodeLine{00013\ \{}
+\DoxyCodeLine{00014\ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{float}\ twoPi\ =\ juce::MathConstants<float>::twoPi;}
+\DoxyCodeLine{00015\ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{float}\ pi\ =\ juce::MathConstants<float>::pi;}
+\DoxyCodeLine{00016\ \ \ \textcolor{comment}{//============================================================================}}
+\DoxyCodeLine{00017\ \ \ \textcolor{keyword}{enum\ class}\ Type}
+\DoxyCodeLine{00018\ \ \ \{}
+\DoxyCodeLine{00019\ \ \ \ \ Sine,}
+\DoxyCodeLine{00020\ \ \ \ \ Saw,}
+\DoxyCodeLine{00021\ \ \ \ \ Triangle,}
+\DoxyCodeLine{00022\ \ \ \ \ Square}
+\DoxyCodeLine{00023\ \ \ \};}
+\DoxyCodeLine{00024\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keyword}{inline}\ juce::StringArray\ waveformNames\ =\ \{\ \textcolor{stringliteral}{"{}Sine"{}},}
+\DoxyCodeLine{00025\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}Saw"{}},}
+\DoxyCodeLine{00026\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}Triangle"{}},}
+\DoxyCodeLine{00027\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}Square"{}}\ \};}
 \DoxyCodeLine{00028\ \ \ \textcolor{comment}{//============================================================================}}
-\DoxyCodeLine{00029\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{float}\ triangle(\textcolor{keywordtype}{float}\ x)\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}}
-\DoxyCodeLine{00030\ \ \ \{}
-\DoxyCodeLine{00031\ \ \ \ \ \textcolor{keywordflow}{while}\ (x\ >\ twoPi)}
-\DoxyCodeLine{00032\ \ \ \ \ \ \ x\ -\/=\ twoPi;}
-\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keywordtype}{float}\ result\ =\ 2.0f\ *\ (x\ /\ twoPi\ -\/\ 0.5f);}
-\DoxyCodeLine{00034\ \ \ \ \ \textcolor{keywordflow}{if}\ (result\ >\ 0.5f)}
-\DoxyCodeLine{00035\ \ \ \ \ \ \ result\ =\ 1.0f\ -\/\ result;}
-\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keywordflow}{if}\ (result\ <\ -\/0.5f)}
-\DoxyCodeLine{00037\ \ \ \ \ \ \ result\ =\ -\/1.0f\ -\/\ result;}
-\DoxyCodeLine{00038\ \ \ \ \ \textcolor{keywordflow}{return}\ 2\ *\ result;}
-\DoxyCodeLine{00039\ \ \ \}}
-\DoxyCodeLine{00040\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{float}\ saw(\textcolor{keywordtype}{float}\ x)\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}}
-\DoxyCodeLine{00041\ \ \ \{}
-\DoxyCodeLine{00042\ \ \ \ \ \textcolor{keywordflow}{while}\ (x\ >\ twoPi)}
-\DoxyCodeLine{00043\ \ \ \ \ \ \ x\ -\/=\ twoPi;}
-\DoxyCodeLine{00044\ \ \ \ \ \textcolor{keywordtype}{float}\ result\ =\ 2.0f\ *\ (x\ /\ twoPi\ -\/\ 0.5f);}
-\DoxyCodeLine{00045\ \ \ \ \ \textcolor{keywordflow}{return}\ result;}
-\DoxyCodeLine{00046\ \ \ \}}
-\DoxyCodeLine{00047\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{float}\ sine(\textcolor{keywordtype}{float}\ x)\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}}
-\DoxyCodeLine{00048\ \ \ \{}
-\DoxyCodeLine{00049\ \ \ \ \ \textcolor{keywordtype}{float}\ result\ =\ std::sin(x);}
-\DoxyCodeLine{00050\ \ \ \ \ \textcolor{keywordflow}{return}\ result;}
-\DoxyCodeLine{00051\ \ \ \}}
-\DoxyCodeLine{00052\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{float}\ square(\textcolor{keywordtype}{float}\ x)\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}}
-\DoxyCodeLine{00053\ \ \ \{}
-\DoxyCodeLine{00054\ \ \ \ \ \textcolor{keywordtype}{float}\ result\ =\ (sine(x)\ >\ 0.0f)\ ?\ 1.0f\ :\ -\/1.0f;}
-\DoxyCodeLine{00055\ \ \ \ \ \textcolor{keywordflow}{return}\ result;}
-\DoxyCodeLine{00056\ \ \ \}}
-\DoxyCodeLine{00057\ \ \ \textcolor{comment}{//============================================================================}}
-\DoxyCodeLine{00058\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{float}\ getSample(\textcolor{keywordtype}{float}\ x)\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}}
-\DoxyCodeLine{00059\ \ \ \{}
-\DoxyCodeLine{00060\ \ \ \ \ \textcolor{keywordflow}{switch}\ (type)\ \{}
-\DoxyCodeLine{00061\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ Type::Sine:}
-\DoxyCodeLine{00062\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ sine(x);}
-\DoxyCodeLine{00063\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ Type::Saw:}
-\DoxyCodeLine{00064\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ saw(x);}
-\DoxyCodeLine{00065\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ Type::Triangle:}
-\DoxyCodeLine{00066\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ triangle(x);}
-\DoxyCodeLine{00067\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ Type::Square:}
-\DoxyCodeLine{00068\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ square(x);}
-\DoxyCodeLine{00069\ \ \ \ \ \}}
-\DoxyCodeLine{00070\ \ \ \}}
-\DoxyCodeLine{00071\ \ \ \textcolor{comment}{//============================================================================}}
-\DoxyCodeLine{00072\ \};}
-\DoxyCodeLine{00073\ \}}
-\DoxyCodeLine{00074\ \textcolor{comment}{//==============================================================================}}
+\DoxyCodeLine{00029\ \ \ Type\ type\ =\ Type::Sine;}
+\DoxyCodeLine{00030\ \ \ \textcolor{comment}{//============================================================================}}
+\DoxyCodeLine{00031\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{float}\ triangle(\textcolor{keywordtype}{float}\ x)\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}}
+\DoxyCodeLine{00032\ \ \ \{}
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keywordflow}{while}\ (x\ >\ twoPi)}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ x\ -\/=\ twoPi;}
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keywordtype}{float}\ result\ =\ 2.0f\ *\ (x\ /\ twoPi\ -\/\ 0.5f);}
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keywordflow}{if}\ (result\ >\ 0.5f)}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ result\ =\ 1.0f\ -\/\ result;}
+\DoxyCodeLine{00038\ \ \ \ \ \textcolor{keywordflow}{if}\ (result\ <\ -\/0.5f)}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ result\ =\ -\/1.0f\ -\/\ result;}
+\DoxyCodeLine{00040\ \ \ \ \ \textcolor{keywordflow}{return}\ 2\ *\ result;}
+\DoxyCodeLine{00041\ \ \ \}}
+\DoxyCodeLine{00042\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{float}\ saw(\textcolor{keywordtype}{float}\ x)\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}}
+\DoxyCodeLine{00043\ \ \ \{}
+\DoxyCodeLine{00044\ \ \ \ \ \textcolor{keywordflow}{while}\ (x\ >\ twoPi)}
+\DoxyCodeLine{00045\ \ \ \ \ \ \ x\ -\/=\ twoPi;}
+\DoxyCodeLine{00046\ \ \ \ \ \textcolor{keywordtype}{float}\ result\ =\ 2.0f\ *\ (x\ /\ twoPi\ -\/\ 0.5f);}
+\DoxyCodeLine{00047\ \ \ \ \ \textcolor{keywordflow}{return}\ result;}
+\DoxyCodeLine{00048\ \ \ \}}
+\DoxyCodeLine{00049\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{float}\ sine(\textcolor{keywordtype}{float}\ x)\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}}
+\DoxyCodeLine{00050\ \ \ \{}
+\DoxyCodeLine{00051\ \ \ \ \ \textcolor{keywordtype}{float}\ result\ =\ std::sin(x);}
+\DoxyCodeLine{00052\ \ \ \ \ \textcolor{keywordflow}{return}\ result;}
+\DoxyCodeLine{00053\ \ \ \}}
+\DoxyCodeLine{00054\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{float}\ square(\textcolor{keywordtype}{float}\ x)\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}}
+\DoxyCodeLine{00055\ \ \ \{}
+\DoxyCodeLine{00056\ \ \ \ \ \textcolor{keywordtype}{float}\ result\ =\ (sine(x)\ >\ 0.0f)\ ?\ 1.0f\ :\ -\/1.0f;}
+\DoxyCodeLine{00057\ \ \ \ \ \textcolor{keywordflow}{return}\ result;}
+\DoxyCodeLine{00058\ \ \ \}}
+\DoxyCodeLine{00059\ \ \ \textcolor{comment}{//============================================================================}}
+\DoxyCodeLine{00060\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{float}\ getSample(\textcolor{keywordtype}{float}\ x)\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}}
+\DoxyCodeLine{00061\ \ \ \{}
+\DoxyCodeLine{00062\ \ \ \ \ \textcolor{keywordflow}{switch}\ (type)\ \{}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ Type::Sine:}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ sine(x);}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ Type::Saw:}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ saw(x);}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ Type::Triangle:}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ triangle(x);}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ Type::Square:}
+\DoxyCodeLine{00070\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ square(x);}
+\DoxyCodeLine{00071\ \ \ \ \ \}}
+\DoxyCodeLine{00072\ \ \ \}}
+\DoxyCodeLine{00073\ \ \ \textcolor{comment}{//============================================================================}}
+\DoxyCodeLine{00074\ \};}
+\DoxyCodeLine{00075\ \}\ \textcolor{comment}{//\ namespace\ synth}}
+\DoxyCodeLine{00076\ \}\ \textcolor{comment}{//\ namespace\ dsp}}
+\DoxyCodeLine{00077\ \}\ \textcolor{comment}{//\ namespace\ dmt}}
+\DoxyCodeLine{00078\ \textcolor{comment}{//==============================================================================}}
 
 \end{DoxyCode}

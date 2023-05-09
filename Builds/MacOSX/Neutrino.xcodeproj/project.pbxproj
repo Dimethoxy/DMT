@@ -45,6 +45,7 @@
 		8FE31F179136615B961FBE40 /* include_juce_events.mm */ = {isa = PBXBuildFile; fileRef = EA399205460AB0A53351D87E; };
 		901B54379276B19BE7959888 /* include_juce_audio_devices.mm */ = {isa = PBXBuildFile; fileRef = 303E0247D389E0019D43D918; };
 		9FD7EF4FADC660245B6F3D9F /* PluginProcessor.cpp */ = {isa = PBXBuildFile; fileRef = 8B5B8BC55BA50F3FA94AAF64; };
+		A30F78338CD37BF31EB27AE9 /* ArcButtonComponent.cpp */ = {isa = PBXBuildFile; fileRef = E6890E24CEBCB8561F8EA828; };
 		AA23AE028B0AA23C778174E2 /* include_juce_audio_formats.mm */ = {isa = PBXBuildFile; fileRef = 7D44D6F63147933713AB0BA8; };
 		B2396ADE34271E4AF5D3CD23 /* AudioToolbox.framework */ = {isa = PBXBuildFile; fileRef = 1192C844E401FC4CAF1AB8CC; };
 		B27F8737379F0AB2E7B24069 /* RecentFilesMenuTemplate.nib */ = {isa = PBXBuildFile; fileRef = 7DCF68FAF7DAEF25907FE94B; };
@@ -155,6 +156,7 @@
 		E4E6F29DEB612BEB3D3B06E7 /* OscillatorDisplayComponent.h */ /* OscillatorDisplayComponent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = OscillatorDisplayComponent.h; path = ../../Source/Components/OscillatorDisplayComponent.h; sourceTree = SOURCE_ROOT; };
 		E5509DFB2061C96ABA8ED45B /* LookAndFeel.h */ /* LookAndFeel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = LookAndFeel.h; path = ../../Source/Widgets/LookAndFeel.h; sourceTree = SOURCE_ROOT; };
 		E55D827807BA1ED644AAB167 /* Poppins-Regular.ttf */ /* Poppins-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file.ttf; name = "Poppins-Regular.ttf"; path = "../../Fonts/Poppins/Poppins-Regular.ttf"; sourceTree = SOURCE_ROOT; };
+		E6890E24CEBCB8561F8EA828 /* ArcButtonComponent.cpp */ /* ArcButtonComponent.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = ArcButtonComponent.cpp; path = ../../Source/Components/ArcButtonComponent.cpp; sourceTree = SOURCE_ROOT; };
 		EA399205460AB0A53351D87E /* include_juce_events.mm */ /* include_juce_events.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_events.mm; path = ../../JuceLibraryCode/include_juce_events.mm; sourceTree = SOURCE_ROOT; };
 		EF22F20B4240570D4548EE80 /* ArcButtonComponent.h */ /* ArcButtonComponent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ArcButtonComponent.h; path = ../../Source/Components/ArcButtonComponent.h; sourceTree = SOURCE_ROOT; };
 		F2CE82344A95967C604E6ED6 /* juce_audio_utils */ /* juce_audio_utils */ = {isa = PBXFileReference; lastKnownFileType = folder; name = juce_audio_utils; path = "~/JUCE/modules/juce_audio_utils"; sourceTree = "<absolute>"; };
@@ -458,6 +460,7 @@
 		F508C0869985C40203A0949B /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				E6890E24CEBCB8561F8EA828,
 				EF22F20B4240570D4548EE80,
 				E4E6F29DEB612BEB3D3B06E7,
 				D6B305E0BF566B65BD5B58E2,
@@ -662,6 +665,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A30F78338CD37BF31EB27AE9,
 				37F6DB7D973D3F895C10D6F2,
 				9FD7EF4FADC660245B6F3D9F,
 				2956730CF931EF04E6496381,

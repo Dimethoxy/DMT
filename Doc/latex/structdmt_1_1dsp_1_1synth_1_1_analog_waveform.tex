@@ -1,0 +1,69 @@
+\hypertarget{structdmt_1_1dsp_1_1synth_1_1_analog_waveform}{}\doxysection{dmt\+::dsp\+::synth\+::Analog\+Waveform Struct Reference}
+\label{structdmt_1_1dsp_1_1synth_1_1_analog_waveform}\index{dmt::dsp::synth::AnalogWaveform@{dmt::dsp::synth::AnalogWaveform}}
+\doxysubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structdmt_1_1dsp_1_1synth_1_1_analog_waveform_acb89d87c7d19f453af4015ebe01f4cdd}\label{structdmt_1_1dsp_1_1synth_1_1_analog_waveform_acb89d87c7d19f453af4015ebe01f4cdd}} 
+enum class {\bfseries Type} \{ {\bfseries Sine}
+, {\bfseries Saw}
+, {\bfseries Triangle}
+, {\bfseries Square}
+ \}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structdmt_1_1dsp_1_1synth_1_1_analog_waveform_a18f23f2810086101043e4b08f5440ae2}\label{structdmt_1_1dsp_1_1synth_1_1_analog_waveform_a18f23f2810086101043e4b08f5440ae2}} 
+float {\bfseries triangle} (float x) const noexcept
+\item 
+\mbox{\Hypertarget{structdmt_1_1dsp_1_1synth_1_1_analog_waveform_a0160ef2bbb6b48e3ece564d4e5ab7ba1}\label{structdmt_1_1dsp_1_1synth_1_1_analog_waveform_a0160ef2bbb6b48e3ece564d4e5ab7ba1}} 
+float {\bfseries saw} (float x) const noexcept
+\item 
+\mbox{\Hypertarget{structdmt_1_1dsp_1_1synth_1_1_analog_waveform_ad9640d64e70e021229ecef25e4d3f34c}\label{structdmt_1_1dsp_1_1synth_1_1_analog_waveform_ad9640d64e70e021229ecef25e4d3f34c}} 
+float {\bfseries sine} (float x) const noexcept
+\item 
+\mbox{\Hypertarget{structdmt_1_1dsp_1_1synth_1_1_analog_waveform_a778df1dcd6efe214fb1c11f33a87c05b}\label{structdmt_1_1dsp_1_1synth_1_1_analog_waveform_a778df1dcd6efe214fb1c11f33a87c05b}} 
+float {\bfseries square} (float x) const noexcept
+\item 
+\mbox{\Hypertarget{structdmt_1_1dsp_1_1synth_1_1_analog_waveform_a7c131dfe859c16a4ef6156ab57713114}\label{structdmt_1_1dsp_1_1synth_1_1_analog_waveform_a7c131dfe859c16a4ef6156ab57713114}} 
+float {\bfseries get\+Sample} (float x) const noexcept
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structdmt_1_1dsp_1_1synth_1_1_analog_waveform_a383ea38e4e404ebe8e7fdbaa488cc3e0}\label{structdmt_1_1dsp_1_1synth_1_1_analog_waveform_a383ea38e4e404ebe8e7fdbaa488cc3e0}} 
+const float {\bfseries two\+Pi} = juce\+::\+Math\+Constants$<$float$>$\+::two\+Pi
+\item 
+\mbox{\Hypertarget{structdmt_1_1dsp_1_1synth_1_1_analog_waveform_a8db2fe8b7f101f6f6367809b58e13a3e}\label{structdmt_1_1dsp_1_1synth_1_1_analog_waveform_a8db2fe8b7f101f6f6367809b58e13a3e}} 
+const float {\bfseries pi} = juce\+::\+Math\+Constants$<$float$>$\+::pi
+\item 
+\mbox{\Hypertarget{structdmt_1_1dsp_1_1synth_1_1_analog_waveform_a344521bce4e62c6383af8155ba0b5ca3}\label{structdmt_1_1dsp_1_1synth_1_1_analog_waveform_a344521bce4e62c6383af8155ba0b5ca3}} 
+Type {\bfseries type} = Type\+::\+Sine
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static const juce\+::\+String\+Array \mbox{\hyperlink{structdmt_1_1dsp_1_1synth_1_1_analog_waveform_acbf73ad6441d9e6f27fa4b1baf71f4aa}{waveform\+Names}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{structdmt_1_1dsp_1_1synth_1_1_analog_waveform_acbf73ad6441d9e6f27fa4b1baf71f4aa}\label{structdmt_1_1dsp_1_1synth_1_1_analog_waveform_acbf73ad6441d9e6f27fa4b1baf71f4aa}} 
+\index{dmt::dsp::synth::AnalogWaveform@{dmt::dsp::synth::AnalogWaveform}!waveformNames@{waveformNames}}
+\index{waveformNames@{waveformNames}!dmt::dsp::synth::AnalogWaveform@{dmt::dsp::synth::AnalogWaveform}}
+\doxysubsubsection{\texorpdfstring{waveformNames}{waveformNames}}
+{\footnotesize\ttfamily const juce\+::\+String\+Array dmt\+::dsp\+::synth\+::\+Analog\+Waveform\+::waveform\+Names\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{=\ \{\ \textcolor{stringliteral}{"{}Sine"{}},}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}Saw"{}},}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}Triangle"{}},}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}Square"{}}\ \}}
+
+\end{DoxyCode}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Source/\+Dsp/\+Synth/Analog\+Waveform.\+h\end{DoxyCompactItemize}

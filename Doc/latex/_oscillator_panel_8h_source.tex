@@ -1,5 +1,5 @@
 \hypertarget{_oscillator_panel_8h_source}{}\doxysection{Oscillator\+Panel.\+h}
-\label{_oscillator_panel_8h_source}\index{Panels/OscillatorPanel.h@{Panels/OscillatorPanel.h}}
+\label{_oscillator_panel_8h_source}\index{Source/Gui/Panels/OscillatorPanel.h@{Source/Gui/Panels/OscillatorPanel.h}}
 
 \begin{DoxyCode}{0}
 \DoxyCodeLine{00001\ \textcolor{comment}{//==============================================================================}}
@@ -15,61 +15,65 @@
 \DoxyCodeLine{00011\ }
 \DoxyCodeLine{00012\ \textcolor{comment}{//==============================================================================}}
 \DoxyCodeLine{00013\ \textcolor{keyword}{namespace\ }dmt\ \{}
-\DoxyCodeLine{00014\ \textcolor{comment}{//==============================================================================}}
-\DoxyCodeLine{00015\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classdmt_1_1_oscillator_panel}{OscillatorPanel}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classdmt_1_1_panel}{dmt::Panel}}}
-\DoxyCodeLine{00016\ \{}
-\DoxyCodeLine{00017\ \textcolor{keyword}{public}:}
-\DoxyCodeLine{00018\ \ \ \mbox{\hyperlink{classdmt_1_1_oscillator_panel}{OscillatorPanel}}(juce::AudioProcessorValueTreeState\&\ apvts)}
-\DoxyCodeLine{00019\ \ \ \ \ :\ oscDisplay(apvts)}
-\DoxyCodeLine{00020\ \ \ \ \ ,\ prevButton(\textcolor{keyword}{true})}
-\DoxyCodeLine{00021\ \ \ \ \ ,\ nextButton(\textcolor{keyword}{false})}
-\DoxyCodeLine{00022\ \ \ \ \ ,\ pwmSlider(apvts,\ \textcolor{stringliteral}{"{}Drive"{}},\ \textcolor{stringliteral}{"{}oscDrive"{}},\ dmt::InfoUnit::Type::Symmetry)}
-\DoxyCodeLine{00023\ \ \ \ \ ,\ biasSlider(apvts,\ \textcolor{stringliteral}{"{}Bias"{}},\ \textcolor{stringliteral}{"{}oscBias"{}},\ dmt::InfoUnit::Type::Symmetry)}
-\DoxyCodeLine{00024\ }
-\DoxyCodeLine{00025\ \ \ \{}
-\DoxyCodeLine{00026\ \ \ \ \ addAndMakeVisible(oscDisplay);}
-\DoxyCodeLine{00027\ \ \ \ \ addAndMakeVisible(prevButton);}
-\DoxyCodeLine{00028\ \ \ \ \ addAndMakeVisible(nextButton);}
-\DoxyCodeLine{00029\ \ \ \ \ addAndMakeVisible(pwmSlider);}
-\DoxyCodeLine{00030\ \ \ \ \ addAndMakeVisible(biasSlider);}
-\DoxyCodeLine{00031\ \ \ \}}
-\DoxyCodeLine{00032\ \ \ \textcolor{keywordtype}{void}\ update()\textcolor{keyword}{\ override}}
-\DoxyCodeLine{00033\ \textcolor{keyword}{\ \ }\{}
-\DoxyCodeLine{00034\ \ \ \ \ \textcolor{keywordtype}{float}\ dispalySize\ =\ 0.35f;}
-\DoxyCodeLine{00035\ \ \ \ \ oscDisplay.setSize(getWidth()\ *\ dispalySize,\ getWidth()\ *\ dispalySize);}
-\DoxyCodeLine{00036\ \ \ \ \ oscDisplay.setCentreRelative(0.5f,\ 0.45f);}
-\DoxyCodeLine{00037\ }
-\DoxyCodeLine{00038\ \ \ \ \ \textcolor{keyword}{auto}\ prevButtonX\ =\ oscDisplay.getX();}
-\DoxyCodeLine{00039\ \ \ \ \ \textcolor{keyword}{auto}\ prevButtonY\ =\ oscDisplay.getY()\ +\ oscDisplay.getHeight()\ /\ 2.0f;}
-\DoxyCodeLine{00040\ \ \ \ \ prevButton.setSize(oscDisplay.getWidth(),\ oscDisplay.getHeight());}
-\DoxyCodeLine{00041\ \ \ \ \ prevButton.setCentrePosition(prevButtonX,\ prevButtonY);}
-\DoxyCodeLine{00042\ }
-\DoxyCodeLine{00043\ \ \ \ \ \textcolor{keyword}{auto}\ nextButtonX\ =\ oscDisplay.getRight();}
-\DoxyCodeLine{00044\ \ \ \ \ \textcolor{keyword}{auto}\ nextButtonY\ =\ oscDisplay.getY()\ +\ oscDisplay.getHeight()\ /\ 2.0f;}
-\DoxyCodeLine{00045\ \ \ \ \ nextButton.setSize(oscDisplay.getWidth(),\ oscDisplay.getHeight());}
-\DoxyCodeLine{00046\ \ \ \ \ nextButton.setCentrePosition(nextButtonX,\ nextButtonY);}
-\DoxyCodeLine{00047\ }
-\DoxyCodeLine{00048\ \ \ \ \ pwmSlider.setBounds(prevButton.getX()\ -\/\ prevButton.getWidth()\ /\ 4.0f,}
-\DoxyCodeLine{00049\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ prevButton.getY(),}
-\DoxyCodeLine{00050\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ prevButton.getWidth()\ /\ 2.0f,}
-\DoxyCodeLine{00051\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ prevButton.getHeight());}
-\DoxyCodeLine{00052\ }
-\DoxyCodeLine{00053\ \ \ \ \ biasSlider.setBounds(nextButton.getRight()\ +\ nextButton.getWidth()\ /\ 4.0f\ -\/}
-\DoxyCodeLine{00054\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ pwmSlider.getWidth(),}
-\DoxyCodeLine{00055\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ nextButton.getY(),}
-\DoxyCodeLine{00056\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ nextButton.getWidth()\ /\ 2.0f,}
-\DoxyCodeLine{00057\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ nextButton.getHeight());}
-\DoxyCodeLine{00058\ \ \ \}}
-\DoxyCodeLine{00059\ \ \ juce::String\ getName()\textcolor{keyword}{\ override\ }\{\ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}Classic\ Oscillator"{}};\ \}}
-\DoxyCodeLine{00060\ }
-\DoxyCodeLine{00061\ \textcolor{keyword}{private}:}
-\DoxyCodeLine{00062\ \ \ \mbox{\hyperlink{classdmt_1_1_oscillator_display_component}{dmt::OscillatorDisplayComponent}}\ oscDisplay;}
-\DoxyCodeLine{00063\ \ \ \mbox{\hyperlink{classdmt_1_1_arc_button_component}{dmt::ArcButtonComponent}}\ prevButton;}
-\DoxyCodeLine{00064\ \ \ \mbox{\hyperlink{classdmt_1_1_arc_button_component}{dmt::ArcButtonComponent}}\ nextButton;}
-\DoxyCodeLine{00065\ \ \ \mbox{\hyperlink{classdmt_1_1_linear_slider_component}{LinearSliderComponent}}\ pwmSlider;}
-\DoxyCodeLine{00066\ \ \ \mbox{\hyperlink{classdmt_1_1_linear_slider_component}{LinearSliderComponent}}\ biasSlider;}
-\DoxyCodeLine{00067\ \};}
-\DoxyCodeLine{00068\ \textcolor{comment}{//==============================================================================}}
-\DoxyCodeLine{00069\ \}}
+\DoxyCodeLine{00014\ \textcolor{keyword}{namespace\ }gui\ \{}
+\DoxyCodeLine{00015\ \textcolor{keyword}{namespace\ }panels\ \{}
+\DoxyCodeLine{00016\ \textcolor{comment}{//==============================================================================}}
+\DoxyCodeLine{00017\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classdmt_1_1gui_1_1panels_1_1_oscillator_panel}{OscillatorPanel}}\ :\ \textcolor{keyword}{public}\ dmt::Panel}
+\DoxyCodeLine{00018\ \{}
+\DoxyCodeLine{00019\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00020\ \ \ \mbox{\hyperlink{classdmt_1_1gui_1_1panels_1_1_oscillator_panel}{OscillatorPanel}}(juce::AudioProcessorValueTreeState\&\ apvts)}
+\DoxyCodeLine{00021\ \ \ \ \ :\ oscDisplay(apvts)}
+\DoxyCodeLine{00022\ \ \ \ \ ,\ prevButton(\textcolor{keyword}{true})}
+\DoxyCodeLine{00023\ \ \ \ \ ,\ nextButton(\textcolor{keyword}{false})}
+\DoxyCodeLine{00024\ \ \ \ \ ,\ pwmSlider(apvts,\ \textcolor{stringliteral}{"{}Drive"{}},\ \textcolor{stringliteral}{"{}oscDrive"{}},\ dmt::InfoUnit::Type::Symmetry)}
+\DoxyCodeLine{00025\ \ \ \ \ ,\ biasSlider(apvts,\ \textcolor{stringliteral}{"{}Bias"{}},\ \textcolor{stringliteral}{"{}oscBias"{}},\ dmt::InfoUnit::Type::Symmetry)}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \ \ \{}
+\DoxyCodeLine{00028\ \ \ \ \ addAndMakeVisible(oscDisplay);}
+\DoxyCodeLine{00029\ \ \ \ \ addAndMakeVisible(prevButton);}
+\DoxyCodeLine{00030\ \ \ \ \ addAndMakeVisible(nextButton);}
+\DoxyCodeLine{00031\ \ \ \ \ addAndMakeVisible(pwmSlider);}
+\DoxyCodeLine{00032\ \ \ \ \ addAndMakeVisible(biasSlider);}
+\DoxyCodeLine{00033\ \ \ \}}
+\DoxyCodeLine{00034\ \ \ \textcolor{keywordtype}{void}\ update()\textcolor{keyword}{\ override}}
+\DoxyCodeLine{00035\ \textcolor{keyword}{\ \ }\{}
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keywordtype}{float}\ dispalySize\ =\ 0.35f;}
+\DoxyCodeLine{00037\ \ \ \ \ oscDisplay.setSize(getWidth()\ *\ dispalySize,\ getWidth()\ *\ dispalySize);}
+\DoxyCodeLine{00038\ \ \ \ \ oscDisplay.setCentreRelative(0.5f,\ 0.45f);}
+\DoxyCodeLine{00039\ }
+\DoxyCodeLine{00040\ \ \ \ \ \textcolor{keyword}{auto}\ prevButtonX\ =\ oscDisplay.getX();}
+\DoxyCodeLine{00041\ \ \ \ \ \textcolor{keyword}{auto}\ prevButtonY\ =\ oscDisplay.getY()\ +\ oscDisplay.getHeight()\ /\ 2.0f;}
+\DoxyCodeLine{00042\ \ \ \ \ prevButton.setSize(oscDisplay.getWidth(),\ oscDisplay.getHeight());}
+\DoxyCodeLine{00043\ \ \ \ \ prevButton.setCentrePosition(prevButtonX,\ prevButtonY);}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00045\ \ \ \ \ \textcolor{keyword}{auto}\ nextButtonX\ =\ oscDisplay.getRight();}
+\DoxyCodeLine{00046\ \ \ \ \ \textcolor{keyword}{auto}\ nextButtonY\ =\ oscDisplay.getY()\ +\ oscDisplay.getHeight()\ /\ 2.0f;}
+\DoxyCodeLine{00047\ \ \ \ \ nextButton.setSize(oscDisplay.getWidth(),\ oscDisplay.getHeight());}
+\DoxyCodeLine{00048\ \ \ \ \ nextButton.setCentrePosition(nextButtonX,\ nextButtonY);}
+\DoxyCodeLine{00049\ }
+\DoxyCodeLine{00050\ \ \ \ \ pwmSlider.setBounds(prevButton.getX()\ -\/\ prevButton.getWidth()\ /\ 4.0f,}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ prevButton.getY(),}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ prevButton.getWidth()\ /\ 2.0f,}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ prevButton.getHeight());}
+\DoxyCodeLine{00054\ }
+\DoxyCodeLine{00055\ \ \ \ \ biasSlider.setBounds(nextButton.getRight()\ +\ nextButton.getWidth()\ /\ 4.0f\ -\/}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ pwmSlider.getWidth(),}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ nextButton.getY(),}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ nextButton.getWidth()\ /\ 2.0f,}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ nextButton.getHeight());}
+\DoxyCodeLine{00060\ \ \ \}}
+\DoxyCodeLine{00061\ \ \ juce::String\ getName()\textcolor{keyword}{\ override\ }\{\ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}Classic\ Oscillator"{}};\ \}}
+\DoxyCodeLine{00062\ }
+\DoxyCodeLine{00063\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00064\ \ \ dmt::OscillatorDisplayComponent\ oscDisplay;}
+\DoxyCodeLine{00065\ \ \ dmt::ArcButtonComponent\ prevButton;}
+\DoxyCodeLine{00066\ \ \ dmt::ArcButtonComponent\ nextButton;}
+\DoxyCodeLine{00067\ \ \ LinearSliderComponent\ pwmSlider;}
+\DoxyCodeLine{00068\ \ \ LinearSliderComponent\ biasSlider;}
+\DoxyCodeLine{00069\ \};}
+\DoxyCodeLine{00070\ \textcolor{comment}{//==============================================================================}}
+\DoxyCodeLine{00071\ \}\ \textcolor{comment}{//\ namespace\ panels}}
+\DoxyCodeLine{00072\ \}\ \textcolor{comment}{//\ namespace\ gui}}
+\DoxyCodeLine{00073\ \}\ \textcolor{comment}{//\ namespace\ dmt}}
 
 \end{DoxyCode}

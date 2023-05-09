@@ -1,4 +1,5 @@
 \hypertarget{_plugin_processor_8h_source}{}\doxysection{Plugin\+Processor.\+h}
+\label{_plugin_processor_8h_source}\index{Source/PluginProcessor.h@{Source/PluginProcessor.h}}
 
 \begin{DoxyCode}{0}
 \DoxyCodeLine{00001\ \textcolor{comment}{/*}}
@@ -68,7 +69,7 @@
 \DoxyCodeLine{00065\ \ \ \textcolor{keywordtype}{void}\ setStateInformation(\textcolor{keyword}{const}\ \textcolor{keywordtype}{void}*\ data,\ \textcolor{keywordtype}{int}\ sizeInBytes)\ \textcolor{keyword}{override};}
 \DoxyCodeLine{00066\ }
 \DoxyCodeLine{00067\ \ \ \textcolor{comment}{//============================================================================}}
-\DoxyCodeLine{00068\ \ \ \mbox{\hyperlink{classdmt_1_1_preset_manager}{dmt::PresetManager}}\&\ getPresetManager()\ \{\ \textcolor{keywordflow}{return}\ *presetManager;\ \}}
+\DoxyCodeLine{00068\ \ \ dmt::PresetManager\&\ getPresetManager()\ \{\ \textcolor{keywordflow}{return}\ *presetManager;\ \}}
 \DoxyCodeLine{00069\ \ \ juce::MidiKeyboardState\ keyboardState;}
 \DoxyCodeLine{00070\ }
 \DoxyCodeLine{00071\ \textcolor{keyword}{private}:}
@@ -78,7 +79,7 @@
 \DoxyCodeLine{00075\ }
 \DoxyCodeLine{00076\ \ \ juce::Synthesiser\ synth;}
 \DoxyCodeLine{00077\ }
-\DoxyCodeLine{00078\ \ \ \mbox{\hyperlink{classdmt_1_1_filter_processor}{dmt::FilterProcessor}}\ filterProcessor;}
+\DoxyCodeLine{00078\ \ \ dmt::FilterProcessor\ filterProcessor;}
 \DoxyCodeLine{00079\ }
 \DoxyCodeLine{00080\ \ \ \textcolor{comment}{//============================================================================}}
 \DoxyCodeLine{00081\ \ \ JUCE\_DECLARE\_NON\_COPYABLE\_WITH\_LEAK\_DETECTOR(\mbox{\hyperlink{class_neutrino_audio_processor}{NeutrinoAudioProcessor}})}

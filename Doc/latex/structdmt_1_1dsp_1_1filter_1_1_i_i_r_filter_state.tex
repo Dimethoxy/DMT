@@ -1,0 +1,66 @@
+\hypertarget{structdmt_1_1dsp_1_1filter_1_1_i_i_r_filter_state}{}\doxysection{dmt\+::dsp\+::filter\+::IIRFilter\+State Struct Reference}
+\label{structdmt_1_1dsp_1_1filter_1_1_i_i_r_filter_state}\index{dmt::dsp::filter::IIRFilterState@{dmt::dsp::filter::IIRFilterState}}
+\doxysubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structdmt_1_1dsp_1_1filter_1_1_i_i_r_filter_state_a29952192b889272c4b0bb6aa09cb4aed}\label{structdmt_1_1dsp_1_1filter_1_1_i_i_r_filter_state_a29952192b889272c4b0bb6aa09cb4aed}} 
+enum class {\bfseries Type} \{ \newline
+{\bfseries Low\+Pass}
+, {\bfseries High\+Pass}
+, {\bfseries Band\+Pass}
+, {\bfseries Notch}
+, \newline
+{\bfseries All\+Pass}
+, {\bfseries Low\+Shelf}
+, {\bfseries High\+Shelf}
+, {\bfseries Peak}
+ \}
+\item 
+\mbox{\Hypertarget{structdmt_1_1dsp_1_1filter_1_1_i_i_r_filter_state_a2fc6e13ed0b3bc57ef117ddc28a13bb4}\label{structdmt_1_1dsp_1_1filter_1_1_i_i_r_filter_state_a2fc6e13ed0b3bc57ef117ddc28a13bb4}} 
+using {\bfseries IIRCoefficients} = juce\+::\+IIRCoefficients
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structdmt_1_1dsp_1_1filter_1_1_i_i_r_filter_state_acb31fecbf392aa528d26ce9130dea750}\label{structdmt_1_1dsp_1_1filter_1_1_i_i_r_filter_state_acb31fecbf392aa528d26ce9130dea750}} 
+juce\+::\+IIRCoefficients {\bfseries make\+Coefficients} (float cutoff, float q, float gain)
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structdmt_1_1dsp_1_1filter_1_1_i_i_r_filter_state_a70c8aa24edb40042e6da84bd8d220327}\label{structdmt_1_1dsp_1_1filter_1_1_i_i_r_filter_state_a70c8aa24edb40042e6da84bd8d220327}} 
+float {\bfseries sample\+Rate} = -\/1
+\item 
+\mbox{\Hypertarget{structdmt_1_1dsp_1_1filter_1_1_i_i_r_filter_state_a5537ee766fa4f42f05a3070cce1a1342}\label{structdmt_1_1dsp_1_1filter_1_1_i_i_r_filter_state_a5537ee766fa4f42f05a3070cce1a1342}} 
+Type {\bfseries type} = Type\+::\+Low\+Pass
+\item 
+\mbox{\Hypertarget{structdmt_1_1dsp_1_1filter_1_1_i_i_r_filter_state_ad3d168b8edb9da9f105d93ba6d71a58d}\label{structdmt_1_1dsp_1_1filter_1_1_i_i_r_filter_state_ad3d168b8edb9da9f105d93ba6d71a58d}} 
+juce\+::\+Single\+Threaded\+IIRFilter\+::\+IIRFilter\+Base {\bfseries base}
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static const juce\+::\+String\+Array \mbox{\hyperlink{structdmt_1_1dsp_1_1filter_1_1_i_i_r_filter_state_a2ac7d80c9cf7d7bd95e019e67bed09c2}{type\+Names}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{structdmt_1_1dsp_1_1filter_1_1_i_i_r_filter_state_a2ac7d80c9cf7d7bd95e019e67bed09c2}\label{structdmt_1_1dsp_1_1filter_1_1_i_i_r_filter_state_a2ac7d80c9cf7d7bd95e019e67bed09c2}} 
+\index{dmt::dsp::filter::IIRFilterState@{dmt::dsp::filter::IIRFilterState}!typeNames@{typeNames}}
+\index{typeNames@{typeNames}!dmt::dsp::filter::IIRFilterState@{dmt::dsp::filter::IIRFilterState}}
+\doxysubsubsection{\texorpdfstring{typeNames}{typeNames}}
+{\footnotesize\ttfamily const juce\+::\+String\+Array dmt\+::dsp\+::filter\+::\+IIRFilter\+State\+::type\+Names\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{=\ \{\ \textcolor{stringliteral}{"{}LowPass"{}},\ \ \ \textcolor{stringliteral}{"{}HighPass"{}},}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}BandPass"{}},\ \ \textcolor{stringliteral}{"{}Notch"{}},}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}AllPass"{}},\ \ \ \textcolor{stringliteral}{"{}LowShelf"{}},}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}HighShelf"{}},\ \textcolor{stringliteral}{"{}Peak"{}}\ \}}
+
+\end{DoxyCode}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Source/\+Dsp/\+Filter/IIRFilter.\+h\end{DoxyCompactItemize}

@@ -1,5 +1,5 @@
 \hypertarget{_synth_sound_8h_source}{}\doxysection{Synth\+Sound.\+h}
-\label{_synth_sound_8h_source}\index{Synth/SynthSound.h@{Synth/SynthSound.h}}
+\label{_synth_sound_8h_source}\index{Source/Dsp/Synth/SynthSound.h@{Source/Dsp/Synth/SynthSound.h}}
 
 \begin{DoxyCode}{0}
 \DoxyCodeLine{00001\ \textcolor{comment}{/*}}
@@ -19,19 +19,23 @@
 \DoxyCodeLine{00015\ \textcolor{comment}{//==============================================================================}}
 \DoxyCodeLine{00016\ }
 \DoxyCodeLine{00017\ \textcolor{keyword}{namespace\ }dmt\ \{}
-\DoxyCodeLine{00018\ }
-\DoxyCodeLine{00019\ \textcolor{comment}{//==============================================================================}}
-\DoxyCodeLine{00020\ \textcolor{comment}{/*}}
-\DoxyCodeLine{00021\ \textcolor{comment}{\ \ \ \ \ \ \ \ This\ class\ is\ a\ implemantation\ of\ the\ juce::SynthesiserSound\ class.}}
-\DoxyCodeLine{00022\ \textcolor{comment}{\ \ \ \ \ \ \ \ It\ is\ needed\ because\ the\ original\ juce\ class\ is\ a\ bastract\ class.}}
-\DoxyCodeLine{00023\ \textcolor{comment}{*/}}
-\DoxyCodeLine{00024\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classdmt_1_1_synth_sound}{SynthSound}}\ :\ \textcolor{keyword}{public}\ juce::SynthesiserSound}
-\DoxyCodeLine{00025\ \{}
-\DoxyCodeLine{00026\ \textcolor{keyword}{public}:}
-\DoxyCodeLine{00027\ \ \ \textcolor{keywordtype}{bool}\ appliesToNote(\textcolor{keywordtype}{int}\ midiNoteNumber)\textcolor{keyword}{\ override\ }\{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};\ \}}
-\DoxyCodeLine{00028\ \ \ \textcolor{keywordtype}{bool}\ appliesToChannel(\textcolor{keywordtype}{int}\ midiChannel)\textcolor{keyword}{\ override\ }\{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};\ \}}
-\DoxyCodeLine{00029\ \};}
-\DoxyCodeLine{00030\ }
-\DoxyCodeLine{00031\ \}}
+\DoxyCodeLine{00018\ \textcolor{keyword}{namespace\ }dsp\ \{}
+\DoxyCodeLine{00019\ \textcolor{keyword}{namespace\ }synth\ \{}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00021\ \textcolor{comment}{//==============================================================================}}
+\DoxyCodeLine{00022\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00023\ \textcolor{comment}{\ \ \ \ \ \ \ \ This\ class\ is\ a\ implemantation\ of\ the\ juce::SynthesiserSound\ class.}}
+\DoxyCodeLine{00024\ \textcolor{comment}{\ \ \ \ \ \ \ \ It\ is\ needed\ because\ the\ original\ juce\ class\ is\ a\ bastract\ class.}}
+\DoxyCodeLine{00025\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00026\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classdmt_1_1dsp_1_1synth_1_1_synth_sound}{SynthSound}}\ :\ \textcolor{keyword}{public}\ juce::SynthesiserSound}
+\DoxyCodeLine{00027\ \{}
+\DoxyCodeLine{00028\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00029\ \ \ \textcolor{keywordtype}{bool}\ appliesToNote(\textcolor{keywordtype}{int}\ midiNoteNumber)\textcolor{keyword}{\ override\ }\{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};\ \}}
+\DoxyCodeLine{00030\ \ \ \textcolor{keywordtype}{bool}\ appliesToChannel(\textcolor{keywordtype}{int}\ midiChannel)\textcolor{keyword}{\ override\ }\{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};\ \}}
+\DoxyCodeLine{00031\ \};}
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00033\ \}\ \textcolor{comment}{//\ namespace\ synth}}
+\DoxyCodeLine{00034\ \}\ \textcolor{comment}{//\ namespace\ dsp}}
+\DoxyCodeLine{00035\ \}\ \textcolor{comment}{//\ namespace\ dmt}}
 
 \end{DoxyCode}

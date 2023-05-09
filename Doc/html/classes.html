@@ -9,10 +9,15 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -49,6 +54,22 @@ $(function() {
 </script>
 <div id="main-nav"></div>
 </div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function(){initNavTree('classes.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -78,7 +99,7 @@ $(function() {
 <div class="classindex">
 <dl class="classindex even">
 <dt class="alphachar"><a id="letter_A" name="letter_A">A</a></dt>
-<dd><a class="el" href="classdmt_1_1_ahd_envelope.html">AhdEnvelope</a> (dmt)</dd><dd><a class="el" href="classdmt_1_1_analog_oscillator.html">AnalogOscillator</a> (dmt)</dd><dd><a class="el" href="structdmt_1_1_analog_waveform.html">AnalogWaveform</a> (dmt)</dd><dd><a class="el" href="structdmt_1_1_app_settings.html">AppSettings</a> (dmt)</dd><dd><a class="el" href="classdmt_1_1_arc_button_component.html">ArcButtonComponent</a> (dmt)</dd></dl>
+<dd><a class="el" href="classdmt_1_1dsp_1_1envelope_1_1_ahd_envelope.html">AhdEnvelope</a> (dmt::dsp::envelope)</dd><dd><a class="el" href="classdmt_1_1dsp_1_1synth_1_1_analog_oscillator.html">AnalogOscillator</a> (dmt::dsp::synth)</dd><dd><a class="el" href="structdmt_1_1dsp_1_1synth_1_1_analog_waveform.html">AnalogWaveform</a> (dmt::dsp::synth)</dd><dd><a class="el" href="structdmt_1_1_app_settings.html">AppSettings</a> (dmt)</dd><dd><a class="el" href="classdmt_1_1gui_1_1components_1_1_arc_button_component.html">ArcButtonComponent</a> (dmt::gui::components)</dd></dl>
 <dl class="classindex odd">
 <dt class="alphachar"><a id="letter_C" name="letter_C">C</a></dt>
 <dd><a class="el" href="structdmt_1_1_chain_settings.html">ChainSettings</a> (dmt)</dd></dl>
@@ -87,13 +108,13 @@ $(function() {
 <dd><a class="el" href="structdmt_1_1_distortion.html">Distortion</a> (dmt)</dd></dl>
 <dl class="classindex odd">
 <dt class="alphachar"><a id="letter_F" name="letter_F">F</a></dt>
-<dd><a class="el" href="classdmt_1_1_filter_processor.html">FilterProcessor</a> (dmt)</dd><dd><a class="el" href="classdmt_1_1_folder_manager.html">FolderManager</a> (dmt)</dd><dd><a class="el" href="classdmt_1_1_folder_panel.html">FolderPanel</a> (dmt)</dd></dl>
+<dd><a class="el" href="classdmt_1_1dsp_1_1filter_1_1_filter_processor.html">FilterProcessor</a> (dmt::dsp::filter)</dd><dd><a class="el" href="classdmt_1_1gui_1_1preset_1_1_folder_manager.html">FolderManager</a> (dmt::gui::preset)</dd><dd><a class="el" href="classdmt_1_1gui_1_1preset_1_1_folder_panel.html">FolderPanel</a> (dmt::gui::preset)</dd></dl>
 <dl class="classindex even">
 <dt class="alphachar"><a id="letter_I" name="letter_I">I</a></dt>
-<dd><a class="el" href="structdmt_1_1_i_i_r_filter_state.html">IIRFilterState</a> (dmt)</dd><dd><a class="el" href="structdmt_1_1_info_unit.html">InfoUnit</a> (dmt)</dd></dl>
+<dd><a class="el" href="structdmt_1_1dsp_1_1filter_1_1_i_i_r_filter_state.html">IIRFilterState</a> (dmt::dsp::filter)</dd><dd><a class="el" href="structdmt_1_1_info_unit.html">InfoUnit</a> (dmt)</dd></dl>
 <dl class="classindex odd">
 <dt class="alphachar"><a id="letter_L" name="letter_L">L</a></dt>
-<dd><a class="el" href="classdmt_1_1_label.html">Label</a> (dmt)</dd><dd><a class="el" href="classdmt_1_1_linear_slider.html">LinearSlider</a> (dmt)</dd><dd><a class="el" href="classdmt_1_1_linear_slider_component.html">LinearSliderComponent</a> (dmt)</dd><dd><a class="el" href="classdmt_1_1_look_and_feel.html">LookAndFeel</a> (dmt)</dd></dl>
+<dd><a class="el" href="classdmt_1_1gui_1_1widgets_1_1_label.html">Label</a> (dmt::gui::widgets)</dd><dd><a class="el" href="classdmt_1_1gui_1_1widgets_1_1_linear_slider.html">LinearSlider</a> (dmt::gui::widgets)</dd><dd><a class="el" href="classdmt_1_1gui_1_1widgets_1_1_linear_slider_component.html">LinearSliderComponent</a> (dmt::gui::widgets)</dd><dd><a class="el" href="classdmt_1_1gui_1_1widgets_1_1_look_and_feel.html">LookAndFeel</a> (dmt::gui::widgets)</dd></dl>
 <dl class="classindex even">
 <dt class="alphachar"><a id="letter_M" name="letter_M">M</a></dt>
 <dd><a class="el" href="structdmt_1_1_math.html">Math</a> (dmt)</dd></dl>
@@ -102,24 +123,27 @@ $(function() {
 <dd><a class="el" href="class_neutrino_audio_processor.html">NeutrinoAudioProcessor</a></dd><dd><a class="el" href="class_neutrino_audio_processor_editor.html">NeutrinoAudioProcessorEditor</a></dd></dl>
 <dl class="classindex even">
 <dt class="alphachar"><a id="letter_O" name="letter_O">O</a></dt>
-<dd><a class="el" href="classdmt_1_1_oscillator_display_component.html">OscillatorDisplayComponent</a> (dmt)</dd><dd><a class="el" href="classdmt_1_1_oscillator_panel.html">OscillatorPanel</a> (dmt)</dd></dl>
+<dd><a class="el" href="classdmt_1_1gui_1_1components_1_1_oscillator_display_component.html">OscillatorDisplayComponent</a> (dmt::gui::components)</dd><dd><a class="el" href="classdmt_1_1gui_1_1panels_1_1_oscillator_panel.html">OscillatorPanel</a> (dmt::gui::panels)</dd></dl>
 <dl class="classindex odd">
 <dt class="alphachar"><a id="letter_P" name="letter_P">P</a></dt>
-<dd><a class="el" href="classdmt_1_1_panel.html">Panel</a> (dmt)</dd><dd><a class="el" href="structdmt_1_1_ahd_envelope_1_1_parameters.html">AhdEnvelope::Parameters</a> (dmt)</dd><dd><a class="el" href="classdmt_1_1_preset_manager.html">PresetManager</a> (dmt)</dd><dd><a class="el" href="classdmt_1_1_preset_panel.html">PresetPanel</a> (dmt)</dd></dl>
+<dd><a class="el" href="classdmt_1_1gui_1_1panels_1_1_panel.html">Panel</a> (dmt::gui::panels)</dd><dd><a class="el" href="structdmt_1_1dsp_1_1envelope_1_1_ahd_envelope_1_1_parameters.html">AhdEnvelope::Parameters</a> (dmt::dsp::envelope)</dd><dd><a class="el" href="classdmt_1_1gui_1_1preset_1_1_preset_manager.html">PresetManager</a> (dmt::gui::preset)</dd><dd><a class="el" href="classdmt_1_1gui_1_1preset_1_1_preset_panel.html">PresetPanel</a> (dmt::gui::preset)</dd></dl>
 <dl class="classindex even">
 <dt class="alphachar"><a id="letter_S" name="letter_S">S</a></dt>
-<dd><a class="el" href="structdmt_1_1_shadow.html">Shadow</a> (dmt)</dd><dd><a class="el" href="classdmt_1_1_synth_sound.html">SynthSound</a> (dmt)</dd><dd><a class="el" href="classdmt_1_1_synth_voice.html">SynthVoice</a> (dmt)</dd></dl>
+<dd><a class="el" href="structdmt_1_1_shadow.html">Shadow</a> (dmt)</dd><dd><a class="el" href="classdmt_1_1dsp_1_1synth_1_1_synth_sound.html">SynthSound</a> (dmt::dsp::synth)</dd><dd><a class="el" href="classdmt_1_1dsp_1_1synth_1_1_synth_voice.html">SynthVoice</a> (dmt::dsp::synth)</dd></dl>
 <dl class="classindex odd">
 <dt class="alphachar"><a id="letter_T" name="letter_T">T</a></dt>
-<dd><a class="el" href="classdmt_1_1_title_top_component.html">TitleTopComponent</a> (dmt)</dd></dl>
+<dd><a class="el" href="classdmt_1_1gui_1_1components_1_1_title_top_component.html">TitleTopComponent</a> (dmt::gui::components)</dd></dl>
 <dl class="classindex even">
 <dt class="alphachar"><a id="letter_V" name="letter_V">V</a></dt>
-<dd><a class="el" href="classdmt_1_1_voice_panel.html">VoicePanel</a> (dmt)</dd></dl>
+<dd><a class="el" href="classdmt_1_1gui_1_1panels_1_1_voice_panel.html">VoicePanel</a> (dmt::gui::panels)</dd></dl>
 </div>
 </div><!-- contents -->
+</div><!-- doc-content -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generated by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.6
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.6 </li>
+  </ul>
+</div>
 </body>
 </html>

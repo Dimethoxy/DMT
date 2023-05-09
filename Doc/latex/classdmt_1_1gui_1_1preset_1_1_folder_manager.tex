@@ -1,0 +1,45 @@
+\hypertarget{classdmt_1_1gui_1_1preset_1_1_folder_manager}{}\doxysection{dmt\+::gui\+::preset\+::Folder\+Manager Class Reference}
+\label{classdmt_1_1gui_1_1preset_1_1_folder_manager}\index{dmt::gui::preset::FolderManager@{dmt::gui::preset::FolderManager}}
+Inheritance diagram for dmt\+::gui\+::preset\+::Folder\+Manager\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classdmt_1_1gui_1_1preset_1_1_folder_manager}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classdmt_1_1gui_1_1preset_1_1_folder_manager_ad6b6c2c0092de33956cec8b159c13970}\label{classdmt_1_1gui_1_1preset_1_1_folder_manager_ad6b6c2c0092de33956cec8b159c13970}} 
+{\bfseries Folder\+Manager} (juce\+::\+Audio\+Processor\+Value\+Tree\+State \&apvts)
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static const juce\+::\+File \& \mbox{\hyperlink{classdmt_1_1gui_1_1preset_1_1_folder_manager_abfcc12177b2721adfb0aea04e566bbbc}{default\+Directory}}
+\item 
+\mbox{\Hypertarget{classdmt_1_1gui_1_1preset_1_1_folder_manager_a0990bec39dadc7ef4199e4f51823f8f9}\label{classdmt_1_1gui_1_1preset_1_1_folder_manager_a0990bec39dadc7ef4199e4f51823f8f9}} 
+static const juce\+::\+String \& {\bfseries folder\+Name\+Property} = \char`\"{}folder\+Name\char`\"{}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classdmt_1_1gui_1_1preset_1_1_folder_manager_abfcc12177b2721adfb0aea04e566bbbc}\label{classdmt_1_1gui_1_1preset_1_1_folder_manager_abfcc12177b2721adfb0aea04e566bbbc}} 
+\index{dmt::gui::preset::FolderManager@{dmt::gui::preset::FolderManager}!defaultDirectory@{defaultDirectory}}
+\index{defaultDirectory@{defaultDirectory}!dmt::gui::preset::FolderManager@{dmt::gui::preset::FolderManager}}
+\doxysubsubsection{\texorpdfstring{defaultDirectory}{defaultDirectory}}
+{\footnotesize\ttfamily const juce\+::\+File\& dmt\+::gui\+::preset\+::\+Folder\+Manager\+::default\+Directory\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{=}
+\DoxyCodeLine{\ \ \ \ juce::File::getSpecialLocation(}
+\DoxyCodeLine{\ \ \ \ \ \ juce::File::SpecialLocationType::commonDocumentsDirectory)}
+\DoxyCodeLine{\ \ \ \ \ \ .getChildFile(ProjectInfo::companyName)}
+\DoxyCodeLine{\ \ \ \ \ \ .getChildFile(ProjectInfo::projectName)}
+
+\end{DoxyCode}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Source/\+Gui/\+Preset/Folder\+Manager.\+h\end{DoxyCompactItemize}

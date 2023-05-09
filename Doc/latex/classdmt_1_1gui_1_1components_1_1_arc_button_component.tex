@@ -1,0 +1,275 @@
+\hypertarget{classdmt_1_1gui_1_1components_1_1_arc_button_component}{}\doxysection{dmt\+::gui\+::components\+::Arc\+Button\+Component Class Reference}
+\label{classdmt_1_1gui_1_1components_1_1_arc_button_component}\index{dmt::gui::components::ArcButtonComponent@{dmt::gui::components::ArcButtonComponent}}
+
+
+Represents a custom arc-\/shaped button component.  
+
+
+
+
+{\ttfamily \#include $<$Arc\+Button\+Component.\+h$>$}
+
+Inheritance diagram for dmt\+::gui\+::components\+::Arc\+Button\+Component\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classdmt_1_1gui_1_1components_1_1_arc_button_component}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+using \mbox{\hyperlink{classdmt_1_1gui_1_1components_1_1_arc_button_component_ad92d921a253702d8f7cf1d631bf115cd}{Settings}} = dmt\+::\+App\+Settings\+::\+Arc\+Button
+\begin{DoxyCompactList}\small\item\em Alias for the settings related to the \mbox{\hyperlink{classdmt_1_1gui_1_1components_1_1_arc_button_component}{Arc\+Button\+Component}}. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classdmt_1_1gui_1_1components_1_1_arc_button_component_afe6c604a251a040f0c06bf3a73dd04c7}{Arc\+Button\+Component}} (bool left\+Sided) noexcept
+\begin{DoxyCompactList}\small\item\em Constructs an \mbox{\hyperlink{classdmt_1_1gui_1_1components_1_1_arc_button_component}{Arc\+Button\+Component}} object. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classdmt_1_1gui_1_1components_1_1_arc_button_component_aadd56dc8a5ab2a18350182d12ed942d9}{paint}} (juce\+::\+Graphics \&g) noexcept override
+\begin{DoxyCompactList}\small\item\em Called when the component is being painted. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classdmt_1_1gui_1_1components_1_1_arc_button_component_a905d9334638e81cdcfc4fdce88f27093}{resized}} () noexcept override
+\begin{DoxyCompactList}\small\item\em Called when the component is being resized. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classdmt_1_1gui_1_1components_1_1_arc_button_component_a857f4fa87a43408490ad38f3b40bc61a}{mouse\+Enter}} (const juce\+::\+Mouse\+Event \&event) noexcept override
+\begin{DoxyCompactList}\small\item\em Called when the mouse enters the component. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classdmt_1_1gui_1_1components_1_1_arc_button_component_ae8c697823b4b0f6c46e9181a8321ea2e}{mouse\+Exit}} (const juce\+::\+Mouse\+Event \&event) noexcept override
+\begin{DoxyCompactList}\small\item\em Called when the mouse exits the component. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classdmt_1_1gui_1_1components_1_1_arc_button_component_a47fa2437d9132bd16d4c03e2acc42ed6}{mouse\+Down}} (const juce\+::\+Mouse\+Event \&event) noexcept override
+\begin{DoxyCompactList}\small\item\em Called when the mouse button is pressed down. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classdmt_1_1gui_1_1components_1_1_arc_button_component_ad6b7520d8591c801c28a8153487ad7b8}{mouse\+Up}} (const juce\+::\+Mouse\+Event \&event) noexcept override
+\begin{DoxyCompactList}\small\item\em Called when the mouse button is released. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classdmt_1_1gui_1_1components_1_1_arc_button_component_ae775f291a2e8e325a57c4f9a50f690a0}{mouse\+Move}} (const juce\+::\+Mouse\+Event \&event) noexcept override
+\begin{DoxyCompactList}\small\item\em Called when the mouse is moved. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classdmt_1_1gui_1_1components_1_1_arc_button_component_a27310e9657a6c50678cc6c297c1c86ec}{mouse\+Drag}} (const juce\+::\+Mouse\+Event \&event) noexcept override
+\begin{DoxyCompactList}\small\item\em Called when the mouse is dragged. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classdmt_1_1gui_1_1components_1_1_arc_button_component_af9f273fbe75c84bc8c3c3ad70cee08a5}{update\+State}} (const juce\+::\+Mouse\+Event \&event) noexcept
+\begin{DoxyCompactList}\small\item\em Updates the state of the component based on the current mouse event. \end{DoxyCompactList}\item 
+const juce\+::\+Path \mbox{\hyperlink{classdmt_1_1gui_1_1components_1_1_arc_button_component_a78f04643ea997a32e4ebb49331d3a5ae}{get\+Path}} () const noexcept
+\begin{DoxyCompactList}\small\item\em Generates and returns the path of the component. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Represents a custom arc-\/shaped button component. 
+
+The \mbox{\hyperlink{classdmt_1_1gui_1_1components_1_1_arc_button_component}{Arc\+Button\+Component}} class is a custom component that displays an arc-\/shaped button. It inherits from the juce\+::\+Component class and implements the juce\+::\+Mouse\+Listener interface. The button can be left-\/sided or right-\/sided based on the constructor parameter. 
+
+\doxysubsection{Member Typedef Documentation}
+\mbox{\Hypertarget{classdmt_1_1gui_1_1components_1_1_arc_button_component_ad92d921a253702d8f7cf1d631bf115cd}\label{classdmt_1_1gui_1_1components_1_1_arc_button_component_ad92d921a253702d8f7cf1d631bf115cd}} 
+\index{dmt::gui::components::ArcButtonComponent@{dmt::gui::components::ArcButtonComponent}!Settings@{Settings}}
+\index{Settings@{Settings}!dmt::gui::components::ArcButtonComponent@{dmt::gui::components::ArcButtonComponent}}
+\doxysubsubsection{\texorpdfstring{Settings}{Settings}}
+{\footnotesize\ttfamily using \mbox{\hyperlink{classdmt_1_1gui_1_1components_1_1_arc_button_component_ad92d921a253702d8f7cf1d631bf115cd}{dmt\+::gui\+::components\+::\+Arc\+Button\+Component\+::\+Settings}} =  dmt\+::\+App\+Settings\+::\+Arc\+Button}
+
+
+
+Alias for the settings related to the \mbox{\hyperlink{classdmt_1_1gui_1_1components_1_1_arc_button_component}{Arc\+Button\+Component}}. 
+
+The Settings alias is used to refer to the global settings specific to the \mbox{\hyperlink{classdmt_1_1gui_1_1components_1_1_arc_button_component}{Arc\+Button\+Component}}. It is derived from the dmt\+::\+App\+Settings\+::\+Arc\+Button namespace.
+
+\begin{DoxySeeAlso}{See also}
+\mbox{\hyperlink{structdmt_1_1_app_settings}{dmt\+::\+App\+Settings}} 
+\end{DoxySeeAlso}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classdmt_1_1gui_1_1components_1_1_arc_button_component_afe6c604a251a040f0c06bf3a73dd04c7}\label{classdmt_1_1gui_1_1components_1_1_arc_button_component_afe6c604a251a040f0c06bf3a73dd04c7}} 
+\index{dmt::gui::components::ArcButtonComponent@{dmt::gui::components::ArcButtonComponent}!ArcButtonComponent@{ArcButtonComponent}}
+\index{ArcButtonComponent@{ArcButtonComponent}!dmt::gui::components::ArcButtonComponent@{dmt::gui::components::ArcButtonComponent}}
+\doxysubsubsection{\texorpdfstring{ArcButtonComponent()}{ArcButtonComponent()}}
+{\footnotesize\ttfamily dmt\+::gui\+::components\+::\+Arc\+Button\+Component\+::\+Arc\+Button\+Component (\begin{DoxyParamCaption}\item[{bool}]{left\+Sided }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [noexcept]}}
+
+
+
+Constructs an \mbox{\hyperlink{classdmt_1_1gui_1_1components_1_1_arc_button_component}{Arc\+Button\+Component}} object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em left\+Sided} & Determines whether the button is left-\/sided or right-\/sided. \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classdmt_1_1gui_1_1components_1_1_arc_button_component_a78f04643ea997a32e4ebb49331d3a5ae}\label{classdmt_1_1gui_1_1components_1_1_arc_button_component_a78f04643ea997a32e4ebb49331d3a5ae}} 
+\index{dmt::gui::components::ArcButtonComponent@{dmt::gui::components::ArcButtonComponent}!getPath@{getPath}}
+\index{getPath@{getPath}!dmt::gui::components::ArcButtonComponent@{dmt::gui::components::ArcButtonComponent}}
+\doxysubsubsection{\texorpdfstring{getPath()}{getPath()}}
+{\footnotesize\ttfamily const juce\+::\+Path dmt\+::gui\+::components\+::\+Arc\+Button\+Component\+::get\+Path (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [noexcept]}}
+
+
+
+Generates and returns the path of the component. 
+
+The \mbox{\hyperlink{classdmt_1_1gui_1_1components_1_1_arc_button_component_a78f04643ea997a32e4ebb49331d3a5ae}{get\+Path()}} function is called by the \mbox{\hyperlink{classdmt_1_1gui_1_1components_1_1_arc_button_component_aadd56dc8a5ab2a18350182d12ed942d9}{paint()}} function to generate and retrieve the path used for drawing the component.
+
+\begin{DoxyReturn}{Returns}
+The path of the component. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classdmt_1_1gui_1_1components_1_1_arc_button_component_a47fa2437d9132bd16d4c03e2acc42ed6}\label{classdmt_1_1gui_1_1components_1_1_arc_button_component_a47fa2437d9132bd16d4c03e2acc42ed6}} 
+\index{dmt::gui::components::ArcButtonComponent@{dmt::gui::components::ArcButtonComponent}!mouseDown@{mouseDown}}
+\index{mouseDown@{mouseDown}!dmt::gui::components::ArcButtonComponent@{dmt::gui::components::ArcButtonComponent}}
+\doxysubsubsection{\texorpdfstring{mouseDown()}{mouseDown()}}
+{\footnotesize\ttfamily void dmt\+::gui\+::components\+::\+Arc\+Button\+Component\+::mouse\+Down (\begin{DoxyParamCaption}\item[{const juce\+::\+Mouse\+Event \&}]{event }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [protected]}, {\ttfamily [noexcept]}}
+
+
+
+Called when the mouse button is pressed down. 
+
+The \mbox{\hyperlink{classdmt_1_1gui_1_1components_1_1_arc_button_component_a47fa2437d9132bd16d4c03e2acc42ed6}{mouse\+Down()}} function updates the state of the component when the mouse button is pressed down. It calls the \mbox{\hyperlink{classdmt_1_1gui_1_1components_1_1_arc_button_component_af9f273fbe75c84bc8c3c3ad70cee08a5}{update\+State()}} function to handle state changes based on the mouse event.
+
+
+\begin{DoxyParams}{Parameters}
+{\em event} & The juce\+::\+Mouse\+Event that triggered the function. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classdmt_1_1gui_1_1components_1_1_arc_button_component_a27310e9657a6c50678cc6c297c1c86ec}\label{classdmt_1_1gui_1_1components_1_1_arc_button_component_a27310e9657a6c50678cc6c297c1c86ec}} 
+\index{dmt::gui::components::ArcButtonComponent@{dmt::gui::components::ArcButtonComponent}!mouseDrag@{mouseDrag}}
+\index{mouseDrag@{mouseDrag}!dmt::gui::components::ArcButtonComponent@{dmt::gui::components::ArcButtonComponent}}
+\doxysubsubsection{\texorpdfstring{mouseDrag()}{mouseDrag()}}
+{\footnotesize\ttfamily void dmt\+::gui\+::components\+::\+Arc\+Button\+Component\+::mouse\+Drag (\begin{DoxyParamCaption}\item[{const juce\+::\+Mouse\+Event \&}]{event }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [protected]}, {\ttfamily [noexcept]}}
+
+
+
+Called when the mouse is dragged. 
+
+The \mbox{\hyperlink{classdmt_1_1gui_1_1components_1_1_arc_button_component_a27310e9657a6c50678cc6c297c1c86ec}{mouse\+Drag()}} function updates the state of the component when the mouse is dragged within its area. It calls the \mbox{\hyperlink{classdmt_1_1gui_1_1components_1_1_arc_button_component_af9f273fbe75c84bc8c3c3ad70cee08a5}{update\+State()}} function to handle state changes based on the mouse event.
+
+
+\begin{DoxyParams}{Parameters}
+{\em event} & The juce\+::\+Mouse\+Event that triggered the function. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classdmt_1_1gui_1_1components_1_1_arc_button_component_a857f4fa87a43408490ad38f3b40bc61a}\label{classdmt_1_1gui_1_1components_1_1_arc_button_component_a857f4fa87a43408490ad38f3b40bc61a}} 
+\index{dmt::gui::components::ArcButtonComponent@{dmt::gui::components::ArcButtonComponent}!mouseEnter@{mouseEnter}}
+\index{mouseEnter@{mouseEnter}!dmt::gui::components::ArcButtonComponent@{dmt::gui::components::ArcButtonComponent}}
+\doxysubsubsection{\texorpdfstring{mouseEnter()}{mouseEnter()}}
+{\footnotesize\ttfamily void dmt\+::gui\+::components\+::\+Arc\+Button\+Component\+::mouse\+Enter (\begin{DoxyParamCaption}\item[{const juce\+::\+Mouse\+Event \&}]{event }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [protected]}, {\ttfamily [noexcept]}}
+
+
+
+Called when the mouse enters the component. 
+
+The \mbox{\hyperlink{classdmt_1_1gui_1_1components_1_1_arc_button_component_a857f4fa87a43408490ad38f3b40bc61a}{mouse\+Enter()}} function updates the state of the component when the mouse enters its area. It calls the \mbox{\hyperlink{classdmt_1_1gui_1_1components_1_1_arc_button_component_af9f273fbe75c84bc8c3c3ad70cee08a5}{update\+State()}} function to handle state changes based on the mouse event.
+
+
+\begin{DoxyParams}{Parameters}
+{\em event} & The juce\+::\+Mouse\+Event that triggered the function.\\
+\hline
+\end{DoxyParams}
+\begin{DoxySeeAlso}{See also}
+juce\+::\+Mouse\+Listener\+::mouse\+Enter() 
+\end{DoxySeeAlso}
+\mbox{\Hypertarget{classdmt_1_1gui_1_1components_1_1_arc_button_component_ae8c697823b4b0f6c46e9181a8321ea2e}\label{classdmt_1_1gui_1_1components_1_1_arc_button_component_ae8c697823b4b0f6c46e9181a8321ea2e}} 
+\index{dmt::gui::components::ArcButtonComponent@{dmt::gui::components::ArcButtonComponent}!mouseExit@{mouseExit}}
+\index{mouseExit@{mouseExit}!dmt::gui::components::ArcButtonComponent@{dmt::gui::components::ArcButtonComponent}}
+\doxysubsubsection{\texorpdfstring{mouseExit()}{mouseExit()}}
+{\footnotesize\ttfamily void dmt\+::gui\+::components\+::\+Arc\+Button\+Component\+::mouse\+Exit (\begin{DoxyParamCaption}\item[{const juce\+::\+Mouse\+Event \&}]{event }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [protected]}, {\ttfamily [noexcept]}}
+
+
+
+Called when the mouse exits the component. 
+
+The \mbox{\hyperlink{classdmt_1_1gui_1_1components_1_1_arc_button_component_ae8c697823b4b0f6c46e9181a8321ea2e}{mouse\+Exit()}} function updates the state of the component when the mouse exits its area. It calls the \mbox{\hyperlink{classdmt_1_1gui_1_1components_1_1_arc_button_component_af9f273fbe75c84bc8c3c3ad70cee08a5}{update\+State()}} function to handle state changes based on the mouse event.
+
+
+\begin{DoxyParams}{Parameters}
+{\em event} & The juce\+::\+Mouse\+Event that triggered the function.\\
+\hline
+\end{DoxyParams}
+\begin{DoxySeeAlso}{See also}
+juce\+::\+Mouse\+Listener\+::mouse\+Exit() 
+\end{DoxySeeAlso}
+\mbox{\Hypertarget{classdmt_1_1gui_1_1components_1_1_arc_button_component_ae775f291a2e8e325a57c4f9a50f690a0}\label{classdmt_1_1gui_1_1components_1_1_arc_button_component_ae775f291a2e8e325a57c4f9a50f690a0}} 
+\index{dmt::gui::components::ArcButtonComponent@{dmt::gui::components::ArcButtonComponent}!mouseMove@{mouseMove}}
+\index{mouseMove@{mouseMove}!dmt::gui::components::ArcButtonComponent@{dmt::gui::components::ArcButtonComponent}}
+\doxysubsubsection{\texorpdfstring{mouseMove()}{mouseMove()}}
+{\footnotesize\ttfamily void dmt\+::gui\+::components\+::\+Arc\+Button\+Component\+::mouse\+Move (\begin{DoxyParamCaption}\item[{const juce\+::\+Mouse\+Event \&}]{event }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [protected]}, {\ttfamily [noexcept]}}
+
+
+
+Called when the mouse is moved. 
+
+The \mbox{\hyperlink{classdmt_1_1gui_1_1components_1_1_arc_button_component_ae775f291a2e8e325a57c4f9a50f690a0}{mouse\+Move()}} function updates the state of the component when the mouse is moved within its area. It calls the \mbox{\hyperlink{classdmt_1_1gui_1_1components_1_1_arc_button_component_af9f273fbe75c84bc8c3c3ad70cee08a5}{update\+State()}} function to handle state changes based on the mouse event.
+
+
+\begin{DoxyParams}{Parameters}
+{\em event} & The juce\+::\+Mouse\+Event that triggered the function. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classdmt_1_1gui_1_1components_1_1_arc_button_component_ad6b7520d8591c801c28a8153487ad7b8}\label{classdmt_1_1gui_1_1components_1_1_arc_button_component_ad6b7520d8591c801c28a8153487ad7b8}} 
+\index{dmt::gui::components::ArcButtonComponent@{dmt::gui::components::ArcButtonComponent}!mouseUp@{mouseUp}}
+\index{mouseUp@{mouseUp}!dmt::gui::components::ArcButtonComponent@{dmt::gui::components::ArcButtonComponent}}
+\doxysubsubsection{\texorpdfstring{mouseUp()}{mouseUp()}}
+{\footnotesize\ttfamily void dmt\+::gui\+::components\+::\+Arc\+Button\+Component\+::mouse\+Up (\begin{DoxyParamCaption}\item[{const juce\+::\+Mouse\+Event \&}]{event }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [protected]}, {\ttfamily [noexcept]}}
+
+
+
+Called when the mouse button is released. 
+
+The \mbox{\hyperlink{classdmt_1_1gui_1_1components_1_1_arc_button_component_ad6b7520d8591c801c28a8153487ad7b8}{mouse\+Up()}} function updates the state of the component when the mouse button is released. It calls the \mbox{\hyperlink{classdmt_1_1gui_1_1components_1_1_arc_button_component_af9f273fbe75c84bc8c3c3ad70cee08a5}{update\+State()}} function to handle state changes based on the mouse event.
+
+
+\begin{DoxyParams}{Parameters}
+{\em event} & The juce\+::\+Mouse\+Event that triggered the function. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classdmt_1_1gui_1_1components_1_1_arc_button_component_aadd56dc8a5ab2a18350182d12ed942d9}\label{classdmt_1_1gui_1_1components_1_1_arc_button_component_aadd56dc8a5ab2a18350182d12ed942d9}} 
+\index{dmt::gui::components::ArcButtonComponent@{dmt::gui::components::ArcButtonComponent}!paint@{paint}}
+\index{paint@{paint}!dmt::gui::components::ArcButtonComponent@{dmt::gui::components::ArcButtonComponent}}
+\doxysubsubsection{\texorpdfstring{paint()}{paint()}}
+{\footnotesize\ttfamily void dmt\+::gui\+::components\+::\+Arc\+Button\+Component\+::paint (\begin{DoxyParamCaption}\item[{juce\+::\+Graphics \&}]{g }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [noexcept]}}
+
+
+
+Called when the component is being painted. 
+
+The \mbox{\hyperlink{classdmt_1_1gui_1_1components_1_1_arc_button_component_aadd56dc8a5ab2a18350182d12ed942d9}{paint()}} function is responsible for drawing the component based on its current state.
+
+
+\begin{DoxyParams}{Parameters}
+{\em g} & The juce\+::\+Graphics object used for drawing.\\
+\hline
+\end{DoxyParams}
+\begin{DoxySeeAlso}{See also}
+juce\+::\+Component\+::paint() 
+\end{DoxySeeAlso}
+\mbox{\Hypertarget{classdmt_1_1gui_1_1components_1_1_arc_button_component_a905d9334638e81cdcfc4fdce88f27093}\label{classdmt_1_1gui_1_1components_1_1_arc_button_component_a905d9334638e81cdcfc4fdce88f27093}} 
+\index{dmt::gui::components::ArcButtonComponent@{dmt::gui::components::ArcButtonComponent}!resized@{resized}}
+\index{resized@{resized}!dmt::gui::components::ArcButtonComponent@{dmt::gui::components::ArcButtonComponent}}
+\doxysubsubsection{\texorpdfstring{resized()}{resized()}}
+{\footnotesize\ttfamily void dmt\+::gui\+::components\+::\+Arc\+Button\+Component\+::resized (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [noexcept]}}
+
+
+
+Called when the component is being resized. 
+
+The \mbox{\hyperlink{classdmt_1_1gui_1_1components_1_1_arc_button_component_a905d9334638e81cdcfc4fdce88f27093}{resized()}} function updates the path\+Bounds member variables used for drawing the component and reduces the bounds if the button is clicked.
+
+\begin{DoxySeeAlso}{See also}
+juce\+::\+Component\+::resized() 
+\end{DoxySeeAlso}
+\mbox{\Hypertarget{classdmt_1_1gui_1_1components_1_1_arc_button_component_af9f273fbe75c84bc8c3c3ad70cee08a5}\label{classdmt_1_1gui_1_1components_1_1_arc_button_component_af9f273fbe75c84bc8c3c3ad70cee08a5}} 
+\index{dmt::gui::components::ArcButtonComponent@{dmt::gui::components::ArcButtonComponent}!updateState@{updateState}}
+\index{updateState@{updateState}!dmt::gui::components::ArcButtonComponent@{dmt::gui::components::ArcButtonComponent}}
+\doxysubsubsection{\texorpdfstring{updateState()}{updateState()}}
+{\footnotesize\ttfamily void dmt\+::gui\+::components\+::\+Arc\+Button\+Component\+::update\+State (\begin{DoxyParamCaption}\item[{const juce\+::\+Mouse\+Event \&}]{event }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [noexcept]}}
+
+
+
+Updates the state of the component based on the current mouse event. 
+
+The \mbox{\hyperlink{classdmt_1_1gui_1_1components_1_1_arc_button_component_af9f273fbe75c84bc8c3c3ad70cee08a5}{update\+State()}} function is called by the mouse event functions to update the hover and clicked states of the component. It also triggers the \mbox{\hyperlink{classdmt_1_1gui_1_1components_1_1_arc_button_component_a905d9334638e81cdcfc4fdce88f27093}{resized()}} and repaint() functions.
+
+
+\begin{DoxyParams}{Parameters}
+{\em event} & The mouse event that triggered the function. \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Source/\+Gui/\+Componnets/Arc\+Button\+Component.\+h\item 
+Source/\+Gui/\+Componnets/Arc\+Button\+Component.\+cpp\end{DoxyCompactItemize}
