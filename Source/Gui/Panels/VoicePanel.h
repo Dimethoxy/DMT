@@ -11,7 +11,7 @@ namespace dmt {
 namespace gui {
 namespace panels {
 //==============================================================================
-class VoicePanel : public dmt::Panel
+class VoicePanel : public dmt::gui::Panel
 {
 public:
   VoicePanel(/*juce::AudioProcessorValueTreeState& apvts*/)

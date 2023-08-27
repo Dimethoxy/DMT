@@ -59,7 +59,6 @@ class LookAndFeel : public juce::LookAndFeel_V4
     g.fillRoundedRectangle(rail, corner);
 
     // Precalculate some values for the thumb
-    g.setColour(Settings::Colours::topground);
     auto sliderValue = slider.getValue();
     auto sliderRange = slider.getMaximum() - slider.getMinimum();
     auto sliderFactor = (sliderValue - slider.getMinimum()) / sliderRange;

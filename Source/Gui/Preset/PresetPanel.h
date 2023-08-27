@@ -26,7 +26,7 @@ class PresetPanel
   , juce::ComboBox::Listener
 {
 public:
-  PresetPanel(dmt::PresetManager& pm)
+  PresetPanel(dmt::gui::preset::PresetManager& pm)
     : presetManager(pm)
   {
     configureButton(saveButton, "Save");
@@ -77,8 +77,8 @@ private:
     if (button == &saveButton) {
       fileChooser = std::make_unique<juce::FileChooser>(
         "Save Preset",
-        dmt::PresetManager::defaultDirectory,
-        "*." + dmt::PresetManager::extension);
+        dmt::gui::preset::PresetManager::defaultDirectory,
+        "*." + dmt::gui::preset::PresetManager::extension);
 
       fileChooser->launchAsync(juce::FileBrowserComponent::saveMode,
                                [&](const juce::FileChooser& chooser) {
@@ -128,7 +128,7 @@ private:
     button.addListener(this);
   }
 
-  dmt::PresetManager presetManager;
+  dmt::gui::preset::PresetManager presetManager;
   std::unique_ptr<juce::FileChooser> fileChooser;
   juce::TextButton saveButton;
   juce::TextButton previousPresetButton;

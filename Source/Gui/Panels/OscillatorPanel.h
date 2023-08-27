@@ -2,10 +2,10 @@
 
 #pragma once
 
+#include "../../Utility/Unit.h"
 #include "../Components/ArcButtonComponent.h"
+#include "../Components/LinearSliderComponent.h"
 #include "../Components/OscillatorDisplayComponent.h"
-#include "../Utility/AppSettings.h"
-#include "../Widgets/LinearSliderComponent.h"
 #include "Panel.h"
 #include <JuceHeader.h>
 
@@ -14,7 +14,7 @@ namespace dmt {
 namespace gui {
 namespace panels {
 //==============================================================================
-class OscillatorPanel : public dmt::Panel
+class OscillatorPanel : public dmt::gui::Panel
 {
 public:
   OscillatorPanel(juce::AudioProcessorValueTreeState& apvts)
@@ -61,11 +61,11 @@ public:
   juce::String getName() override { return "Classic Oscillator"; }
 
 private:
-  dmt::OscillatorDisplayComponent oscDisplay;
-  dmt::ArcButtonComponent prevButton;
-  dmt::ArcButtonComponent nextButton;
-  LinearSliderComponent pwmSlider;
-  LinearSliderComponent biasSlider;
+  dmt::gui::components::OscillatorDisplayComponent oscDisplay;
+  dmt::gui::components::ArcButtonComponent prevButton;
+  dmt::gui::components::ArcButtonComponent nextButton;
+  dmt::gui::components::LinearSliderComponent pwmSlider;
+  dmt::gui::components::LinearSliderComponent biasSlider;
 };
 //==============================================================================
 } // namespace panels

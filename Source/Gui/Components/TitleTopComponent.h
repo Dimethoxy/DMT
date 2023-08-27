@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "../Utility/AppSettings.h"
+#include "../../Utility/AppSettings.h"
 #include <JuceHeader.h>
 
 //==============================================================================
@@ -31,7 +31,7 @@ public:
     auto innerBounds = bounds.withHeight(bounds.getHeight() * 0.6f);
     auto cornerSize = dmt::AppSettings::Panel::innerCornerSize;
 
-    g.setColour(dmt::AppSettings::Colours::topground);
+    g.setColour(dmt::AppSettings::);
     g.fillRoundedRectangle(innerBounds, cornerSize);
 
     if (Settings::drawOuterShadow) {

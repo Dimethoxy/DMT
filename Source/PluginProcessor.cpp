@@ -19,12 +19,13 @@ NeutrinoAudioProcessor::NeutrinoAudioProcessor()
           ProjectInfo::projectName,
           dmt::createParameterLayout())
 {
-  apvts.state.setProperty(dmt::PresetManager::presetNameProperty, "", nullptr);
+  apvts.state.setProperty(
+    dmt::gui::preset::PresetManager::presetNameProperty, "", nullptr);
   apvts.state.setProperty("version", ProjectInfo::versionString, nullptr);
-  presetManager = std::make_unique<dmt::PresetManager>(apvts);
+  presetManager = std::make_unique<dmt::gui::preset::PresetManager>(apvts);
 
-  synth.addSound(new dmt::SynthSound());
-  synth.addVoice(new dmt::SynthVoice());
+  synth.addSound(new dmt::dsp::synth::SynthSound());
+  synth.addVoice(new dmt::dsp::synth::SynthVoice());
 }
 NeutrinoAudioProcessor::~NeutrinoAudioProcessor() {}
 //==============================================================================
@@ -34,7 +35,7 @@ NeutrinoAudioProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
   synth.setCurrentPlaybackSampleRate(sampleRate);
 
   for (int i = 0; i < synth.getNumVoices(); i++) {
-    auto voice = dynamic_cast<dmt::SynthVoice*>(synth.getVoice(i));
+    auto voice = dynamic_cast<dmt::dsp::synth::SynthVoice*>(synth.getVoice(i));
     voice->prepareToPlay(sampleRate, samplesPerBlock, 2);
     voice->addOnNoteReceivers([this]() { this->filterProcessor.onNote(); });
   }
@@ -58,12 +59,12 @@ NeutrinoAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer,
   dmt::ChainSettings chainSettings(apvts);
 
   if (auto voice = dynamic_cast<juce::SynthesiserVoice*>(synth.getVoice(0))) {
-    auto* ref = dynamic_cast<dmt::SynthVoice*>(synth.getVoice(0));
+    auto* ref = dynamic_cast<dmt::dsp::synth::SynthVoice*>(synth.getVoice(0));
     ref->setChainSettings(chainSettings);
   }
 
   synth.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
-  
+
   filterProcessor.setChainSettings(chainSettings);
   filterProcessor.processBlock(buffer, 0, buffer.getNumSamples());
 }

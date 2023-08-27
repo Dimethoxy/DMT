@@ -9,7 +9,7 @@
 */
 
 #pragma once
-#include "../Utility/Math.h"
+#include "../../Utility/Math.h"
 
 namespace dmt {
 namespace dsp {

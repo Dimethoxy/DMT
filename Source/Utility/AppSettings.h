@@ -4,25 +4,24 @@
 
 namespace dmt {
 
+struct Colours
+{
+  using Colour = juce::Colour;
+  static inline Colour background = Colour(40, 42, 54);
+  static inline Colour foreground = Colour(68, 71, 90);
+  static inline Colour panelBorder = Colour(0, 0, 0);
+  static inline Colour shadow = Colour(0, 0, 0);
+  static inline Colour accent = Colour(80, 250, 123);
+
+  static inline Colour accentAlpha = Colour::fromRGBA(80, 250, 123, 64);
+  static inline Colour font = Colour(248, 248, 242);
+};
 struct AppSettings
 {
   using Colour = juce::Colour;
   //==============================================================================
   static inline juce::String name = "Neutrino";
   static inline float size = 1.0f;
-  //==============================================================================
-  static inline struct Colours
-  {
-    // Colour(158, 85, 252);
-    static inline Colour background = Colour(18, 18, 18);
-    static inline Colour foreground = Colour(29, 29, 29);
-    static inline Colour topground = Colour(40, 40, 40);
-    static inline Colour panelBorder = Colour(0, 0, 0);
-    static inline Colour shadow = Colour(0, 0, 0);
-    static inline Colour accent = Colour(255, 255, 255);
-    static inline Colour accentAlpha = Colour::fromRGBA(255, 255, 255, 64);
-    static inline Colour font = Colour(255, 255, 255);
-  };
   //==============================================================================
   static inline struct LinearSlider
   {
@@ -67,6 +66,24 @@ struct AppSettings
     static inline auto outerShadowColour = Colour(0, 0, 0);
     static inline auto innerShadowColour = Colour(0, 0, 0);
   };
+  static inline struct OscillatorTop
+  {
+    static inline auto backgroundColour = Colours::foreground;
+    static inline auto fontColour = Colours::background;
+    static inline auto drawFontOutline = false;
+    static inline auto fontOutlineColour = Colours::accent;
+    static inline auto fontOutlineThickness = 3.0f;
+
+    static inline auto outerShadowRadius = 10.0f;
+    static inline auto innerShadowRadius = 10.0f;
+    static inline auto fontShadowRadius = 10.0f;
+    static inline auto drawOuterShadow = true;
+    static inline auto drawInnerShadow = false;
+    static inline auto drawFontShadow = false;
+    static inline auto outerShadowColour = Colour(0, 0, 0);
+    static inline auto innerShadowColour = Colour(0, 0, 0);
+    static inline auto fontShadowColour = Colours::accent;
+  };
   static inline struct OscillatorDisplay
   {
     static inline auto margin = 20.0f;
@@ -104,25 +121,8 @@ struct AppSettings
     static inline auto outerShadowColour = Colours::accent;
     static inline auto innerShadowColour = Colours::accent;
   };
-  static inline struct OscillatorTop
-  {
-    static inline auto foregroundColour = Colours::foreground;
-
-    static inline auto fontColour = Colours::background;
-    static inline auto drawFontOutline = true;
-    static inline auto fontOutlineColour = Colours::accent;
-    static inline auto fontOutlineThickness = 3.0f;
-
-    static inline auto outerShadowRadius = 10.0f;
-    static inline auto innerShadowRadius = 10.0f;
-    static inline auto fontShadowRadius = 10.0f;
-    static inline auto drawOuterShadow = true;
-    static inline auto drawInnerShadow = false;
-    static inline auto drawFontShadow = false;
-    static inline auto outerShadowColour = Colour(0, 0, 0);
-    static inline auto innerShadowColour = Colour(0, 0, 0);
-    static inline auto fontShadowColour = Colours::accent;
-  };
+  static inline struct Slider
+  {};
   //==============================================================================
 };
 }

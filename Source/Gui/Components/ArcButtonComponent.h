@@ -2,8 +2,8 @@
 
 #pragma once
 
-#include "../Utility/AppSettings.h"
-#include "../Utility/Shadow.h"
+#include "../../Utility/AppSettings.h"
+#include "../../Utility/Shadow.h"
 #include <JuceHeader.h>
 
 //==============================================================================

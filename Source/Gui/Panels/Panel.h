@@ -2,15 +2,14 @@
 
 #pragma once
 
+#include "../../Utility/AppSettings.h"
+#include "../../Utility/Shadow.h"
 #include "../Components/TitleTopComponent.h"
-#include "../Utility/AppSettings.h"
-#include "../Utility/Shadow.h"
 #include <JuceHeader.h>
 
 //==============================================================================
 namespace dmt {
 namespace gui {
-namespace panels {
 //==============================================================================
 class Panel : public juce::Component
 {
@@ -78,11 +77,10 @@ protected:
   float innerCornerSize;
 
 private:
-  dmt::TitleTopComponent top;
+  dmt::gui::components::TitleTopComponent top;
   dmt::Shadow outerShadow;
   dmt::Shadow innerShadow;
 };
 //==============================================================================
-} // namespace panels
 } // namespace gui
 } // namespace dmt

@@ -9,10 +9,10 @@
 
 #pragma once
 
-#include "./Filter/FilterProcessor.h"
-#include "./Preset/PresetManager.h"
-#include "./Synth/SynthSound.h"
-#include "./Synth/SynthVoice.h"
+#include "./Dsp/Filter/FilterProcessor.h"
+#include "./Dsp/Synth/SynthSound.h"
+#include "./Dsp/Synth/SynthVoice.h"
+#include "./Gui/Preset/PresetManager.h"
 #include "./Utility/ChainSettings.h"
 #include "./Utility/ParameterLayout.h"
 #include <JuceHeader.h>
@@ -65,17 +65,17 @@ public:
   void setStateInformation(const void* data, int sizeInBytes) override;
 
   //============================================================================
-  dmt::PresetManager& getPresetManager() { return *presetManager; }
+  dmt::gui::preset::PresetManager& getPresetManager() { return *presetManager; }
   juce::MidiKeyboardState keyboardState;
 
 private:
   //============================================================================
 
-  std::unique_ptr<dmt::PresetManager> presetManager;
+  std::unique_ptr<dmt::gui::preset::PresetManager> presetManager;
 
   juce::Synthesiser synth;
 
-  dmt::FilterProcessor filterProcessor;
+  dmt::dsp::filter::FilterProcessor filterProcessor;
 
   //============================================================================
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(NeutrinoAudioProcessor)

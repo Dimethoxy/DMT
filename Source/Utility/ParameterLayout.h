@@ -2,8 +2,8 @@
 
 #pragma once
 
-#include "../Filter/FilterProcessor.h"
-#include "../Synth/AnalogWaveform.h"
+#include "../Dsp/Filter/FilterProcessor.h"
+#include "../Dsp/Synth/AnalogWaveform.h"
 #include <JuceHeader.h>
 
 //==============================================================================
@@ -18,7 +18,10 @@ createParameterLayout()
   return juce::AudioProcessorValueTreeState::ParameterLayout{
     //==========================================================================
     std::make_unique<ParameterChoice>(
-      "waveformType", "Waveform", dmt::AnalogWaveform::waveformNames, 2),
+      "waveformType",
+      "Waveform",
+      dmt::dsp::synth::AnalogWaveform::waveformNames,
+      2),
     std::make_unique<ParameterFloat>("oscGain",
                                      "Osc Gain",
                                      NormalisableRange(
@@ -219,7 +222,7 @@ createParameterLayout()
                                      32.0f),
     //============================================================================
     std::make_unique<ParameterChoice>(
-      "filterType", "Filter", dmt::IIRFilterState::typeNames, 0),
+      "filterType", "Filter", dmt::dsp::filter::IIRFilterState::typeNames, 0),
     std::make_unique<ParameterFloat>("filterCutoff",
                                      "Filter Cutoff",
                                      NormalisableRange(

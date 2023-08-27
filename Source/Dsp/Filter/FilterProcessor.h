@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "../Utility/ChainSettings.h"
+#include "../../Utility/ChainSettings.h"
 #include "IIRFilter.h"
 #include <JuceHeader.h>
 
@@ -52,7 +52,7 @@ public:
 private:
   float sampleRate = -1;
   std::unique_ptr<dmt::ChainSettings> chainSettings;
-  dmt::IIRFilterState filter;
+  dmt::dsp::filter::IIRFilterState filter;
 };
 } // namespace filter
 } // namespace dsp

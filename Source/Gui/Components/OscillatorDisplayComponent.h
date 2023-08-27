@@ -2,10 +2,10 @@
 
 #pragma once
 
-#include "../Synth/AnalogOscillator.h"
-#include "../Utility/AppSettings.h"
-#include "../Utility/ChainSettings.h"
-#include "../Utility/Shadow.h"
+#include "../../Dsp/Synth/AnalogOscillator.h"
+#include "../../Utility/AppSettings.h"
+#include "../../Utility/ChainSettings.h"
+#include "../../Utility/Shadow.h"
 #include <JuceHeader.h>
 
 //==============================================================================
@@ -85,7 +85,7 @@ private:
   dmt::Shadow innerShadow;
   dmt::Shadow lineShadow;
 
-  dmt::AnalogOscillator osc;
+  dmt::dsp::synth::AnalogOscillator osc;
   juce::dsp::LookupTable<float> table;
   dmt::ChainSettings chainSettings;
   juce::AudioProcessorValueTreeState& apvts;

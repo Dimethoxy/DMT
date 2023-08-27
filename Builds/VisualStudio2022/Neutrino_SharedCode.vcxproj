@@ -139,7 +139,7 @@
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Source\Components\ArcButtonComponent.cpp"/>
+    <ClCompile Include="..\..\Source\Gui\Components\ArcButtonComponent.cpp"/>
     <ClCompile Include="..\..\Source\PluginEditor.cpp"/>
     <ClCompile Include="..\..\Source\PluginProcessor.cpp"/>
     <ClCompile Include="..\..\..\..\Ressources\JUCE\modules\juce_audio_basics\audio_play_head\juce_AudioPlayHead.cpp">
@@ -2424,26 +2424,28 @@
     <ClCompile Include="..\..\JuceLibraryCode\include_juce_gui_extra.cpp"/>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\Source\Components\ArcButtonComponent.h"/>
-    <ClInclude Include="..\..\Source\Components\OscillatorDisplayComponent.h"/>
-    <ClInclude Include="..\..\Source\Components\TitleTopComponent.h"/>
-    <ClInclude Include="..\..\Source\Components\VoiceTopComponent.h"/>
-    <ClInclude Include="..\..\Source\Envelope\AdhEnvelope.h"/>
-    <ClInclude Include="..\..\Source\Filter\FilterProcessor.h"/>
-    <ClInclude Include="..\..\Source\Filter\IIRFilter.h"/>
-    <ClInclude Include="..\..\Source\Panels\OscillatorPanel.h"/>
-    <ClInclude Include="..\..\Source\Panels\Panel.h"/>
-    <ClInclude Include="..\..\Source\Panels\VoicePanel.h"/>
-    <ClInclude Include="..\..\Source\PluginEditor.h"/>
-    <ClInclude Include="..\..\Source\PluginProcessor.h"/>
-    <ClInclude Include="..\..\Source\Preset\FolderManager.h"/>
-    <ClInclude Include="..\..\Source\Preset\FolderPanel.h"/>
-    <ClInclude Include="..\..\Source\Preset\PresetManager.h"/>
-    <ClInclude Include="..\..\Source\Preset\PresetPanel.h"/>
-    <ClInclude Include="..\..\Source\Synth\AnalogOscillator.h"/>
-    <ClInclude Include="..\..\Source\Synth\AnalogWaveform.h"/>
-    <ClInclude Include="..\..\Source\Synth\SynthSound.h"/>
-    <ClInclude Include="..\..\Source\Synth\SynthVoice.h"/>
+    <ClInclude Include="..\..\Source\Dsp\Envelope\AdhEnvelope.h"/>
+    <ClInclude Include="..\..\Source\Dsp\Filter\FilterProcessor.h"/>
+    <ClInclude Include="..\..\Source\Dsp\Filter\IIRFilter.h"/>
+    <ClInclude Include="..\..\Source\Dsp\Synth\AnalogOscillator.h"/>
+    <ClInclude Include="..\..\Source\Dsp\Synth\AnalogWaveform.h"/>
+    <ClInclude Include="..\..\Source\Dsp\Synth\SynthSound.h"/>
+    <ClInclude Include="..\..\Source\Dsp\Synth\SynthVoice.h"/>
+    <ClInclude Include="..\..\Source\Gui\Components\ArcButtonComponent.h"/>
+    <ClInclude Include="..\..\Source\Gui\Components\LinearSliderComponent.h"/>
+    <ClInclude Include="..\..\Source\Gui\Components\OscillatorDisplayComponent.h"/>
+    <ClInclude Include="..\..\Source\Gui\Components\TitleTopComponent.h"/>
+    <ClInclude Include="..\..\Source\Gui\Components\VoiceTopComponent.h"/>
+    <ClInclude Include="..\..\Source\Gui\Panels\OscillatorPanel.h"/>
+    <ClInclude Include="..\..\Source\Gui\Panels\Panel.h"/>
+    <ClInclude Include="..\..\Source\Gui\Panels\VoicePanel.h"/>
+    <ClInclude Include="..\..\Source\Gui\Preset\FolderManager.h"/>
+    <ClInclude Include="..\..\Source\Gui\Preset\FolderPanel.h"/>
+    <ClInclude Include="..\..\Source\Gui\Preset\PresetManager.h"/>
+    <ClInclude Include="..\..\Source\Gui\Preset\PresetPanel.h"/>
+    <ClInclude Include="..\..\Source\Gui\Widgets\Label.h"/>
+    <ClInclude Include="..\..\Source\Gui\Widgets\LinearSlider.h"/>
+    <ClInclude Include="..\..\Source\Gui\Widgets\LookAndFeel.h"/>
     <ClInclude Include="..\..\Source\Utility\AppSettings.h"/>
     <ClInclude Include="..\..\Source\Utility\ChainSettings.h"/>
     <ClInclude Include="..\..\Source\Utility\Distortion.h"/>
@@ -2451,10 +2453,8 @@
     <ClInclude Include="..\..\Source\Utility\ParameterLayout.h"/>
     <ClInclude Include="..\..\Source\Utility\Shadow.h"/>
     <ClInclude Include="..\..\Source\Utility\Unit.h"/>
-    <ClInclude Include="..\..\Source\Widgets\Label.h"/>
-    <ClInclude Include="..\..\Source\Widgets\LinearSlider.h"/>
-    <ClInclude Include="..\..\Source\Widgets\LinearSliderComponent.h"/>
-    <ClInclude Include="..\..\Source\Widgets\LookAndFeel.h"/>
+    <ClInclude Include="..\..\Source\PluginEditor.h"/>
+    <ClInclude Include="..\..\Source\PluginProcessor.h"/>
     <ClInclude Include="..\..\..\..\Ressources\JUCE\modules\juce_audio_basics\audio_play_head\juce_AudioPlayHead.h"/>
     <ClInclude Include="..\..\..\..\Ressources\JUCE\modules\juce_audio_basics\buffers\juce_AudioChannelSet.h"/>
     <ClInclude Include="..\..\..\..\Ressources\JUCE\modules\juce_audio_basics\buffers\juce_AudioDataConverters.h"/>

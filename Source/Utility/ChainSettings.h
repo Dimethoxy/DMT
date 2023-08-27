@@ -2,8 +2,8 @@
 
 #pragma once
 
-#include "../Filter/IIRFilter.h"
-#include "../Synth/AnalogWaveform.h"
+#include "../Dsp/Filter/IIRFilter.h"
+#include "../Dsp/Synth/AnalogWaveform.h"
 #include <JuceHeader.h>
 
 //==============================================================================
@@ -14,7 +14,7 @@ struct ChainSettings
   //============================================================================
   ChainSettings(juce::AudioProcessorValueTreeState& apvts)
   {
-    waveformType = static_cast<dmt::AnalogWaveform::Type>(
+    waveformType = static_cast<dmt::dsp::synth::AnalogWaveform::Type>(
       apvts.getRawParameterValue("waveformType")->load());
 
     oscGain = apvts.getRawParameterValue("oscGain")->load();
@@ -34,14 +34,14 @@ struct ChainSettings
     modDepth = apvts.getRawParameterValue("oscModDepth")->load();
     modScew = apvts.getRawParameterValue("oscModScew")->load();
 
-    filterType = static_cast<dmt::IIRFilterState::Type>(
+    filterType = static_cast<dmt::dsp::filter::IIRFilterState::Type>(
       apvts.getRawParameterValue("filterType")->load());
     filterCutoff = apvts.getRawParameterValue("filterCutoff")->load();
     filterQ = apvts.getRawParameterValue("filterQ")->load();
     filterGain = apvts.getRawParameterValue("filterGain")->load();
   }
   //============================================================================
-  dmt::AnalogWaveform::Type waveformType;
+  dmt::dsp::synth::AnalogWaveform::Type waveformType;
 
   float oscGain;
   float oscOctave;
@@ -60,7 +60,7 @@ struct ChainSettings
   float modDepth;
   float modScew;
 
-  dmt::IIRFilterState::Type filterType;
+  dmt::dsp::filter::IIRFilterState::Type filterType;
   float filterCutoff;
   float filterQ;
   float filterGain;

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Utility/AppSettings.h"
+#include "../../Utility/AppSettings.h"
 #include "LookAndFeel.h"
 #include <JuceHeader.h>
 
@@ -23,7 +23,7 @@ public:
   ~LinearSlider() { setLookAndFeel(nullptr); }
 
 private:
-  dmt::LookAndFeel lnf;
+  dmt::gui::widgets::LookAndFeel lnf;
 };
 } // namespace widgets
 } // namespace gui

@@ -2,9 +2,9 @@
 
 #pragma once
 
+#include "../../Utility/ChainSettings.h"
 #include "../Envelope/AdhEnvelope.h"
 #include "../Synth/AnalogOscillator.h"
-#include "../Utility/ChainSettings.h"
 #include <JuceHeader.h>
 
 //==============================================================================
@@ -105,9 +105,9 @@ public:
   //============================================================================
 private:
   std::unique_ptr<dmt::ChainSettings> chainSettings;
-  dmt::AnalogOscillator osc;
-  dmt::AhdEnvelope gainEnvelope;
-  dmt::AhdEnvelope pitchEnvelope;
+  dmt::dsp::synth::AnalogOscillator osc;
+  dmt::dsp::envelope::AhdEnvelope gainEnvelope;
+  dmt::dsp::envelope::AhdEnvelope pitchEnvelope;
   int note = 0;
   float pitchDepth = 0.7;
   bool isPrepared = false;
@@ -122,7 +122,7 @@ private:
       chainSettings->oscOctave * baseFreq + chainSettings->modDepth;
     float envelopeSample = pitchEnvelope.getNextSample();
     float newFreq =
-      juce::mapToLog10(envelopeSample, baseFreq, baseFreq+freqModDepth);
+      juce::mapToLog10(envelopeSample, baseFreq, baseFreq + freqModDepth);
     return std::clamp(newFreq, 20.0f, 20000.0f);
   }
 
@@ -136,7 +136,7 @@ private:
   //============================================================================
   void setEnvelopes()
   {
-    dmt::AhdEnvelope::Parameters envParameters;
+    dmt::dsp::envelope::AhdEnvelope::Parameters envParameters;
     envParameters.attack = chainSettings->ampAttack;
     envParameters.hold = chainSettings->ampHold;
     envParameters.decay = chainSettings->ampDecay;

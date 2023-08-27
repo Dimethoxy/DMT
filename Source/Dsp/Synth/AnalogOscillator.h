@@ -45,7 +45,8 @@ public:
     this->frequency = frequency;
   }
 
-  inline void setWaveformType(const dmt::AnalogWaveform::Type type) noexcept
+  inline void setWaveformType(
+    const dmt::dsp::synth::AnalogWaveform::Type type) noexcept
   {
     waveform.type = type;
   }
@@ -93,7 +94,7 @@ public:
   }
 
 private:
-  dmt::AnalogWaveform waveform;
+  dmt::dsp::synth::AnalogWaveform waveform;
   float frequency = 50.0f;
   float sampleRate = -1.0f;
   float phase = 0.0f;

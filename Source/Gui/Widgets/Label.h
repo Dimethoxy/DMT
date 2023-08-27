@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Utility/AppSettings.h"
+#include "../../Utility/AppSettings.h"
 #include <JuceHeader.h>
 
 namespace dmt {

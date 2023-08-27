@@ -2,33 +2,6 @@
 
 <Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Neutrino\Source\Components">
-      <UniqueIdentifier>{21AE31CE-BF03-FB9F-ACE9-5F851F050B5C}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Neutrino\Source\Envelope">
-      <UniqueIdentifier>{134AFA6C-7AFD-088D-D71B-F69981AE7574}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Neutrino\Source\Filter">
-      <UniqueIdentifier>{857C2FBE-C52E-B768-4A38-EA0B505EF3D1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Neutrino\Source\Panels">
-      <UniqueIdentifier>{CA31D725-09E2-A367-16DE-85804562D434}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Neutrino\Source\Preset">
-      <UniqueIdentifier>{9B80533E-B48B-1A71-1738-265E5C16F085}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Neutrino\Source\Synth">
-      <UniqueIdentifier>{986FE8CA-FFDF-1F56-DA02-50870261429A}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Neutrino\Source\Utility">
-      <UniqueIdentifier>{DEE6B8DA-FBFF-3897-8BEC-4D715C818170}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Neutrino\Source\Widgets">
-      <UniqueIdentifier>{4415ECF5-9738-AEC4-D2F0-8A39F7281D54}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Neutrino\Source">
-      <UniqueIdentifier>{435EE20D-CF50-D347-FADB-565BE1353B47}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Neutrino\Fonts\Poppins">
       <UniqueIdentifier>{187E3FBF-8382-1D9B-6A27-6DF8190969AC}</UniqueIdentifier>
     </Filter>
@@ -37,6 +10,39 @@
     </Filter>
     <Filter Include="Neutrino\Fonts">
       <UniqueIdentifier>{19DB76B0-B3B1-6322-B58E-7F1511257543}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Neutrino\Source\Dsp\Envelope">
+      <UniqueIdentifier>{34017F5F-1C37-DC94-FDAB-9478E896CCDF}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Neutrino\Source\Dsp\Filter">
+      <UniqueIdentifier>{FFA43DDB-BBC2-2456-8BB5-D13822942FDB}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Neutrino\Source\Dsp\Synth">
+      <UniqueIdentifier>{5AF2979A-16EF-A69A-6BFC-4009B41B96B2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Neutrino\Source\Dsp">
+      <UniqueIdentifier>{2E0B667B-13AF-3372-AD9C-9C247CB8ACE4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Neutrino\Source\Gui\Components">
+      <UniqueIdentifier>{DCBDF56C-5E86-5B45-14A6-F08889C2A7E6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Neutrino\Source\Gui\Panels">
+      <UniqueIdentifier>{A62959A2-856E-4697-27C7-C15B677A7A8A}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Neutrino\Source\Gui\Preset">
+      <UniqueIdentifier>{1F09EA3F-A361-48F6-93EA-81B08AD23B7B}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Neutrino\Source\Gui\Widgets">
+      <UniqueIdentifier>{A73B7015-DEB7-6C2F-1F91-C51880493322}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Neutrino\Source\Gui">
+      <UniqueIdentifier>{1FF10C9A-6D28-6111-5AA3-36038F82FD70}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Neutrino\Source\Utility">
+      <UniqueIdentifier>{DEE6B8DA-FBFF-3897-8BEC-4D715C818170}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Neutrino\Source">
+      <UniqueIdentifier>{435EE20D-CF50-D347-FADB-565BE1353B47}</UniqueIdentifier>
     </Filter>
     <Filter Include="Neutrino">
       <UniqueIdentifier>{5E4B2DCE-9771-D18B-80B2-14E2620CE702}</UniqueIdentifier>
@@ -634,8 +640,8 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Source\Components\ArcButtonComponent.cpp">
-      <Filter>Neutrino\Source\Components</Filter>
+    <ClCompile Include="..\..\Source\Gui\Components\ArcButtonComponent.cpp">
+      <Filter>Neutrino\Source\Gui\Components</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\PluginEditor.cpp">
       <Filter>Neutrino\Source</Filter>
@@ -3084,65 +3090,71 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\Source\Components\ArcButtonComponent.h">
-      <Filter>Neutrino\Source\Components</Filter>
+    <ClInclude Include="..\..\Source\Dsp\Envelope\AdhEnvelope.h">
+      <Filter>Neutrino\Source\Dsp\Envelope</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\Components\OscillatorDisplayComponent.h">
-      <Filter>Neutrino\Source\Components</Filter>
+    <ClInclude Include="..\..\Source\Dsp\Filter\FilterProcessor.h">
+      <Filter>Neutrino\Source\Dsp\Filter</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\Components\TitleTopComponent.h">
-      <Filter>Neutrino\Source\Components</Filter>
+    <ClInclude Include="..\..\Source\Dsp\Filter\IIRFilter.h">
+      <Filter>Neutrino\Source\Dsp\Filter</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\Components\VoiceTopComponent.h">
-      <Filter>Neutrino\Source\Components</Filter>
+    <ClInclude Include="..\..\Source\Dsp\Synth\AnalogOscillator.h">
+      <Filter>Neutrino\Source\Dsp\Synth</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\Envelope\AdhEnvelope.h">
-      <Filter>Neutrino\Source\Envelope</Filter>
+    <ClInclude Include="..\..\Source\Dsp\Synth\AnalogWaveform.h">
+      <Filter>Neutrino\Source\Dsp\Synth</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\Filter\FilterProcessor.h">
-      <Filter>Neutrino\Source\Filter</Filter>
+    <ClInclude Include="..\..\Source\Dsp\Synth\SynthSound.h">
+      <Filter>Neutrino\Source\Dsp\Synth</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\Filter\IIRFilter.h">
-      <Filter>Neutrino\Source\Filter</Filter>
+    <ClInclude Include="..\..\Source\Dsp\Synth\SynthVoice.h">
+      <Filter>Neutrino\Source\Dsp\Synth</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\Panels\OscillatorPanel.h">
-      <Filter>Neutrino\Source\Panels</Filter>
+    <ClInclude Include="..\..\Source\Gui\Components\ArcButtonComponent.h">
+      <Filter>Neutrino\Source\Gui\Components</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\Panels\Panel.h">
-      <Filter>Neutrino\Source\Panels</Filter>
+    <ClInclude Include="..\..\Source\Gui\Components\LinearSliderComponent.h">
+      <Filter>Neutrino\Source\Gui\Components</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\Panels\VoicePanel.h">
-      <Filter>Neutrino\Source\Panels</Filter>
+    <ClInclude Include="..\..\Source\Gui\Components\OscillatorDisplayComponent.h">
+      <Filter>Neutrino\Source\Gui\Components</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\PluginEditor.h">
-      <Filter>Neutrino\Source</Filter>
+    <ClInclude Include="..\..\Source\Gui\Components\TitleTopComponent.h">
+      <Filter>Neutrino\Source\Gui\Components</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\PluginProcessor.h">
-      <Filter>Neutrino\Source</Filter>
+    <ClInclude Include="..\..\Source\Gui\Components\VoiceTopComponent.h">
+      <Filter>Neutrino\Source\Gui\Components</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\Preset\FolderManager.h">
-      <Filter>Neutrino\Source\Preset</Filter>
+    <ClInclude Include="..\..\Source\Gui\Panels\OscillatorPanel.h">
+      <Filter>Neutrino\Source\Gui\Panels</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\Preset\FolderPanel.h">
-      <Filter>Neutrino\Source\Preset</Filter>
+    <ClInclude Include="..\..\Source\Gui\Panels\Panel.h">
+      <Filter>Neutrino\Source\Gui\Panels</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\Preset\PresetManager.h">
-      <Filter>Neutrino\Source\Preset</Filter>
+    <ClInclude Include="..\..\Source\Gui\Panels\VoicePanel.h">
+      <Filter>Neutrino\Source\Gui\Panels</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\Preset\PresetPanel.h">
-      <Filter>Neutrino\Source\Preset</Filter>
+    <ClInclude Include="..\..\Source\Gui\Preset\FolderManager.h">
+      <Filter>Neutrino\Source\Gui\Preset</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\Synth\AnalogOscillator.h">
-      <Filter>Neutrino\Source\Synth</Filter>
+    <ClInclude Include="..\..\Source\Gui\Preset\FolderPanel.h">
+      <Filter>Neutrino\Source\Gui\Preset</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\Synth\AnalogWaveform.h">
-      <Filter>Neutrino\Source\Synth</Filter>
+    <ClInclude Include="..\..\Source\Gui\Preset\PresetManager.h">
+      <Filter>Neutrino\Source\Gui\Preset</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\Synth\SynthSound.h">
-      <Filter>Neutrino\Source\Synth</Filter>
+    <ClInclude Include="..\..\Source\Gui\Preset\PresetPanel.h">
+      <Filter>Neutrino\Source\Gui\Preset</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\Synth\SynthVoice.h">
-      <Filter>Neutrino\Source\Synth</Filter>
+    <ClInclude Include="..\..\Source\Gui\Widgets\Label.h">
+      <Filter>Neutrino\Source\Gui\Widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Gui\Widgets\LinearSlider.h">
+      <Filter>Neutrino\Source\Gui\Widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Gui\Widgets\LookAndFeel.h">
+      <Filter>Neutrino\Source\Gui\Widgets</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Utility\AppSettings.h">
       <Filter>Neutrino\Source\Utility</Filter>
@@ -3165,17 +3177,11 @@
     <ClInclude Include="..\..\Source\Utility\Unit.h">
       <Filter>Neutrino\Source\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\Widgets\Label.h">
-      <Filter>Neutrino\Source\Widgets</Filter>
+    <ClInclude Include="..\..\Source\PluginEditor.h">
+      <Filter>Neutrino\Source</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\Widgets\LinearSlider.h">
-      <Filter>Neutrino\Source\Widgets</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Widgets\LinearSliderComponent.h">
-      <Filter>Neutrino\Source\Widgets</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Widgets\LookAndFeel.h">
-      <Filter>Neutrino\Source\Widgets</Filter>
+    <ClInclude Include="..\..\Source\PluginProcessor.h">
+      <Filter>Neutrino\Source</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\Ressources\JUCE\modules\juce_audio_basics\audio_play_head\juce_AudioPlayHead.h">
       <Filter>JUCE Modules\juce_audio_basics\audio_play_head</Filter>
