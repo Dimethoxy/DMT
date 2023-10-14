@@ -8,12 +8,8 @@
 
 #pragma once
 
-#include "./Gui/Panels/OscillatorPanel.h"
-#include "./Gui/Panels/VoicePanel.h"
-#include "./Gui/Preset/FolderManager.h"
-#include "./Gui/Preset/FolderPanel.h"
-#include "./Gui/Preset/PresetPanel.h"
 #include "PluginProcessor.h"
+#include "./Utility/AppSettings.h"
 #include <JuceHeader.h>
 
 //==============================================================================
@@ -25,18 +21,15 @@ public:
   NeutrinoAudioProcessorEditor(NeutrinoAudioProcessor&);
   ~NeutrinoAudioProcessorEditor() override;
 
-  //==============================================================================
+  //============================================================================
   void paint(juce::Graphics&) override;
   void resized() override;
 
 private:
   NeutrinoAudioProcessor& audioProcessor;
-  juce::GenericAudioProcessorEditor genericAudioProcessorEditor;
   juce::MidiKeyboardComponent keyboardComponent;
-  dmt::gui::preset::PresetPanel presetPanel;
-  dmt::gui::preset::FolderPanel folderPanel;
-  dmt::gui::panels::VoicePanel voicePannel;
-  dmt::gui::panels::OscillatorPanel oscPannel;
+
+  juce::Rectangle<int> testRect;
 
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(NeutrinoAudioProcessorEditor)
 };

@@ -14,23 +14,11 @@ NeutrinoAudioProcessorEditor::NeutrinoAudioProcessorEditor(
   NeutrinoAudioProcessor& p)
   : AudioProcessorEditor(&p)
   , audioProcessor(p)
-  , presetPanel(p.getPresetManager())
-  , genericAudioProcessorEditor(p)
   , keyboardComponent(p.keyboardState,
                       juce::MidiKeyboardComponent::horizontalKeyboard)
-  , oscPannel(p.apvts)
 {
-  addAndMakeVisible(folderPanel);
-  addAndMakeVisible(presetPanel);
-  addAndMakeVisible(genericAudioProcessorEditor);
-  addAndMakeVisible(keyboardComponent);
-  addAndMakeVisible(voicePannel);
-  addAndMakeVisible(oscPannel);
-
-  keyboardComponent.setLowestVisibleKey(0);
-  keyboardComponent.setKeyWidth(21.5f);
-
-  setSize(1600, 900);
+  setSize(1805, 1160);
+  setResizable(true, true);
 }
 
 NeutrinoAudioProcessorEditor::~NeutrinoAudioProcessorEditor() {}
@@ -40,18 +28,50 @@ void
 NeutrinoAudioProcessorEditor::paint(juce::Graphics& g)
 {
   g.fillAll(dmt::AppSettings::Colours::background);
+  g.setColour(juce::Colours::azure);
+  g.fillRect(testRect);
 }
 
 void
 NeutrinoAudioProcessorEditor::resized()
 {
-  dmt::AppSettings::size = getHeight() / 900.0f;
+  using Settings = dmt::AppSettings;
+  float rawMargin = Settings::Layout::margin;
   auto bounds = getLocalBounds();
+  float rawWidth = 1805.0f;
+  float width = bounds.getWidth();
+  float rawHeight = 1160.0f;
+  float height = bounds.getHeight();
+  float size = height / rawHeight;
+  Settings::size = size;
+  float margin = rawMargin * size;
 
-  genericAudioProcessorEditor.setBoundsRelative(0.7f, 0.075f, 0.3f, 0.75f);
-  voicePannel.setBoundsRelative(0.0f, 0.075f, 0.25f, 0.35f);
-  oscPannel.setBoundsRelative(0.0f, 0.40f, 0.25f, 0.4f);
-  // folderPanel.setBounds(bounds.removeFromTop(proportionOfHeight(0.04)));
-  presetPanel.setBounds(bounds.removeFromTop(proportionOfHeight(0.05f)));
-  keyboardComponent.setBoundsRelative(0.0f, 0.85f, 1.0f, 0.15f);
+  float rawLeftWidth = Settings::Layout::leftWidth + 2.0f * rawMargin;
+  float leftWidth = rawLeftWidth * size;
+  float rawCenterWidth = Settings::Layout::centerWidth + 2.0f * rawMargin;
+  float centerWidth = rawCenterWidth * size;
+  float rawRightWidth = Settings::Layout::rightWidth + 2.0f * rawMargin;
+  float rightWidth = rawRightWidth * size;
+
+  float rawHeaderHeight = Settings::Layout::headerHeight + 2.0f * rawMargin;
+  float headerHeight = rawHeaderHeight * size;
+  float rawTabHeight = 60.0f + 2.0f * rawMargin;
+  float tabHeight = rawTabHeight * size;
+  float rawRowHeight = 300.0f + 2.0f * rawMargin;
+  float rowHeight = rawRowHeight * size;
+  
+  auto innerBounds = bounds.reduced(margin);
+  auto headerBounds = innerBounds.removeFromTop(headerHeight);
+  auto tabBounds = innerBounds.removeFromTop(tabHeight);
+  auto topBounds = innerBounds.removeFromTop(rowHeight);
+  auto midBounds = innerBounds.removeFromTop(rowHeight);
+  auto bottomBounds = innerBounds.removeFromTop(rowHeight);
+
+  innerBounds = bounds.reduced(margin);
+  auto leftBounds = innerBounds.removeFromLeft(leftWidth);
+  auto centerBounds = innerBounds.removeFromLeft(centerWidth);
+  auto rightBounds = innerBounds.removeFromLeft(rightWidth);
+
+  testRect = headerBounds.toNearestInt();
 }
+//==============================================================================

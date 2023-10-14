@@ -31,12 +31,22 @@ public:
     addAndMakeVisible(pwmSlider);
     addAndMakeVisible(biasSlider);
   }
+
+  void paint(juce::Graphics& g) override
+  {
+    float margin = 20.0f; // TODO: load this from settings
+    const auto bounds = this->getLocalBounds().toFloat().reduced(margin);
+
+    g.fillRect(bounds.toNearestInt());
+  }
+
   void update() override
   {
     float dispalySize = 0.35f;
     oscDisplay.setSize(getWidth() * dispalySize, getWidth() * dispalySize);
     oscDisplay.setCentreRelative(0.5f, 0.45f);
 
+    /*
     auto prevButtonX = oscDisplay.getX();
     auto prevButtonY = oscDisplay.getY() + oscDisplay.getHeight() / 2.0f;
     prevButton.setSize(oscDisplay.getWidth(), oscDisplay.getHeight());
@@ -57,15 +67,12 @@ public:
                          nextButton.getY(),
                          nextButton.getWidth() / 2.0f,
                          nextButton.getHeight());
+  */
   }
   juce::String getName() override { return "Classic Oscillator"; }
 
 private:
-  dmt::gui::components::OscillatorDisplayComponent oscDisplay;
-  dmt::gui::components::ArcButtonComponent prevButton;
-  dmt::gui::components::ArcButtonComponent nextButton;
-  dmt::gui::components::LinearSliderComponent pwmSlider;
-  dmt::gui::components::LinearSliderComponent biasSlider;
+
 };
 //==============================================================================
 } // namespace panels

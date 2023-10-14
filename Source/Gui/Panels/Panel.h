@@ -13,71 +13,63 @@ namespace gui {
 //==============================================================================
 class Panel : public juce::Component
 {
-  using Settings = dmt::AppSettings::Panel;
+  using Settings = dmt::AppSettings;
+  using Colours = Settings::Colours;
+  const float& size = Settings::size;
+  const float& margin = Settings::Layout::margin;
+  const bool& drawOuterShadow = Settings::Appearance::drawOuterShadow;
+  const bool& drawInnerShadow = Settings::Appearance::drawInnerShadow;
+  const bool& drawBorder = Settings::Appearance::drawBorder;
+  const float& borderStrength = Settings::Appearance::borderStrength;
+  const float& cornerSize = Settings::Appearance::cornerSize;
 
 public:
   Panel()
-    : top(getName())
   {
-    addAndMakeVisible(top);
-    outerShadow.radius = Settings::outerShadowRadius;
-    outerShadow.colour = Settings::outerShadowColour;
-    innerShadow.radius = Settings::innerShadowRadius;
-    innerShadow.colour = Settings::innerShadowColour;
-    resized();
+	outerShadow.radius = Settings::Layout::margin;
+	outerShadow.colour = Settings::Colours::outerShadow;
+	innerShadow.radius = Settings::Layout::margin;
+	innerShadow.colour = Settings::Colours::innerShadow;
+	resized();
   }
 
   void paint(juce::Graphics& g) override
   {
-    const auto bounds = this->getLocalBounds().toFloat();
+	const auto bounds = this->getLocalBounds().toFloat();
+	const auto outerBounds = bounds.reduced(margin);
+	const auto innerBounds = outerBounds.reduced(margin*size);
+	const auto outerCornerSize = cornerSize * size;
+	const auto innerCornerSize = outerCornerSize - (borderStrength * size);
+	
+	juce::Path outerShadowPath;
+	if (drawOuterShadow) {
+	  juce::Path outerShadowPath;
+	  outerShadowPath.addRoundedRectangle(outerBounds, outerCornerSize);
+	  outerShadow.drawOuterForPath(g, outerShadowPath);
+	}
 
-    if (Settings::drawOuterShadow) {
-      juce::Path outerShadowPath;
-      outerShadowPath.addRoundedRectangle(borderBounds, outerCornerSize);
-      outerShadow.drawOuterForPath(g, outerShadowPath);
-    }
+	g.setColour(Colours::foreground.withAlpha(0.1f));
+	g.fillRoundedRectangle(outerBounds, outerCornerSize);
 
-    g.setColour(Settings::borderColour);
-    g.fillRoundedRectangle(borderBounds, outerCornerSize);
+	if (drawBorder) {
+	  g.setColour(Colours::background);
+	  g.fillRoundedRectangle(innerBounds, innerCornerSize);
 
-    g.setColour(Settings::foregroundColour);
-    g.fillRoundedRectangle(innerBounds, innerCornerSize);
+	  g.setColour(Colours::foreground.withAlpha(0.1f));
+	  g.fillRoundedRectangle(outerBounds, outerCornerSize);
+	}
 
-    if (Settings::drawInnerShadow) {
-      juce::Path innerShadowPath;
-      innerShadowPath.addRoundedRectangle(innerBounds, outerCornerSize);
-      innerShadow.drawInnerForPath(g, innerShadowPath);
-    }
+	juce::Path innerShadowPath;
+	if (drawInnerShadow) {
+	  juce::Path innerShadowPath;
+	  innerShadowPath.addRoundedRectangle(innerBounds, innerCornerSize);
+	  innerShadow.drawInnerForPath(g, innerShadowPath);
+	}
   }
 
-  void resized() override
-  {
-    const auto bounds = this->getLocalBounds().toFloat();
-    borderSize = Settings::borderSize;
-    borderBounds = bounds.reduced(Settings::margin);
-    innerBounds = borderBounds.reduced(borderSize);
-    outerCornerSize = Settings::outerCornerSize;
-    innerCornerSize = Settings::innerCornerSize;
-
-    top.setBounds(innerBounds.toNearestInt());
-    top.setSize(top.getWidth(), top.getHeight() * 0.3f);
-    top.setAlwaysOnTop(true);
-    update();
-  }
-
-  virtual void update(){};
-
-  virtual juce::String getName() { return "Panel"; };
-
-protected:
-  float borderSize = Settings::borderSize;
-  juce::Rectangle<float> borderBounds;
-  juce::Rectangle<float> innerBounds;
-  float outerCornerSize;
-  float innerCornerSize;
+  virtual juce::String getName() { return "Panel"; }
 
 private:
-  dmt::gui::components::TitleTopComponent top;
   dmt::Shadow outerShadow;
   dmt::Shadow innerShadow;
 };
