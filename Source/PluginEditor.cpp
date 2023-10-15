@@ -14,9 +14,16 @@ NeutrinoAudioProcessorEditor::NeutrinoAudioProcessorEditor(
   NeutrinoAudioProcessor& p)
   : AudioProcessorEditor(&p)
   , audioProcessor(p)
+  , sendPanelA("A")
+  , sendPanelB("B")
+  , sendPanelC("C")
   , keyboardComponent(p.keyboardState,
                       juce::MidiKeyboardComponent::horizontalKeyboard)
 {
+  addAndMakeVisible(voicePanel);
+  addAndMakeVisible(sendPanelA);
+  addAndMakeVisible(sendPanelB);
+  addAndMakeVisible(sendPanelC);
   setSize(1805, 1160);
   setResizable(true, true);
 }
@@ -28,8 +35,6 @@ void
 NeutrinoAudioProcessorEditor::paint(juce::Graphics& g)
 {
   g.fillAll(dmt::AppSettings::Colours::background);
-  g.setColour(juce::Colours::azure);
-  g.fillRect(testRect);
 }
 
 void
@@ -72,6 +77,21 @@ NeutrinoAudioProcessorEditor::resized()
   auto centerBounds = innerBounds.removeFromLeft(centerWidth);
   auto rightBounds = innerBounds.removeFromLeft(rightWidth);
 
-  testRect = headerBounds.toNearestInt();
+  voicePanel.setBounds(leftBounds.getX(),
+                       bottomBounds.getY(),
+                       leftBounds.getWidth(),
+                       bottomBounds.getHeight());
+  sendPanelA.setBounds(rightBounds.getX(),
+                       topBounds.getY(),
+                       rightBounds.getWidth(),
+                       topBounds.getHeight());
+  sendPanelB.setBounds(rightBounds.getX(),
+                       midBounds.getY(),
+                       rightBounds.getWidth(),
+                       midBounds.getHeight());
+  sendPanelC.setBounds(rightBounds.getX(),
+                       bottomBounds.getY(),
+                       rightBounds.getWidth(),
+                       bottomBounds.getHeight());
 }
 //==============================================================================

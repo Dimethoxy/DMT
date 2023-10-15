@@ -7,25 +7,25 @@
   <MAINGROUP id="M46wPq" name="Neutrino">
     <GROUP id="{57F32CD7-2916-0410-198A-648E6A650819}" name="Fonts">
       <GROUP id="{9E6859DE-3CA2-9022-38EB-83E4441051E7}" name="Poppins">
-        <FILE id="MHq7Je" name="Poppins-Black.ttf" compile="0" resource="0"
+        <FILE id="MHq7Je" name="Poppins-Black.ttf" compile="0" resource="1"
               file="Fonts/Poppins/Poppins-Black.ttf"/>
         <FILE id="oz7GJa" name="Poppins-BlackItalic.ttf" compile="0" resource="0"
               file="Fonts/Poppins/Poppins-BlackItalic.ttf"/>
-        <FILE id="To4sFt" name="Poppins-Bold.ttf" compile="0" resource="0"
+        <FILE id="To4sFt" name="Poppins-Bold.ttf" compile="0" resource="1"
               file="Fonts/Poppins/Poppins-Bold.ttf"/>
         <FILE id="UV8m02" name="Poppins-BoldItalic.ttf" compile="0" resource="0"
               file="Fonts/Poppins/Poppins-BoldItalic.ttf"/>
-        <FILE id="eLrEaR" name="Poppins-ExtraBold.ttf" compile="0" resource="0"
+        <FILE id="eLrEaR" name="Poppins-ExtraBold.ttf" compile="0" resource="1"
               file="Fonts/Poppins/Poppins-ExtraBold.ttf"/>
         <FILE id="uwAkIf" name="Poppins-ExtraBoldItalic.ttf" compile="0" resource="0"
               file="Fonts/Poppins/Poppins-ExtraBoldItalic.ttf"/>
-        <FILE id="F6b2PA" name="Poppins-ExtraLight.ttf" compile="0" resource="0"
+        <FILE id="F6b2PA" name="Poppins-ExtraLight.ttf" compile="0" resource="1"
               file="Fonts/Poppins/Poppins-ExtraLight.ttf"/>
         <FILE id="Pwj3t6" name="Poppins-ExtraLightItalic.ttf" compile="0" resource="0"
               file="Fonts/Poppins/Poppins-ExtraLightItalic.ttf"/>
         <FILE id="HAHF4o" name="Poppins-Italic.ttf" compile="0" resource="0"
               file="Fonts/Poppins/Poppins-Italic.ttf"/>
-        <FILE id="WQTCw4" name="Poppins-Light.ttf" compile="0" resource="0"
+        <FILE id="WQTCw4" name="Poppins-Light.ttf" compile="0" resource="1"
               file="Fonts/Poppins/Poppins-Light.ttf"/>
         <FILE id="fSpiqP" name="Poppins-LightItalic.ttf" compile="0" resource="0"
               file="Fonts/Poppins/Poppins-LightItalic.ttf"/>
@@ -35,11 +35,11 @@
               file="Fonts/Poppins/Poppins-MediumItalic.ttf"/>
         <FILE id="Vo2unW" name="Poppins-Regular.ttf" compile="0" resource="1"
               file="Fonts/Poppins/Poppins-Regular.ttf"/>
-        <FILE id="BUPkUq" name="Poppins-SemiBold.ttf" compile="0" resource="0"
+        <FILE id="BUPkUq" name="Poppins-SemiBold.ttf" compile="0" resource="1"
               file="Fonts/Poppins/Poppins-SemiBold.ttf"/>
         <FILE id="fXt0tC" name="Poppins-SemiBoldItalic.ttf" compile="0" resource="0"
               file="Fonts/Poppins/Poppins-SemiBoldItalic.ttf"/>
-        <FILE id="qI8pQs" name="Poppins-Thin.ttf" compile="0" resource="0"
+        <FILE id="qI8pQs" name="Poppins-Thin.ttf" compile="0" resource="1"
               file="Fonts/Poppins/Poppins-Thin.ttf"/>
         <FILE id="rqqGHj" name="Poppins-ThinItalic.ttf" compile="0" resource="0"
               file="Fonts/Poppins/Poppins-ThinItalic.ttf"/>
@@ -78,16 +78,26 @@
                 file="Source/Gui/Components/LinearSliderComponent.h"/>
           <FILE id="VycgCu" name="OscillatorDisplayComponent.h" compile="0" resource="0"
                 file="Source/Gui/Components/OscillatorDisplayComponent.h"/>
-          <FILE id="RuL4gO" name="TitleTopComponent.h" compile="0" resource="0"
-                file="Source/Gui/Components/TitleTopComponent.h"/>
-          <FILE id="tw1KGp" name="VoiceTopComponent.h" compile="0" resource="0"
-                file="Source/Gui/Components/VoiceTopComponent.h"/>
         </GROUP>
         <GROUP id="{EBF486BC-FBD2-9F86-1E05-08B5CB5CCAEB}" name="Panels">
-          <FILE id="mXMLYc" name="OscillatorPanel.h" compile="0" resource="0"
+          <FILE id="nBkPl5" name="AnalogGainPanel.h" compile="0" resource="0"
+                file="Source/Gui/Panels/AnalogGainPanel.h"/>
+          <FILE id="LTa7p6" name="AnalogPitchPanel.h" compile="0" resource="0"
+                file="Source/Gui/Panels/AnalogPitchPanel.h"/>
+          <FILE id="obtWhQ" name="HeaderPanel.h" compile="0" resource="0" file="Source/Gui/Panels/HeaderPanel.h"/>
+          <FILE id="HadsBE" name="HyperOscillatorPanel.h" compile="0" resource="0"
+                file="Source/Gui/Panels/HyperOscillatorPanel.h"/>
+          <FILE id="Nfl89R" name="ModernGainPanel.h" compile="0" resource="0"
+                file="Source/Gui/Panels/ModernGainPanel.h"/>
+          <FILE id="HDjzmS" name="ModernPitchPanel.h" compile="0" resource="0"
+                file="Source/Gui/Panels/ModernPitchPanel.h"/>
+          <FILE id="eRPBdM" name="OscillatorPanel.h" compile="0" resource="0"
                 file="Source/Gui/Panels/OscillatorPanel.h"/>
+          <FILE id="LphSwN" name="OscSendPanel.h" compile="0" resource="0" file="Source/Gui/Panels/OscSendPanel.h"/>
           <FILE id="wNbYvM" name="Panel.h" compile="0" resource="0" file="Source/Gui/Panels/Panel.h"/>
-          <FILE id="V2SKFQ" name="VoicePanel.h" compile="0" resource="0" file="Source/Gui/Panels/VoicePanel.h"/>
+          <FILE id="l5mxYS" name="VoicingPanel.h" compile="0" resource="0" file="Source/Gui/Panels/VoicingPanel.h"/>
+          <FILE id="DCHZcm" name="WaveformDistortionPanel.h" compile="0" resource="0"
+                file="Source/Gui/Panels/WaveformDistortionPanel.h"/>
         </GROUP>
         <GROUP id="{69C20695-FEF2-A43D-3725-61183616D774}" name="Preset">
           <FILE id="HVNx20" name="FolderManager.h" compile="0" resource="0" file="Source/Gui/Preset/FolderManager.h"/>

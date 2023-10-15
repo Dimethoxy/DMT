@@ -9,6 +9,8 @@
 #pragma once
 
 #include "PluginProcessor.h"
+#include "Gui/Panels/VoicingPanel.h"
+#include "Gui/Panels/OscSendPanel.h"
 #include "./Utility/AppSettings.h"
 #include <JuceHeader.h>
 
@@ -29,7 +31,10 @@ private:
   NeutrinoAudioProcessor& audioProcessor;
   juce::MidiKeyboardComponent keyboardComponent;
 
-  juce::Rectangle<int> testRect;
+  dmt::gui::panels::VoicePanel voicePanel;
+  dmt::gui::panels::OscSendPanel sendPanelA;
+  dmt::gui::panels::OscSendPanel sendPanelB;
+  dmt::gui::panels::OscSendPanel sendPanelC;
 
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(NeutrinoAudioProcessorEditor)
 };

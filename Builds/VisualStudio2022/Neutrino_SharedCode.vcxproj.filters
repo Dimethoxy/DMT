@@ -3120,19 +3120,37 @@
     <ClInclude Include="..\..\Source\Gui\Components\OscillatorDisplayComponent.h">
       <Filter>Neutrino\Source\Gui\Components</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\Gui\Components\TitleTopComponent.h">
-      <Filter>Neutrino\Source\Gui\Components</Filter>
+    <ClInclude Include="..\..\Source\Gui\Panels\AnalogGainPanel.h">
+      <Filter>Neutrino\Source\Gui\Panels</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\Gui\Components\VoiceTopComponent.h">
-      <Filter>Neutrino\Source\Gui\Components</Filter>
+    <ClInclude Include="..\..\Source\Gui\Panels\AnalogPitchPanel.h">
+      <Filter>Neutrino\Source\Gui\Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Gui\Panels\HeaderPanel.h">
+      <Filter>Neutrino\Source\Gui\Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Gui\Panels\HyperOscillatorPanel.h">
+      <Filter>Neutrino\Source\Gui\Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Gui\Panels\ModernGainPanel.h">
+      <Filter>Neutrino\Source\Gui\Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Gui\Panels\ModernPitchPanel.h">
+      <Filter>Neutrino\Source\Gui\Panels</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Gui\Panels\OscillatorPanel.h">
+      <Filter>Neutrino\Source\Gui\Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Gui\Panels\OscSendPanel.h">
       <Filter>Neutrino\Source\Gui\Panels</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Gui\Panels\Panel.h">
       <Filter>Neutrino\Source\Gui\Panels</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\Gui\Panels\VoicePanel.h">
+    <ClInclude Include="..\..\Source\Gui\Panels\VoicingPanel.h">
+      <Filter>Neutrino\Source\Gui\Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Gui\Panels\WaveformDistortionPanel.h">
       <Filter>Neutrino\Source\Gui\Panels</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Gui\Preset\FolderManager.h">
