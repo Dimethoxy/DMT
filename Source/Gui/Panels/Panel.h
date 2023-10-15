@@ -107,6 +107,8 @@ public:
     prevCallback = prev;
     addAndMakeVisible(nextButton);
     addAndMakeVisible(prevButton);
+    nextButton.addListener(this);
+    prevButton.addListener(this);
   }
 
   void next() { nextCallback(); }
