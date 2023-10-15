@@ -2452,6 +2452,7 @@
     <ClInclude Include="..\..\Source\Gui\Widgets\Label.h"/>
     <ClInclude Include="..\..\Source\Gui\Widgets\LinearSlider.h"/>
     <ClInclude Include="..\..\Source\Gui\Widgets\LookAndFeel.h"/>
+    <ClInclude Include="..\..\Source\Gui\Widgets\TriangleButton.h"/>
     <ClInclude Include="..\..\Source\Utility\AppSettings.h"/>
     <ClInclude Include="..\..\Source\Utility\ChainSettings.h"/>
     <ClInclude Include="..\..\Source\Utility\Distortion.h"/>

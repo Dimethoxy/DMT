@@ -159,6 +159,7 @@
 		D362182A157FF2B330BFF0EB /* juce_graphics */ /* juce_graphics */ = {isa = PBXFileReference; lastKnownFileType = folder; name = juce_graphics; path = "~/JUCE/modules/juce_graphics"; sourceTree = "<absolute>"; };
 		D59A40D13B44183E5CE5AA81 /* ParameterLayout.h */ /* ParameterLayout.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ParameterLayout.h; path = ../../Source/Utility/ParameterLayout.h; sourceTree = SOURCE_ROOT; };
 		D918A32B9E76BA495361B366 /* Poppins-ExtraBold.ttf */ /* Poppins-ExtraBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file.ttf; name = "Poppins-ExtraBold.ttf"; path = "../../Fonts/Poppins/Poppins-ExtraBold.ttf"; sourceTree = SOURCE_ROOT; };
+		DCBCC56DE136E78CEC727786 /* TriangleButton.h */ /* TriangleButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = TriangleButton.h; path = ../../Source/Gui/Widgets/TriangleButton.h; sourceTree = SOURCE_ROOT; };
 		E1D237107F2C29F1D87F29C7 /* Poppins-LightItalic.ttf */ /* Poppins-LightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file.ttf; name = "Poppins-LightItalic.ttf"; path = "../../Fonts/Poppins/Poppins-LightItalic.ttf"; sourceTree = SOURCE_ROOT; };
 		E47BB6C837091F3AFA7CCAB6 /* Poppins-BoldItalic.ttf */ /* Poppins-BoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file.ttf; name = "Poppins-BoldItalic.ttf"; path = "../../Fonts/Poppins/Poppins-BoldItalic.ttf"; sourceTree = SOURCE_ROOT; };
 		E55D827807BA1ED644AAB167 /* Poppins-Regular.ttf */ /* Poppins-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file.ttf; name = "Poppins-Regular.ttf"; path = "../../Fonts/Poppins/Poppins-Regular.ttf"; sourceTree = SOURCE_ROOT; };
@@ -224,6 +225,7 @@
 				B7367CEFB07634AD62D6B903,
 				460ED4A4992109C4A4A0A23C,
 				64F89258803D253C4A69A99F,
+				DCBCC56DE136E78CEC727786,
 			);
 			name = Widgets;
 			sourceTree = "<group>";

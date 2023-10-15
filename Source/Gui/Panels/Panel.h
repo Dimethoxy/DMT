@@ -18,7 +18,9 @@ class Carousel
 {
 public:
   Carousel(std::vector<Panel&> panels) : panels(panels) {
-
+    for (Panel& p : panels) {
+      p.setCarousel(*this);
+    }
   }
   void next() { 
     panels[index].setVisible(false);
@@ -40,6 +42,7 @@ private:
   std::vector<Panel&> panels;
 };
 
+
   //==============================================================================
 class Panel : public juce::Component
 {
@@ -55,15 +58,18 @@ class Panel : public juce::Component
   const float& cornerSize = Settings::Appearance::cornerSize;
 
 public:
-  Panel() { init();}
-
-  Panel(Carousel& c)
-    : carousel(std::make_unique<Carousel>(c))
+  Panel()
   {
-    init();
+    outerShadow.radius = Settings::Layout::margin;
+    outerShadow.colour = Settings::Colours::outerShadow;
+    innerShadow.radius = Settings::Layout::margin;
+    innerShadow.colour = Settings::Colours::innerShadow;
+    resized();
   }
 
-
+  void setCarousel(Carousel& c) { 
+      carousel = std::make_unique<Carousel>(c);
+  }
 
   void paint(juce::Graphics& g) override
   {
@@ -125,16 +131,6 @@ public:
   }
 
   virtual juce::String getName() { return "Panel"; }
-
-protected:
-  void init()
-  {
-    outerShadow.radius = Settings::Layout::margin;
-    outerShadow.colour = Settings::Colours::outerShadow;
-    innerShadow.radius = Settings::Layout::margin;
-    innerShadow.colour = Settings::Colours::innerShadow;
-    resized();
-  };
 
 private:
   dmt::Shadow outerShadow;

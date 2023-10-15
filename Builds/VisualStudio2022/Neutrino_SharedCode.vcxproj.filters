@@ -3174,6 +3174,9 @@
     <ClInclude Include="..\..\Source\Gui\Widgets\LookAndFeel.h">
       <Filter>Neutrino\Source\Gui\Widgets</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\Gui\Widgets\TriangleButton.h">
+      <Filter>Neutrino\Source\Gui\Widgets</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\Utility\AppSettings.h">
       <Filter>Neutrino\Source\Utility</Filter>
     </ClInclude>

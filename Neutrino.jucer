@@ -109,6 +109,8 @@
           <FILE id="EL7zwK" name="Label.h" compile="0" resource="0" file="Source/Gui/Widgets/Label.h"/>
           <FILE id="yVdOHR" name="LinearSlider.h" compile="0" resource="0" file="Source/Gui/Widgets/LinearSlider.h"/>
           <FILE id="QvxIph" name="LookAndFeel.h" compile="0" resource="0" file="Source/Gui/Widgets/LookAndFeel.h"/>
+          <FILE id="FXdFL1" name="TriangleButton.h" compile="0" resource="0"
+                file="Source/Gui/Widgets/TriangleButton.h"/>
         </GROUP>
       </GROUP>
       <GROUP id="{43F3563A-4790-8787-A3B7-7C98D594BB91}" name="Utility">
