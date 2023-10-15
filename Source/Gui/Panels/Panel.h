@@ -4,13 +4,16 @@
 
 #include "../../Utility/AppSettings.h"
 #include "../../Utility/Shadow.h"
+#include "../Widgets/TriangleButton.h"
 #include <JuceHeader.h>
 
 //==============================================================================
 namespace dmt {
 namespace gui {
 //==============================================================================
-class Panel : public juce::Component
+class Panel
+  : public juce::Component
+  , public juce::Button::Listener
 {
   using Settings = dmt::AppSettings;
   using Colours = Settings::Colours;
@@ -25,6 +28,10 @@ class Panel : public juce::Component
 
 public:
   Panel()
+    : nextCallback([]() {})
+    , prevCallback([]() {})
+    , nextButton(dmt::gui::widgets::TriangleButton::right)
+    , prevButton(dmt::gui::widgets::TriangleButton::left)
   {
     outerShadow.radius = Settings::Layout::margin;
     outerShadow.colour = Settings::Colours::outerShadow;
@@ -80,13 +87,32 @@ public:
     g.setFont(titleFont);
     g.drawText(
       getName(), textBounds.toNearestInt(), juce::Justification::centredTop, 1);
-
-    // Draw the previous and next button
   }
 
   virtual juce::String getName() { return "Panel"; }
 
+  void setCallbacks(std::function<void()> next, std::function<void()> prev)
+  {
+    nextCallback = next;
+    prevCallback = prev;
+  }
+
+  void next() { nextCallback(); }
+  void prev() { prevCallback(); }
+  void buttonClicked(juce::Button* button) override
+  {
+    if (button == &nextButton) {
+      nextCallback();
+    } else if (button == &prevButton) {
+      prevCallback();
+    }
+  }
+
 private:
+  std::function<void()> nextCallback;
+  std::function<void()> prevCallback;
+  dmt::gui::widgets::TriangleButton nextButton;
+  dmt::gui::widgets::TriangleButton prevButton;
   dmt::Shadow outerShadow;
   dmt::Shadow innerShadow;
 };

@@ -14,7 +14,6 @@
 #include <JuceHeader.h>
 
 //==============================================================================
-
 namespace dmt {
 namespace gui {
 namespace panels {
@@ -50,6 +49,7 @@ public:
   void init()
   {
     for (auto& panel : panels) {
+      panel->setCallbacks([this]() { next(); }, [this]() { previous(); });
       addAndMakeVisible(*panel);
     }
   }

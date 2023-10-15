@@ -4,6 +4,7 @@
 
 #include "../Widgets/Carousel.h"
 #include "AnalogGainPanel.h"
+#include "ModernGainPanel.h"
 #include "Panel.h"
 #include <JuceHeader.h>
 
@@ -18,7 +19,7 @@ public:
   OscillatorPanel()
   {
     panels.push_back(std::make_unique<AnalogGainPanel>());
-    panels.push_back(std::make_unique<AnalogGainPanel>());
+    panels.push_back(std::make_unique<ModernGainPanel>());
     init();
   }
 
