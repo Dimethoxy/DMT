@@ -157,6 +157,7 @@
 		D0B3BFBF8A4212EEBF1CE7F6 /* juce_audio_devices */ /* juce_audio_devices */ = {isa = PBXFileReference; lastKnownFileType = folder; name = juce_audio_devices; path = "~/JUCE/modules/juce_audio_devices"; sourceTree = "<absolute>"; };
 		D26EC150352B6EEE685ECF7D /* juce_audio_processors */ /* juce_audio_processors */ = {isa = PBXFileReference; lastKnownFileType = folder; name = juce_audio_processors; path = "~/JUCE/modules/juce_audio_processors"; sourceTree = "<absolute>"; };
 		D362182A157FF2B330BFF0EB /* juce_graphics */ /* juce_graphics */ = {isa = PBXFileReference; lastKnownFileType = folder; name = juce_graphics; path = "~/JUCE/modules/juce_graphics"; sourceTree = "<absolute>"; };
+		D3BE1398E8423E36C04E45DA /* Carousel.h */ /* Carousel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Carousel.h; path = ../../Source/Gui/Widgets/Carousel.h; sourceTree = SOURCE_ROOT; };
 		D59A40D13B44183E5CE5AA81 /* ParameterLayout.h */ /* ParameterLayout.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ParameterLayout.h; path = ../../Source/Utility/ParameterLayout.h; sourceTree = SOURCE_ROOT; };
 		D918A32B9E76BA495361B366 /* Poppins-ExtraBold.ttf */ /* Poppins-ExtraBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file.ttf; name = "Poppins-ExtraBold.ttf"; path = "../../Fonts/Poppins/Poppins-ExtraBold.ttf"; sourceTree = SOURCE_ROOT; };
 		DCBCC56DE136E78CEC727786 /* TriangleButton.h */ /* TriangleButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = TriangleButton.h; path = ../../Source/Gui/Widgets/TriangleButton.h; sourceTree = SOURCE_ROOT; };
@@ -222,6 +223,7 @@
 		082BCD9851D42F5E64E98C4D /* Widgets */ = {
 			isa = PBXGroup;
 			children = (
+				D3BE1398E8423E36C04E45DA,
 				B7367CEFB07634AD62D6B903,
 				460ED4A4992109C4A4A0A23C,
 				64F89258803D253C4A69A99F,

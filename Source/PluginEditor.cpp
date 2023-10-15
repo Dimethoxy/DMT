@@ -20,10 +20,20 @@ NeutrinoAudioProcessorEditor::NeutrinoAudioProcessorEditor(
   , keyboardComponent(p.keyboardState,
                       juce::MidiKeyboardComponent::horizontalKeyboard)
 {
-  addAndMakeVisible(voicePanel);
+  addAndMakeVisible(voicingPanel);
+
+  addAndMakeVisible(analogGainPanel);
+  addAndMakeVisible(modernGainPanel);
+  addAndMakeVisible(modernGainPanel);
+
+  // gainCarousel.init({ dynamic_cast<dmt::gui::Panel*>(&analogGainPanel),
+  //                     dynamic_cast<dmt::gui::Panel*>(&modernGainPanel) });
+
   addAndMakeVisible(sendPanelA);
   addAndMakeVisible(sendPanelB);
   addAndMakeVisible(sendPanelC);
+
+  addAndMakeVisible(keyboardComponent);
   setSize(1805, 1160);
   setResizable(true, true);
 }
@@ -64,7 +74,7 @@ NeutrinoAudioProcessorEditor::resized()
   float tabHeight = rawTabHeight * size;
   float rawRowHeight = 300.0f + 2.0f * rawMargin;
   float rowHeight = rawRowHeight * size;
-  
+
   auto innerBounds = bounds.reduced(margin);
   auto headerBounds = innerBounds.removeFromTop(headerHeight);
   auto tabBounds = innerBounds.removeFromTop(tabHeight);
@@ -77,10 +87,10 @@ NeutrinoAudioProcessorEditor::resized()
   auto centerBounds = innerBounds.removeFromLeft(centerWidth);
   auto rightBounds = innerBounds.removeFromLeft(rightWidth);
 
-  voicePanel.setBounds(leftBounds.getX(),
-                       bottomBounds.getY(),
-                       leftBounds.getWidth(),
-                       bottomBounds.getHeight());
+  voicingPanel.setBounds(leftBounds.getX(),
+                         bottomBounds.getY(),
+                         leftBounds.getWidth(),
+                         bottomBounds.getHeight());
   sendPanelA.setBounds(rightBounds.getX(),
                        topBounds.getY(),
                        rightBounds.getWidth(),

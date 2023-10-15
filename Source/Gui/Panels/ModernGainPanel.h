@@ -10,13 +10,13 @@ namespace dmt {
 namespace gui {
 namespace panels {
 //==============================================================================
-class VoicePanel : public dmt::gui::Panel
+class ModernGainPanel : public dmt::gui::Panel
 {
 public:
-  VoicePanel(/*juce::AudioProcessorValueTreeState& apvts*/)
+  ModernGainPanel(/*juce::AudioProcessorValueTreeState& apvts*/)
   { //
   }
-  juce::String getName() override { return "Voices"; }
+  juce::String getName() override { return "Analog Gain Panel"; }
 
 private:
 };

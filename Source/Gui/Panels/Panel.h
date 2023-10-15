@@ -9,41 +9,7 @@
 //==============================================================================
 namespace dmt {
 namespace gui {
-/*
- How to use: 
- Panel p1, p2;
- Carousel c({ &p1, &p2 }); 
-*/
-class Carousel
-{
-public:
-  Carousel(std::vector<Panel&> panels) : panels(panels) {
-    for (Panel& p : panels) {
-      p.setCarousel(*this);
-    }
-  }
-  void next() { 
-    panels[index].setVisible(false);
-    index++;
-    if (index > panels.size())
-        index -= panels.size();
-    panels[index].setVisible(true);
-
-  }
-  void previous() {
-    panels[index].setVisible(false);
-    index--;
-    if (index < 0)
-        index += panels.size();
-    panels[index].setVisible(true);
-  }
-private:
-  int index = 0;
-  std::vector<Panel&> panels;
-};
-
-
-  //==============================================================================
+//==============================================================================
 class Panel : public juce::Component
 {
   using Settings = dmt::AppSettings;
@@ -67,10 +33,6 @@ public:
     resized();
   }
 
-  void setCarousel(Carousel& c) { 
-      carousel = std::make_unique<Carousel>(c);
-  }
-
   void paint(juce::Graphics& g) override
   {
     // Precalculation
@@ -80,7 +42,7 @@ public:
     const float outerCornerSize = cornerSize * size;
     const float innerCornerSize = std::clamp(
       outerCornerSize - (borderStrength * size * 0.5f), 0.0f, outerCornerSize);
-    
+
     // Draw outer shadow
     juce::Path outerShadowPath;
     if (drawOuterShadow) {
@@ -111,23 +73,15 @@ public:
       innerShadow.drawInnerForPath(g, innerShadowPath);
     }
 
-
-    //Draw the title text
+    // Draw the title text
     auto textBounds = innerBounds;
     g.setColour(Colours::foreground);
-    auto titleFont =
-      Fonts::regular.withHeight(Fonts::panelTitleSize * size); 
+    auto titleFont = Fonts::regular.withHeight(Fonts::panelTitleSize * size);
     g.setFont(titleFont);
-    g.drawText(getName(),
-               textBounds.toNearestInt(),
-               juce::Justification::centredTop,
-               1);
+    g.drawText(
+      getName(), textBounds.toNearestInt(), juce::Justification::centredTop, 1);
 
     // Draw the previous and next button
-    if (carousel) {
-        // Draw nextButton
-        // Draw previousButton
-    }
   }
 
   virtual juce::String getName() { return "Panel"; }
@@ -135,9 +89,6 @@ public:
 private:
   dmt::Shadow outerShadow;
   dmt::Shadow innerShadow;
-  std::unique_ptr<Carousel> carousel;
-  std::unique_ptr<Carousel> nextButton;
-  std::unique_ptr<Carousel> previousButton;
 };
 
 //==============================================================================

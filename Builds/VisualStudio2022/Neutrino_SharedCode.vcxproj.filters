@@ -3165,6 +3165,9 @@
     <ClInclude Include="..\..\Source\Gui\Preset\PresetPanel.h">
       <Filter>Neutrino\Source\Gui\Preset</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\Gui\Widgets\Carousel.h">
+      <Filter>Neutrino\Source\Gui\Widgets</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\Gui\Widgets\Label.h">
       <Filter>Neutrino\Source\Gui\Widgets</Filter>
     </ClInclude>

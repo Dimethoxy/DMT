@@ -2449,6 +2449,7 @@
     <ClInclude Include="..\..\Source\Gui\Preset\FolderPanel.h"/>
     <ClInclude Include="..\..\Source\Gui\Preset\PresetManager.h"/>
     <ClInclude Include="..\..\Source\Gui\Preset\PresetPanel.h"/>
+    <ClInclude Include="..\..\Source\Gui\Widgets\Carousel.h"/>
     <ClInclude Include="..\..\Source\Gui\Widgets\Label.h"/>
     <ClInclude Include="..\..\Source\Gui\Widgets\LinearSlider.h"/>
     <ClInclude Include="..\..\Source\Gui\Widgets\LookAndFeel.h"/>

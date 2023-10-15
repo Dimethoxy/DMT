@@ -106,6 +106,7 @@
           <FILE id="rE7aF7" name="PresetPanel.h" compile="0" resource="0" file="Source/Gui/Preset/PresetPanel.h"/>
         </GROUP>
         <GROUP id="{54ADC1FE-54F0-321D-8A6C-D710ED7E8290}" name="Widgets">
+          <FILE id="UEGJKn" name="Carousel.h" compile="0" resource="0" file="Source/Gui/Widgets/Carousel.h"/>
           <FILE id="EL7zwK" name="Label.h" compile="0" resource="0" file="Source/Gui/Widgets/Label.h"/>
           <FILE id="yVdOHR" name="LinearSlider.h" compile="0" resource="0" file="Source/Gui/Widgets/LinearSlider.h"/>
           <FILE id="QvxIph" name="LookAndFeel.h" compile="0" resource="0" file="Source/Gui/Widgets/LookAndFeel.h"/>

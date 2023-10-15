@@ -10,10 +10,10 @@ namespace dmt {
 namespace gui {
 namespace panels {
 //==============================================================================
-class VoicePanel : public dmt::gui::Panel
+class ModernPitchPanel : public dmt::gui::Panel
 {
 public:
-  VoicePanel(/*juce::AudioProcessorValueTreeState& apvts*/)
+  ModernPitchPanel(/*juce::AudioProcessorValueTreeState& apvts*/)
   { //
   }
   juce::String getName() override { return "Voices"; }
