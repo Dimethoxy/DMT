@@ -88,6 +88,16 @@ public:
     g.drawText(
       getName(), textBounds.toNearestInt(), juce::Justification::centredTop, 1);
   }
+  void resized() override
+  {
+    const auto bounds = getLocalBounds();
+    auto leftBounds = bounds;
+    auto rightBounds = bounds;
+    leftBounds.removeFromRight(bounds.getWidth() * 0.5f);
+    rightBounds.removeFromLeft(bounds.getWidth() * 0.5f);
+    prevButton.setBounds(leftBounds);
+    nextButton.setBounds(rightBounds);
+  }
 
   virtual juce::String getName() { return "Panel"; }
 
@@ -95,6 +105,8 @@ public:
   {
     nextCallback = next;
     prevCallback = prev;
+    addAndMakeVisible(nextButton);
+    addAndMakeVisible(prevButton);
   }
 
   void next() { nextCallback(); }

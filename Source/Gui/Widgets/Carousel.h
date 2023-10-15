@@ -28,6 +28,7 @@ public:
     if (index >= panels.size())
       index -= panels.size();
     panels[index]->setVisible(true);
+    repaint();
   }
   void previous()
   {
@@ -36,6 +37,7 @@ public:
     if (index < 0)
       index += panels.size();
     panels[index]->setVisible(true);
+    repaint();
   }
   void set(int i)
   {
