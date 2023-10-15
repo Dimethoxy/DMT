@@ -19,10 +19,9 @@ namespace dmt {
 namespace gui {
 namespace panels {
 //==============================================================================
-class Carousel
+class Carousel : public juce::Component
 {
 public:
-  void init() {}
   void next()
   {
     panels[index]->setVisible(false);
@@ -48,9 +47,25 @@ public:
     panels[index]->setVisible(true);
   }
 
+  void init()
+  {
+    for (auto& panel : panels) {
+      addAndMakeVisible(*panel);
+    }
+  }
+
+  void resized() override
+  {
+    for (auto& panel : panels) {
+      panel->setBoundsRelative(0.0f, 0.0f, 1.0f, 1.0f);
+    }
+  }
+
+protected:
+  std::vector<std::unique_ptr<Panel>> panels;
+
 private:
   int index = 0;
-  std::vector<std::shared_ptr<Panel>> panels;
 };
 //==============================================================================
 } // namespace gui

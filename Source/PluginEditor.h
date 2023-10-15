@@ -9,13 +9,9 @@
 #pragma once
 
 #include "./Utility/AppSettings.h"
-#include "Gui/Panels/AnalogGainPanel.h"
-#include "Gui/Panels/AnalogPitchPanel.h"
-#include "Gui/Panels/ModernGainPanel.h"
-#include "Gui/Panels/ModernPitchPanel.h"
 #include "Gui/Panels/OscSendPanel.h"
+#include "Gui/Panels/OscillatorPanel.h"
 #include "Gui/Panels/VoicingPanel.h"
-#include "Gui/Widgets/Carousel.h"
 #include "PluginProcessor.h"
 #include <JuceHeader.h>
 
@@ -39,9 +35,7 @@ private:
 
   dmt::gui::panels::VoicingPanel voicingPanel;
 
-  dmt::gui::panels::AnalogGainPanel analogGainPanel;
-  dmt::gui::panels::ModernGainPanel modernGainPanel;
-  // dmt::gui::panels::Carousel gainCarousel;
+  dmt::gui::panels::OscillatorPanel oscillatorPanel;
 
   dmt::gui::panels::OscSendPanel sendPanelA;
   dmt::gui::panels::OscSendPanel sendPanelB;

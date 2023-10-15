@@ -22,12 +22,7 @@ NeutrinoAudioProcessorEditor::NeutrinoAudioProcessorEditor(
 {
   addAndMakeVisible(voicingPanel);
 
-  addAndMakeVisible(analogGainPanel);
-  addAndMakeVisible(modernGainPanel);
-  addAndMakeVisible(modernGainPanel);
-
-  // gainCarousel.init({ dynamic_cast<dmt::gui::Panel*>(&analogGainPanel),
-  //                     dynamic_cast<dmt::gui::Panel*>(&modernGainPanel) });
+  addAndMakeVisible(oscillatorPanel);
 
   addAndMakeVisible(sendPanelA);
   addAndMakeVisible(sendPanelB);
@@ -87,6 +82,10 @@ NeutrinoAudioProcessorEditor::resized()
   auto centerBounds = innerBounds.removeFromLeft(centerWidth);
   auto rightBounds = innerBounds.removeFromLeft(rightWidth);
 
+  oscillatorPanel.setBounds(leftBounds.getX(),
+                            topBounds.getY(),
+                            leftBounds.getWidth(),
+                            topBounds.getHeight());
   voicingPanel.setBounds(leftBounds.getX(),
                          bottomBounds.getY(),
                          leftBounds.getWidth(),
