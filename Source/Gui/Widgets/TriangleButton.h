@@ -21,6 +21,9 @@ namespace widgets {
 class TriangleButton : public juce::Button
 {
   using Settings = dmt::AppSettings;
+  using Carousel = Settings::Carousel;
+  const float& size = Settings::size;
+  const float& margin = Settings::Layout::margin;
 
 public:
   //============================================================================
@@ -38,13 +41,6 @@ public:
   {
   }
 
-  // void paint(juce::Graphics& g) override
-  //{
-  //   const auto bounds = this->getLocalBounds();
-  //   g.setColour(Settings::Colours::foreground);
-  //   g.drawRect(bounds);
-  // }
-  //============================================================================
 protected:
   juce::Rectangle<int> getTriangleBounds(const juce::Rectangle<int> bounds)
   {
@@ -90,9 +86,11 @@ protected:
                    bool shouldDrawButtonAsHighlighted,
                    bool shouldDrawButtonAsDown) override
   {
-    const auto bounds = this->getLocalBounds();
+    const auto bounds = this->getLocalBounds().reduced(size * margin);
+    const auto reducedBounds = bounds.reduced(Carousel::buttonMargin * size);
+
     g.setColour(Settings::Colours::foreground);
-    g.drawRect(bounds);
+    g.fillPath(getPath(reducedBounds.toFloat()));
   }
   //============================================================================
 private:

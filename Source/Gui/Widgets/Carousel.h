@@ -39,15 +39,6 @@ public:
     panels[index]->setVisible(true);
     repaint();
   }
-  void set(int i)
-  {
-    for (const auto& p : panels) {
-      p->setVisible(false);
-    }
-    index = std::clamp(i, 0, (int)panels.size() - 1);
-    panels[index]->setVisible(true);
-  }
-
   void init()
   {
     for (auto& panel : panels) {

@@ -29,6 +29,12 @@ struct AppSettings
     static inline float borderStrength = 4.0f;
     static inline float cornerSize = 0.0f;
   };
+  static inline struct Carousel
+  {
+    static inline float buttonWidth = 75.0f;
+    static inline float buttonHeight = 220.0f;
+    static inline float buttonMargin = 10.0f;
+  };
   static inline struct Colours
   {
     using Colour = juce::Colour;

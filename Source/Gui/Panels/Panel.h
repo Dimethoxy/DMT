@@ -18,6 +18,7 @@ class Panel
   using Settings = dmt::AppSettings;
   using Colours = Settings::Colours;
   using Fonts = Settings::Fonts;
+  using Carousel = Settings::Carousel;
   const float& size = Settings::size;
   const float& margin = Settings::Layout::margin;
   const bool& drawOuterShadow = Settings::Appearance::drawOuterShadow;
@@ -88,14 +89,23 @@ public:
     g.drawText(
       getName(), textBounds.toNearestInt(), juce::Justification::centredTop, 1);
   }
+
   void resized() override
   {
     const auto bounds = getLocalBounds();
     auto leftBounds = bounds;
     auto rightBounds = bounds;
-    leftBounds.removeFromRight(bounds.getWidth() * 0.5f);
-    rightBounds.removeFromLeft(bounds.getWidth() * 0.5f);
+
+    leftBounds.removeFromRight(bounds.getWidth() -
+                               Carousel::buttonWidth * size);
+    leftBounds.setHeight(Carousel::buttonHeight * size);
+    leftBounds.setCentre(leftBounds.getCentreX(), bounds.getCentreY());
     prevButton.setBounds(leftBounds);
+
+    rightBounds.removeFromLeft(bounds.getWidth() -
+                               Carousel::buttonWidth * size);
+    rightBounds.setHeight(Carousel::buttonHeight * size);
+    rightBounds.setCentre(rightBounds.getCentreX(), bounds.getCentreY());
     nextButton.setBounds(rightBounds);
   }
 
