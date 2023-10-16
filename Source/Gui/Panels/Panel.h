@@ -34,9 +34,9 @@ public:
     , nextButton(dmt::gui::widgets::TriangleButton::right)
     , prevButton(dmt::gui::widgets::TriangleButton::left)
   {
-    outerShadow.radius = Settings::Layout::margin;
+    outerShadow.radius = Settings::Appearance::shadowRadius;
     outerShadow.colour = Settings::Colours::outerShadow;
-    innerShadow.radius = Settings::Layout::margin;
+    innerShadow.radius = Settings::Appearance::shadowRadius;
     innerShadow.colour = Settings::Colours::innerShadow;
     resized();
   }

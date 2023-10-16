@@ -24,6 +24,8 @@ class TriangleButton : public juce::Button
   using Carousel = Settings::Carousel;
   const float& size = Settings::size;
   const float& margin = Settings::Layout::margin;
+  const bool& drawOuterShadow = Settings::Appearance::drawOuterShadow;
+  const bool& drawInnerShadow = Settings::Appearance::drawInnerShadow;
 
 public:
   //============================================================================
@@ -39,6 +41,11 @@ public:
     : direction(d)
     , juce::Button("TriangleButton")
   {
+    outerShadow.radius = Settings::Appearance::shadowRadius;
+    outerShadow.colour = Settings::Colours::outerShadow;
+    innerShadow.radius = Settings::Appearance::shadowRadius;
+    innerShadow.colour = Settings::Colours::innerShadow;
+    resized();
   }
 
 protected:
@@ -89,22 +96,44 @@ protected:
   {
     const auto bounds = this->getLocalBounds();
     const auto bigBounds = bounds.reduced(Carousel::buttonMargin * size);
-    g.setColour(Settings::Colours::foreground);
+    juce::Path trianglePath;
+
+    // Calculate clicked path
     if (isMouseButtonDown()) {
-      g.fillPath(getPath(bigBounds.toFloat()));
-      return;
+      trianglePath = getPath(bigBounds.toFloat());
+    } else {
+      auto smallBounds = bigBounds;
+      smallBounds.setHeight(smallBounds.getHeight() *
+                            Carousel::toggleReduction);
+      smallBounds.setWidth(smallBounds.getWidth() * Carousel::toggleReduction);
+      smallBounds.setCentre(bigBounds.getCentre());
+      trianglePath = getPath(smallBounds.toFloat());
     }
-    auto smallBounds = bigBounds;
-    smallBounds.setHeight(smallBounds.getHeight() * Carousel::toggleReduction);
-    smallBounds.setWidth(smallBounds.getWidth() * Carousel::toggleReduction);
-    smallBounds.setCentre(bigBounds.getCentre());
-    if (isMouseOver())
+
+    // Draw outer shadow
+    if (drawOuterShadow) {
+      outerShadow.drawOuterForPath(g, trianglePath);
+    }
+
+    // Set triangle fill color
+    if (isMouseOver() && !isMouseButtonDown())
       g.setColour(Settings::Colours::primary);
-    g.fillPath(getPath(smallBounds.toFloat()));
+    else
+      g.setColour(Settings::Colours::foreground);
+
+    // Fill triangle
+    g.fillPath(trianglePath);
+
+    // Draw inner shadow
+    if (drawInnerShadow) {
+      innerShadow.drawInnerForPath(g, trianglePath);
+    }
   }
   //============================================================================
 private:
   Direction direction;
+  dmt::Shadow outerShadow;
+  dmt::Shadow innerShadow;
 };
 //==============================================================================
 } // namespace widgets

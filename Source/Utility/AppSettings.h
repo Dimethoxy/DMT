@@ -23,11 +23,12 @@ struct AppSettings
   };
   static inline struct Appearance
   {
-    static inline bool drawOuterShadow = false;
+    static inline bool drawOuterShadow = true;
     static inline bool drawInnerShadow = false;
     static inline bool drawBorder = true;
     static inline float borderStrength = 4.0f;
     static inline float cornerSize = 0.0f;
+    static inline float shadowRadius = 10.0f;
   };
   static inline struct Carousel
   {
