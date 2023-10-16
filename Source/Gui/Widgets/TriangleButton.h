@@ -27,9 +27,13 @@ class TriangleButton : public juce::Button
   const bool& drawInnerShadow = Settings::TriangleButton::drawInnerShadow;
   const float& shadowRadius = Settings::Appearance::shadowRadius;
   const float& buttonMargin = Settings::TriangleButton::margin;
-  const float& toggleReduction = Settings::TriangleButton::margin;
-  const juce::Colour standbyColour = Settings::Colours::foreground;
+  const float& toggleReduction = Settings::TriangleButton::toggleReduction;
+  const bool& drawBorder = Settings::TriangleButton::drawBorder;
+  const float& borderStrength = Settings::TriangleButton::borderStrength;
+  const juce::Colour standbyColour =
+    Settings::Colours::foreground.withLightness(0.5);
   const juce::Colour hoverColour = Settings::Colours::primary;
+  const juce::Colour borderColour = Settings::Colours::foreground;
 
 public:
   //============================================================================
@@ -58,7 +62,7 @@ protected:
     juce::Rectangle<int> result;
     return result;
   }
-  juce::Path getPath(juce::Rectangle<float> bounds)
+  juce::Path getPath(juce::Rectangle<int> bounds)
   {
     juce::Path path;
     switch (direction) {
@@ -93,29 +97,56 @@ protected:
     }
     return path;
   }
+  juce::Path getTnnerTrianglePath(juce::Rectangle<int> origin)
+  {
+    if (drawBorder) {
+      auto bounds = origin;
+      float width = bounds.getWidth();
+      float height = bounds.getHeight();
+      float ratio = width / height;
+      auto reducedWidth = bounds.getWidth() - borderStrength * size;
+      auto reducedHeight = bounds.getHeight() - (borderStrength * size / ratio);
+      bounds.setSize(reducedWidth, reducedHeight);
+      bounds.setCentre(origin.getCentre());
+      return getPath(bounds);
+    } else
+      return juce::Path();
+  }
+
   void buttonStateChanged() { repaint(); }
   void paintButton(juce::Graphics& g,
                    bool shouldDrawButtonAsHighlighted,
                    bool shouldDrawButtonAsDown) override
   {
     const auto bounds = this->getLocalBounds();
-    const auto bigBounds = bounds.reduced(buttonMargin * size);
-    juce::Path trianglePath;
+    const auto bigBounds = bounds.reduced(buttonMargin * size).toNearestInt();
+    juce::Path outerTrianglePath;
+    juce::Path innerTrianglePath;
+    juce::Path& trianglePath = outerTrianglePath;
 
     // Calculate clicked path
     if (isMouseButtonDown()) {
-      trianglePath = getPath(bigBounds.toFloat());
+      outerTrianglePath = getPath(bigBounds);
+      innerTrianglePath = getTnnerTrianglePath(bigBounds);
     } else {
       auto smallBounds = bigBounds;
       smallBounds.setHeight(smallBounds.getHeight() * toggleReduction);
       smallBounds.setWidth(smallBounds.getWidth() * toggleReduction);
       smallBounds.setCentre(bigBounds.getCentre());
-      trianglePath = getPath(smallBounds.toFloat());
+      outerTrianglePath = getPath(smallBounds);
+      innerTrianglePath = getTnnerTrianglePath(smallBounds);
     }
 
     // Draw outer shadow
     if (drawOuterShadow) {
-      outerShadow.drawOuterForPath(g, trianglePath);
+      outerShadow.drawOuterForPath(g, outerTrianglePath);
+    }
+
+    // Draw Border
+    if (drawBorder) {
+      g.setColour(borderColour);
+      g.fillPath(outerTrianglePath);
+      trianglePath = innerTrianglePath;
     }
 
     // Set triangle fill color
@@ -129,7 +160,7 @@ protected:
 
     // Draw inner shadow
     if (drawInnerShadow) {
-      innerShadow.drawInnerForPath(g, trianglePath);
+      innerShadow.drawInnerForPath(g, outerTrianglePath);
     }
   }
   //============================================================================

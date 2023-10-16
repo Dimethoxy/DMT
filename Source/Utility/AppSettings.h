@@ -15,19 +15,19 @@ struct AppSettings
     using Colour = juce::Colour;
     static inline struct Palette
     {
-      static inline Colour background = Colour(18, 18, 18);
-      static inline Colour foreground = Colour(250, 250, 250);
-      static inline Colour primary = Colour(255, 0, 0);
+      static inline Colour background = Colour(25, 26, 33);
+      static inline Colour solid = Colour(40, 42, 54);
+      static inline Colour foreground = Colour(248, 248, 248);
+      static inline Colour primary = Colour(255, 121, 198);
       static inline Colour shadow = Colour(0, 0, 0);
       static inline float opacityStep = 0.05f;
     };
     static inline Colour background = Palette::background;
     static inline Colour foreground = Palette::foreground;
     static inline Colour primary = Palette::primary;
-    static inline Colour solidDark = Palette::background.withLightness(
-      Palette::background.getLightness() + Palette::opacityStep * 1);
-    static inline Colour solidMid = Palette::background.withLightness(
-      Palette::background.getLightness() + Palette::opacityStep * 2);
+    static inline Colour solidDark = Palette::solid;
+    static inline Colour solidMid =
+      solidDark.withLightness(solidDark.getLightness() + Palette::opacityStep);
     static inline Colour outerShadow = Palette::shadow;
     static inline Colour innerShadow = Palette::shadow;
   };
@@ -61,6 +61,8 @@ struct AppSettings
   {
     static inline bool drawOuterShadow = true;
     static inline bool drawInnerShadow = false;
+    static inline bool drawBorder = true;
+    static inline float borderStrength = 4.0f;
     static inline float margin = 15.0f;
     static inline float toggleReduction = 0.9f;
   };
