@@ -31,10 +31,10 @@ struct AppSettings
   };
   static inline struct Carousel
   {
-    static inline float buttonWidth = 75.0f;
+    static inline float buttonWidth = 80.0f;
     static inline float buttonHeight = 220.0f;
-    static inline float buttonMargin = 10.0f;
-    static inline float toggleReduction = 5.0f;
+    static inline float buttonMargin = 15.0f;
+    static inline float toggleReduction = 0.9f;
   };
   static inline struct Colours
   {
@@ -49,6 +49,7 @@ struct AppSettings
     };
     static inline Colour background = Palette::background;
     static inline Colour foreground = Palette::foreground;
+    static inline Colour primary = Palette::primary;
     static inline Colour solidDark = Palette::background.withLightness(
       Palette::background.getLightness() + Palette::opacityStep * 1);
     static inline Colour solidMid = Palette::background.withLightness(

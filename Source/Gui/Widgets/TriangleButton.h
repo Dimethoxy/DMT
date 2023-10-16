@@ -87,18 +87,19 @@ protected:
                    bool shouldDrawButtonAsHighlighted,
                    bool shouldDrawButtonAsDown) override
   {
-    const auto bounds = this->getLocalBounds().reduced(size * margin);
+    const auto bounds = this->getLocalBounds();
     const auto bigBounds = bounds.reduced(Carousel::buttonMargin * size);
-
+    g.setColour(Settings::Colours::foreground);
     if (isMouseButtonDown()) {
-      g.setColour(Settings::Colours::foreground);
       g.fillPath(getPath(bigBounds.toFloat()));
       return;
     }
-
-    const auto smallBounds =
-      bigBounds.reduced(Carousel::toggleReduction * size);
-    g.setColour(Settings::Colours::foreground);
+    auto smallBounds = bigBounds;
+    smallBounds.setHeight(smallBounds.getHeight() * Carousel::toggleReduction);
+    smallBounds.setWidth(smallBounds.getWidth() * Carousel::toggleReduction);
+    smallBounds.setCentre(bigBounds.getCentre());
+    if (isMouseOver())
+      g.setColour(Settings::Colours::primary);
     g.fillPath(getPath(smallBounds.toFloat()));
   }
   //============================================================================

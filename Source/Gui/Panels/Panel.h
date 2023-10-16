@@ -100,13 +100,13 @@ public:
                                Carousel::buttonWidth * size);
     leftBounds.setHeight(Carousel::buttonHeight * size);
     leftBounds.setCentre(leftBounds.getCentreX(), bounds.getCentreY());
-    prevButton.setBounds(leftBounds);
+    prevButton.setBounds(leftBounds.reduced(size * margin));
 
     rightBounds.removeFromLeft(bounds.getWidth() -
                                Carousel::buttonWidth * size);
     rightBounds.setHeight(Carousel::buttonHeight * size);
     rightBounds.setCentre(rightBounds.getCentreX(), bounds.getCentreY());
-    nextButton.setBounds(rightBounds);
+    nextButton.setBounds(rightBounds.reduced(size * margin));
   }
 
   virtual juce::String getName() { return "Panel"; }
