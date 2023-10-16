@@ -34,6 +34,7 @@ struct AppSettings
     static inline float buttonWidth = 75.0f;
     static inline float buttonHeight = 220.0f;
     static inline float buttonMargin = 10.0f;
+    static inline float toggleReduction = 5.0f;
   };
   static inline struct Colours
   {

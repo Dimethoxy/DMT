@@ -82,15 +82,24 @@ protected:
     }
     return path;
   }
+  void buttonStateChanged() { repaint(); }
   void paintButton(juce::Graphics& g,
                    bool shouldDrawButtonAsHighlighted,
                    bool shouldDrawButtonAsDown) override
   {
     const auto bounds = this->getLocalBounds().reduced(size * margin);
-    const auto reducedBounds = bounds.reduced(Carousel::buttonMargin * size);
+    const auto bigBounds = bounds.reduced(Carousel::buttonMargin * size);
 
+    if (isMouseButtonDown()) {
+      g.setColour(Settings::Colours::foreground);
+      g.fillPath(getPath(bigBounds.toFloat()));
+      return;
+    }
+
+    const auto smallBounds =
+      bigBounds.reduced(Carousel::toggleReduction * size);
     g.setColour(Settings::Colours::foreground);
-    g.fillPath(getPath(reducedBounds.toFloat()));
+    g.fillPath(getPath(smallBounds.toFloat()));
   }
   //============================================================================
 private:
