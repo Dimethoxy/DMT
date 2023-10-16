@@ -21,11 +21,15 @@ namespace widgets {
 class TriangleButton : public juce::Button
 {
   using Settings = dmt::AppSettings;
-  using Carousel = Settings::Carousel;
   const float& size = Settings::size;
   const float& margin = Settings::Layout::margin;
-  const bool& drawOuterShadow = Settings::Appearance::drawOuterShadow;
-  const bool& drawInnerShadow = Settings::Appearance::drawInnerShadow;
+  const bool& drawOuterShadow = Settings::TriangleButton::drawOuterShadow;
+  const bool& drawInnerShadow = Settings::TriangleButton::drawInnerShadow;
+  const float& shadowRadius = Settings::Appearance::shadowRadius;
+  const float& buttonMargin = Settings::TriangleButton::margin;
+  const float& toggleReduction = Settings::TriangleButton::margin;
+  const juce::Colour standbyColour = Settings::Colours::foreground;
+  const juce::Colour hoverColour = Settings::Colours::primary;
 
 public:
   //============================================================================
@@ -41,9 +45,9 @@ public:
     : direction(d)
     , juce::Button("TriangleButton")
   {
-    outerShadow.radius = Settings::Appearance::shadowRadius;
+    outerShadow.radius = shadowRadius;
     outerShadow.colour = Settings::Colours::outerShadow;
-    innerShadow.radius = Settings::Appearance::shadowRadius;
+    innerShadow.radius = shadowRadius;
     innerShadow.colour = Settings::Colours::innerShadow;
     resized();
   }
@@ -95,7 +99,7 @@ protected:
                    bool shouldDrawButtonAsDown) override
   {
     const auto bounds = this->getLocalBounds();
-    const auto bigBounds = bounds.reduced(Carousel::buttonMargin * size);
+    const auto bigBounds = bounds.reduced(buttonMargin * size);
     juce::Path trianglePath;
 
     // Calculate clicked path
@@ -103,9 +107,8 @@ protected:
       trianglePath = getPath(bigBounds.toFloat());
     } else {
       auto smallBounds = bigBounds;
-      smallBounds.setHeight(smallBounds.getHeight() *
-                            Carousel::toggleReduction);
-      smallBounds.setWidth(smallBounds.getWidth() * Carousel::toggleReduction);
+      smallBounds.setHeight(smallBounds.getHeight() * toggleReduction);
+      smallBounds.setWidth(smallBounds.getWidth() * toggleReduction);
       smallBounds.setCentre(bigBounds.getCentre());
       trianglePath = getPath(smallBounds.toFloat());
     }
@@ -117,9 +120,9 @@ protected:
 
     // Set triangle fill color
     if (isMouseOver() && !isMouseButtonDown())
-      g.setColour(Settings::Colours::primary);
+      g.setColour(hoverColour);
     else
-      g.setColour(Settings::Colours::foreground);
+      g.setColour(standbyColour);
 
     // Fill triangle
     g.fillPath(trianglePath);

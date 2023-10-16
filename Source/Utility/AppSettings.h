@@ -10,6 +10,28 @@ struct AppSettings
   static inline juce::String name = "Neutrino";
   static inline float size = 1.0f;
 
+  static inline struct Colours
+  {
+    using Colour = juce::Colour;
+    static inline struct Palette
+    {
+      static inline Colour background = Colour(18, 18, 18);
+      static inline Colour foreground = Colour(250, 250, 250);
+      static inline Colour primary = Colour(255, 0, 0);
+      static inline Colour shadow = Colour(0, 0, 0);
+      static inline float opacityStep = 0.05f;
+    };
+    static inline Colour background = Palette::background;
+    static inline Colour foreground = Palette::foreground;
+    static inline Colour primary = Palette::primary;
+    static inline Colour solidDark = Palette::background.withLightness(
+      Palette::background.getLightness() + Palette::opacityStep * 1);
+    static inline Colour solidMid = Palette::background.withLightness(
+      Palette::background.getLightness() + Palette::opacityStep * 2);
+    static inline Colour outerShadow = Palette::shadow;
+    static inline Colour innerShadow = Palette::shadow;
+  };
+
   static inline struct Layout
   {
     static inline float size = 1.0f;
@@ -34,29 +56,13 @@ struct AppSettings
   {
     static inline float buttonWidth = 80.0f;
     static inline float buttonHeight = 220.0f;
-    static inline float buttonMargin = 15.0f;
-    static inline float toggleReduction = 0.9f;
   };
-  static inline struct Colours
+  static inline struct TriangleButton
   {
-    using Colour = juce::Colour;
-    static inline struct Palette
-    {
-      static inline Colour background = Colour(18, 18, 18);
-      static inline Colour foreground = Colour(250, 250, 250);
-      static inline Colour primary = Colour(255, 0, 0);
-      static inline Colour shadow = Colour(0, 0, 0);
-      static inline float opacityStep = 0.05f;
-    };
-    static inline Colour background = Palette::background;
-    static inline Colour foreground = Palette::foreground;
-    static inline Colour primary = Palette::primary;
-    static inline Colour solidDark = Palette::background.withLightness(
-      Palette::background.getLightness() + Palette::opacityStep * 1);
-    static inline Colour solidMid = Palette::background.withLightness(
-      Palette::background.getLightness() + Palette::opacityStep * 2);
-    static inline Colour outerShadow = Palette::shadow;
-    static inline Colour innerShadow = Palette::shadow;
+    static inline bool drawOuterShadow = true;
+    static inline bool drawInnerShadow = false;
+    static inline float margin = 15.0f;
+    static inline float toggleReduction = 0.9f;
   };
 
   static inline struct Fonts
