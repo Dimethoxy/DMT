@@ -16,16 +16,25 @@ class Panel
   , public juce::Button::Listener
 {
   using Settings = dmt::AppSettings;
-  using Colours = Settings::Colours;
+  using Panel = Settings::Panel;
   using Fonts = Settings::Fonts;
   using Carousel = Settings::Carousel;
+  // Global
   const float& size = Settings::size;
   const float& margin = Settings::Layout::margin;
-  const bool& drawOuterShadow = Settings::Appearance::drawOuterShadow;
-  const bool& drawInnerShadow = Settings::Appearance::drawInnerShadow;
-  const bool& drawBorder = Settings::Appearance::drawBorder;
-  const float& borderStrength = Settings::Appearance::borderStrength;
-  const float& cornerSize = Settings::Appearance::cornerSize;
+  // General
+  const juce::Colour& backgroundColor = Panel::backgroundColor;
+  const float& cornerSize = Panel::cornerSize;
+  // Border
+  const bool& drawBorder = Panel::drawBorder;
+  const float& borderStrength = Panel::borderStrength;
+  // Shadows
+  const bool& drawOuterShadow = Panel::drawOuterShadow;
+  const bool& drawInnerShadow = Panel::drawInnerShadow;
+  const juce::Colour& outerShadowColour = Panel::outerShadowColour;
+  const juce::Colour& innerShadowColour = Panel::innerShadowColour;
+  const float& outerShadowRadius = Panel::outerShadowRadius;
+  const float& innerShadowRadius = Panel::innerShadowRadius;
 
 public:
   Panel()
@@ -33,11 +42,9 @@ public:
     , prevCallback([]() {})
     , nextButton(dmt::gui::widgets::TriangleButton::right)
     , prevButton(dmt::gui::widgets::TriangleButton::left)
+    , outerShadow(outerShadowColour, outerShadowRadius)
+    , innerShadow(innerShadowColour, innerShadowRadius)
   {
-    outerShadow.radius = Settings::Appearance::shadowRadius;
-    outerShadow.colour = Settings::Colours::outerShadow;
-    innerShadow.radius = Settings::Appearance::shadowRadius;
-    innerShadow.colour = Settings::Colours::innerShadow;
     resized();
   }
 

@@ -8,6 +8,11 @@ namespace dmt {
 //==============================================================================
 struct Shadow
 {
+  Shadow(const juce::Colour& colour, const float& radius)
+    : colour(colour)
+    , radius(radius)
+  {
+  }
   void drawInnerForPath(juce::Graphics& g, juce::Path target)
   {
     juce::Graphics::ScopedSaveState saveState(g);
@@ -35,9 +40,9 @@ struct Shadow
       int amount = (int)(std::sqrt((float)i / (float)cycles) * 255.0f);
     }
   }
-  juce::Colour colour = juce::Colours::black;
+  const juce::Colour& colour;
   juce::Point<int> offset = { 0, 0 };
-  int radius = 10;
+  const float& radius;
 };
 //==============================================================================
 }

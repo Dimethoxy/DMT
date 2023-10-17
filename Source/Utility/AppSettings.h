@@ -13,23 +13,12 @@ struct AppSettings
   static inline struct Colours
   {
     using Colour = juce::Colour;
-    static inline struct Palette
-    {
-      static inline Colour background = Colour(25, 26, 33);
-      static inline Colour solid = Colour(40, 42, 54);
-      static inline Colour foreground = Colour(248, 248, 248);
-      static inline Colour primary = Colour(255, 121, 198);
-      static inline Colour shadow = Colour(0, 0, 0);
-      static inline float opacityStep = 0.05f;
-    };
-    static inline Colour background = Palette::background;
-    static inline Colour foreground = Palette::foreground;
-    static inline Colour primary = Palette::primary;
-    static inline Colour solidDark = Palette::solid;
-    static inline Colour solidMid =
-      solidDark.withLightness(solidDark.getLightness() + Palette::opacityStep);
-    static inline Colour outerShadow = Palette::shadow;
-    static inline Colour innerShadow = Palette::shadow;
+    static inline Colour background = Colour(25, 26, 33);
+    static inline Colour solid = Colour(40, 42, 54);
+    static inline Colour foreground = Colour(248, 248, 248);
+    static inline Colour primary = Colour(255, 121, 198);
+    static inline Colour shadow = Colour(0, 0, 0);
+    static inline float opacityStep = 0.05f;
   };
 
   static inline struct Layout
@@ -43,13 +32,20 @@ struct AppSettings
     static inline float tabHeight = 60.0f;
     static inline float rowHeight = 300.0f;
   };
-  static inline struct Appearance
+  static inline struct Panel
   {
-    static inline bool drawOuterShadow = true;
-    static inline bool drawInnerShadow = false;
+    // General
+    static inline Colour backgroundColor = Colours::background;
+
+    // Border
     static inline bool drawBorder = true;
     static inline float borderStrength = 4.0f;
     static inline float cornerSize = 0.0f;
+    // Shadows
+    static inline bool drawOuterShadow = true;
+    static inline bool drawInnerShadow = false;
+    static inline Colour outerShadowColour = Colours::foreground;
+    static inline Colour innerShadowColour = Colours::foreground;
     static inline float shadowRadius = 10.0f;
   };
   static inline struct Carousel
@@ -59,12 +55,22 @@ struct AppSettings
   };
   static inline struct TriangleButton
   {
-    static inline bool drawOuterShadow = true;
-    static inline bool drawInnerShadow = false;
-    static inline bool drawBorder = true;
-    static inline float borderStrength = 4.0f;
+    // General
+    static inline Colour standbyColour = Colours::background;
+    static inline Colour hoverColour = Colours::foreground;
     static inline float margin = 15.0f;
     static inline float toggleReduction = 0.9f;
+    // Border
+    static inline bool drawBorder = true;
+    static inline Colour borderColour = Colours::foreground;
+    static inline float borderStrength = 4.0f;
+    // Shadows
+    static inline bool drawOuterShadow = true;
+    static inline bool drawInnerShadow = true;
+    static inline Colour outerShadowColour = Colours::foreground;
+    static inline Colour innerShadowColour = Colours::foreground;
+    static inline float outerShadowRadius = 4.0f;
+    static inline float innerShadowRadius = 4.0f;
   };
 
   static inline struct Fonts

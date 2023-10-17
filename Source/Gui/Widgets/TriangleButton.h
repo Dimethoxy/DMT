@@ -20,20 +20,26 @@ namespace widgets {
 //==============================================================================
 class TriangleButton : public juce::Button
 {
+  // Global
   using Settings = dmt::AppSettings;
   const float& size = Settings::size;
   const float& margin = Settings::Layout::margin;
-  const bool& drawOuterShadow = Settings::TriangleButton::drawOuterShadow;
-  const bool& drawInnerShadow = Settings::TriangleButton::drawInnerShadow;
-  const float& shadowRadius = Settings::Appearance::shadowRadius;
-  const float& buttonMargin = Settings::TriangleButton::margin;
-  const float& toggleReduction = Settings::TriangleButton::toggleReduction;
-  const bool& drawBorder = Settings::TriangleButton::drawBorder;
-  const float& borderStrength = Settings::TriangleButton::borderStrength;
-  const juce::Colour standbyColour =
-    Settings::Colours::foreground.withLightness(0.5);
-  const juce::Colour hoverColour = Settings::Colours::primary;
-  const juce::Colour borderColour = Settings::Colours::foreground;
+  // General
+  const juce::Colour& standbyColour = TriangleButton::standbyColour;
+  const juce::Colour& hoverColour = TriangleButton::hoverColour;
+  const juce::Colour& borderColour = TriangleButton::borderColour;
+  const float& buttonMargin = TriangleButton::margin;
+  const float& toggleReduction = TriangleButton::toggleReduction;
+  // Border
+  const bool& drawBorder = TriangleButton::drawBorder;
+  const float& borderStrength = TriangleButton::borderStrength;
+  // Shadows
+  const bool& drawOuterShadow = TriangleButton::drawOuterShadow;
+  const bool& drawInnerShadow = TriangleButton::drawInnerShadow;
+  const juce::Colour& outerShadowColour = TriangleButton::outerShadowColour;
+  const juce::Colour& innerShadowColour = TriangleButton::innerShadowColour;
+  const float& outerShadowRadius = TriangleButton::outerShadowRadius;
+  const float& innerShadowRadius = TriangleButton::innerShadowRadius;
 
 public:
   //============================================================================
@@ -48,12 +54,10 @@ public:
   TriangleButton(Direction d)
     : direction(d)
     , juce::Button("TriangleButton")
+    , outerShadow(outerShadowColour, outerShadowRadius)
+    , innerShadow(innerShadowColour, innerShadowRadius)
+
   {
-    outerShadow.radius = shadowRadius;
-    outerShadow.colour = Settings::Colours::outerShadow;
-    innerShadow.radius = shadowRadius;
-    innerShadow.colour = Settings::Colours::innerShadow;
-    resized();
   }
 
 protected:
