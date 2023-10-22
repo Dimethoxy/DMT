@@ -21,25 +21,25 @@ namespace widgets {
 class TriangleButton : public juce::Button
 {
   // Global
-  using Settings = dmt::AppSettings;
-  const float& size = Settings::size;
-  const float& margin = Settings::Layout::margin;
+  using Settings = dmt::AppSettings::TriangleButton;
+  const float& size = dmt::AppSettings::size;
+  const float& margin = dmt::AppSettings::Layout::margin;
   // General
-  const juce::Colour& standbyColour = TriangleButton::standbyColour;
-  const juce::Colour& hoverColour = TriangleButton::hoverColour;
-  const juce::Colour& borderColour = TriangleButton::borderColour;
-  const float& buttonMargin = TriangleButton::margin;
-  const float& toggleReduction = TriangleButton::toggleReduction;
+  const juce::Colour& standbyColour = Settings::standbyColour;
+  const juce::Colour& hoverColour = Settings::hoverColour;
+  const float& buttonMargin = Settings::margin;
+  const float& toggleReduction = Settings::toggleReduction;
   // Border
-  const bool& drawBorder = TriangleButton::drawBorder;
-  const float& borderStrength = TriangleButton::borderStrength;
+  const bool& drawBorder = Settings::drawBorder;
+  const juce::Colour& borderColour = Settings::borderColour;
+  const float& borderStrength = Settings::borderStrength;
   // Shadows
-  const bool& drawOuterShadow = TriangleButton::drawOuterShadow;
-  const bool& drawInnerShadow = TriangleButton::drawInnerShadow;
-  const juce::Colour& outerShadowColour = TriangleButton::outerShadowColour;
-  const juce::Colour& innerShadowColour = TriangleButton::innerShadowColour;
-  const float& outerShadowRadius = TriangleButton::outerShadowRadius;
-  const float& innerShadowRadius = TriangleButton::innerShadowRadius;
+  const bool& drawOuterShadow = Settings::drawOuterShadow;
+  const bool& drawInnerShadow = Settings::drawInnerShadow;
+  const juce::Colour& outerShadowColour = Settings::outerShadowColour;
+  const juce::Colour& innerShadowColour = Settings::innerShadowColour;
+  const float& outerShadowRadius = Settings::outerShadowRadius;
+  const float& innerShadowRadius = Settings::innerShadowRadius;
 
 public:
   //============================================================================

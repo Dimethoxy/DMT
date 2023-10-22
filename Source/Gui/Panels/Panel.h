@@ -15,26 +15,29 @@ class Panel
   : public juce::Component
   , public juce::Button::Listener
 {
-  using Settings = dmt::AppSettings;
-  using Panel = Settings::Panel;
-  using Fonts = Settings::Fonts;
-  using Carousel = Settings::Carousel;
+  using Settings = dmt::AppSettings::Panel;
+  using Fonts = dmt::AppSettings::Fonts;
+  using Carousel = dmt::AppSettings::Carousel;
   // Global
-  const float& size = Settings::size;
-  const float& margin = Settings::Layout::margin;
+  const float& size = dmt::AppSettings::size;
+  const float& margin = dmt::AppSettings::Layout::margin;
   // General
-  const juce::Colour& backgroundColor = Panel::backgroundColor;
-  const float& cornerSize = Panel::cornerSize;
+  const juce::Colour& backgroundColour = Settings::backgroundColour;
+  const float& cornerSize = Settings::cornerSize;
   // Border
-  const bool& drawBorder = Panel::drawBorder;
-  const float& borderStrength = Panel::borderStrength;
+  const bool& drawBorder = Settings::drawBorder;
+  const juce::Colour& borderColour = Settings::borderColour;
+  const float& borderStrength = Settings::borderStrength;
   // Shadows
-  const bool& drawOuterShadow = Panel::drawOuterShadow;
-  const bool& drawInnerShadow = Panel::drawInnerShadow;
-  const juce::Colour& outerShadowColour = Panel::outerShadowColour;
-  const juce::Colour& innerShadowColour = Panel::innerShadowColour;
-  const float& outerShadowRadius = Panel::outerShadowRadius;
-  const float& innerShadowRadius = Panel::innerShadowRadius;
+  const bool& drawOuterShadow = Settings::drawOuterShadow;
+  const bool& drawInnerShadow = Settings::drawInnerShadow;
+  const juce::Colour& outerShadowColour = Settings::outerShadowColour;
+  const juce::Colour& innerShadowColour = Settings::innerShadowColour;
+  const float& outerShadowRadius = Settings::outerShadowRadius;
+  const float& innerShadowRadius = Settings::innerShadowRadius;
+  // Fonts
+  const juce::Colour& fontColor = Settings::fontColor;
+  const float& fontSize = Settings::fontSize;
 
 public:
   Panel()
@@ -68,15 +71,15 @@ public:
 
     // Draw background if border is disabled
     if (!drawBorder) {
-      g.setColour(Colours::solidDark);
+      g.setColour(backgroundColour);
       g.fillRoundedRectangle(outerBounds, outerCornerSize);
     }
 
     // Draw background and border if border is enabled
     if (drawBorder) {
-      g.setColour(Colours::solidMid);
+      g.setColour(borderColour);
       g.fillRoundedRectangle(outerBounds, outerCornerSize);
-      g.setColour(Colours::solidDark);
+      g.setColour(backgroundColour);
       g.fillRoundedRectangle(innerBounds, innerCornerSize);
     }
 
@@ -90,8 +93,8 @@ public:
 
     // Draw the title text
     auto textBounds = innerBounds;
-    g.setColour(Colours::foreground);
-    auto titleFont = Fonts::regular.withHeight(Fonts::panelTitleSize * size);
+    g.setColour(fontColor);
+    auto titleFont = Fonts::regular.withHeight(fontSize * size);
     g.setFont(titleFont);
     g.drawText(
       getName(), textBounds.toNearestInt(), juce::Justification::centredTop, 1);
