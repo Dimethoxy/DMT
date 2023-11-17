@@ -57,8 +57,8 @@ struct AppSettings
   static inline struct TriangleButton
   {
     // General
-    static inline Colour standbyColour = Colours::primary.withBrightness(0.2f);
-    static inline Colour hoverColour = Colours::primary;
+    static inline Colour standbyColour = Colours::shadow.withAlpha(0.5f);
+    static inline Colour hoverColour = Colours::shadow.withAlpha(0.1f);
     static inline float margin = 15.0f;
     static inline float toggleReduction = 0.9f;
     // Border
@@ -66,9 +66,9 @@ struct AppSettings
     static inline Colour borderColour = Colours::primary;
     static inline float borderStrength = 4.0f;
     // Shadows
-    static inline bool drawOuterShadow = true;
+    static inline bool drawOuterShadow = false;
     static inline bool drawInnerShadow = true;
-    static inline Colour outerShadowColour = Colours::primary;
+    static inline Colour outerShadowColour = Colours::shadow;
     static inline Colour innerShadowColour = Colours::primary;
     static inline float outerShadowRadius = 4.0f;
     static inline float innerShadowRadius = 4.0f;
