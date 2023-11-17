@@ -15,6 +15,8 @@ class Panel
   : public juce::Component
   , public juce::Button::Listener
 {
+  using Grid = std::vector<std::vector<juce::Point<float>>>;
+  // Settings
   using Settings = dmt::AppSettings::Panel;
   using Fonts = dmt::AppSettings::Fonts;
   using Carousel = dmt::AppSettings::Carousel;
@@ -40,6 +42,12 @@ class Panel
   const float& fontSize = Settings::fontSize;
 
 public:
+  struct Layout
+  {
+    int rows;
+    int cols;
+  };
+
   Panel()
     : nextCallback([]() {})
     , prevCallback([]() {})
@@ -142,7 +150,31 @@ public:
     }
   }
 
+protected:
+  void setLayout(Layout layout)
+  {
+    const int cols = layout.cols;
+    const int rows = layout.rows;
+    const float colSpacing = 1.0f / (float)(cols + 1);
+    const float rowSpacing = 1.0f / (float)(rows + 1);
+    Grid grid(cols + 2, std::vector<juce::Point<float>>(rows + 2));
+
+    for (int col = 0; col <= (layout.cols + 1); col++) {
+      for (int row = 0; row < layout.rows; row++) {
+        const float x = (float)col * colSpacing;
+        const float y = (float)row * rowSpacing;
+        const auto point = juce::Point<float>(x, y);
+        grid[col][row] = point;
+      }
+    }
+    this->grid = grid;
+    this->layout = layout;
+  }
+  Layout getLayout() { return layout; }
+
 private:
+  Layout layout;
+  Grid grid;
   std::function<void()> nextCallback;
   std::function<void()> prevCallback;
   dmt::gui::widgets::TriangleButton nextButton;
