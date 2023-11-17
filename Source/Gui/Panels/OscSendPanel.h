@@ -14,8 +14,13 @@ class OscSendPanel : public dmt::gui::Panel
 {
 public:
   OscSendPanel(const juce::String channel)
-    : channel(channel){}
-  juce::String getName() override { return "Channel " + juce::String(channel); }
+    : channel(channel)
+  {
+  }
+  inline const juce::String getName() noexcept
+  {
+    return "Channel " + juce::String(channel);
+  }
 
 private:
   const juce::String channel;

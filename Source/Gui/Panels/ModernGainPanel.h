@@ -16,7 +16,10 @@ public:
   ModernGainPanel(/*juce::AudioProcessorValueTreeState& apvts*/)
   { //
   }
-  juce::String getName() override { return "Modern Gain Panel"; }
+  inline const juce::String getName() noexcept override
+  {
+    return "Modern Gain Panel";
+  }
 
 private:
 };

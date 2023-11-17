@@ -48,7 +48,7 @@ public:
     int cols;
   };
 
-  Panel()
+  Panel() noexcept
     : nextCallback([]() {})
     , prevCallback([]() {})
     , nextButton(dmt::gui::widgets::TriangleButton::right)
@@ -59,7 +59,7 @@ public:
     resized();
   }
 
-  void paint(juce::Graphics& g) override
+  void paint(juce::Graphics& g) noexcept override
   {
     // Precalculation
     const auto bounds = this->getLocalBounds().toFloat();
@@ -108,7 +108,7 @@ public:
       getName(), textBounds.toNearestInt(), juce::Justification::centredTop, 1);
   }
 
-  void resized() override
+  void resized() noexcept override
   {
     const auto bounds = getLocalBounds();
     auto leftBounds = bounds;
@@ -127,7 +127,7 @@ public:
     nextButton.setBounds(rightBounds.reduced(size * margin));
   }
 
-  virtual juce::String getName() { return "Panel"; }
+  virtual inline const juce::String getName() noexcept { return "Panel"; }
 
   void setCallbacks(std::function<void()> next, std::function<void()> prev)
   {
@@ -151,7 +151,8 @@ public:
   }
 
 protected:
-  void setLayout(Layout layout)
+  inline const Layout getLayout() noexcept { return layout; }
+  void setLayout(const Layout layout) noexcept
   {
     const int cols = layout.cols;
     const int rows = layout.rows;
@@ -170,7 +171,10 @@ protected:
     this->grid = grid;
     this->layout = layout;
   }
-  Layout getLayout() { return layout; }
+  inline const juce::Point<int> getGridPoint(const int x, const int y) noexcept
+  {
+    return this->grid[x][y].toInt();
+  }
 
 private:
   Layout layout;

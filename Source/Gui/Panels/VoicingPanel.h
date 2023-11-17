@@ -16,7 +16,7 @@ public:
   VoicingPanel(/*juce::AudioProcessorValueTreeState& apvts*/)
   { //
   }
-  juce::String getName() override { return "Voices"; }
+  inline const juce::String getName() noexcept override { return "Voices"; }
 
 private:
 };

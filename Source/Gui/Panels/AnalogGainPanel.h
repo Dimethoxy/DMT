@@ -16,7 +16,10 @@ public:
   AnalogGainPanel(/*juce::AudioProcessorValueTreeState& apvts*/)
   { //
   }
-  juce::String getName() override { return "Analog Gain Panel"; }
+  inline const juce::String getName() noexcept override
+  {
+    return "Analog Gain Panel";
+  }
 
 private:
 };
