@@ -2433,6 +2433,7 @@
     <ClInclude Include="..\..\Source\Dsp\Synth\SynthVoice.h"/>
     <ClInclude Include="..\..\Source\Gui\Components\ArcButtonComponent.h"/>
     <ClInclude Include="..\..\Source\Gui\Components\LinearSliderComponent.h"/>
+    <ClInclude Include="..\..\Source\Gui\Components\RotarySliderComponent.h"/>
     <ClInclude Include="..\..\Source\Gui\Components\OscillatorDisplayComponent.h"/>
     <ClInclude Include="..\..\Source\Gui\Panels\AnalogGainPanel.h"/>
     <ClInclude Include="..\..\Source\Gui\Panels\AnalogPitchPanel.h"/>
@@ -2453,6 +2454,7 @@
     <ClInclude Include="..\..\Source\Gui\Widgets\Label.h"/>
     <ClInclude Include="..\..\Source\Gui\Widgets\LinearSlider.h"/>
     <ClInclude Include="..\..\Source\Gui\Widgets\LookAndFeel.h"/>
+    <ClInclude Include="..\..\Source\Gui\Widgets\RotarySlider.h"/>
     <ClInclude Include="..\..\Source\Gui\Widgets\TriangleButton.h"/>
     <ClInclude Include="..\..\Source\Utility\AppSettings.h"/>
     <ClInclude Include="..\..\Source\Utility\ChainSettings.h"/>

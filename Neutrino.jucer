@@ -76,6 +76,8 @@
                 file="Source/Gui/Components/ArcButtonComponent.h"/>
           <FILE id="rVZBMJ" name="LinearSliderComponent.h" compile="0" resource="0"
                 file="Source/Gui/Components/LinearSliderComponent.h"/>
+          <FILE id="PhDIRn" name="RotarySliderComponent.h" compile="0" resource="0"
+                file="Source/Gui/Components/RotarySliderComponent.h"/>
           <FILE id="VycgCu" name="OscillatorDisplayComponent.h" compile="0" resource="0"
                 file="Source/Gui/Components/OscillatorDisplayComponent.h"/>
         </GROUP>
@@ -110,6 +112,7 @@
           <FILE id="EL7zwK" name="Label.h" compile="0" resource="0" file="Source/Gui/Widgets/Label.h"/>
           <FILE id="yVdOHR" name="LinearSlider.h" compile="0" resource="0" file="Source/Gui/Widgets/LinearSlider.h"/>
           <FILE id="QvxIph" name="LookAndFeel.h" compile="0" resource="0" file="Source/Gui/Widgets/LookAndFeel.h"/>
+          <FILE id="EWQgC0" name="RotarySlider.h" compile="0" resource="0" file="Source/Gui/Widgets/RotarySlider.h"/>
           <FILE id="FXdFL1" name="TriangleButton.h" compile="0" resource="0"
                 file="Source/Gui/Widgets/TriangleButton.h"/>
         </GROUP>

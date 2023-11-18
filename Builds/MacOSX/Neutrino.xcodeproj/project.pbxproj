@@ -118,6 +118,7 @@
 		7D44D6F63147933713AB0BA8 /* include_juce_audio_formats.mm */ /* include_juce_audio_formats.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_audio_formats.mm; path = ../../JuceLibraryCode/include_juce_audio_formats.mm; sourceTree = SOURCE_ROOT; };
 		7DCF68FAF7DAEF25907FE94B /* RecentFilesMenuTemplate.nib */ /* RecentFilesMenuTemplate.nib */ = {isa = PBXFileReference; lastKnownFileType = file.nib; name = RecentFilesMenuTemplate.nib; path = RecentFilesMenuTemplate.nib; sourceTree = SOURCE_ROOT; };
 		7DF3E92D48E683767436232D /* FolderPanel.h */ /* FolderPanel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = FolderPanel.h; path = ../../Source/Gui/Preset/FolderPanel.h; sourceTree = SOURCE_ROOT; };
+		7E6171FE89B74F094F9F6339 /* RotarySlider.h */ /* RotarySlider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = RotarySlider.h; path = ../../Source/Gui/Widgets/RotarySlider.h; sourceTree = SOURCE_ROOT; };
 		7F2FA0C481C1FD75A4D44475 /* include_juce_data_structures.mm */ /* include_juce_data_structures.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_data_structures.mm; path = ../../JuceLibraryCode/include_juce_data_structures.mm; sourceTree = SOURCE_ROOT; };
 		809B2E05FFC7B5D5BAC71C8F /* Poppins-Black.ttf */ /* Poppins-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file.ttf; name = "Poppins-Black.ttf"; path = "../../Fonts/Poppins/Poppins-Black.ttf"; sourceTree = SOURCE_ROOT; };
 		817E3C3457EDACDEB14784D5 /* ArcButtonComponent.h */ /* ArcButtonComponent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ArcButtonComponent.h; path = ../../Source/Gui/Components/ArcButtonComponent.h; sourceTree = SOURCE_ROOT; };
@@ -137,6 +138,7 @@
 		9F357FC04C1B0CAFFC52C2A9 /* AnalogWaveform.h */ /* AnalogWaveform.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AnalogWaveform.h; path = ../../Source/Dsp/Synth/AnalogWaveform.h; sourceTree = SOURCE_ROOT; };
 		A0CCB0302A36295E689301F6 /* include_juce_audio_basics.mm */ /* include_juce_audio_basics.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_audio_basics.mm; path = ../../JuceLibraryCode/include_juce_audio_basics.mm; sourceTree = SOURCE_ROOT; };
 		A48B344636C7541981D140C3 /* Poppins-Italic.ttf */ /* Poppins-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file.ttf; name = "Poppins-Italic.ttf"; path = "../../Fonts/Poppins/Poppins-Italic.ttf"; sourceTree = SOURCE_ROOT; };
+		A48F626B8DE387467CE96ED8 /* RotarySliderComponent.h */ /* RotarySliderComponent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = RotarySliderComponent.h; path = ../../Source/Gui/Components/RotarySliderComponent.h; sourceTree = SOURCE_ROOT; };
 		A5797355064A2A22CB4E8D03 /* BinaryData.h */ /* BinaryData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BinaryData.h; path = ../../JuceLibraryCode/BinaryData.h; sourceTree = SOURCE_ROOT; };
 		A81AB2664FCCFD349BBFB648 /* PresetManager.h */ /* PresetManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PresetManager.h; path = ../../Source/Gui/Preset/PresetManager.h; sourceTree = SOURCE_ROOT; };
 		AA358CCCA606A592E79D7240 /* juce_dsp */ /* juce_dsp */ = {isa = PBXFileReference; lastKnownFileType = folder; name = juce_dsp; path = "~/JUCE/modules/juce_dsp"; sourceTree = "<absolute>"; };
@@ -227,6 +229,7 @@
 				B7367CEFB07634AD62D6B903,
 				460ED4A4992109C4A4A0A23C,
 				64F89258803D253C4A69A99F,
+				7E6171FE89B74F094F9F6339,
 				DCBCC56DE136E78CEC727786,
 			);
 			name = Widgets;
@@ -419,6 +422,7 @@
 				C0CF574F116629132BC30917,
 				817E3C3457EDACDEB14784D5,
 				316BB3C1BA677E24F68B2E2A,
+				A48F626B8DE387467CE96ED8,
 				ED0A27581B302FE0BA6CE3CD,
 			);
 			name = Components;

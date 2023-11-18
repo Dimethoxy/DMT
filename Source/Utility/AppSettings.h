@@ -54,6 +54,27 @@ struct AppSettings
     static inline juce::Colour fontColor = Colours::font;
     static inline float fontSize = 54.0f;
   };
+  static inline struct Panel
+  {
+    // General
+    static inline Colour backgroundColor = Colours::background;
+    static inline float cornerSize = 15.0f;
+    // Border
+    static inline bool drawBorder = true;
+    static inline Colour borderColour = Colours::solid_dark;
+    static inline float borderStrength = 4.0f;
+    static inline juce::Colour backgroundColour = Colours::solid_mid;
+    // Shadows
+    static inline bool drawOuterShadow = true;
+    static inline bool drawInnerShadow = false;
+    static inline Colour outerShadowColour = Colours::shadow;
+    static inline Colour innerShadowColour = Colours::shadow;
+    static inline float outerShadowRadius = 10.0f;
+    static inline float innerShadowRadius = 10.0f;
+    // Text
+    static inline juce::Colour fontColor = Colours::font;
+    static inline float fontSize = 54.0f;
+  };
   static inline struct TriangleButton
   {
     // General

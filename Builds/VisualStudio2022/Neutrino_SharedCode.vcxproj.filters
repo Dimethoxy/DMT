@@ -3117,6 +3117,9 @@
     <ClInclude Include="..\..\Source\Gui\Components\LinearSliderComponent.h">
       <Filter>Neutrino\Source\Gui\Components</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\Gui\Components\RotarySliderComponent.h">
+      <Filter>Neutrino\Source\Gui\Components</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\Gui\Components\OscillatorDisplayComponent.h">
       <Filter>Neutrino\Source\Gui\Components</Filter>
     </ClInclude>
@@ -3175,6 +3178,9 @@
       <Filter>Neutrino\Source\Gui\Widgets</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Gui\Widgets\LookAndFeel.h">
+      <Filter>Neutrino\Source\Gui\Widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Gui\Widgets\RotarySlider.h">
       <Filter>Neutrino\Source\Gui\Widgets</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Gui\Widgets\TriangleButton.h">
