@@ -20,16 +20,24 @@ NeutrinoAudioProcessorEditor::NeutrinoAudioProcessorEditor(
   , keyboardComponent(p.keyboardState,
                       juce::MidiKeyboardComponent::horizontalKeyboard)
 {
+  using Settings = dmt::AppSettings;
+  using Layout = dmt::AppSettings::Layout;
+  const float& leftWidth = Layout::leftWidth;
+  const float& centerWidth = Layout::centerWidth;
+  const float& rightWidth = Layout::rightWidth;
   addAndMakeVisible(voicingPanel);
 
   addAndMakeVisible(oscillatorPanel);
+  addAndMakeVisible(gainPanel);
+  addAndMakeVisible(pitchPanel);
 
   addAndMakeVisible(sendPanelA);
   addAndMakeVisible(sendPanelB);
   addAndMakeVisible(sendPanelC);
 
   addAndMakeVisible(keyboardComponent);
-  setSize(1805, 1160);
+
+  setSize(Layout::getWidth(), Layout::getHeight());
   setResizable(true, true);
 }
 
@@ -46,46 +54,54 @@ void
 NeutrinoAudioProcessorEditor::resized()
 {
   using Settings = dmt::AppSettings;
-  float rawMargin = Settings::Layout::margin;
-  auto bounds = getLocalBounds();
-  float rawWidth = 1805.0f;
-  float width = bounds.getWidth();
-  float rawHeight = 1160.0f;
-  float height = bounds.getHeight();
-  float size = height / rawHeight;
-  Settings::size = size;
-  float margin = rawMargin * size;
+  using Layout = dmt::AppSettings::Layout;
+  float& size = Layout::size;
 
-  float rawLeftWidth = Settings::Layout::leftWidth + 2.0f * rawMargin;
-  float leftWidth = rawLeftWidth * size;
-  float rawCenterWidth = Settings::Layout::centerWidth + 2.0f * rawMargin;
-  float centerWidth = rawCenterWidth * size;
-  float rawRightWidth = Settings::Layout::rightWidth + 2.0f * rawMargin;
-  float rightWidth = rawRightWidth * size;
+  const float rawMargin = Settings::Layout::margin;
+  const auto bounds = getLocalBounds();
+  const float width = bounds.getWidth();
+  const float height = bounds.getHeight();
+  size = height / Layout::getHeight();
+  const float margin = rawMargin * size;
 
-  float rawHeaderHeight = Settings::Layout::headerHeight + 2.0f * rawMargin;
-  float headerHeight = rawHeaderHeight * size;
-  float rawTabHeight = 60.0f + 2.0f * rawMargin;
-  float tabHeight = rawTabHeight * size;
-  float rawRowHeight = 300.0f + 2.0f * rawMargin;
-  float rowHeight = rawRowHeight * size;
+  const float rawLeftWidth = Settings::Layout::leftWidth + 2.0f * margin;
+  const float leftWidth = rawLeftWidth * size;
+  const float rawCenterWidth = Settings::Layout::centerWidth + 2.0f * margin;
+  const float centerWidth = rawCenterWidth * size;
+  const float rawRightWidth = Settings::Layout::rightWidth + 2.0f * margin;
+  const float rightWidth = rawRightWidth * size;
+
+  const float rawHeaderHeight = Settings::Layout::headerHeight + 2.0f * margin;
+  const float headerHeight = rawHeaderHeight * size;
+  const float rawTabHeight = 60.0f + 2.0f * margin;
+  const float tabHeight = rawTabHeight * size;
+  const float rawRowHeight = 300.0f + 2.0f * margin;
+  const float rowHeight = rawRowHeight * size;
 
   auto innerBounds = bounds.reduced(margin);
-  auto headerBounds = innerBounds.removeFromTop(headerHeight);
-  auto tabBounds = innerBounds.removeFromTop(tabHeight);
-  auto topBounds = innerBounds.removeFromTop(rowHeight);
-  auto midBounds = innerBounds.removeFromTop(rowHeight);
-  auto bottomBounds = innerBounds.removeFromTop(rowHeight);
+  const auto headerBounds = innerBounds.removeFromTop(headerHeight);
+  const auto tabBounds = innerBounds.removeFromTop(tabHeight);
+  const auto topBounds = innerBounds.removeFromTop(rowHeight);
+  const auto midBounds = innerBounds.removeFromTop(rowHeight);
+  const auto bottomBounds = innerBounds.removeFromTop(rowHeight);
 
   innerBounds = bounds.reduced(margin);
-  auto leftBounds = innerBounds.removeFromLeft(leftWidth);
-  auto centerBounds = innerBounds.removeFromLeft(centerWidth);
-  auto rightBounds = innerBounds.removeFromLeft(rightWidth);
+  const auto leftBounds = innerBounds.removeFromLeft(leftWidth);
+  const auto centerBounds = innerBounds.removeFromLeft(centerWidth);
+  const auto rightBounds = innerBounds.removeFromLeft(rightWidth);
 
   oscillatorPanel.setBounds(leftBounds.getX(),
                             topBounds.getY(),
                             leftBounds.getWidth(),
-                            topBounds.getHeight());
+                            topBounds.getHeight() + bottomBounds.getHeight());
+  gainPanel.setBounds(centerBounds.getX(),
+                      topBounds.getY(),
+                      centerBounds.getWidth(),
+                      topBounds.getHeight());
+  pitchPanel.setBounds(centerBounds.getX(),
+                       midBounds.getY(),
+                       centerBounds.getWidth(),
+                       midBounds.getHeight());
   voicingPanel.setBounds(leftBounds.getX(),
                          bottomBounds.getY(),
                          leftBounds.getWidth(),

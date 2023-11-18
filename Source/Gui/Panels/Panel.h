@@ -69,6 +69,10 @@ public:
     const float innerCornerSize = std::clamp(
       outerCornerSize - (borderStrength * size * 0.5f), 0.0f, outerCornerSize);
 
+    // draw debug bounds
+    // g.setColour(juce::Colours::aqua);
+    // g.drawRect(bounds, 1.0f);
+
     // Draw outer shadow
     juce::Path outerShadowPath;
     if (drawOuterShadow) {

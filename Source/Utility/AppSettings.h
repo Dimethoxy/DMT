@@ -32,6 +32,22 @@ struct AppSettings
     static inline float headerHeight = 100.0f;
     static inline float tabHeight = 60.0f;
     static inline float rowHeight = 300.0f;
+    static inline float getHeight()
+    {
+      auto header = headerHeight + 2.0f * margin;
+      auto tab = tabHeight + 2.0f * margin;
+      auto top = rowHeight + 2.0f * margin;
+      auto mid = rowHeight + 2.0f * margin;
+      auto low = rowHeight + 2.0f * margin;
+      return header + tab + top + mid + low + 2 * margin;
+    }
+    static inline float getWidth()
+    {
+      auto left = leftWidth + 2.0f * margin;
+      auto center = centerWidth + 2.0f * margin;
+      auto right = rightWidth + 2.0f * margin;
+      return left + center + right + 2.0f * margin;
+    }
   };
   static inline struct Panel
   {

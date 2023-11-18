@@ -36,6 +36,8 @@ private:
   dmt::gui::panels::VoicingPanel voicingPanel;
 
   dmt::gui::panels::OscillatorPanel oscillatorPanel;
+  dmt::gui::panels::OscillatorPanel gainPanel;
+  dmt::gui::panels::OscillatorPanel pitchPanel;
 
   dmt::gui::panels::OscSendPanel sendPanelA;
   dmt::gui::panels::OscSendPanel sendPanelB;
