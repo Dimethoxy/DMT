@@ -3126,16 +3126,19 @@
     <ClInclude Include="..\..\Source\Gui\Panels\AnalogGainPanel.h">
       <Filter>Neutrino\Source\Gui\Panels</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\Gui\Panels\AnalogOscillatorPanel.h">
+      <Filter>Neutrino\Source\Gui\Panels</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\Gui\Panels\AnalogPitchPanel.h">
       <Filter>Neutrino\Source\Gui\Panels</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Gui\Panels\GainPanel.h">
       <Filter>Neutrino\Source\Gui\Panels</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\Gui\Panels\HyperOscillatorPanel.h">
+    <ClInclude Include="..\..\Source\Gui\Panels\ModernGainPanel.h">
       <Filter>Neutrino\Source\Gui\Panels</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\Gui\Panels\ModernGainPanel.h">
+    <ClInclude Include="..\..\Source\Gui\Panels\ModernOscillatorPanel.h">
       <Filter>Neutrino\Source\Gui\Panels</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Gui\Panels\ModernPitchPanel.h">

@@ -2,9 +2,6 @@
 
 #pragma once
 
-#include "../Widgets/Carousel.h"
-#include "AnalogPitchPanel.h"
-#include "ModernPitchPanel.h"
 #include "Panel.h"
 #include <JuceHeader.h>
 
@@ -13,14 +10,15 @@ namespace dmt {
 namespace gui {
 namespace panels {
 //==============================================================================
-class OscillatorPanel : public dmt::gui::panels::Carousel
+class AnalogOscillatorPanel : public dmt::gui::Panel
 {
 public:
-  OscillatorPanel()
+  AnalogOscillatorPanel(/*juce::AudioProcessorValueTreeState& apvts*/)
+  { //
+  }
+  inline const juce::String getName() noexcept override
   {
-    panels.push_back(std::make_unique<AnalogPitchPanel>());
-    panels.push_back(std::make_unique<ModernPitchPanel>());
-    init();
+    return "Analog Oscillator Envelope";
   }
 
 private:

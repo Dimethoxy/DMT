@@ -2436,10 +2436,11 @@
     <ClInclude Include="..\..\Source\Gui\Components\RotarySliderComponent.h"/>
     <ClInclude Include="..\..\Source\Gui\Components\OscillatorDisplayComponent.h"/>
     <ClInclude Include="..\..\Source\Gui\Panels\AnalogGainPanel.h"/>
+    <ClInclude Include="..\..\Source\Gui\Panels\AnalogOscillatorPanel.h"/>
     <ClInclude Include="..\..\Source\Gui\Panels\AnalogPitchPanel.h"/>
     <ClInclude Include="..\..\Source\Gui\Panels\GainPanel.h"/>
-    <ClInclude Include="..\..\Source\Gui\Panels\HyperOscillatorPanel.h"/>
     <ClInclude Include="..\..\Source\Gui\Panels\ModernGainPanel.h"/>
+    <ClInclude Include="..\..\Source\Gui\Panels\ModernOscillatorPanel.h"/>
     <ClInclude Include="..\..\Source\Gui\Panels\ModernPitchPanel.h"/>
     <ClInclude Include="..\..\Source\Gui\Panels\OscillatorPanel.h"/>
     <ClInclude Include="..\..\Source\Gui\Panels\OscSendPanel.h"/>

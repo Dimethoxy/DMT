@@ -3,8 +3,8 @@
 #pragma once
 
 #include "../Widgets/Carousel.h"
-#include "AnalogGainPanel.h"
-#include "ModernGainPanel.h"
+#include "AnalogOscillatorPanel.h"
+#include "ModernOscillatorPanel.h"
 #include "Panel.h"
 #include <JuceHeader.h>
 
@@ -18,8 +18,8 @@ class OscillatorPanel : public dmt::gui::panels::Carousel
 public:
   OscillatorPanel()
   {
-    panels.push_back(std::make_unique<AnalogGainPanel>());
-    panels.push_back(std::make_unique<ModernGainPanel>());
+    panels.push_back(std::make_unique<AnalogOscillatorPanel>());
+    panels.push_back(std::make_unique<ModernOscillatorPanel>());
     init();
   }
 

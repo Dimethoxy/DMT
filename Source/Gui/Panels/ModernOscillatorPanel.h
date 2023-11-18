@@ -10,13 +10,16 @@ namespace dmt {
 namespace gui {
 namespace panels {
 //==============================================================================
-class VoicePanel : public dmt::gui::Panel
+class ModernOscillatorPanel : public dmt::gui::Panel
 {
 public:
-  VoicePanel(/*juce::AudioProcessorValueTreeState& apvts*/)
+  ModernOscillatorPanel(/*juce::AudioProcessorValueTreeState& apvts*/)
   { //
   }
-  juce::String getName() override { return "Hyper Oscillator"; }
+  inline const juce::String getName() noexcept override
+  {
+    return "Modern Oscillator Panel";
+  }
 
 private:
 };

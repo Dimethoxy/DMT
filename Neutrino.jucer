@@ -84,13 +84,15 @@
         <GROUP id="{EBF486BC-FBD2-9F86-1E05-08B5CB5CCAEB}" name="Panels">
           <FILE id="nBkPl5" name="AnalogGainPanel.h" compile="0" resource="0"
                 file="Source/Gui/Panels/AnalogGainPanel.h"/>
+          <FILE id="c75UO3" name="AnalogOscillatorPanel.h" compile="0" resource="0"
+                file="Source/Gui/Panels/AnalogOscillatorPanel.h"/>
           <FILE id="LTa7p6" name="AnalogPitchPanel.h" compile="0" resource="0"
                 file="Source/Gui/Panels/AnalogPitchPanel.h"/>
           <FILE id="tEVcIG" name="GainPanel.h" compile="0" resource="0" file="Source/Gui/Panels/GainPanel.h"/>
-          <FILE id="HadsBE" name="HyperOscillatorPanel.h" compile="0" resource="0"
-                file="Source/Gui/Panels/HyperOscillatorPanel.h"/>
           <FILE id="Nfl89R" name="ModernGainPanel.h" compile="0" resource="0"
                 file="Source/Gui/Panels/ModernGainPanel.h"/>
+          <FILE id="H9Ga9r" name="ModernOscillatorPanel.h" compile="0" resource="0"
+                file="Source/Gui/Panels/ModernOscillatorPanel.h"/>
           <FILE id="HDjzmS" name="ModernPitchPanel.h" compile="0" resource="0"
                 file="Source/Gui/Panels/ModernPitchPanel.h"/>
           <FILE id="eRPBdM" name="OscillatorPanel.h" compile="0" resource="0"

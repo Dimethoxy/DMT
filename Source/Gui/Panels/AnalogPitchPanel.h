@@ -10,13 +10,16 @@ namespace dmt {
 namespace gui {
 namespace panels {
 //==============================================================================
-class VoicePanel : public dmt::gui::Panel
+class AnalogPitchPanel : public dmt::gui::Panel
 {
 public:
-  VoicePanel(/*juce::AudioProcessorValueTreeState& apvts*/)
+  AnalogPitchPanel(/*juce::AudioProcessorValueTreeState& apvts*/)
   { //
   }
-  juce::String getName() override { return "Analog Pitch Envelope"; }
+  inline const juce::String getName() noexcept override
+  {
+    return "Analog Pitch Envelope";
+  }
 
 private:
 };
