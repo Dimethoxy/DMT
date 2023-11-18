@@ -7,20 +7,6 @@ namespace dmt {
 namespace gui {
 namespace widgets {
 
-enum LinearSliderType
-{
-  Positive,
-  Negative,
-  Bipolar,
-  Selector
-};
-
-enum LinearSliderOrientation
-{
-  Horizontal,
-  Vertical
-};
-
 class LinearSlider : public juce::Slider
 {
   using Settings = dmt::AppSettings;
@@ -28,7 +14,21 @@ class LinearSlider : public juce::Slider
   const float& rawPadding = Settings::Slider::padding;
 
 public:
-  LinearSlider()
+  enum Type
+  {
+    Positive,
+    Negative,
+    Bipolar,
+    Selector
+  };
+
+  enum Orientation
+  {
+    Horizontal,
+    Vertical
+  };
+
+  LinearSlider(Type type, Orientation orientation)
     : juce::Slider()
   {
     setSliderStyle(juce::Slider::SliderStyle::LinearVertical);
@@ -47,7 +47,8 @@ public:
   }
 
 private:
-  LinearSliderType type = LinearSliderType::Positive;
+  Type type;
+  Orientation orientation;
 };
 } // namespace widgets
 } // namespace gui

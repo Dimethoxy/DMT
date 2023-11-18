@@ -17,18 +17,26 @@ class LinearSliderComponent
   using Settings = dmt::AppSettings;
   using Fonts = Settings::Fonts;
   using Slider = Settings::Slider;
+  using LinearSlider = dmt::gui::widgets::LinearSlider;
   const float& padding = Slider::padding;
+  const juce::Colour& titleFontColour = Slider::titleFontColour;
+  const juce::Colour& infoFontColour = Slider::infoFontColour;
   const float& titleFontSize = Slider::titleFontSize;
   const float& infoFontSize = Slider::infoFontSize;
 
 public:
   LinearSliderComponent(juce::AudioProcessorValueTreeState& apvts,
-                        juce::String name,
-                        juce::String param,
-                        dmt::InfoUnit::Type unitType)
+                        const juce::String text,
+                        const juce::String param,
+                        const dmt::InfoUnit::Type unitType,
+                        const LinearSlider::Type type,
+                        const LinearSlider::Orientation orientation)
     : sliderAttachment(apvts, param, slider)
-    , titleLabel(name, titleFontSize, Fonts::regular)
-    , infoLabel("Info Label", infoFontSize, Fonts::regular)
+    , titleLabel(text, Fonts::regular, titleFontSize, titleFontColour)
+    , infoLabel(juce::String("Info Label"),
+                Fonts::regular,
+                infoFontSize,
+                infoFontColour)
     , unitType(unitType)
   {
     slider.addListener(this);
@@ -61,7 +69,7 @@ private:
   void updateLabel()
   {
     auto text = dmt::InfoUnit::getString(unitType, slider.getValue());
-    infoLabel.setText(text, juce::NotificationType::dontSendNotification);
+    infoLabel.setText(text);
   }
 };
 } // namespace components

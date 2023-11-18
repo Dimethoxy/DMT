@@ -7,14 +7,6 @@ namespace dmt {
 namespace gui {
 namespace widgets {
 
-enum class RotarySliderType
-{
-  Positive,
-  Negative,
-  Bipolar,
-  Selector
-};
-
 class RotarySlider : public juce::Slider
 {
   using Settings = dmt::AppSettings;
@@ -22,7 +14,14 @@ class RotarySlider : public juce::Slider
   const float& rawPadding = Settings::Slider::padding;
 
 public:
-  RotarySlider(dmt::AppSettings& a, RotarySliderType type)
+  enum class Type
+  {
+    Positive,
+    Negative,
+    Bipolar,
+    Selector
+  };
+  RotarySlider(Type type)
     : juce::Slider()
     , type(type)
   {
@@ -40,10 +39,10 @@ public:
     g.setColour(juce::Colours::green);
     g.fillRect(bounds);
   }
-  RotarySliderType getType() { return type; };
+  Type getType() { return type; };
 
 private:
-  RotarySliderType type = RotarySliderType::Positive;
+  Type type;
 };
 } // namespace widget
 } // namespace gui

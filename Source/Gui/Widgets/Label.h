@@ -7,18 +7,18 @@ namespace dmt {
 namespace gui {
 namespace widgets {
 //==============================================================================
-class Label : juce::Component
+class Label : public juce::Component
 {
 public:
   Label(juce::String text,
-        juce::Font& font,
-        float& fontSize,
-        juce::Colour& colour)
-    : text(text)
+        const juce::Font& font,
+        const float& fontSize,
+        const juce::Colour& colour)
+    : juce::Component()
+    , text(text)
     , font(font)
     , fontSize(fontSize)
     , colour(colour)
-
   {
   }
   void paint(juce::Graphics& g)
@@ -29,11 +29,13 @@ public:
       text, this->getLocalBounds(), juce::Justification::centred, true);
   }
 
+  void setText(juce::String text) noexcept { this->text = text; }
+
 private:
   juce::String text;
-  juce::Font& font;
-  float& fontSize;
-  juce::Colour& colour;
+  const juce::Font& font;
+  const float& fontSize;
+  const juce::Colour& colour;
 };
 } // namespace widgets
 } // namespace gui

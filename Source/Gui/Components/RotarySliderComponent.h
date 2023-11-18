@@ -10,25 +10,33 @@
 namespace dmt {
 namespace gui {
 namespace components {
-class LinearSliderComponent
+class RotarySLiderComponent
   : public juce::Component
   , public juce::Slider::Listener
 {
   using Settings = dmt::AppSettings;
   using Fonts = Settings::Fonts;
   using Slider = Settings::Slider;
+  using RotarySLider = dmt::gui::widgets::RotarySlider;
   const float& padding = Slider::padding;
+  const juce::Colour& titleFontColour = Slider::titleFontColour;
+  const juce::Colour& infoFontColour = Slider::infoFontColour;
   const float& titleFontSize = Slider::titleFontSize;
   const float& infoFontSize = Slider::infoFontSize;
 
 public:
-  LinearSliderComponent(juce::AudioProcessorValueTreeState& apvts,
-                        juce::String name,
-                        juce::String param,
-                        dmt::InfoUnit::Type unitType)
-    : sliderAttachment(apvts, param, slider)
-    , titleLabel(name, titleFontSize, Fonts::regular)
-    , infoLabel("Info Label", infoFontSize, Fonts::regular)
+  RotarySLiderComponent(juce::AudioProcessorValueTreeState& apvts,
+                        const juce::String text,
+                        const juce::String param,
+                        const dmt::InfoUnit::Type unitType,
+                        const dmt::gui::widgets::RotarySlider::Type type)
+    : slider(type)
+    , sliderAttachment(apvts, param, slider)
+    , titleLabel(text, Fonts::regular, titleFontSize, titleFontColour)
+    , infoLabel(juce::String("Info Label"),
+                Fonts::regular,
+                infoFontSize,
+                infoFontColour)
     , unitType(unitType)
   {
     slider.addListener(this);
@@ -61,7 +69,7 @@ private:
   void updateLabel()
   {
     auto text = dmt::InfoUnit::getString(unitType, slider.getValue());
-    infoLabel.setText(text, juce::NotificationType::dontSendNotification);
+    infoLabel.setText(text);
   }
 };
 } // namespace components

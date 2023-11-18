@@ -75,6 +75,8 @@ struct AppSettings
     // General
     static inline float padding = 3.0f;
     // Font
+    static inline Colour titleFontColour = Colours::font;
+    static inline Colour infoFontColour = Colours::font;
     static inline float titleFontSize = 24.0f;
     static inline float infoFontSize = 18.0f;
   };
