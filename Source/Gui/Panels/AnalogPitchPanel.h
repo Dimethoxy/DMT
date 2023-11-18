@@ -16,7 +16,7 @@ public:
   VoicePanel(/*juce::AudioProcessorValueTreeState& apvts*/)
   { //
   }
-  juce::String getName() override { return "Voices"; }
+  juce::String getName() override { return "Analog Pitch Envelope"; }
 
 private:
 };

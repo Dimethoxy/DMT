@@ -11,7 +11,6 @@
 #pragma once
 
 #include "../../Utility/AppSettings.h"
-#include "./LookAndFeel.h"
 #include <JuceHeader.h>
 
 namespace dmt {
@@ -29,6 +28,8 @@ enum class RotarySliderType
 class RotarySlider : public juce::Slider
 {
   using Settings = dmt::AppSettings;
+  const float& size = Settings::Layout::size;
+  const float& rawPadding = Settings::Slider::padding;
 
 public:
   RotarySlider(dmt::AppSettings& a, RotarySliderType type)
@@ -43,7 +44,11 @@ public:
   void paint(juce::Graphics& g) override
   {
     auto bounds = getLocalBounds();
-    auto margin = 1.0;
+    auto padding = rawPadding * size;
+    auto reducedBounds = bounds.reduced(padding);
+
+    g.setColour(juce::Colours::red);
+    g.fillRect(bounds);
   }
   ~RotarySlider() { setLookAndFeel(nullptr); }
   dmt::gui::widget::RotarySliderType getType() { return type; };

@@ -2437,13 +2437,14 @@
     <ClInclude Include="..\..\Source\Gui\Components\OscillatorDisplayComponent.h"/>
     <ClInclude Include="..\..\Source\Gui\Panels\AnalogGainPanel.h"/>
     <ClInclude Include="..\..\Source\Gui\Panels\AnalogPitchPanel.h"/>
-    <ClInclude Include="..\..\Source\Gui\Panels\HeaderPanel.h"/>
+    <ClInclude Include="..\..\Source\Gui\Panels\GainPanel.h"/>
     <ClInclude Include="..\..\Source\Gui\Panels\HyperOscillatorPanel.h"/>
     <ClInclude Include="..\..\Source\Gui\Panels\ModernGainPanel.h"/>
     <ClInclude Include="..\..\Source\Gui\Panels\ModernPitchPanel.h"/>
     <ClInclude Include="..\..\Source\Gui\Panels\OscillatorPanel.h"/>
     <ClInclude Include="..\..\Source\Gui\Panels\OscSendPanel.h"/>
     <ClInclude Include="..\..\Source\Gui\Panels\Panel.h"/>
+    <ClInclude Include="..\..\Source\Gui\Panels\PitchPanel.h"/>
     <ClInclude Include="..\..\Source\Gui\Panels\VoicingPanel.h"/>
     <ClInclude Include="..\..\Source\Gui\Panels\WaveformDistortionPanel.h"/>
     <ClInclude Include="..\..\Source\Gui\Preset\FolderManager.h"/>
@@ -2453,7 +2454,6 @@
     <ClInclude Include="..\..\Source\Gui\Widgets\Carousel.h"/>
     <ClInclude Include="..\..\Source\Gui\Widgets\Label.h"/>
     <ClInclude Include="..\..\Source\Gui\Widgets\LinearSlider.h"/>
-    <ClInclude Include="..\..\Source\Gui\Widgets\LookAndFeel.h"/>
     <ClInclude Include="..\..\Source\Gui\Widgets\RotarySlider.h"/>
     <ClInclude Include="..\..\Source\Gui\Widgets\TriangleButton.h"/>
     <ClInclude Include="..\..\Source\Utility\AppSettings.h"/>

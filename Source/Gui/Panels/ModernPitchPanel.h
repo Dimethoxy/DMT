@@ -16,7 +16,7 @@ public:
   ModernPitchPanel(/*juce::AudioProcessorValueTreeState& apvts*/)
   { //
   }
-  juce::String getName() override { return "Voices"; }
+  juce::String getName() override { return "Modern Pitch Envelope"; }
 
 private:
 };

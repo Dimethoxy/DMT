@@ -18,7 +18,7 @@ public:
   }
   inline const juce::String getName() noexcept override
   {
-    return "Analog Gain Panel";
+    return "Analog Gain Envelope";
   }
 
 private:

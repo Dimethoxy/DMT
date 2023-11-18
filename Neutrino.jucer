@@ -86,7 +86,7 @@
                 file="Source/Gui/Panels/AnalogGainPanel.h"/>
           <FILE id="LTa7p6" name="AnalogPitchPanel.h" compile="0" resource="0"
                 file="Source/Gui/Panels/AnalogPitchPanel.h"/>
-          <FILE id="obtWhQ" name="HeaderPanel.h" compile="0" resource="0" file="Source/Gui/Panels/HeaderPanel.h"/>
+          <FILE id="tEVcIG" name="GainPanel.h" compile="0" resource="0" file="Source/Gui/Panels/GainPanel.h"/>
           <FILE id="HadsBE" name="HyperOscillatorPanel.h" compile="0" resource="0"
                 file="Source/Gui/Panels/HyperOscillatorPanel.h"/>
           <FILE id="Nfl89R" name="ModernGainPanel.h" compile="0" resource="0"
@@ -97,6 +97,7 @@
                 file="Source/Gui/Panels/OscillatorPanel.h"/>
           <FILE id="LphSwN" name="OscSendPanel.h" compile="0" resource="0" file="Source/Gui/Panels/OscSendPanel.h"/>
           <FILE id="wNbYvM" name="Panel.h" compile="0" resource="0" file="Source/Gui/Panels/Panel.h"/>
+          <FILE id="tMRbty" name="PitchPanel.h" compile="0" resource="0" file="Source/Gui/Panels/PitchPanel.h"/>
           <FILE id="l5mxYS" name="VoicingPanel.h" compile="0" resource="0" file="Source/Gui/Panels/VoicingPanel.h"/>
           <FILE id="DCHZcm" name="WaveformDistortionPanel.h" compile="0" resource="0"
                 file="Source/Gui/Panels/WaveformDistortionPanel.h"/>
@@ -111,7 +112,6 @@
           <FILE id="UEGJKn" name="Carousel.h" compile="0" resource="0" file="Source/Gui/Widgets/Carousel.h"/>
           <FILE id="EL7zwK" name="Label.h" compile="0" resource="0" file="Source/Gui/Widgets/Label.h"/>
           <FILE id="yVdOHR" name="LinearSlider.h" compile="0" resource="0" file="Source/Gui/Widgets/LinearSlider.h"/>
-          <FILE id="QvxIph" name="LookAndFeel.h" compile="0" resource="0" file="Source/Gui/Widgets/LookAndFeel.h"/>
           <FILE id="EWQgC0" name="RotarySlider.h" compile="0" resource="0" file="Source/Gui/Widgets/RotarySlider.h"/>
           <FILE id="FXdFL1" name="TriangleButton.h" compile="0" resource="0"
                 file="Source/Gui/Widgets/TriangleButton.h"/>
