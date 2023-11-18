@@ -1,13 +1,3 @@
-/*
-  ==============================================================================
-
-        RotarySlider.h
-        Created: 26 May 2022 12:00:24pm
-        Author:  Lunix
-
-  ==============================================================================
-*/
-
 #pragma once
 
 #include "../../Utility/AppSettings.h"
@@ -15,7 +5,7 @@
 
 namespace dmt {
 namespace gui {
-namespace widget {
+namespace widgets {
 
 enum class RotarySliderType
 {
@@ -47,11 +37,10 @@ public:
     auto padding = rawPadding * size;
     auto reducedBounds = bounds.reduced(padding);
 
-    g.setColour(juce::Colours::red);
+    g.setColour(juce::Colours::green);
     g.fillRect(bounds);
   }
-  ~RotarySlider() { setLookAndFeel(nullptr); }
-  dmt::gui::widget::RotarySliderType getType() { return type; };
+  RotarySliderType getType() { return type; };
 
 private:
   RotarySliderType type = RotarySliderType::Positive;

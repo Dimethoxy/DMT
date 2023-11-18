@@ -73,7 +73,10 @@ struct AppSettings
   static inline struct Slider
   {
     // General
-    static inline float padding = .0f;
+    static inline float padding = 3.0f;
+    // Font
+    static inline float titleFontSize = 24.0f;
+    static inline float infoFontSize = 18.0f;
   };
   static inline struct TriangleButton
   {

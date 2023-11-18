@@ -1,33 +1,40 @@
-//#pragma once
-//
-//#include "../../Utility/AppSettings.h"
-//#include <JuceHeader.h>
-//
-//namespace dmt {
-//namespace gui {
-//namespace widgets {
-////==============================================================================
-//class Label : public juce::Label
-//{
-//public:
-//  Label(juce::String name, float fontSize, juce::Font font)
-//    : fontSize(fontSize)
-//  {
-//    setText(name, juce::NotificationType::dontSendNotification);
-//    setJustificationType(juce::Justification::centredTop);
-//    setColour(juce::Label::ColourIds::textColourId,
-//              AppSettings::Fonts::labelFontColour);
-//    setFont(font);
-//  }
-//  void resized()
-//  {
-//    setFont(getFont().withHeight(fontSize * AppSettings::size));
-//  }
-//
-//private:
-//  float fontSize;
-//  bool isTitle = false;
-//};
-//} // namespace widgets
-//} // namespace gui
-//} // namespace dmt
+#pragma once
+
+#include "../../Utility/AppSettings.h"
+#include <JuceHeader.h>
+
+namespace dmt {
+namespace gui {
+namespace widgets {
+//==============================================================================
+class Label : juce::Component
+{
+public:
+  Label(juce::String text,
+        juce::Font& font,
+        float& fontSize,
+        juce::Colour& colour)
+    : text(text)
+    , font(font)
+    , fontSize(fontSize)
+    , colour(colour)
+
+  {
+  }
+  void paint(juce::Graphics& g)
+  {
+    g.setFont(fontSize);
+    g.setColour(colour);
+    g.drawText(
+      text, this->getLocalBounds(), juce::Justification::centred, true);
+  }
+
+private:
+  juce::String text;
+  juce::Font& font;
+  float& fontSize;
+  juce::Colour& colour;
+};
+} // namespace widgets
+} // namespace gui
+} // namespace dmt

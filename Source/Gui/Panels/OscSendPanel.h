@@ -16,7 +16,10 @@ public:
   OscSendPanel(const juce::String channel)
     : channel(channel)
   {
+    dmt::gui::Panel::Layout layout = { 1, 5 };
+    setLayout(layout);
   }
+
   inline const juce::String getName() noexcept
   {
     return "Channel " + juce::String(channel);
@@ -24,6 +27,7 @@ public:
 
 private:
   const juce::String channel;
+  dmt::gui::components::LinearSliderComponent gainSlider;
 };
 //==============================================================================
 } // namespace panels
