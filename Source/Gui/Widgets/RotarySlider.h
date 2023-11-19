@@ -16,8 +16,8 @@ class RotarySlider : public juce::Slider
   const float& size = Settings::Layout::size;
   const float& rawPadding = Settings::Slider::padding;
   const juce::Colour& shaftColour = Slider::shaftColour;
-  const float& shaftLineStrength = Slider::shaftLineStrength;
-  const float& shaftSize = Slider::shaftSize;
+  const float& rawShaftLineStrength = Slider::shaftLineStrength;
+  const float& rawShaftSize = Slider::shaftSize;
 
 public:
   enum class Type
@@ -52,14 +52,38 @@ public:
 private:
   Type type;
 
-  void drawShaft(juce::Graphics& g, juce::Rectangle<float>& bounds) noexcept
+  void drawShaft(juce::Graphics& g,
+                 const juce::Rectangle<float>& bounds) const noexcept
   {
-    float lineStrength = shaftLineStrength * size;
-    auto reducedBounds = bounds.reduced(lineStrength);
-    reducedBounds.setWidth(reducedBounds.getHeight());
+    // Draw the circle
+    const auto shaftSize = rawShaftSize * bounds.getHeight();
+    auto reducedBounds = juce::Rectangle<float>(bounds);
+    reducedBounds.setSize(shaftSize, shaftSize);
     reducedBounds.setCentre(bounds.getCentre());
+    const float lineStrength = rawShaftLineStrength * size;
     g.setColour(shaftColour);
     g.drawEllipse(reducedBounds, lineStrength);
+
+    // Draw the tick
+    const float& value = getValue();
+    const float& minValue = getMinimum();
+    const float& maxValue = getMaximum();
+    const float startAngle = 0.0f;
+    const float endAngle = 270.0f;
+    const float rawAngle =
+      juce::jmap(value, minValue, maxValue, startAngle, endAngle);
+    const float angleRange = endAngle - startAngle;
+    const float gapRange = 360.0f - angleRange;
+    const float angleOffset = 90.0f + (gapRange / 2.0f);
+    const float angleInRadians =
+      dmt::Math::degreeToRadians(rawAngle + angleOffset);
+    const float radius = reducedBounds.getWidth() / 2.0f;
+    const auto& center = reducedBounds.getCentre();
+    const auto outerPoint =
+      dmt::Math::pointOnCircle(center, radius, angleInRadians);
+
+    const juce::Line<float> tickLine(outerPoint, center);
+    g.drawLine(tickLine, lineStrength);
   }
 
   void drawRail(juce::Rectangle<float> bounds) noexcept {}
@@ -67,7 +91,7 @@ private:
   void drawSelector(juce::Rectangle<float> bounds) noexcept {}
   void drawSelectorThumb(juce::Rectangle<float> bounds) noexcept {}
 
-  // JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(RotarySlider)
+  JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(RotarySlider)
 };
 } // namespace widget
 } // namespace gui
