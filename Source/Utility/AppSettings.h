@@ -83,6 +83,9 @@ struct AppSettings
     static inline juce::Colour shaftColour = Colours::font;
     static inline float shaftLineStrength = 4.0f;
     static inline float shaftSize = 0.5f;
+    // Rail
+    static inline float railWidth = 6.0f;
+    static inline float railSize = 0.8f;
   };
   static inline struct TriangleButton
   {
