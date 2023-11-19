@@ -43,8 +43,9 @@ public:
   {
     for (auto& panel : panels) {
       panel->setCallbacks([this]() { next(); }, [this]() { previous(); });
-      addAndMakeVisible(*panel);
+      addChildComponent(*panel);
     }
+    panels[index]->setVisible(true);
   }
 
   void resized() override
