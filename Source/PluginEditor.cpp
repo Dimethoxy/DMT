@@ -14,9 +14,9 @@ NeutrinoAudioProcessorEditor::NeutrinoAudioProcessorEditor(
   NeutrinoAudioProcessor& p)
   : AudioProcessorEditor(&p)
   , audioProcessor(p)
-  , sendPanelA("A")
-  , sendPanelB("B")
-  , sendPanelC("C")
+  , sendPanelA(p.apvts, juce::String("A"))
+  , sendPanelB(p.apvts, juce::String("B"))
+  , sendPanelC(p.apvts, juce::String("C"))
   , keyboardComponent(p.keyboardState,
                       juce::MidiKeyboardComponent::horizontalKeyboard)
 {

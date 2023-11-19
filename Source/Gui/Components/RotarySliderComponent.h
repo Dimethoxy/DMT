@@ -1,12 +1,12 @@
-
+//==============================================================================
 #pragma once
-
+//==============================================================================
 #include "../../Utility/AppSettings.h"
 #include "../../Utility/Unit.h"
 #include "../Widgets/Label.h"
 #include "../Widgets/RotarySlider.h"
 #include <JuceHeader.h>
-
+//==============================================================================
 namespace dmt {
 namespace gui {
 namespace components {
@@ -18,6 +18,7 @@ class RotarySLiderComponent
   using Fonts = Settings::Fonts;
   using Slider = Settings::Slider;
   using RotarySLider = dmt::gui::widgets::RotarySlider;
+  using Type = RotarySLider::Type;
   const float& padding = Slider::padding;
   const juce::Colour& titleFontColour = Slider::titleFontColour;
   const juce::Colour& infoFontColour = Slider::infoFontColour;
@@ -29,7 +30,7 @@ public:
                         const juce::String text,
                         const juce::String param,
                         const dmt::InfoUnit::Type unitType,
-                        const dmt::gui::widgets::RotarySlider::Type type)
+                        const Type type = Type::Positive)
     : slider(type)
     , sliderAttachment(apvts, param, slider)
     , titleLabel(text, Fonts::regular, titleFontSize, titleFontColour)

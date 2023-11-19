@@ -1,12 +1,12 @@
-
+//==============================================================================
 #pragma once
-
+//==============================================================================
 #include "../../Utility/AppSettings.h"
 #include "../../Utility/Unit.h"
 #include "../Widgets/Label.h"
 #include "../Widgets/LinearSlider.h"
 #include <JuceHeader.h>
-
+//==============================================================================
 namespace dmt {
 namespace gui {
 namespace components {
@@ -18,6 +18,8 @@ class LinearSliderComponent
   using Fonts = Settings::Fonts;
   using Slider = Settings::Slider;
   using LinearSlider = dmt::gui::widgets::LinearSlider;
+  using Type = LinearSlider::Type;
+  using Orientation = LinearSlider::Orientation;
   const float& padding = Slider::padding;
   const juce::Colour& titleFontColour = Slider::titleFontColour;
   const juce::Colour& infoFontColour = Slider::infoFontColour;
@@ -29,9 +31,10 @@ public:
                         const juce::String text,
                         const juce::String param,
                         const dmt::InfoUnit::Type unitType,
-                        const LinearSlider::Type type,
-                        const LinearSlider::Orientation orientation)
-    : sliderAttachment(apvts, param, slider)
+                        const Type type = Type::Positive,
+                        const Orientation orientation = Orientation::Vertical)
+    : slider(type, orientation)
+    , sliderAttachment(apvts, param, slider)
     , titleLabel(text, Fonts::regular, titleFontSize, titleFontColour)
     , infoLabel(juce::String("Info Label"),
                 Fonts::regular,
