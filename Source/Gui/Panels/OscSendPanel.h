@@ -45,6 +45,8 @@ public:
 private:
   const juce::String channel;
   dmt::gui::components::RotarySliderComponent gainSlider;
+
+  JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(OscSendPanel)
 };
 //==============================================================================
 } // namespace panels

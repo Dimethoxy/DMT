@@ -80,6 +80,7 @@ private:
     auto text = dmt::InfoUnit::getString(unitType, slider.getValue());
     infoLabel.setText(text);
   }
+  JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(RotarySliderComponent)
 };
 //==============================================================================
 } // namespace components

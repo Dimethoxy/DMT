@@ -194,6 +194,8 @@ private:
   dmt::gui::widgets::TriangleButton prevButton;
   dmt::Shadow outerShadow;
   dmt::Shadow innerShadow;
+
+  JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Panel)
 };
 
 //==============================================================================

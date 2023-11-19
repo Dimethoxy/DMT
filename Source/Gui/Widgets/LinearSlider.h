@@ -49,6 +49,8 @@ public:
 private:
   Type type;
   Orientation orientation;
+
+  JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(LinearSlider)
 };
 } // namespace widgets
 } // namespace gui

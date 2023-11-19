@@ -13,7 +13,7 @@ namespace dmt {
 namespace gui {
 namespace panels {
 //==============================================================================
-class OscillatorPanel : public dmt::gui::panels::Carousel
+class PitchPanel : public dmt::gui::panels::Carousel
 {
 public:
   OscillatorPanel()
@@ -24,6 +24,7 @@ public:
   }
 
 private:
+  JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(PitchPanel)
 };
 //==============================================================================
 } // namespace panels

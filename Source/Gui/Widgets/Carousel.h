@@ -60,6 +60,8 @@ protected:
 
 private:
   int index = 0;
+
+  JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Carousel)
 };
 //==============================================================================
 } // namespace gui

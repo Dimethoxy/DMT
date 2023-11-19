@@ -172,6 +172,8 @@ private:
   Direction direction;
   dmt::Shadow outerShadow;
   dmt::Shadow innerShadow;
+
+  JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(TriangleButton)
 };
 //==============================================================================
 } // namespace widgets

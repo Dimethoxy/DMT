@@ -48,6 +48,8 @@ private:
   const float& fontSize;
   const juce::Colour& colour;
   Justification justification;
+
+  JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Label)
 };
 } // namespace widgets
 } // namespace gui
