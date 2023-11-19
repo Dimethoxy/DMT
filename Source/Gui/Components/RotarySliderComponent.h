@@ -10,7 +10,7 @@
 namespace dmt {
 namespace gui {
 namespace components {
-class RotarySLiderComponent
+class RotarySliderComponent
   : public juce::Component
   , public juce::Slider::Listener
 {
@@ -26,7 +26,7 @@ class RotarySLiderComponent
   const float& infoFontSize = Slider::infoFontSize;
 
 public:
-  RotarySLiderComponent(juce::AudioProcessorValueTreeState& apvts,
+  RotarySliderComponent(juce::AudioProcessorValueTreeState& apvts,
                         const juce::String text,
                         const juce::String param,
                         const dmt::InfoUnit::Type unitType,
@@ -59,6 +59,11 @@ public:
     infoLabel.setBoundsRelative(0.0f, infoLabelY, 1.0f, labelSize);
   }
   void sliderValueChanged(juce::Slider* slider) { updateLabel(); }
+  void setSizeAndCentre(juce::Point<int> centrePoint)
+  {
+    setSize(120, 150);
+    setCentrePosition(centrePoint);
+  }
 
 private:
   dmt::gui::widgets::RotarySlider slider;

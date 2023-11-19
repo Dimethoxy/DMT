@@ -44,8 +44,8 @@ class Panel
 public:
   struct Layout
   {
-    int rows;
     int cols;
+    int rows;
   };
 
   Panel() noexcept

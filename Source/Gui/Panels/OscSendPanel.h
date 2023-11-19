@@ -26,7 +26,7 @@ public:
                  juce::String("oscGain"),
                  dmt::InfoUnit::Type::Gain)
   {
-    dmt::gui::Panel::Layout layout = { 1, 1 };
+    dmt::gui::Panel::Layout layout = { 1, 10 };
     setLayout(layout);
     addAndMakeVisible(gainSlider);
   }
@@ -40,14 +40,13 @@ public:
   {
     dmt::gui::Panel::resized();
     auto bounds = getLocalBounds();
-    auto gainSliderPoint = this->getGridPoint(bounds, 1, 1);
-    gainSlider.setSize(100, 100);
-    gainSlider.setCentrePosition(gainSliderPoint);
+    auto gainSliderPoint = this->getGridPoint(bounds, 1, 5);
+    gainSlider.setSizeAndCentre(gainSliderPoint);
   }
 
 private:
   const juce::String channel;
-  dmt::gui::components::LinearSliderComponent gainSlider;
+  dmt::gui::components::RotarySliderComponent gainSlider;
 };
 //==============================================================================
 } // namespace panels
