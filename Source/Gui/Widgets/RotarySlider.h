@@ -19,6 +19,8 @@ class RotarySlider : public juce::Slider
   const juce::Colour& shaftColour = Slider::shaftColour;
   const float& rawShaftLineStrength = Slider::shaftLineStrength;
   const float& rawShaftSize = Slider::shaftSize;
+  const juce::Colour& lowerRailColour = Slider::lowerRailColour;
+  const juce::Colour& upperRailColour = Slider::upperRailColour;
   const float& railWidth = Slider::railWidth;
   const float& railSize = Slider::railSize;
 
@@ -74,46 +76,54 @@ private:
     g.drawEllipse(reducedBounds, lineStrength);
 
     // Draw the tick
-    const float& value = getValue();
-    const float& minValue = getMinimum();
-    const float& maxValue = getMaximum();
+    const float value = getValue();
+    const float minValue = getMinimum();
+    const float maxValue = getMaximum();
     const float normalizedStartAngle = 0.0f;
     const float normalizedEndAngle = 270.0f;
     const float angleRange = normalizedEndAngle - normalizedStartAngle;
     const float gapRange = 360.0f - angleRange;
-    const float angleOffset = 90.0f + (gapRange / 2.0f);
-    const auto& centre = reducedBounds.getCentre();
-    const auto tickLine = getTick(reducedBounds,
-                                  centre,
-                                  value,
-                                  minValue,
-                                  maxValue,
-                                  normalizedStartAngle,
-                                  normalizedEndAngle,
-                                  angleOffset);
+    const float angleOffset = 180.0f + (gapRange / 2.0f);
+    const auto centre = reducedBounds.getCentre();
+    const float rawAngle = juce::jmap(
+      value, minValue, maxValue, normalizedStartAngle, normalizedEndAngle);
+    const float valueAngleInRadians =
+      dmt::Math::degreeToRadians(rawAngle + angleOffset);
+    const auto tickLine = getTick(reducedBounds, centre, valueAngleInRadians);
     g.drawLine(tickLine, lineStrength);
 
-    // Draw the rail
+    // Draw the lower rail
     const auto jointStyle = StrokeType::curved;
     const auto endCapStyle = StrokeType::butt;
     const auto strokeType = StrokeType(railWidth, jointStyle, endCapStyle);
     const auto railBounds = bounds;
     const auto railRadius = railBounds.getWidth() * railSize / 2.0f;
-    const auto startAngleRadians =
-      dmt::Math::degreeToRadians(normalizedStartAngle - angleOffset);
-    const auto endAngleRadians =
-      dmt::Math::degreeToRadians(normalizedEndAngle - angleOffset);
-    const auto lowerRail =
-      getLowerRail(railBounds, railRadius, startAngleRadians, endAngleRadians);
+    const auto startAngleInRadians =
+      dmt::Math::degreeToRadians(normalizedStartAngle + angleOffset);
+    const auto endAngleInRadians =
+      dmt::Math::degreeToRadians(normalizedEndAngle + angleOffset);
+    const auto lowerRail = getLowerRail(
+      railBounds, railRadius, startAngleInRadians, endAngleInRadians);
+    g.setColour(lowerRailColour);
     g.strokePath(lowerRail, strokeType);
+
+    // Draw the upper rail
+    const auto upperRail = getUpperRail(railBounds,
+                                        railRadius,
+                                        startAngleInRadians,
+                                        endAngleInRadians,
+                                        valueAngleInRadians,
+                                        type);
+    g.setColour(upperRailColour);
+    g.strokePath(upperRail, strokeType);
   }
   //============================================================================
-  const juce::Path getValueArcPath(juce::Rectangle<float> bounds,
-                                   float arcRadius,
-                                   float startAngle,
-                                   float endAngle,
-                                   float toAngle,
-                                   Type type) const noexcept
+  const juce::Path getUpperRail(const juce::Rectangle<float>& bounds,
+                                float arcRadius,
+                                float startAngleInRadians,
+                                float endAngleInRadians,
+                                float valueAngleInRadians,
+                                Type type) const noexcept
   {
     juce::Path arc;
     switch (type) {
@@ -123,39 +133,40 @@ private:
                           arcRadius,
                           arcRadius,
                           0.0f,
-                          startAngle,
-                          toAngle,
+                          startAngleInRadians,
+                          valueAngleInRadians,
                           true);
         break;
-      case Type::Negative:
-        arc.addCentredArc(bounds.getCentreX(),
-                          bounds.getCentreY(),
-                          arcRadius,
-                          arcRadius,
-                          0.0f,
-                          endAngle,
-                          toAngle,
-                          true);
-        break;
-      case Type::Bipolar:
-        auto center = (endAngle - startAngle) / 2.0f;
-        arc.addCentredArc(bounds.getCentreX(),
-                          bounds.getCentreY(),
-                          arcRadius,
-                          arcRadius,
-                          0.0f,
-                          startAngle + center,
-                          toAngle,
-                          true);
-        break;
+        /* case Type::Negative:
+           arc.addCentredArc(bounds.getCentreX(),
+                             bounds.getCentreY(),
+                             arcRadius,
+                             arcRadius,
+                             0.0f,
+                             endAngleInRadians,
+                             valueAngleInRadians,
+                             true);
+           break;
+         case Type::Bipolar:
+           auto center = (endAngleInRadians - startAngleInRadians) / 2.0f;
+           arc.addCentredArc(bounds.getCentreX(),
+                             bounds.getCentreY(),
+                             arcRadius,
+                             arcRadius,
+                             0.0f,
+                             startAngleInRadians + center,
+                             valueAngleInRadians,
+                             true);
+           break;*/
     }
     return arc;
   }
+
   //============================================================================
-  const juce::Path getLowerRail(juce::Rectangle<float> bounds,
+  const juce::Path getLowerRail(const juce::Rectangle<float>& bounds,
                                 float arcRadius,
-                                float startAngleRadians,
-                                float endAngleRadians) const noexcept
+                                float startAngleInRadians,
+                                float endAngleInRadians) const noexcept
   {
     juce::Path arc;
     arc.addCentredArc(bounds.getCentreX(),
@@ -163,25 +174,16 @@ private:
                       arcRadius,
                       arcRadius,
                       0.0f,
-                      startAngleRadians,
-                      endAngleRadians,
+                      startAngleInRadians,
+                      endAngleInRadians,
                       true);
     return arc;
   }
   //============================================================================
   const juce::Line<float> getTick(const juce::Rectangle<float>& bounds,
                                   const juce::Point<float>& centre,
-                                  const float& value,
-                                  const float& minValue,
-                                  const float& maxValue,
-                                  const float& startAngle,
-                                  const float& endAngle,
-                                  const float& angleOffset) const noexcept
+                                  const float& angleInRadians) const noexcept
   {
-    const float rawAngle =
-      juce::jmap(value, minValue, maxValue, startAngle, endAngle);
-    const float angleInRadians =
-      dmt::Math::degreeToRadians(rawAngle + angleOffset);
     const float outerRadius = bounds.getWidth() / 2.0f;
     const auto outerPoint =
       dmt::Math::pointOnCircle(centre, outerRadius, angleInRadians);

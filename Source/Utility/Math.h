@@ -8,7 +8,8 @@
 namespace dmt {
 namespace Math {
 //==============================================================================
-
+static inline const float pi = juce::MathConstants<float>::pi;
+static inline const float twoPi = juce::MathConstants<float>::twoPi;
 static inline float
 linearToExponent(float value) noexcept
 {
@@ -18,8 +19,8 @@ linearToExponent(float value) noexcept
 static inline const juce::Point<float>
 pointOnCircle(const float radius, const float angleInRadians) noexcept
 {
-  return juce::Point<float>(radius * std::cos(angleInRadians),
-                            radius * std::sin(angleInRadians));
+  return juce::Point<float>(radius * std::cos(angleInRadians - pi * 0.5f),
+                            radius * std::sin(angleInRadians - pi * 0.5f));
 }
 
 static inline const juce::Point<float>
@@ -27,8 +28,8 @@ pointOnCircle(juce::Point<float> centre,
               const float radius,
               const float angleInRadians) noexcept
 {
-  juce::Point<float> raw(radius * std::cos(angleInRadians),
-                         radius * std::sin(angleInRadians));
+  juce::Point<float> raw(radius * std::cos(angleInRadians - pi * 0.5f),
+                         radius * std::sin(angleInRadians - pi * 0.5f));
   return raw + centre;
 }
 
@@ -36,6 +37,14 @@ static inline const float
 degreeToRadians(float angleInDegree) noexcept
 {
   return angleInDegree * (juce::MathConstants<float>::pi / 180.0f);
+}
+
+static inline const float
+normalizeAngleInRadians(float angleInRadians) noexcept
+{
+  if (angleInRadians < 0.0f)
+    angleInRadians += twoPi;
+  return angleInRadians;
 }
 
 static inline const float
