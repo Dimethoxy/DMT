@@ -79,6 +79,10 @@ struct AppSettings
     static inline Colour infoFontColour = Colours::font;
     static inline float titleFontSize = 24.0f;
     static inline float infoFontSize = 18.0f;
+    // Shaft
+    static inline juce::Colour shaftColour = Colours::font;
+    static inline float shaftLineStrength = 2.0f;
+    static inline float shaftSize = 50.0f;
   };
   static inline struct TriangleButton
   {

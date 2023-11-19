@@ -21,6 +21,10 @@ namespace panels {
 class Carousel : public juce::Component
 {
 public:
+  Carousel()
+    : index(0)
+  {
+  }
   void next()
   {
     panels[index]->setVisible(false);
@@ -59,7 +63,7 @@ protected:
   std::vector<std::unique_ptr<Panel>> panels;
 
 private:
-  int index = 0;
+  int index;
 
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Carousel)
 };

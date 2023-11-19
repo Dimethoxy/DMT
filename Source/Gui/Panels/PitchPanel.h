@@ -17,6 +17,7 @@ class PitchPanel : public dmt::gui::panels::Carousel
 {
 public:
   OscillatorPanel()
+    : Carousel()
   {
     panels.push_back(std::make_unique<AnalogPitchPanel>());
     panels.push_back(std::make_unique<ModernPitchPanel>());

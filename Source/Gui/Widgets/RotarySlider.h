@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../../Utility/AppSettings.h"
+#include "../../Utility/Math.h"
 #include <JuceHeader.h>
 
 namespace dmt {
@@ -10,8 +11,13 @@ namespace widgets {
 class RotarySlider : public juce::Slider
 {
   using Settings = dmt::AppSettings;
+  using Slider = Settings::Slider;
+  using Colour = Settings::Colour;
   const float& size = Settings::Layout::size;
   const float& rawPadding = Settings::Slider::padding;
+  const juce::Colour& shaftColour = Slider::shaftColour;
+  const float& shaftLineStrength = Slider::shaftLineStrength;
+  const float& shaftSize = Slider::shaftSize;
 
 public:
   enum class Type
@@ -32,19 +38,36 @@ public:
   }
   void paint(juce::Graphics& g) override
   {
-    auto bounds = getLocalBounds();
+    auto bounds = getLocalBounds().toFloat();
     auto padding = rawPadding * size;
     auto reducedBounds = bounds.reduced(padding);
 
     g.setColour(juce::Colours::green);
-    g.fillRect(bounds);
+    g.drawRect(bounds, 1.0f);
+
+    drawShaft(g, bounds);
   }
   Type getType() { return type; };
 
 private:
   Type type;
 
-  JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(RotarySlider)
+  void drawShaft(juce::Graphics& g, juce::Rectangle<float>& bounds) noexcept
+  {
+    float lineStrength = shaftLineStrength * size;
+    auto reducedBounds = bounds.reduced(lineStrength);
+    reducedBounds.setWidth(reducedBounds.getHeight());
+    reducedBounds.setCentre(bounds.getCentre());
+    g.setColour(shaftColour);
+    g.drawEllipse(reducedBounds, lineStrength);
+  }
+
+  void drawRail(juce::Rectangle<float> bounds) noexcept {}
+  void drawRailThumb(juce::Rectangle<float> bounds) noexcept {}
+  void drawSelector(juce::Rectangle<float> bounds) noexcept {}
+  void drawSelectorThumb(juce::Rectangle<float> bounds) noexcept {}
+
+  // JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(RotarySlider)
 };
 } // namespace widget
 } // namespace gui
