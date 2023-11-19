@@ -1,13 +1,11 @@
 //==============================================================================
-
 #pragma once
-
+//==============================================================================
 #include "../../Utility/Unit.h"
 #include "../Components/LinearSliderComponent.h"
 #include "../Components/RotarySliderComponent.h"
 #include "Panel.h"
 #include <JuceHeader.h>
-
 //==============================================================================
 namespace dmt {
 namespace gui {
@@ -22,7 +20,7 @@ public:
                const juce::String channel)
     : channel(channel)
     , gainSlider(apvts,
-                 juce::String("oscSendGain"),
+                 juce::String("Gain"),
                  juce::String("oscGain"),
                  dmt::InfoUnit::Type::Gain)
   {

@@ -10,20 +10,25 @@
 namespace dmt {
 namespace gui {
 namespace components {
+//==============================================================================
 class RotarySliderComponent
   : public juce::Component
   , public juce::Slider::Listener
 {
   using Settings = dmt::AppSettings;
+  using Layout = dmt::AppSettings::Layout;
   using Fonts = Settings::Fonts;
   using Slider = Settings::Slider;
   using RotarySLider = dmt::gui::widgets::RotarySlider;
   using Type = RotarySLider::Type;
+  const float& size = Layout::size;
   const float& padding = Slider::padding;
   const juce::Colour& titleFontColour = Slider::titleFontColour;
   const juce::Colour& infoFontColour = Slider::infoFontColour;
   const float& titleFontSize = Slider::titleFontSize;
   const float& infoFontSize = Slider::infoFontSize;
+  const float baseWidth = 120.0f;
+  const float baseHeight = 150.0f;
 
 public:
   RotarySliderComponent(juce::AudioProcessorValueTreeState& apvts,
@@ -35,9 +40,10 @@ public:
     , sliderAttachment(apvts, param, slider)
     , titleLabel(text, Fonts::regular, titleFontSize, titleFontColour)
     , infoLabel(juce::String("Info Label"),
-                Fonts::regular,
+                Fonts::light,
                 infoFontSize,
-                infoFontColour)
+                infoFontColour,
+                juce::Justification::centredBottom)
     , unitType(unitType)
   {
     slider.addListener(this);
@@ -48,20 +54,17 @@ public:
   }
   void resized()
   {
-    float labelSize = 0.15f;
-    titleLabel.setBoundsRelative(0.0f, 0.0f, 1.0f, labelSize);
-
-    float sliderY = 0.0f;
-    float sliderHeight = 1.0f;
-    slider.setBoundsRelative(0.0f, sliderY, 1.0f, sliderHeight);
-
-    float infoLabelY = 1.0f - labelSize;
-    infoLabel.setBoundsRelative(0.0f, infoLabelY, 1.0f, labelSize);
+    auto bounds = getLocalBounds();
+    float rawSliderSize = 0.75f;
+    float sliderSize = rawSliderSize * bounds.getHeight();
+    slider.setBounds(bounds.removeFromTop(sliderSize));
+    titleLabel.setBounds(bounds);
+    infoLabel.setBounds(bounds);
   }
   void sliderValueChanged(juce::Slider* slider) { updateLabel(); }
   void setSizeAndCentre(juce::Point<int> centrePoint)
   {
-    setSize(120, 150);
+    setSize(baseWidth * size, baseHeight * size);
     setCentrePosition(centrePoint);
   }
 
@@ -78,6 +81,7 @@ private:
     infoLabel.setText(text);
   }
 };
+//==============================================================================
 } // namespace components
 } // namespace gui
 } // namespace dmt

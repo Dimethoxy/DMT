@@ -111,16 +111,16 @@ struct AppSettings
     static inline Typeface::Ptr extraLightTypeface =
       Typeface::createSystemTypefaceFor(BinaryData::PoppinsExtraLight_ttf,
                                         BinaryData::PoppinsExtraLight_ttfSize);
-
-    static inline Typeface::Ptr regularTypeface =
-      Typeface::createSystemTypefaceFor(BinaryData::PoppinsRegular_ttf,
-                                        BinaryData::PoppinsRegular_ttfSize);
-
     static inline Typeface::Ptr lightTypeface =
       juce::Typeface::createSystemTypefaceFor(
         BinaryData::PoppinsSemiBold_ttf,
         BinaryData::PoppinsSemiBold_ttfSize);
 
+    static inline Typeface::Ptr regularTypeface =
+      Typeface::createSystemTypefaceFor(BinaryData::PoppinsRegular_ttf,
+                                        BinaryData::PoppinsRegular_ttfSize);
+
+    static inline juce::Font light = juce::Font(lightTypeface);
     static inline juce::Font regular = juce::Font(regularTypeface);
   };
 };
