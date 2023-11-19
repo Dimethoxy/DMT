@@ -165,7 +165,7 @@ protected:
     Grid grid(cols + 2, std::vector<juce::Point<float>>(rows + 2));
 
     for (int col = 0; col <= (layout.cols + 1); col++) {
-      for (int row = 0; row < layout.rows; row++) {
+      for (int row = 0; row <= (layout.rows + 1); row++) {
         const float x = (float)col * colSpacing;
         const float y = (float)row * rowSpacing;
         const auto point = juce::Point<float>(x, y);
@@ -175,10 +175,14 @@ protected:
     this->grid = grid;
     this->layout = layout;
   }
-  inline const juce::Point<int> getGridPoint(const int col,
+  inline const juce::Point<int> getGridPoint(const juce::Rectangle<int> bounds,
+                                             const int col,
                                              const int row) noexcept
   {
-    return this->grid[col][row].toInt();
+    auto rawPoint = grid[col][row];
+    juce::Point<float> point(rawPoint.getX() * (float)bounds.getWidth(),
+                             rawPoint.getY() * (float)bounds.getHeight());
+    return point.toInt();
   }
 
 private:

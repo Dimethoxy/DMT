@@ -26,7 +26,7 @@ public:
                  juce::String("oscGain"),
                  dmt::InfoUnit::Type::Gain)
   {
-    dmt::gui::Panel::Layout layout = { 2, 5 };
+    dmt::gui::Panel::Layout layout = { 1, 1 };
     setLayout(layout);
     addAndMakeVisible(gainSlider);
   }
@@ -39,7 +39,8 @@ public:
   void resized() noexcept override
   {
     dmt::gui::Panel::resized();
-    auto gainSliderPoint = this->getGridPoint(2, 2);
+    auto bounds = getLocalBounds();
+    auto gainSliderPoint = this->getGridPoint(bounds, 1, 1);
     gainSlider.setSize(100, 100);
     gainSlider.setCentrePosition(gainSliderPoint);
   }
