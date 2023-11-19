@@ -26,13 +26,22 @@ public:
                  juce::String("oscGain"),
                  dmt::InfoUnit::Type::Gain)
   {
-    dmt::gui::Panel::Layout layout = { 1, 5 };
+    dmt::gui::Panel::Layout layout = { 2, 5 };
     setLayout(layout);
+    addAndMakeVisible(gainSlider);
   }
 
   inline const juce::String getName() noexcept
   {
     return "Channel " + juce::String(channel);
+  }
+
+  void resized() noexcept override
+  {
+    dmt::gui::Panel::resized();
+    auto gainSliderPoint = this->getGridPoint(2, 2);
+    gainSlider.setSize(100, 100);
+    gainSlider.setCentrePosition(gainSliderPoint);
   }
 
 private:

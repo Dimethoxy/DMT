@@ -175,9 +175,10 @@ protected:
     this->grid = grid;
     this->layout = layout;
   }
-  inline const juce::Point<int> getGridPoint(const int x, const int y) noexcept
+  inline const juce::Point<int> getGridPoint(const int col,
+                                             const int row) noexcept
   {
-    return this->grid[x][y].toInt();
+    return this->grid[col][row].toInt();
   }
 
 private:
