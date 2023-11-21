@@ -21,9 +21,9 @@ class RotarySlider : public juce::Slider
   const float& rawShaftSize = Slider::shaftSize;
   const juce::Colour& lowerRailColour = Slider::lowerRailColour;
   const juce::Colour& upperRailColour = Slider::upperRailColour;
-  const float& railWidth = Slider::railWidth;
+  const float& rawRailWidth = Slider::railWidth;
   const float& railSize = Slider::railSize;
-
+  //==============================================================================
 public:
   enum class Type
   {
@@ -44,14 +44,16 @@ public:
   }
   void paint(juce::Graphics& g) override
   {
-    auto bounds = getLocalBounds().toFloat();
-    auto padding = rawPadding * size;
-    auto reducedBounds = bounds.reduced(padding);
+    const auto bounds = getLocalBounds().toFloat();
+    const auto padding = rawPadding * size;
 
-    g.setColour(juce::Colours::green);
-    g.drawRect(bounds, 1.0f);
+    // Draw bounds debug
+    g.setColour(juce::Colours::yellow);
+    if (Settings::debugBounds)
+      g.drawRect(bounds, 1.0f);
 
-    drawSlider(g, bounds);
+    // Draw slider
+    drawSlider(g, bounds.reduced(padding));
   }
   Type getType() { return type; };
 
@@ -62,18 +64,25 @@ private:
   void drawSlider(juce::Graphics& g,
                   const juce::Rectangle<float>& bounds) const noexcept
   {
+
     // Draw bounds debug
     g.setColour(juce::Colours::aqua);
-    g.drawRect(bounds, 1.0f);
+    if (Settings::debugBounds)
+      g.drawRect(bounds, 1.0f);
 
     // Draw the circle
     const auto shaftSize = rawShaftSize * bounds.getHeight();
-    auto reducedBounds = juce::Rectangle<float>(bounds);
-    reducedBounds.setSize(shaftSize, shaftSize);
-    reducedBounds.setCentre(bounds.getCentre());
+    auto shaftBounds = bounds;
+    shaftBounds.setSize(shaftSize, shaftSize);
+    shaftBounds.setCentre(bounds.getCentre());
     const float lineStrength = rawShaftLineStrength * size;
+    const auto rawCentre = shaftBounds.getCentre();
+    const float centreOffset = shaftBounds.getHeight() / 6.5f;
+    const float centreY = rawCentre.getY() + centreOffset;
+    const auto centre = juce::Point<float>(rawCentre.getX(), centreY);
+    shaftBounds.setCentre(centre);
     g.setColour(shaftColour);
-    g.drawEllipse(reducedBounds, lineStrength);
+    g.drawEllipse(shaftBounds, lineStrength);
 
     // Draw the tick
     const float value = getValue();
@@ -84,31 +93,32 @@ private:
     const float angleRange = normalizedEndAngle - normalizedStartAngle;
     const float gapRange = 360.0f - angleRange;
     const float angleOffset = 180.0f + (gapRange / 2.0f);
-    const auto centre = reducedBounds.getCentre();
     const float rawAngle = juce::jmap(
       value, minValue, maxValue, normalizedStartAngle, normalizedEndAngle);
     const float valueAngleInRadians =
       dmt::Math::degreeToRadians(rawAngle + angleOffset);
-    const auto tickLine = getTick(reducedBounds, centre, valueAngleInRadians);
+    const auto tickLine = getTick(shaftBounds, centre, valueAngleInRadians);
     g.drawLine(tickLine, lineStrength);
 
     // Draw the lower rail
+    const auto railWidth = rawRailWidth * size;
     const auto jointStyle = StrokeType::curved;
     const auto endCapStyle = StrokeType::butt;
-    const auto strokeType = StrokeType(railWidth, jointStyle, endCapStyle);
+    const auto strokeType =
+      StrokeType(railWidth * size, jointStyle, endCapStyle);
     const auto railBounds = bounds;
     const auto railRadius = railBounds.getWidth() * railSize / 2.0f;
     const auto startAngleInRadians =
       dmt::Math::degreeToRadians(normalizedStartAngle + angleOffset);
     const auto endAngleInRadians =
       dmt::Math::degreeToRadians(normalizedEndAngle + angleOffset);
-    const auto lowerRail = getLowerRail(
-      railBounds, railRadius, startAngleInRadians, endAngleInRadians);
+    const auto lowerRail =
+      getLowerRail(centre, railRadius, startAngleInRadians, endAngleInRadians);
     g.setColour(lowerRailColour);
     g.strokePath(lowerRail, strokeType);
 
     // Draw the upper rail
-    const auto upperRail = getUpperRail(railBounds,
+    const auto upperRail = getUpperRail(centre,
                                         railRadius,
                                         startAngleInRadians,
                                         endAngleInRadians,
@@ -118,7 +128,7 @@ private:
     g.strokePath(upperRail, strokeType);
   }
   //============================================================================
-  const juce::Path getUpperRail(const juce::Rectangle<float>& bounds,
+  const juce::Path getUpperRail(const juce::Point<float>& centre,
                                 float arcRadius,
                                 float startAngleInRadians,
                                 float endAngleInRadians,
@@ -128,8 +138,8 @@ private:
     juce::Path arc;
     switch (type) {
       case Type::Positive:
-        arc.addCentredArc(bounds.getCentreX(),
-                          bounds.getCentreY(),
+        arc.addCentredArc(centre.getX(),
+                          centre.getY(),
                           arcRadius,
                           arcRadius,
                           0.0f,
@@ -137,40 +147,40 @@ private:
                           valueAngleInRadians,
                           true);
         break;
-        /* case Type::Negative:
-           arc.addCentredArc(bounds.getCentreX(),
-                             bounds.getCentreY(),
-                             arcRadius,
-                             arcRadius,
-                             0.0f,
-                             endAngleInRadians,
-                             valueAngleInRadians,
-                             true);
-           break;
-         case Type::Bipolar:
-           auto center = (endAngleInRadians - startAngleInRadians) / 2.0f;
-           arc.addCentredArc(bounds.getCentreX(),
-                             bounds.getCentreY(),
-                             arcRadius,
-                             arcRadius,
-                             0.0f,
-                             startAngleInRadians + center,
-                             valueAngleInRadians,
-                             true);
-           break;*/
+      case Type::Negative:
+        arc.addCentredArc(centre.getX(),
+                          centre.getY(),
+                          arcRadius,
+                          arcRadius,
+                          0.0f,
+                          endAngleInRadians,
+                          valueAngleInRadians,
+                          true);
+        break;
+      case Type::Bipolar:
+        auto centreValue = (endAngleInRadians - startAngleInRadians) / 2.0f;
+        arc.addCentredArc(centre.getX(),
+                          centre.getY(),
+                          arcRadius,
+                          arcRadius,
+                          0.0f,
+                          startAngleInRadians + centreValue,
+                          valueAngleInRadians,
+                          true);
+        break;
     }
     return arc;
   }
 
   //============================================================================
-  const juce::Path getLowerRail(const juce::Rectangle<float>& bounds,
+  const juce::Path getLowerRail(const juce::Point<float>& centre,
                                 float arcRadius,
                                 float startAngleInRadians,
                                 float endAngleInRadians) const noexcept
   {
     juce::Path arc;
-    arc.addCentredArc(bounds.getCentreX(),
-                      bounds.getCentreY(),
+    arc.addCentredArc(centre.getX(),
+                      centre.getY(),
                       arcRadius,
                       arcRadius,
                       0.0f,

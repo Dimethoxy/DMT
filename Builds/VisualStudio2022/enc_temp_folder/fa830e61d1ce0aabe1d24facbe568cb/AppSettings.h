@@ -76,8 +76,8 @@ struct AppSettings
     static inline float padding = 8.0f;
     static inline float baseWidth = 140.0f;
     static inline float baseHeight = 150.0f;
-    static inline float sliderSize = 0.80f;
-    static inline float labelsSize = 0.29f;
+    static inline float rawSliderSize = 0.80f;
+    static inline float rawLabelsSize = 0.29f;
     // Font
     static inline Colour titleFontColour = Colours::font;
     static inline Colour infoFontColour = Colours::font;

@@ -24,8 +24,8 @@ class RotarySliderComponent
   const float& size = Layout::size;
   const float& baseWidth = Slider::baseWidth;
   const float& baseHeight = Slider::baseHeight;
-  const float& rawSliderSize = Slider::sliderSize;
-  const float& rawLabelsSize = Slider::labelsSize;
+  const float& rawSliderSize = Slider::rawSliderSize;
+  const float& rawLabelsSize = Slider::rawLabelsSize;
   const float& rawPadding = Slider::padding;
   const juce::Colour& titleFontColour = Slider::titleFontColour;
   const juce::Colour& infoFontColour = Slider::infoFontColour;

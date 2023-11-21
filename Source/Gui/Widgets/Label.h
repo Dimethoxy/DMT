@@ -32,8 +32,9 @@ public:
     auto bounds = getLocalBounds();
 
     // Draw bounds debug
-    // g.setColour(juce::Colours::aliceblue);
-    // g.drawRect(bounds, 1.0f);
+    g.setColour(juce::Colours::red);
+    if (Settings::debugBounds)
+      g.drawRect(bounds, 1.0f);
 
     g.setFont(fontSize * size);
     g.setColour(colour);

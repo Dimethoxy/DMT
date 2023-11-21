@@ -20,7 +20,7 @@ public:
                const juce::String channel)
     : channel(channel)
     , gainSlider(apvts,
-                 juce::String("Gain"),
+                 juce::String("Distortion"),
                  juce::String("oscGain"),
                  dmt::InfoUnit::Type::Gain)
   {
