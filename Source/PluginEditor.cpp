@@ -25,11 +25,13 @@ NeutrinoAudioProcessorEditor::NeutrinoAudioProcessorEditor(
   const float& leftWidth = Layout::leftWidth;
   const float& centerWidth = Layout::centerWidth;
   const float& rightWidth = Layout::rightWidth;
-  addAndMakeVisible(voicingPanel);
 
   addAndMakeVisible(oscillatorPanel);
+  addAndMakeVisible(voicingPanel);
+
   addAndMakeVisible(gainPanel);
   addAndMakeVisible(pitchPanel);
+  addAndMakeVisible(distortionPanel);
 
   addAndMakeVisible(sendPanelA);
   addAndMakeVisible(sendPanelB);
@@ -73,10 +75,12 @@ NeutrinoAudioProcessorEditor::resized()
 
   const float rawHeaderHeight = Settings::Layout::headerHeight + 2.0f * margin;
   const float headerHeight = rawHeaderHeight * size;
-  const float rawTabHeight = 60.0f + 2.0f * margin;
+  const float rawTabHeight = Settings::Layout::tabHeight + 2.0f * margin;
   const float tabHeight = rawTabHeight * size;
-  const float rawRowHeight = 300.0f + 2.0f * margin;
+  const float rawRowHeight = Settings::Layout::rowHeight + 2.0f * margin;
   const float rowHeight = rawRowHeight * size;
+  const float rawKeyboardHeight = Settings::Layout::keyboardHeight;
+  const float keyboardHeight = rawKeyboardHeight * size;
 
   auto innerBounds = bounds.reduced(margin);
   const auto headerBounds = innerBounds.removeFromTop(headerHeight);
@@ -84,6 +88,8 @@ NeutrinoAudioProcessorEditor::resized()
   const auto topBounds = innerBounds.removeFromTop(rowHeight);
   const auto midBounds = innerBounds.removeFromTop(rowHeight);
   const auto bottomBounds = innerBounds.removeFromTop(rowHeight);
+  const auto keyboardBounds =
+    juce::Rectangle<int>(0, height - keyboardHeight, width, keyboardHeight);
 
   innerBounds = bounds.reduced(margin);
   const auto leftBounds = innerBounds.removeFromLeft(leftWidth);
@@ -94,6 +100,10 @@ NeutrinoAudioProcessorEditor::resized()
                             topBounds.getY(),
                             leftBounds.getWidth(),
                             topBounds.getHeight() + bottomBounds.getHeight());
+  voicingPanel.setBounds(leftBounds.getX(),
+                         bottomBounds.getY(),
+                         leftBounds.getWidth(),
+                         bottomBounds.getHeight());
   gainPanel.setBounds(centerBounds.getX(),
                       topBounds.getY(),
                       centerBounds.getWidth(),
@@ -102,10 +112,10 @@ NeutrinoAudioProcessorEditor::resized()
                        midBounds.getY(),
                        centerBounds.getWidth(),
                        midBounds.getHeight());
-  voicingPanel.setBounds(leftBounds.getX(),
-                         bottomBounds.getY(),
-                         leftBounds.getWidth(),
-                         bottomBounds.getHeight());
+  distortionPanel.setBounds(centerBounds.getX(),
+                            bottomBounds.getY(),
+                            centerBounds.getWidth(),
+                            bottomBounds.getHeight());
   sendPanelA.setBounds(rightBounds.getX(),
                        topBounds.getY(),
                        rightBounds.getWidth(),
@@ -118,5 +128,6 @@ NeutrinoAudioProcessorEditor::resized()
                        bottomBounds.getY(),
                        rightBounds.getWidth(),
                        bottomBounds.getHeight());
+  keyboardComponent.setBounds(keyboardBounds);
 }
 //==============================================================================
