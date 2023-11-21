@@ -14,12 +14,8 @@ class WaveformDistortionPanel : public dmt::gui::Panel
 {
 public:
   WaveformDistortionPanel(/*juce::AudioProcessorValueTreeState& apvts*/)
-    : Panel()
+    : Panel("Waveform Distortion")
   { //
-  }
-  inline const juce::String getName() noexcept override
-  {
-    return "Waveform Distortion";
   }
 
 private:

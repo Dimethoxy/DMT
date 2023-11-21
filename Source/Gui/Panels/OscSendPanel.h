@@ -18,7 +18,7 @@ class OscSendPanel : public dmt::gui::Panel
 public:
   OscSendPanel(juce::AudioProcessorValueTreeState& apvts,
                const juce::String channel)
-    : Panel()
+    : Panel(juce::String("Channel " + channel))
     , channel(channel)
     , gainSlider(apvts,
                  juce::String("Distortion"),
@@ -28,11 +28,6 @@ public:
     dmt::gui::Panel::Layout layout = { 1, 10 };
     setLayout(layout);
     addAndMakeVisible(gainSlider);
-  }
-
-  inline const juce::String getName() noexcept
-  {
-    return "Channel " + juce::String(channel);
   }
 
   void resized() noexcept override

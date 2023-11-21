@@ -14,9 +14,9 @@ class VoicingPanel : public dmt::gui::Panel
 {
 public:
   VoicingPanel(/*juce::AudioProcessorValueTreeState& apvts*/)
+    : Panel("Voices")
   { //
   }
-  inline const juce::String getName() noexcept override { return "Voices"; }
 
 private:
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(VoicingPanel)

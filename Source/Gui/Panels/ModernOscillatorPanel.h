@@ -14,11 +14,8 @@ class ModernOscillatorPanel : public dmt::gui::Panel
 {
 public:
   ModernOscillatorPanel(/*juce::AudioProcessorValueTreeState& apvts*/)
+    : Panel("Modern Oscillator Panel")
   { //
-  }
-  inline const juce::String getName() noexcept override
-  {
-    return "Modern Oscillator Panel";
   }
 
 private:

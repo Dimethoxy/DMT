@@ -49,12 +49,10 @@ public:
     int rows;
   };
 
-  Panel() noexcept
+  Panel(juce::String name) noexcept
     : layout({ 1, 1 })
-    , titleLabel(juce::String("XXXXXXXXXXXXXXXXXXX"),
-                 Fonts::regular,
-                 24.0f,
-                 juce::Colours::white)
+    , name(name)
+    , titleLabel(name, Fonts::semiBold, fontSize, juce::Colours::white)
     , nextCallback([]() {})
     , prevCallback([]() {})
     , nextButton(dmt::gui::widgets::TriangleButton::right)
@@ -108,15 +106,6 @@ public:
       innerShadowPath.addRoundedRectangle(innerBounds, innerCornerSize);
       innerShadow.drawInnerForPath(g, innerShadowPath);
     }
-
-    // Draw the title text
-    /*auto textBounds = innerBounds;
-    g.setColour(fontColor);
-    auto titleFont = Fonts::regular.withHeight(fontSize * size);
-    g.setFont(titleFont);
-    g.drawText(
-      getName(), textBounds.toNearestInt(), juce::Justification::centredTop,
-    1);*/
   }
 
   void resized() noexcept override
@@ -137,7 +126,7 @@ public:
     rightBounds.setCentre(rightBounds.getCentreX(), bounds.getCentreY());
     nextButton.setBounds(rightBounds.reduced(size * margin));
 
-    titleLabel.setBoundsRelative(0.0f, 0.0f, 1.0f, 1.0f);
+    titleLabel.setBounds(bounds.reduced(22.0f * size));
   }
 
   virtual inline const juce::String getName() noexcept { return "Panel"; }
@@ -197,6 +186,7 @@ protected:
 private:
   Layout layout;
   Grid grid;
+  const juce::String name;
   dmt::gui::widgets::Label titleLabel;
   std::function<void()> nextCallback;
   std::function<void()> prevCallback;

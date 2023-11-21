@@ -41,7 +41,7 @@ public:
     g.drawText(text, this->getLocalBounds(), justification, true);
   }
 
-  void setText(juce::String text) noexcept { this->text = text; }
+  inline void setText(const juce::String& text) { this->text = text; }
 
 private:
   juce::String text;

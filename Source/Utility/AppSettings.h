@@ -31,7 +31,7 @@ struct AppSettings
     static inline float rightWidth = 200.0f;
     static inline float headerHeight = 100.0f;
     static inline float tabHeight = 60.0f;
-    static inline float rowHeight = 250.0f;
+    static inline float rowHeight = 275.0f;
     static inline float keyboardHeight = 100.0f;
     static inline float getHeight()
     {
@@ -70,7 +70,7 @@ struct AppSettings
     static inline float innerShadowRadius = 10.0f;
     // Text
     static inline juce::Colour fontColor = Colours::font;
-    static inline float fontSize = 54.0f;
+    static inline float fontSize = 38.0f;
   };
   static inline struct Slider
   {
@@ -122,7 +122,7 @@ struct AppSettings
   static inline struct Carousel
   {
     static inline float buttonWidth = 80.0f;
-    static inline float buttonHeight = 220.0f;
+    static inline float buttonHeight = 210.0f;
   };
   static inline struct Fonts
   {
