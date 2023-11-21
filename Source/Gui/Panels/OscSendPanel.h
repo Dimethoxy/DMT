@@ -18,7 +18,8 @@ class OscSendPanel : public dmt::gui::Panel
 public:
   OscSendPanel(juce::AudioProcessorValueTreeState& apvts,
                const juce::String channel)
-    : channel(channel)
+    : Panel()
+    , channel(channel)
     , gainSlider(apvts,
                  juce::String("Distortion"),
                  juce::String("oscGain"),

@@ -31,7 +31,8 @@ struct AppSettings
     static inline float rightWidth = 200.0f;
     static inline float headerHeight = 100.0f;
     static inline float tabHeight = 60.0f;
-    static inline float rowHeight = 300.0f;
+    static inline float rowHeight = 250.0f;
+    static inline float keyboardHeight = 100.0f;
     static inline float getHeight()
     {
       auto header = headerHeight + 2.0f * margin;
@@ -39,7 +40,8 @@ struct AppSettings
       auto top = rowHeight + 2.0f * margin;
       auto mid = rowHeight + 2.0f * margin;
       auto low = rowHeight + 2.0f * margin;
-      return header + tab + top + mid + low + 2 * margin;
+      auto keyboard = keyboardHeight;
+      return header + tab + top + mid + low + keyboard + 2 * margin;
     }
     static inline float getWidth()
     {
@@ -76,8 +78,8 @@ struct AppSettings
     static inline float padding = 8.0f;
     static inline float baseWidth = 140.0f;
     static inline float baseHeight = 150.0f;
-    static inline float sliderSize = 0.80f;
-    static inline float labelsSize = 0.29f;
+    static inline float sliderSize = 0.77f;
+    static inline float labelsSize = 0.28f;
     // Font
     static inline Colour titleFontColour = Colours::font;
     static inline Colour infoFontColour = Colours::font;
@@ -92,6 +94,11 @@ struct AppSettings
     static inline juce::Colour upperRailColour = Colours::primary;
     static inline float railWidth = 12.0f;
     static inline float railSize = 0.72f;
+    // Thumb
+    static inline juce::Colour thumbInnerColour = Colours::solid_dark;
+    static inline juce::Colour thumOuterColour = Colours::font;
+    static inline float thumbSize = 24.0f;
+    static inline float thumbStrength = 4.0f;
   };
   static inline struct TriangleButton
   {
@@ -133,8 +140,13 @@ struct AppSettings
       Typeface::createSystemTypefaceFor(BinaryData::PoppinsRegular_ttf,
                                         BinaryData::PoppinsRegular_ttfSize);
 
+    static inline Typeface::Ptr semiBoldTypeface =
+      Typeface::createSystemTypefaceFor(BinaryData::PoppinsSemiBold_ttf,
+                                        BinaryData::PoppinsSemiBold_ttfSize);
+
     static inline juce::Font light = juce::Font(lightTypeface);
     static inline juce::Font regular = juce::Font(regularTypeface);
+    static inline juce::Font semiBold = juce::Font(semiBoldTypeface);
   };
 };
 }

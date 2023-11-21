@@ -10,16 +10,20 @@ namespace dmt {
 namespace gui {
 namespace panels {
 //==============================================================================
-class VoicePanel : public dmt::gui::Panel
+class WaveformDistortionPanel : public dmt::gui::Panel
 {
 public:
-  VoicePanel(/*juce::AudioProcessorValueTreeState& apvts*/)
+  WaveformDistortionPanel(/*juce::AudioProcessorValueTreeState& apvts*/)
+    : Panel()
   { //
   }
-  juce::String getName() override { return "Voices"; }
+  inline const juce::String getName() noexcept override
+  {
+    return "Waveform Distortion";
+  }
 
 private:
-  JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(VoicePanel)
+  JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(WaveformDistortionPanel)
 };
 //==============================================================================
 } // namespace panels

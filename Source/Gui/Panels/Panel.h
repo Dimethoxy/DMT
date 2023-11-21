@@ -4,6 +4,7 @@
 
 #include "../../Utility/AppSettings.h"
 #include "../../Utility/Shadow.h"
+#include "../Widgets/Label.h"
 #include "../Widgets/TriangleButton.h"
 #include <JuceHeader.h>
 
@@ -49,14 +50,19 @@ public:
   };
 
   Panel() noexcept
-    : nextCallback([]() {})
+    : layout({ 1, 1 })
+    , titleLabel(juce::String("XXXXXXXXXXXXXXXXXXX"),
+                 Fonts::regular,
+                 24.0f,
+                 juce::Colours::white)
+    , nextCallback([]() {})
     , prevCallback([]() {})
     , nextButton(dmt::gui::widgets::TriangleButton::right)
     , prevButton(dmt::gui::widgets::TriangleButton::left)
     , outerShadow(outerShadowColour, outerShadowRadius)
     , innerShadow(innerShadowColour, innerShadowRadius)
   {
-    resized();
+    addAndMakeVisible(titleLabel);
   }
 
   void paint(juce::Graphics& g) noexcept override
@@ -104,12 +110,13 @@ public:
     }
 
     // Draw the title text
-    auto textBounds = innerBounds;
+    /*auto textBounds = innerBounds;
     g.setColour(fontColor);
     auto titleFont = Fonts::regular.withHeight(fontSize * size);
     g.setFont(titleFont);
     g.drawText(
-      getName(), textBounds.toNearestInt(), juce::Justification::centredTop, 1);
+      getName(), textBounds.toNearestInt(), juce::Justification::centredTop,
+    1);*/
   }
 
   void resized() noexcept override
@@ -129,6 +136,8 @@ public:
     rightBounds.setHeight(Carousel::buttonHeight * size);
     rightBounds.setCentre(rightBounds.getCentreX(), bounds.getCentreY());
     nextButton.setBounds(rightBounds.reduced(size * margin));
+
+    titleLabel.setBoundsRelative(0.0f, 0.0f, 1.0f, 1.0f);
   }
 
   virtual inline const juce::String getName() noexcept { return "Panel"; }
@@ -188,6 +197,7 @@ protected:
 private:
   Layout layout;
   Grid grid;
+  dmt::gui::widgets::Label titleLabel;
   std::function<void()> nextCallback;
   std::function<void()> prevCallback;
   dmt::gui::widgets::TriangleButton nextButton;
