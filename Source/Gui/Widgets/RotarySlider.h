@@ -15,14 +15,22 @@ class RotarySlider : public juce::Slider
   using Colour = Settings::Colour;
   using StrokeType = juce::PathStrokeType;
   const float& size = Settings::Layout::size;
+  // General
   const float& rawPadding = Settings::Slider::padding;
+  // Shaft
   const juce::Colour& shaftColour = Slider::shaftColour;
   const float& rawShaftLineStrength = Slider::shaftLineStrength;
   const float& rawShaftSize = Slider::shaftSize;
+  // Rail
   const juce::Colour& lowerRailColour = Slider::lowerRailColour;
   const juce::Colour& upperRailColour = Slider::upperRailColour;
   const float& rawRailWidth = Slider::railWidth;
   const float& railSize = Slider::railSize;
+  // Thumb
+  const juce::Colour& thumbInnerColour = Slider::thumbInnerColour;
+  const juce::Colour& thumOuterColour = Slider::thumOuterColour;
+  const float& rawThumbSize = Slider::thumbSize;
+  const float& rawThumbStrength = Slider::thumbStrength;
   //==============================================================================
 public:
   enum class Type
@@ -104,8 +112,7 @@ private:
     const auto railWidth = rawRailWidth * size;
     const auto jointStyle = StrokeType::curved;
     const auto endCapStyle = StrokeType::butt;
-    const auto strokeType =
-      StrokeType(railWidth * size, jointStyle, endCapStyle);
+    const auto strokeType = StrokeType(railWidth, jointStyle, endCapStyle);
     const auto railBounds = bounds;
     const auto railRadius = railBounds.getWidth() * railSize / 2.0f;
     const auto startAngleInRadians =
@@ -126,6 +133,19 @@ private:
                                         type);
     g.setColour(upperRailColour);
     g.strokePath(upperRail, strokeType);
+
+    // Draw the Thumb
+    const auto thumbPoint =
+      dmt::Math::pointOnCircle(centre, railRadius, valueAngleInRadians);
+    const float thumbSize = rawThumbSize * size;
+    const float thumbStrength = rawThumbStrength * size;
+    const auto thumbBounds = juce::Rectangle<float>()
+                               .withSize(thumbSize, thumbSize)
+                               .withCentre(thumbPoint);
+    g.setColour(thumOuterColour);
+    g.fillEllipse(thumbBounds);
+    g.setColour(thumbInnerColour);
+    g.fillEllipse(thumbBounds.reduced(thumbStrength));
   }
   //============================================================================
   const juce::Path getUpperRail(const juce::Point<float>& centre,
@@ -203,8 +223,6 @@ private:
     return juce::Line<float>(outerPoint, innerPoint);
   }
   //============================================================================
-  void drawSelector(juce::Rectangle<float> bounds) noexcept {}
-  void drawSelectorThumb(juce::Rectangle<float> bounds) noexcept {}
 
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(RotarySlider)
 };
