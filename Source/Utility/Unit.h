@@ -7,7 +7,7 @@
 namespace dmt {
 struct InfoUnit
 {
-  static inline enum class Type {
+  static enum class Type {
     Gain,
     Threshold,
     Cutoff,

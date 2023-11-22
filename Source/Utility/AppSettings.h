@@ -10,7 +10,7 @@ struct AppSettings
   static inline juce::String name = "Neutrino";
   static inline float size = 1.0f;
   static inline const bool debugBounds = false;
-  static inline struct Colours
+  struct Colours
   {
     using Colour = juce::Colour;
     static inline Colour background = Colour(25, 26, 33);
@@ -22,7 +22,7 @@ struct AppSettings
     static inline float opacityStep = 0.05f;
   };
 
-  static inline struct Layout
+  struct Layout
   {
     static inline float size = 1.0f;
     static inline float margin = 8.0f;
@@ -51,7 +51,7 @@ struct AppSettings
       return left + center + right + 2.0f * margin;
     }
   };
-  static inline struct Panel
+  struct Panel
   {
     // General
     static inline Colour backgroundColor = Colours::background;
@@ -72,7 +72,7 @@ struct AppSettings
     static inline juce::Colour fontColor = Colours::font;
     static inline float fontSize = 38.0f;
   };
-  static inline struct Slider
+  struct Slider
   {
     // General
     static inline float padding = 8.0f;
@@ -100,7 +100,7 @@ struct AppSettings
     static inline float thumbSize = 24.0f;
     static inline float thumbStrength = 4.0f;
   };
-  static inline struct TriangleButton
+  struct TriangleButton
   {
     // General
     static inline Colour standbyColour = Colours::shadow.withAlpha(0.5f);
@@ -119,12 +119,12 @@ struct AppSettings
     static inline float outerShadowRadius = 4.0f;
     static inline float innerShadowRadius = 4.0f;
   };
-  static inline struct Carousel
+  static struct Carousel
   {
     static inline float buttonWidth = 80.0f;
     static inline float buttonHeight = 210.0f;
   };
-  static inline struct Fonts
+  static struct Fonts
   {
     using Typeface = juce::Typeface;
 

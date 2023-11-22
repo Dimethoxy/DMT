@@ -3,7 +3,7 @@
 <JUCERPROJECT id="X0QZwP" name="Neutrino" projectType="audioplug" useAppConfig="0"
               addUsingNamespaceToJuceHeader="0" jucerFormatVersion="1" pluginFormats="buildStandalone,buildVST3"
               version="0.0.1" companyName="Dimethoxy" pluginCharacteristicsValue="pluginIsSynth,pluginWantsMidiIn"
-              cppLanguageStandard="17">
+              cppLanguageStandard="20">
   <MAINGROUP id="M46wPq" name="Neutrino">
     <GROUP id="{57F32CD7-2916-0410-198A-648E6A650819}" name="Fonts">
       <GROUP id="{9E6859DE-3CA2-9022-38EB-83E4441051E7}" name="Poppins">
@@ -161,7 +161,7 @@
         <MODULEPATH id="juce_dsp" path="../../Ressources/JUCE/modules"/>
       </MODULEPATHS>
     </VS2022>
-    <XCODE_MAC targetFolder="Builds/MacOSX">
+    <XCODE_MAC targetFolder="Builds/MacOSX" enableGNUExtensions="1">
       <CONFIGURATIONS>
         <CONFIGURATION isDebug="1" name="Debug"/>
         <CONFIGURATION isDebug="0" name="Release"/>

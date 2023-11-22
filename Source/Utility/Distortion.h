@@ -5,7 +5,7 @@
 namespace dmt {
 struct Distortion
 {
-  static inline enum class Type {
+  static enum class Type {
     Hardclip,
     Root,
     Atan,
