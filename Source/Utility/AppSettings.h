@@ -25,14 +25,14 @@ struct AppSettings
   struct Layout
   {
     static inline float size = 1.0f;
-    static inline float margin = 8.0f;
-    static inline float leftWidth = 1025.0f;
-    static inline float centerWidth = 500.0f;
+    static inline float margin = 5.0f;
+    static inline float leftWidth = 700.0f;
+    static inline float centerWidth = 400.0f;
     static inline float rightWidth = 200.0f;
-    static inline float headerHeight = 100.0f;
-    static inline float tabHeight = 60.0f;
-    static inline float rowHeight = 275.0f;
-    static inline float keyboardHeight = 100.0f;
+    static inline float headerHeight = 60.0f;
+    static inline float tabHeight = 40.0f;
+    static inline float rowHeight = 200.0f;
+    static inline float keyboardHeight = 60.0f;
     static inline float getHeight()
     {
       auto header = headerHeight + 2.0f * margin;
@@ -70,7 +70,7 @@ struct AppSettings
     static inline float innerShadowRadius = 10.0f;
     // Text
     static inline juce::Colour fontColor = Colours::font;
-    static inline float fontSize = 38.0f;
+    static inline float fontSize = 24.0f;
   };
   struct Slider
   {
