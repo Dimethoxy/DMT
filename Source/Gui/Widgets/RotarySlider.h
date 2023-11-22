@@ -41,8 +41,8 @@ public:
     Selector
   };
   RotarySlider(Type type)
-    : juce::Slider()
-    , type(type)
+  : juce::Slider()
+  , type(type)
   {
     setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
     setTextBoxStyle(juce::Slider::TextBoxBelow, true, 0, 0);
@@ -54,17 +54,16 @@ public:
   {
     const auto bounds = getLocalBounds().toFloat();
     const auto padding = rawPadding * size;
-
+    
     // Draw bounds debug
     g.setColour(juce::Colours::yellow);
     if (Settings::debugBounds)
       g.drawRect(bounds, 1.0f);
-
-    // Draw slider
+    
     drawSlider(g, bounds.reduced(padding));
   }
   Type getType() { return type; };
-
+  
 private:
   Type type;
   //============================================================================
@@ -72,12 +71,12 @@ private:
   void drawSlider(juce::Graphics& g,
                   const juce::Rectangle<float>& bounds) const noexcept
   {
-
+    
     // Draw bounds debug
     g.setColour(juce::Colours::aqua);
     if (Settings::debugBounds)
       g.drawRect(bounds, 1.0f);
-
+    
     // Draw the circle
     const auto shaftSize = rawShaftSize * bounds.getHeight();
     auto shaftBounds = bounds;
@@ -91,7 +90,7 @@ private:
     shaftBounds.setCentre(centre);
     g.setColour(shaftColour);
     g.drawEllipse(shaftBounds, lineStrength);
-
+    
     // Draw the tick
     const float value = getValue();
     const float minValue = getMinimum();
@@ -102,12 +101,18 @@ private:
     const float gapRange = 360.0f - angleRange;
     const float angleOffset = 180.0f + (gapRange / 2.0f);
     const float rawAngle = juce::jmap(
-      value, minValue, maxValue, normalizedStartAngle, normalizedEndAngle);
+                                      value, minValue, maxValue, normalizedStartAngle, normalizedEndAngle);
     const float valueAngleInRadians =
-      dmt::Math::degreeToRadians(rawAngle + angleOffset);
+    dmt::Math::degreeToRadians(rawAngle + angleOffset);
     const auto tickLine = getTick(shaftBounds, centre, valueAngleInRadians);
     g.drawLine(tickLine, lineStrength);
-
+    
+    // Draw selector and exit
+    if(type == Type::Selector){
+      drawSelectorDots(g, bounds);
+      return;
+    }
+    
     // Draw the lower rail
     const auto railWidth = rawRailWidth * size;
     const auto jointStyle = StrokeType::curved;
@@ -116,14 +121,14 @@ private:
     const auto railBounds = bounds;
     const auto railRadius = railBounds.getWidth() * railSize / 2.0f;
     const auto startAngleInRadians =
-      dmt::Math::degreeToRadians(normalizedStartAngle + angleOffset);
+    dmt::Math::degreeToRadians(normalizedStartAngle + angleOffset);
     const auto endAngleInRadians =
-      dmt::Math::degreeToRadians(normalizedEndAngle + angleOffset);
+    dmt::Math::degreeToRadians(normalizedEndAngle + angleOffset);
     const auto lowerRail =
-      getLowerRail(centre, railRadius, startAngleInRadians, endAngleInRadians);
+    getLowerRail(centre, railRadius, startAngleInRadians, endAngleInRadians);
     g.setColour(lowerRailColour);
     g.strokePath(lowerRail, strokeType);
-
+    
     // Draw the upper rail
     const auto upperRail = getUpperRail(centre,
                                         railRadius,
@@ -133,30 +138,54 @@ private:
                                         type);
     g.setColour(upperRailColour);
     g.strokePath(upperRail, strokeType);
-
+    
     // Draw the Thumb
     const auto thumbPoint =
-      dmt::Math::pointOnCircle(centre, railRadius, valueAngleInRadians);
+    dmt::Math::pointOnCircle(centre, railRadius, valueAngleInRadians);
     const float thumbSize = rawThumbSize * size;
     const float thumbStrength = rawThumbStrength * size;
     const auto thumbBounds = juce::Rectangle<float>()
-                               .withSize(thumbSize, thumbSize)
-                               .withCentre(thumbPoint);
+      .withSize(thumbSize, thumbSize)
+      .withCentre(thumbPoint);
     g.setColour(thumOuterColour);
     g.fillEllipse(thumbBounds);
     g.setColour(thumbInnerColour);
     g.fillEllipse(thumbBounds.reduced(thumbStrength));
   }
   //============================================================================
+  void drawSelectorDots(juce::Graphics& g,
+                    const juce::Rectangle<float>& bounds,
+                    const float arcRadius,
+                    const float startAngleInRadians,
+                    const float endAngleInRadians,
+                    const int numDots,
+                    const int slection) const noexcept
+  {
+    for (int i = 0; i <= numDots; i++) {
+      if (i == slection)
+        // TODO: Add parameters
+        drawSelectorThumb();
+      else
+        // TODO: Add parameters
+        drawDot();
+    }
+  }
+  //============================================================================
+  void drawDot(){
+    // TODO: Implement
+  }
+  void drawSelectorThumb(){
+    // TODO: Implement
+  }
+  //============================================================================
   const juce::Path getUpperRail(const juce::Point<float>& centre,
-                                float arcRadius,
-                                float startAngleInRadians,
-                                float endAngleInRadians,
-                                float valueAngleInRadians,
-                                Type type) const noexcept
+                                const float arcRadius,
+                                const float startAngleInRadians,
+                                const float endAngleInRadians,
+                                const float valueAngleInRadians) const noexcept
   {
     juce::Path arc;
-    switch (type) {
+    switch (this->type) {
       case Type::Positive:
         arc.addCentredArc(centre.getX(),
                           centre.getY(),
@@ -188,10 +217,12 @@ private:
                           valueAngleInRadians,
                           true);
         break;
+      case Type::Selector:
+        jassert("How did we get here?");
     }
     return arc;
   }
-
+  
   //============================================================================
   const juce::Path getLowerRail(const juce::Point<float>& centre,
                                 float arcRadius,
@@ -216,14 +247,14 @@ private:
   {
     const float outerRadius = bounds.getWidth() / 2.0f;
     const auto outerPoint =
-      dmt::Math::pointOnCircle(centre, outerRadius, angleInRadians);
+    dmt::Math::pointOnCircle(centre, outerRadius, angleInRadians);
     const float innerRadius = outerRadius / 5.0f;
     const auto innerPoint =
-      dmt::Math::pointOnCircle(centre, innerRadius, angleInRadians);
+    dmt::Math::pointOnCircle(centre, innerRadius, angleInRadians);
     return juce::Line<float>(outerPoint, innerPoint);
   }
   //============================================================================
-
+  
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(RotarySlider)
 };
 } // namespace widget

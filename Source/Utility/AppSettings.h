@@ -27,7 +27,7 @@ struct AppSettings
     static inline float size = 1.0f;
     static inline float margin = 5.0f;
     static inline float leftWidth = 700.0f;
-    static inline float centerWidth = 400.0f;
+    static inline float centerWidth = 500.0f;
     static inline float rightWidth = 200.0f;
     static inline float headerHeight = 60.0f;
     static inline float tabHeight = 40.0f;
