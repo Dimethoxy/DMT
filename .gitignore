@@ -365,7 +365,7 @@ FodyWeavers.xsd
 #========================================================================
 
 # Ignore build artifacts and CMake-related files
-build/
+Builds/
 CMakeFiles/
 CMakeCache.txt
 CMakeScripts/

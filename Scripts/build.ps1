@@ -1,8 +1,11 @@
 # Windows PowerShell build script
 
+# Step 0: Get the current script's directory
+$dir = $PSScriptRoot
+
 # Step 1: Configure the project with CMake
 Write-Host "Configuring the project with CMake..."
-cmake -S ../ -B Builds
+cmake -S $dir/../ -B $dir/../Builds
 
 # Check if the configuration step was successful
 if ($LastExitCode -ne 0) {
@@ -12,7 +15,7 @@ if ($LastExitCode -ne 0) {
 
 # Step 2: Build the project with CMake
 Write-Host "Building the project with CMake..."
-cmake --build Builds
+cmake --build $dir/../Builds
 
 # Check if the build step was successful
 if ($LastExitCode -ne 0) {

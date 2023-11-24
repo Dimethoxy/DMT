@@ -22,6 +22,10 @@ juce_add_plugin(${PROJECT_NAME}
     FORMATS standalone vst3                       
     PRODUCT_NAME "Neutrino")                    
 
+# Generate JUCE header file
+juce_generate_juce_header(${PROJECT_NAME})
+message("JUCE header file generated!")
+
 # Add the source files to the project
 target_sources(${PROJECT_NAME}
     PRIVATE
