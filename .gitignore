@@ -361,3 +361,51 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+#========================================================================
+
+# Ignore build artifacts and CMake-related files
+build/
+CMakeFiles/
+CMakeCache.txt
+CMakeScripts/
+*.cmake
+Makefile
+cmake_install.cmake
+compile_commands.json
+
+# Ignore Visual Studio Code settings
+.vscode/
+
+# Ignore any user-specific files or directories
+*.user
+*.suo
+*.sln.docstates
+
+# Ignore system-specific files
+Thumbs.db
+.DS_Store
+
+# Ignore compiled binaries and libraries
+*.exe
+*.out
+*.dll
+*.so
+*.dylib
+
+# Ignore generated documentation
+doc/
+
+# Ignore any package manager directories
+/lib/
+/bin/
+
+# Ignore any logs or temporary files
+*.log
+*.tmp
+
+# Ignore JUCE library source directory
+Libraries/JUCE/
+
+# Ignore GoogleTest library source directory
+Libraries/GoogleTest/
