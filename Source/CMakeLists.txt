@@ -22,9 +22,6 @@ juce_add_plugin(${PROJECT_NAME}
     FORMATS standalone vst3                       
     PRODUCT_NAME "Neutrino")                    
 
-# Generate JUCE header file
-juce_generate_juce_header(${PROJECT_NAME})
-message("JUCE header file generated!")
 
 # Add the source files to the project
 target_sources(${PROJECT_NAME}
@@ -32,15 +29,36 @@ target_sources(${PROJECT_NAME}
         PluginEditor.cpp
         PluginProcessor.cpp)
 
+# Add the Poppins font using juce_add_binary_data
+juce_add_binary_data(FontBinaryData
+    SOURCES
+        ${CMAKE_SOURCE_DIR}/Fonts/Poppins/Poppins-Regular.ttf
+        ${CMAKE_SOURCE_DIR}/Fonts/Poppins/Poppins-ExtraLight.ttf
+        ${CMAKE_SOURCE_DIR}/Fonts/Poppins/Poppins-ExtraBold.ttf
+        ${CMAKE_SOURCE_DIR}/Fonts/Poppins/Poppins-SemiBold.ttf
+)
+
 # Add the JUCE modules to the project
 target_link_libraries(${PROJECT_NAME}
     PRIVATE
-        juce::juce_audio_utils
+        juce::juce_audio_basics
+        juce::juce_audio_devices
+        juce::juce_audio_formats
+        juce::juce_audio_plugin_client
         juce::juce_audio_processors
+        juce::juce_audio_utils
+        juce::juce_core
+        juce::juce_cryptography
+        juce::juce_data_structures
         juce::juce_dsp
+        juce::juce_events
+        juce::juce_graphics
         juce::juce_gui_basics
         juce::juce_gui_extra
+        juce::juce_opengl
+        juce::juce_product_unlocking
     PUBLIC
+        FontBinaryData
         juce::juce_recommended_config_flags
         juce::juce_recommended_lto_flags
         juce::juce_recommended_warning_flags)
@@ -53,8 +71,13 @@ target_compile_definitions(${PROJECT_NAME}
         JUCE_VST3_CAN_REPLACE_VST2=0
         JUCE_SHOW_SPLASH_SCREEN=0)
 
+        
 #==============================================================================
+# Generate JUCE header file
+juce_generate_juce_header(${PROJECT_NAME})
+message("JUCE header file generated!")
 
+#==============================================================================
 # Supress JUCE warnings for MSVC
 if(MSVC)
     target_compile_definitions(${PROJECT_NAME}

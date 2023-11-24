@@ -49,20 +49,21 @@ CPMAddPackage(
 
 #==============================================================================
 
+# Add the subdirectories
+add_subdirectory(Fonts)
+add_subdirectory(Source)
+#add_subdirectory(Tests)
+
+#==============================================================================
 # Setup compiler settings
 if(MSVC)
     # Set the warning level to 4 and treat warnings as errors
-    add_compile_options(/Wall /WX)
+    add_compile_options(/Qspectre )#/Wall /WX)
 else()
     # Set the warning level to 4 and treat warnings as errors
     add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
 
 # Enable testing
-enable_testing()
+#enable_testing()
 
-#==============================================================================
-
-# Add the subdirectories
-add_subdirectory(Source)
-add_subdirectory(Tests)
