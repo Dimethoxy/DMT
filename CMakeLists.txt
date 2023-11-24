@@ -20,10 +20,10 @@ project(Neutrino LANGUAGES CXX VERSION ${PROJECT_VERSION})
 set(CMAKE_CXX_STANDARD 17)
 
 # Set the directory for external libraries
-set(LIB_DIR ${CMAKE_CURRENT_SOURCE_DIR}/Libraries)
+set(EXT_DIR ${CMAKE_CURRENT_SOURCE_DIR}/external)
 
 # Load the CPM.cmake module for downloading external libraries
-include(CMake/CPM.cmake)
+include(cmake/get_cpm.cmake)
 
 #==============================================================================
 
@@ -33,7 +33,7 @@ CPMAddPackage(
     GITHUB_REPOSITORY juce-framework/JUCE
     GIT_TAG 7.0.9
     VERSION 7.0.9
-    SOURCE_DIR ${LIB_DIR}/JUCE
+    SOURCE_DIR ${EXT_DIR}/juce
 )
 # Add the GoogleTest library
 CPMAddPackage(
@@ -41,7 +41,7 @@ CPMAddPackage(
     GITHUB_REPOSITORY google/googletest
     GIT_TAG v1.14.0
     VERSION 1.14.0
-    SOURCE_DIR ${LIB_DIR}/GoogleTest
+    SOURCE_DIR ${EXT_DIR}/googletest
     OPTIONS
         "INSTALL_GTEST OFF"
         "gtest_force_shared_crt ON"
@@ -50,7 +50,7 @@ CPMAddPackage(
 #==============================================================================
 
 # Add the subdirectories
-add_subdirectory(Fonts)
+#add_subdirectory(Fonts)
 add_subdirectory(Source)
 #add_subdirectory(Tests)
 
