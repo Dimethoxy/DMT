@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "../Widgets/Carousel.h"
+#include "../widgets/Carousel.h"
 #include "AnalogPitchPanel.h"
 #include "ModernPitchPanel.h"
 #include "Panel.h"
@@ -13,12 +13,9 @@ namespace dmt {
 namespace gui {
 namespace panels {
 //==============================================================================
-class PitchPanel : public dmt::gui::panels::Carousel
-{
+class PitchPanel : public dmt::gui::panels::Carousel {
 public:
-  OscillatorPanel()
-    : Carousel()
-  {
+  OscillatorPanel() : Carousel() {
     panels.push_back(std::make_unique<AnalogPitchPanel>());
     panels.push_back(std::make_unique<ModernPitchPanel>());
     init();

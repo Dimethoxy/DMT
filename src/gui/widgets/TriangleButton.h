@@ -10,7 +10,7 @@
 
 #pragma once
 
-#include "../../Utility/AppSettings.h"
+#include "../../utility/AppSettings.h"
 #include <JuceHeader.h>
 
 //==============================================================================
@@ -18,91 +18,79 @@ namespace dmt {
 namespace gui {
 namespace widgets {
 //==============================================================================
-class TriangleButton : public juce::Button
-{
+class TriangleButton : public juce::Button {
   // Global
   using Settings = dmt::AppSettings::TriangleButton;
-  const float& size = dmt::AppSettings::size;
-  const float& margin = dmt::AppSettings::Layout::margin;
+  const float &size = dmt::AppSettings::size;
+  const float &margin = dmt::AppSettings::Layout::margin;
   // General
-  const juce::Colour& standbyColour = Settings::standbyColour;
-  const juce::Colour& hoverColour = Settings::hoverColour;
-  const float& buttonMargin = Settings::margin;
-  const float& toggleReduction = Settings::toggleReduction;
+  const juce::Colour &standbyColour = Settings::standbyColour;
+  const juce::Colour &hoverColour = Settings::hoverColour;
+  const float &buttonMargin = Settings::margin;
+  const float &toggleReduction = Settings::toggleReduction;
   // Border
-  const bool& drawBorder = Settings::drawBorder;
-  const juce::Colour& borderColour = Settings::borderColour;
-  const float& borderStrength = Settings::borderStrength;
+  const bool &drawBorder = Settings::drawBorder;
+  const juce::Colour &borderColour = Settings::borderColour;
+  const float &borderStrength = Settings::borderStrength;
   // Shadows
-  const bool& drawOuterShadow = Settings::drawOuterShadow;
-  const bool& drawInnerShadow = Settings::drawInnerShadow;
-  const juce::Colour& outerShadowColour = Settings::outerShadowColour;
-  const juce::Colour& innerShadowColour = Settings::innerShadowColour;
-  const float& outerShadowRadius = Settings::outerShadowRadius;
-  const float& innerShadowRadius = Settings::innerShadowRadius;
+  const bool &drawOuterShadow = Settings::drawOuterShadow;
+  const bool &drawInnerShadow = Settings::drawInnerShadow;
+  const juce::Colour &outerShadowColour = Settings::outerShadowColour;
+  const juce::Colour &innerShadowColour = Settings::innerShadowColour;
+  const float &outerShadowRadius = Settings::outerShadowRadius;
+  const float &innerShadowRadius = Settings::innerShadowRadius;
 
 public:
   //============================================================================
-  enum Direction
-  {
-    left,
-    right,
-    top,
-    down
-  };
+  enum Direction { left, right, top, down };
   //============================================================================
   TriangleButton(Direction d)
-    : direction(d)
-    , juce::Button("TriangleButton")
-    , outerShadow(outerShadowColour, outerShadowRadius)
-    , innerShadow(innerShadowColour, innerShadowRadius)
+      : direction(d), juce::Button("TriangleButton"),
+        outerShadow(outerShadowColour, outerShadowRadius),
+        innerShadow(innerShadowColour, innerShadowRadius)
 
-  {
-  }
+  {}
 
 protected:
-  juce::Rectangle<int> getTriangleBounds(const juce::Rectangle<int> bounds)
-  {
+  juce::Rectangle<int> getTriangleBounds(const juce::Rectangle<int> bounds) {
     juce::Rectangle<int> result;
     return result;
   }
-  juce::Path getPath(juce::Rectangle<int> bounds)
-  {
+  juce::Path getPath(juce::Rectangle<int> bounds) {
     juce::Path path;
     switch (direction) {
-      case left: {
-        juce::Point<float> p1(bounds.getX(), bounds.getCentreY());
-        juce::Point<float> p2(bounds.getRight(), bounds.getY());
-        juce::Point<float> p3(bounds.getRight(), bounds.getBottom());
-        path.addTriangle(p1, p2, p3);
-        break;
-      }
-      case right: {
-        juce::Point<float> p1(bounds.getX(), bounds.getY());
-        juce::Point<float> p2(bounds.getX(), bounds.getBottom());
-        juce::Point<float> p3(bounds.getRight(), bounds.getCentreY());
-        path.addTriangle(p1, p2, p3);
-        break;
-      }
-      case top: {
-        juce::Point<float> p1(bounds.getX(), bounds.getY());
-        juce::Point<float> p2(bounds.getRight(), bounds.getY());
-        juce::Point<float> p3(bounds.getCentreX(), bounds.getBottom());
-        path.addTriangle(p1, p2, p3);
-        break;
-      }
-      case down: {
-        juce::Point<float> p1(bounds.getX(), bounds.getY());
-        juce::Point<float> p2(bounds.getRight(), bounds.getY());
-        juce::Point<float> p3(bounds.getCentreX(), bounds.getBottom());
-        path.addTriangle(p1, p2, p3);
-        break;
-      }
+    case left: {
+      juce::Point<float> p1(bounds.getX(), bounds.getCentreY());
+      juce::Point<float> p2(bounds.getRight(), bounds.getY());
+      juce::Point<float> p3(bounds.getRight(), bounds.getBottom());
+      path.addTriangle(p1, p2, p3);
+      break;
+    }
+    case right: {
+      juce::Point<float> p1(bounds.getX(), bounds.getY());
+      juce::Point<float> p2(bounds.getX(), bounds.getBottom());
+      juce::Point<float> p3(bounds.getRight(), bounds.getCentreY());
+      path.addTriangle(p1, p2, p3);
+      break;
+    }
+    case top: {
+      juce::Point<float> p1(bounds.getX(), bounds.getY());
+      juce::Point<float> p2(bounds.getRight(), bounds.getY());
+      juce::Point<float> p3(bounds.getCentreX(), bounds.getBottom());
+      path.addTriangle(p1, p2, p3);
+      break;
+    }
+    case down: {
+      juce::Point<float> p1(bounds.getX(), bounds.getY());
+      juce::Point<float> p2(bounds.getRight(), bounds.getY());
+      juce::Point<float> p3(bounds.getCentreX(), bounds.getBottom());
+      path.addTriangle(p1, p2, p3);
+      break;
+    }
     }
     return path;
   }
-  juce::Path getTnnerTrianglePath(juce::Rectangle<int> origin)
-  {
+  juce::Path getTnnerTrianglePath(juce::Rectangle<int> origin) {
     if (drawBorder) {
       auto bounds = origin;
       float width = bounds.getWidth();
@@ -118,15 +106,13 @@ protected:
   }
 
   void buttonStateChanged() { repaint(); }
-  void paintButton(juce::Graphics& g,
-                   bool shouldDrawButtonAsHighlighted,
-                   bool shouldDrawButtonAsDown) override
-  {
+  void paintButton(juce::Graphics &g, bool shouldDrawButtonAsHighlighted,
+                   bool shouldDrawButtonAsDown) override {
     const auto bounds = this->getLocalBounds();
     const auto bigBounds = bounds.reduced(buttonMargin * size).toNearestInt();
     juce::Path outerTrianglePath;
     juce::Path innerTrianglePath;
-    juce::Path& trianglePath = outerTrianglePath;
+    juce::Path &trianglePath = outerTrianglePath;
 
     // Calculate clicked path
     if (isMouseButtonDown()) {
