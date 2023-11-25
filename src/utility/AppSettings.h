@@ -70,8 +70,8 @@ struct AppSettings {
   struct Slider {
     // General
     static inline float padding = 8.0f;
-    static inline float baseWidth = 140.0f;
-    static inline float baseHeight = 150.0f;
+    static inline float baseWidth = 110.0f;
+    static inline float baseHeight = 120.0f;
     static inline float sliderSize = 0.77f;
     static inline float labelsSize = 0.28f;
     // Font
@@ -86,12 +86,12 @@ struct AppSettings {
     // Rail
     static inline juce::Colour lowerRailColour = Colours::solid_dark;
     static inline juce::Colour upperRailColour = Colours::primary;
-    static inline float railWidth = 12.0f;
+    static inline float railWidth = 8.0f;
     static inline float railSize = 0.72f;
     // Thumb
     static inline juce::Colour thumbInnerColour = Colours::solid_dark;
     static inline juce::Colour thumOuterColour = Colours::font;
-    static inline float thumbSize = 24.0f;
+    static inline float thumbSize = 20.0f;
     static inline float thumbStrength = 4.0f;
   };
   struct TriangleButton {

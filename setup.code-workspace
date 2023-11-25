@@ -30,7 +30,14 @@
       "editor.defaultFormatter": "twxs.cmake"
     },
     "C_Cpp.clang_format_fallbackStyle": "Mozilla",
-    "editor.tabSize": 2
+    "editor.tabSize": 2,
+    "C_Cpp.default.includePath": [
+      //"${workspaceFolder}/build/src/Neutrino_artefacts/JuceLibraryCode",
+      //"${workspaceFolder}/external/juce/modules"
+    ],
+    "files.associations": {
+      "*.mm": "cpp"
+    }
   },
   "launch": {
     "configurations": [
