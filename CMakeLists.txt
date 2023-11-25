@@ -36,16 +36,17 @@ CPMAddPackage(
     SOURCE_DIR ${EXT_DIR}/juce
 )
 # Add the GoogleTest library
-CPMAddPackage(
-    NAME GOOGLETEST
-    GITHUB_REPOSITORY google/googletest
-    GIT_TAG v1.14.0
-    VERSION 1.14.0
-    SOURCE_DIR ${EXT_DIR}/googletest
-    OPTIONS
-        "INSTALL_GTEST OFF"
-        "gtest_force_shared_crt ON"
-)
+
+#CPMAddPackage(
+#    NAME GOOGLETEST
+#    GITHUB_REPOSITORY google/googletest
+#    GIT_TAG v1.14.0
+#    VERSION 1.14.0
+#    SOURCE_DIR ${EXT_DIR}/googletest
+#    OPTIONS
+#        "INSTALL_GTEST OFF"
+#        "gtest_force_shared_crt ON"
+#)
 
 #==============================================================================
 

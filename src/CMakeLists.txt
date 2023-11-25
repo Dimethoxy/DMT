@@ -17,9 +17,14 @@ message("Source Folder loaded!")
 juce_add_plugin(${PROJECT_NAME}
     COMPANY_NAME Dimethoxy                     
     IS_SYNTH TRUE
+    NEEDS_MIDI_INPUT TRUE
+    NEEDS_MIDI_OUTPUT FALSE
+    IS_MIDI_EFFECT FALSE
+    EDITOR_WANTS_KEYBOARD_FOCUS FALSE
+    #COPY_PLUGIN_AFTER_BUILD TRUE
     PLUGIN_MANUFACTURER_CODE DMTX
     PLUGIN_CODE NETR
-    FORMATS standalone vst3                       
+    FORMATS VST3 Standalone                       
     PRODUCT_NAME "Neutrino")                    
 
 
