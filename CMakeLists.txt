@@ -51,7 +51,7 @@ CPMAddPackage(
 
 # Add the subdirectories
 #add_subdirectory(Fonts)
-add_subdirectory(source)
+add_subdirectory(src)
 #add_subdirectory(Tests)
 
 #==============================================================================
