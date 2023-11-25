@@ -5,7 +5,7 @@ $dir = $PSScriptRoot
 
 # Step 1: Configure the project with CMake
 Write-Host "Configuring the project with CMake..."
-cmake -S $dir/../ -B $dir/../Builds
+cmake -S $dir/../ -B $dir/../builds
 
 # Check if the configuration step was successful
 if ($LastExitCode -ne 0) {
@@ -15,7 +15,7 @@ if ($LastExitCode -ne 0) {
 
 # Step 2: Build the project with CMake
 Write-Host "Building the project with CMake..."
-cmake --build $dir/../Builds
+cmake --build $dir/../builds
 
 # Check if the build step was successful
 if ($LastExitCode -ne 0) {

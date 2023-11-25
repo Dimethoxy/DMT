@@ -32,10 +32,10 @@ target_sources(${PROJECT_NAME}
 # Add the Poppins font using juce_add_binary_data
 juce_add_binary_data(FontBinaryData
     SOURCES
-        ${CMAKE_SOURCE_DIR}/Fonts/Poppins/Poppins-Regular.ttf
-        ${CMAKE_SOURCE_DIR}/Fonts/Poppins/Poppins-ExtraLight.ttf
-        ${CMAKE_SOURCE_DIR}/Fonts/Poppins/Poppins-ExtraBold.ttf
-        ${CMAKE_SOURCE_DIR}/Fonts/Poppins/Poppins-SemiBold.ttf
+        ${CMAKE_SOURCE_DIR}/fonts/poppins/Poppins-Regular.ttf
+        ${CMAKE_SOURCE_DIR}/fonts/poppins/Poppins-ExtraLight.ttf
+        ${CMAKE_SOURCE_DIR}/fonts/poppins/Poppins-ExtraBold.ttf
+        ${CMAKE_SOURCE_DIR}/fonts/poppins/Poppins-SemiBold.ttf
 )
 
 # Add the JUCE modules to the project
