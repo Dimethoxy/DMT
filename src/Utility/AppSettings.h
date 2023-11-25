@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../Builds/Source/juce_binarydata_FontBinaryData/JuceLibraryCode/BinaryData.h"
+#include "BinaryData.h"
 #include <JuceHeader.h>
 
 namespace dmt {
@@ -112,11 +112,11 @@ struct AppSettings {
     static inline float outerShadowRadius = 4.0f;
     static inline float innerShadowRadius = 4.0f;
   };
-  static struct Carousel {
+  struct Carousel {
     static inline float buttonWidth = 80.0f;
     static inline float buttonHeight = 210.0f;
   };
-  static struct Fonts {
+  struct Fonts {
     using Typeface = juce::Typeface;
 
     static inline Typeface::Ptr extraLightTypeface =
