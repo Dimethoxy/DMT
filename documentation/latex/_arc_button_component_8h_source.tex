@@ -1,0 +1,75 @@
+\hypertarget{_arc_button_component_8h_source}{}\doxysection{Arc\+Button\+Component.\+h}
+\label{_arc_button_component_8h_source}\index{Source/Gui/Componnets/ArcButtonComponent.h@{Source/Gui/Componnets/ArcButtonComponent.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//==============================================================================}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}../Utility/AppSettings.h"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}../Utility/Shadow.h"{}}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ <JuceHeader.h>}}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ \textcolor{comment}{//==============================================================================}}
+\DoxyCodeLine{00010\ \textcolor{keyword}{namespace\ }dmt\ \{}
+\DoxyCodeLine{00011\ \textcolor{keyword}{namespace\ }gui\ \{}
+\DoxyCodeLine{00012\ \textcolor{keyword}{namespace\ }components\ \{}
+\DoxyCodeLine{00023\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classdmt_1_1gui_1_1components_1_1_arc_button_component}{ArcButtonComponent}}}
+\DoxyCodeLine{00024\ \ \ :\ \textcolor{keyword}{public}\ juce::Component}
+\DoxyCodeLine{00025\ \ \ ,\ juce::MouseListener}
+\DoxyCodeLine{00026\ \{}
+\DoxyCodeLine{00027\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00037\ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{classdmt_1_1gui_1_1components_1_1_arc_button_component_ad92d921a253702d8f7cf1d631bf115cd}{Settings}}\ =\ dmt::AppSettings::ArcButton;}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00039\ \ \ \textcolor{comment}{//============================================================================}}
+\DoxyCodeLine{00046\ \textcolor{comment}{}\ \ \mbox{\hyperlink{classdmt_1_1gui_1_1components_1_1_arc_button_component}{ArcButtonComponent}}(\textcolor{keywordtype}{bool}\ leftSided)\ \textcolor{keyword}{noexcept};}
+\DoxyCodeLine{00047\ \ \ ;}
+\DoxyCodeLine{00048\ }
+\DoxyCodeLine{00049\ \ \ \textcolor{comment}{//============================================================================}}
+\DoxyCodeLine{00060\ \textcolor{comment}{}\ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classdmt_1_1gui_1_1components_1_1_arc_button_component_aadd56dc8a5ab2a18350182d12ed942d9}{paint}}(juce::Graphics\&\ g)\ \textcolor{keyword}{noexcept}\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00061\ }
+\DoxyCodeLine{00062\ \ \ \textcolor{comment}{//============================================================================}}
+\DoxyCodeLine{00071\ \textcolor{comment}{}\ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classdmt_1_1gui_1_1components_1_1_arc_button_component_a905d9334638e81cdcfc4fdce88f27093}{resized}}()\ noexcept\ override;}
+\DoxyCodeLine{00072\ }
+\DoxyCodeLine{00073\ protected:}
+\DoxyCodeLine{00074\ \ \ \textcolor{comment}{//============================================================================}}
+\DoxyCodeLine{00086\ \textcolor{comment}{}\ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classdmt_1_1gui_1_1components_1_1_arc_button_component_a857f4fa87a43408490ad38f3b40bc61a}{mouseEnter}}(const\ juce::MouseEvent\&\ event)\ noexcept\ override;}
+\DoxyCodeLine{00087\ }
+\DoxyCodeLine{00088\ \ \ \textcolor{comment}{//============================================================================}}
+\DoxyCodeLine{00100\ \textcolor{comment}{}\ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classdmt_1_1gui_1_1components_1_1_arc_button_component_ae8c697823b4b0f6c46e9181a8321ea2e}{mouseExit}}(const\ juce::MouseEvent\&\ event)\ noexcept\ override;}
+\DoxyCodeLine{00101\ }
+\DoxyCodeLine{00102\ \ \ \textcolor{comment}{//============================================================================}}
+\DoxyCodeLine{00112\ \textcolor{comment}{}\ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classdmt_1_1gui_1_1components_1_1_arc_button_component_a47fa2437d9132bd16d4c03e2acc42ed6}{mouseDown}}(const\ juce::MouseEvent\&\ event)\ noexcept\ override;}
+\DoxyCodeLine{00113\ }
+\DoxyCodeLine{00114\ \ \ \textcolor{comment}{//============================================================================}}
+\DoxyCodeLine{00124\ \textcolor{comment}{}\ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classdmt_1_1gui_1_1components_1_1_arc_button_component_ad6b7520d8591c801c28a8153487ad7b8}{mouseUp}}(const\ juce::MouseEvent\&\ event)\ noexcept\ override;}
+\DoxyCodeLine{00125\ }
+\DoxyCodeLine{00126\ \ \ \textcolor{comment}{//============================================================================}}
+\DoxyCodeLine{00136\ \textcolor{comment}{}\ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classdmt_1_1gui_1_1components_1_1_arc_button_component_ae775f291a2e8e325a57c4f9a50f690a0}{mouseMove}}(const\ juce::MouseEvent\&\ event)\ noexcept\ override;}
+\DoxyCodeLine{00137\ }
+\DoxyCodeLine{00138\ \ \ \textcolor{comment}{//============================================================================}}
+\DoxyCodeLine{00148\ \textcolor{comment}{}\ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classdmt_1_1gui_1_1components_1_1_arc_button_component_a27310e9657a6c50678cc6c297c1c86ec}{mouseDrag}}(const\ juce::MouseEvent\&\ event)\ noexcept\ override;}
+\DoxyCodeLine{00149\ }
+\DoxyCodeLine{00150\ \ \ \textcolor{comment}{//============================================================================}}
+\DoxyCodeLine{00160\ \textcolor{comment}{}\ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classdmt_1_1gui_1_1components_1_1_arc_button_component_af9f273fbe75c84bc8c3c3ad70cee08a5}{updateState}}(const\ juce::MouseEvent\&\ event)\ noexcept;}
+\DoxyCodeLine{00161\ }
+\DoxyCodeLine{00162\ \ \ \textcolor{comment}{//============================================================================}}
+\DoxyCodeLine{00171\ \textcolor{comment}{}\ \ const\ juce::Path\ \mbox{\hyperlink{classdmt_1_1gui_1_1components_1_1_arc_button_component_a78f04643ea997a32e4ebb49331d3a5ae}{getPath}}()\ const\ noexcept;}
+\DoxyCodeLine{00172\ }
+\DoxyCodeLine{00173\ private:}
+\DoxyCodeLine{00174\ \ \ \textcolor{comment}{//============================================================================}}
+\DoxyCodeLine{00175\ \ \ \textcolor{keywordtype}{bool}\ hover\ =\ false;}
+\DoxyCodeLine{00176\ \ \ \textcolor{keywordtype}{bool}\ clicked\ =\ false;}
+\DoxyCodeLine{00177\ \ \ \textcolor{keywordtype}{bool}\ leftSided;}
+\DoxyCodeLine{00178\ \ \ \textcolor{comment}{//============================================================================}}
+\DoxyCodeLine{00179\ \ \ juce::Rectangle<\textcolor{keywordtype}{int}>\ pathBounds;}
+\DoxyCodeLine{00180\ \ \ \textcolor{comment}{//============================================================================}}
+\DoxyCodeLine{00181\ \ \ dmt::\mbox{\hyperlink{structdmt_1_1_shadow}{Shadow}}\ outerShadow;}
+\DoxyCodeLine{00182\ \ \ dmt::\mbox{\hyperlink{structdmt_1_1_shadow}{Shadow}}\ innerShadow;}
+\DoxyCodeLine{00183\ \ \ \textcolor{comment}{//============================================================================}}
+\DoxyCodeLine{00184\ \};}
+\DoxyCodeLine{00185\ \}\ \textcolor{comment}{//\ namespace\ components}}
+\DoxyCodeLine{00186\ \}\ \textcolor{comment}{//\ namespace\ gui}}
+\DoxyCodeLine{00187\ \}\ \textcolor{comment}{//\ namespace\ dmt}}
+
+\end{DoxyCode}

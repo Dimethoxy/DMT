@@ -1,0 +1,61 @@
+\hypertarget{_folder_manager_8h_source}{}\doxysection{Folder\+Manager.\+h}
+\label{_folder_manager_8h_source}\index{Source/Gui/Preset/FolderManager.h@{Source/Gui/Preset/FolderManager.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00002\ \textcolor{comment}{\ \ ==============================================================================}}
+\DoxyCodeLine{00003\ \textcolor{comment}{}}
+\DoxyCodeLine{00004\ \textcolor{comment}{\ \ \ \ FolderManager.h}}
+\DoxyCodeLine{00005\ \textcolor{comment}{\ \ \ \ Created:\ 28\ Dec\ 2022\ 3:02:41pm}}
+\DoxyCodeLine{00006\ \textcolor{comment}{\ \ \ \ Author:\ \ Lunix}}
+\DoxyCodeLine{00007\ \textcolor{comment}{}}
+\DoxyCodeLine{00008\ \textcolor{comment}{\ \ ==============================================================================}}
+\DoxyCodeLine{00009\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ <JuceHeader.h>}}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{comment}{//==============================================================================}}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \textcolor{keyword}{namespace\ }dmt\ \{}
+\DoxyCodeLine{00018\ \textcolor{keyword}{namespace\ }gui\ \{}
+\DoxyCodeLine{00019\ \textcolor{keyword}{namespace\ }preset\ \{}
+\DoxyCodeLine{00020\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classdmt_1_1gui_1_1preset_1_1_folder_manager}{FolderManager}}\ :\ juce::ValueTree::Listener}
+\DoxyCodeLine{00021\ \{}
+\DoxyCodeLine{00022\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00023\ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ juce::File\&\ defaultDirectory\ =}
+\DoxyCodeLine{00024\ \ \ \ \ juce::File::getSpecialLocation(}
+\DoxyCodeLine{00025\ \ \ \ \ \ \ juce::File::SpecialLocationType::commonDocumentsDirectory)}
+\DoxyCodeLine{00026\ \ \ \ \ \ \ .getChildFile(ProjectInfo::companyName)}
+\DoxyCodeLine{00027\ \ \ \ \ \ \ .getChildFile(ProjectInfo::projectName);}
+\DoxyCodeLine{00028\ }
+\DoxyCodeLine{00029\ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ juce::String\&\ folderNameProperty\ =\ \textcolor{stringliteral}{"{}folderName"{}};}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00031\ \ \ \mbox{\hyperlink{classdmt_1_1gui_1_1preset_1_1_folder_manager}{FolderManager}}(juce::AudioProcessorValueTreeState\&\ apvts)}
+\DoxyCodeLine{00032\ \ \ \ \ :\ valueTreeState(apvts)}
+\DoxyCodeLine{00033\ \ \ \{}
+\DoxyCodeLine{00034\ \ \ \ \ \textcolor{comment}{//\ Create\ default\ directory}}
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keywordflow}{if}\ (!defaultDirectory.exists())\ \{}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\ result\ =\ defaultDirectory.createDirectory();}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (result.failed())\ \{}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ DBG(\textcolor{stringliteral}{"{}Could\ not\ create\ preset\ directory:\ "{}}\ +\ result.getErrorMessage());}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \ \ jassertfalse;}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00041\ \ \ \ \ \}}
+\DoxyCodeLine{00042\ \ \ \ \ valueTreeState.state.addListener(\textcolor{keyword}{this});}
+\DoxyCodeLine{00043\ \ \ \ \ currentFolder.referTo(}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ valueTreeState.state.getPropertyAsValue(folderNameProperty,\ \textcolor{keyword}{nullptr}));}
+\DoxyCodeLine{00045\ \ \ \}}
+\DoxyCodeLine{00046\ }
+\DoxyCodeLine{00047\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00048\ \ \ \textcolor{comment}{//==============================================================================}}
+\DoxyCodeLine{00049\ \ \ juce::AudioProcessorValueTreeState\&\ valueTreeState;}
+\DoxyCodeLine{00050\ \ \ juce::StringArray\ folderList;}
+\DoxyCodeLine{00051\ \ \ juce::Value\ currentFolder;}
+\DoxyCodeLine{00052\ \};}
+\DoxyCodeLine{00053\ \}\ \textcolor{comment}{//\ namespace\ preset}}
+\DoxyCodeLine{00054\ \}\ \textcolor{comment}{//\ namespace\ gui}}
+\DoxyCodeLine{00055\ \}\ \textcolor{comment}{//\ namespace\ dmt}}
+
+\end{DoxyCode}

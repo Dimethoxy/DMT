@@ -1,0 +1,164 @@
+\hypertarget{_synth_voice_8h_source}{}\doxysection{Synth\+Voice.\+h}
+\label{_synth_voice_8h_source}\index{Source/Dsp/Synth/SynthVoice.h@{Source/Dsp/Synth/SynthVoice.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//==============================================================================}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}../Envelope/AdhEnvelope.h"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}../Synth/AnalogOscillator.h"{}}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}../Utility/ChainSettings.h"{}}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ <JuceHeader.h>}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{comment}{//==============================================================================}}
+\DoxyCodeLine{00011\ \textcolor{keyword}{namespace\ }dmt\ \{}
+\DoxyCodeLine{00012\ \textcolor{keyword}{namespace\ }dsp\ \{}
+\DoxyCodeLine{00013\ \textcolor{keyword}{namespace\ }synth\ \{}
+\DoxyCodeLine{00014\ \textcolor{comment}{//==============================================================================}}
+\DoxyCodeLine{00015\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classdmt_1_1dsp_1_1synth_1_1_synth_voice}{SynthVoice}}\ :\ \textcolor{keyword}{public}\ juce::SynthesiserVoice}
+\DoxyCodeLine{00016\ \{}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00019\ \ \ \textcolor{comment}{//============================================================================}}
+\DoxyCodeLine{00020\ \ \ \textcolor{keywordtype}{bool}\ canPlaySound(juce::SynthesiserSound*\ sound)\textcolor{keyword}{\ override}}
+\DoxyCodeLine{00021\ \textcolor{keyword}{\ \ }\{}
+\DoxyCodeLine{00022\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{dynamic\_cast<}juce::SynthesiserSound*\textcolor{keyword}{>}(sound)\ !=\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00023\ \ \ \}}
+\DoxyCodeLine{00024\ \ \ \textcolor{keywordtype}{void}\ controllerMoved(\textcolor{keywordtype}{int}\ controllerNumber,\ \textcolor{keywordtype}{int}\ newControllerValue)\textcolor{keyword}{\ override\ }\{\}}
+\DoxyCodeLine{00025\ \ \ \textcolor{keywordtype}{void}\ pitchWheelMoved(\textcolor{keywordtype}{int}\ newPitchWheelValue)\textcolor{keyword}{\ override\ }\{\}}
+\DoxyCodeLine{00026\ \ \ \textcolor{comment}{//============================================================================}}
+\DoxyCodeLine{00027\ \ \ \textcolor{keywordtype}{void}\ prepareToPlay(\textcolor{keywordtype}{double}\ sampleRate,\ \textcolor{keywordtype}{int}\ samplesPerBlock,\ \textcolor{keywordtype}{int}\ outputChannels)}
+\DoxyCodeLine{00028\ \ \ \{}
+\DoxyCodeLine{00029\ \ \ \ \ \textcolor{comment}{//\ Exit\ if\ the\ sample\ rate\ is\ invalid}}
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keywordflow}{if}\ (sampleRate\ <=\ 0)}
+\DoxyCodeLine{00031\ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{comment}{//\ Prepare\ envelope}}
+\DoxyCodeLine{00034\ \ \ \ \ gainEnvelope.setSampleRate(sampleRate);}
+\DoxyCodeLine{00035\ \ \ \ \ pitchEnvelope.setSampleRate(sampleRate);}
+\DoxyCodeLine{00036\ }
+\DoxyCodeLine{00037\ \ \ \ \ \textcolor{comment}{//\ Prepare\ oscillator}}
+\DoxyCodeLine{00038\ \ \ \ \ osc.setSampleRate(sampleRate);}
+\DoxyCodeLine{00039\ }
+\DoxyCodeLine{00040\ \ \ \ \ \textcolor{comment}{//\ Set\ state\ as\ prepared}}
+\DoxyCodeLine{00041\ \ \ \ \ isPrepared\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00042\ \ \ \}}
+\DoxyCodeLine{00043\ \ \ \textcolor{comment}{//============================================================================}}
+\DoxyCodeLine{00044\ \ \ \textcolor{keywordtype}{void}\ startNote(\textcolor{keywordtype}{int}\ midiNoteNumber,}
+\DoxyCodeLine{00045\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ velocity,}
+\DoxyCodeLine{00046\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ juce::SynthesiserSound*\ sound,}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ currentPitchWheelPosition)\textcolor{keyword}{\ override}}
+\DoxyCodeLine{00048\ \textcolor{keyword}{\ \ }\{}
+\DoxyCodeLine{00049\ \ \ \ \ \textcolor{comment}{//\ Set\ oscillator\ frequency}}
+\DoxyCodeLine{00050\ \ \ \ \ osc.setPhase(0.0f);}
+\DoxyCodeLine{00051\ \ \ \ \ note\ =\ midiNoteNumber;}
+\DoxyCodeLine{00052\ \ \ \ \ ;}
+\DoxyCodeLine{00053\ }
+\DoxyCodeLine{00054\ \ \ \ \ \textcolor{comment}{//\ Start\ envelopes}}
+\DoxyCodeLine{00055\ \ \ \ \ setEnvelopes();}
+\DoxyCodeLine{00056\ \ \ \ \ gainEnvelope.noteOn();}
+\DoxyCodeLine{00057\ \ \ \ \ pitchEnvelope.noteOn();}
+\DoxyCodeLine{00058\ }
+\DoxyCodeLine{00059\ \ \ \ \ callOnNoteReceivers();}
+\DoxyCodeLine{00060\ \ \ \}}
+\DoxyCodeLine{00061\ \ \ \textcolor{keywordtype}{void}\ stopNote(\textcolor{keywordtype}{float}\ velocity,\ \textcolor{keywordtype}{bool}\ allowTailOff)\textcolor{keyword}{\ override\ }\{\}}
+\DoxyCodeLine{00062\ \ \ \textcolor{comment}{//============================================================================}}
+\DoxyCodeLine{00063\ \ \ \textcolor{keywordtype}{void}\ renderNextBlock(juce::AudioBuffer<float>\&\ outputBuffer,}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ startSample,}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ numSamples)\textcolor{keyword}{\ override}}
+\DoxyCodeLine{00066\ \textcolor{keyword}{\ \ }\{}
+\DoxyCodeLine{00067\ \ \ \ \ \textcolor{comment}{//\ Exit\ if\ the\ voice\ is\ not\ playing\ or\ the\ voice\ is\ not\ prepared}}
+\DoxyCodeLine{00068\ \ \ \ \ \textcolor{keywordflow}{if}\ (!isVoiceActive()\ ||\ !isPrepared)}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00070\ }
+\DoxyCodeLine{00071\ \ \ \ \ osc.setWaveformType(chainSettings-\/>waveformType);}
+\DoxyCodeLine{00072\ \ \ \ \ osc.setDrive(chainSettings-\/>oscDrive);}
+\DoxyCodeLine{00073\ \ \ \ \ osc.setBias(chainSettings-\/>oscBias);}
+\DoxyCodeLine{00074\ \ \ \ \ osc.setBend(chainSettings-\/>oscBend);}
+\DoxyCodeLine{00075\ \ \ \ \ osc.setPwm(chainSettings-\/>oscPwm);}
+\DoxyCodeLine{00076\ \ \ \ \ osc.setSync(chainSettings-\/>oscSync);}
+\DoxyCodeLine{00077\ }
+\DoxyCodeLine{00078\ \ \ \ \ \textcolor{keyword}{auto}\ endSample\ =\ numSamples\ +\ startSample;}
+\DoxyCodeLine{00079\ \ \ \ \ \textcolor{keyword}{auto}*\ leftChannel\ =\ outputBuffer.getWritePointer(0);}
+\DoxyCodeLine{00080\ \ \ \ \ \textcolor{keyword}{auto}*\ rightChannel\ =\ outputBuffer.getWritePointer(1);}
+\DoxyCodeLine{00081\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ sample\ =\ startSample;\ sample\ <\ endSample;\ sample++)\ \{}
+\DoxyCodeLine{00082\ \ \ \ \ \ \ osc.setFrequency(getFrequency());}
+\DoxyCodeLine{00083\ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ currentSample\ =\ osc.getNextSample();}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ gain(currentSample);}
+\DoxyCodeLine{00085\ \ \ \ \ \ \ leftChannel[sample]\ =\ currentSample;}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ rightChannel[sample]\ =\ currentSample;}
+\DoxyCodeLine{00087\ \ \ \ \ \}}
+\DoxyCodeLine{00088\ \ \ \}}
+\DoxyCodeLine{00089\ \ \ \textcolor{comment}{//============================================================================}}
+\DoxyCodeLine{00090\ \ \ \textcolor{keywordtype}{void}\ setChainSettings(\mbox{\hyperlink{structdmt_1_1_chain_settings}{dmt::ChainSettings}}\ chainSettings)}
+\DoxyCodeLine{00091\ \ \ \{}
+\DoxyCodeLine{00092\ \ \ \ \ this-\/>chainSettings\ =\ std::make\_unique<dmt::ChainSettings>(chainSettings);}
+\DoxyCodeLine{00093\ \ \ \};}
+\DoxyCodeLine{00094\ \ \ \textcolor{comment}{//============================================================================}}
+\DoxyCodeLine{00095\ \ \ \textcolor{keywordtype}{void}\ addOnNoteReceivers(std::function<\textcolor{keywordtype}{void}()>\ callbackFunction)}
+\DoxyCodeLine{00096\ \ \ \{}
+\DoxyCodeLine{00097\ \ \ \ \ onNoteReceivers.push\_back(callbackFunction);}
+\DoxyCodeLine{00098\ \ \ \}}
+\DoxyCodeLine{00099\ \ \ \textcolor{keywordtype}{void}\ callOnNoteReceivers()}
+\DoxyCodeLine{00100\ \ \ \{}
+\DoxyCodeLine{00101\ \ \ \ \ \textcolor{keywordflow}{for}\ (std::function<\textcolor{keywordtype}{void}()>\ func\ :\ onNoteReceivers)\ \{}
+\DoxyCodeLine{00102\ \ \ \ \ \ \ func();}
+\DoxyCodeLine{00103\ \ \ \ \ \}}
+\DoxyCodeLine{00104\ \ \ \}}
+\DoxyCodeLine{00105\ \ \ \textcolor{comment}{//============================================================================}}
+\DoxyCodeLine{00106\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00107\ \ \ std::unique\_ptr<dmt::ChainSettings>\ chainSettings;}
+\DoxyCodeLine{00108\ \ \ dmt::AnalogOscillator\ osc;}
+\DoxyCodeLine{00109\ \ \ dmt::AhdEnvelope\ gainEnvelope;}
+\DoxyCodeLine{00110\ \ \ dmt::AhdEnvelope\ pitchEnvelope;}
+\DoxyCodeLine{00111\ \ \ \textcolor{keywordtype}{int}\ note\ =\ 0;}
+\DoxyCodeLine{00112\ \ \ \textcolor{keywordtype}{float}\ pitchDepth\ =\ 0.7;}
+\DoxyCodeLine{00113\ \ \ \textcolor{keywordtype}{bool}\ isPrepared\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00114\ }
+\DoxyCodeLine{00115\ \ \ std::vector<std::function<void()>>\ onNoteReceivers;}
+\DoxyCodeLine{00116\ \ \ \textcolor{comment}{//============================================================================}}
+\DoxyCodeLine{00117\ \ \ \textcolor{keywordtype}{float}\ getFrequency()}
+\DoxyCodeLine{00118\ \ \ \{}
+\DoxyCodeLine{00119\ \ \ \ \ \textcolor{keywordtype}{int}\ semitones\ =\ (8\ *\ chainSettings-\/>oscOctave)\ +\ chainSettings-\/>oscSemitone;}
+\DoxyCodeLine{00120\ \ \ \ \ \textcolor{keywordtype}{float}\ baseFreq\ =\ juce::MidiMessage::getMidiNoteInHertz(note\ +\ semitones);}
+\DoxyCodeLine{00121\ \ \ \ \ \textcolor{keywordtype}{float}\ freqModDepth\ =}
+\DoxyCodeLine{00122\ \ \ \ \ \ \ chainSettings-\/>oscOctave\ *\ baseFreq\ +\ chainSettings-\/>modDepth;}
+\DoxyCodeLine{00123\ \ \ \ \ \textcolor{keywordtype}{float}\ envelopeSample\ =\ pitchEnvelope.getNextSample();}
+\DoxyCodeLine{00124\ \ \ \ \ \textcolor{keywordtype}{float}\ newFreq\ =}
+\DoxyCodeLine{00125\ \ \ \ \ \ \ juce::mapToLog10(envelopeSample,\ baseFreq,\ baseFreq+freqModDepth);}
+\DoxyCodeLine{00126\ \ \ \ \ \textcolor{keywordflow}{return}\ std::clamp(newFreq,\ 20.0f,\ 20000.0f);}
+\DoxyCodeLine{00127\ \ \ \}}
+\DoxyCodeLine{00128\ }
+\DoxyCodeLine{00129\ \ \ \textcolor{keywordtype}{void}\ gain(\textcolor{keywordtype}{float}\&\ currentSample)}
+\DoxyCodeLine{00130\ \ \ \{}
+\DoxyCodeLine{00131\ \ \ \ \ \textcolor{keywordtype}{float}\ envGain\ =\ gainEnvelope.getNextSample();}
+\DoxyCodeLine{00132\ \ \ \ \ \textcolor{keywordtype}{float}\ oscGain\ =}
+\DoxyCodeLine{00133\ \ \ \ \ \ \ juce::Decibels::decibelsToGain(chainSettings-\/>oscGain,\ -\/96.0f);}
+\DoxyCodeLine{00134\ \ \ \ \ currentSample\ =\ currentSample\ *\ envGain\ *\ oscGain;}
+\DoxyCodeLine{00135\ \ \ \}}
+\DoxyCodeLine{00136\ \ \ \textcolor{comment}{//============================================================================}}
+\DoxyCodeLine{00137\ \ \ \textcolor{keywordtype}{void}\ setEnvelopes()}
+\DoxyCodeLine{00138\ \ \ \{}
+\DoxyCodeLine{00139\ \ \ \ \ dmt::AhdEnvelope::Parameters\ envParameters;}
+\DoxyCodeLine{00140\ \ \ \ \ envParameters.attack\ =\ chainSettings-\/>ampAttack;}
+\DoxyCodeLine{00141\ \ \ \ \ envParameters.hold\ =\ chainSettings-\/>ampHold;}
+\DoxyCodeLine{00142\ \ \ \ \ envParameters.decay\ =\ chainSettings-\/>ampDecay;}
+\DoxyCodeLine{00143\ \ \ \ \ envParameters.attackScew\ =\ 0;}
+\DoxyCodeLine{00144\ \ \ \ \ envParameters.decayScew\ =\ 0;}
+\DoxyCodeLine{00145\ \ \ \ \ gainEnvelope.setParameters(envParameters);}
+\DoxyCodeLine{00146\ \ \ \ \ envParameters.attack\ =\ 0.0;}
+\DoxyCodeLine{00147\ \ \ \ \ envParameters.hold\ =\ 0.0f;}
+\DoxyCodeLine{00148\ \ \ \ \ envParameters.decay\ =\ chainSettings-\/>modDecay;}
+\DoxyCodeLine{00149\ \ \ \ \ envParameters.decayScew\ =\ chainSettings-\/>modScew;}
+\DoxyCodeLine{00150\ \ \ \ \ pitchEnvelope.setParameters(envParameters);}
+\DoxyCodeLine{00151\ \ \ \}}
+\DoxyCodeLine{00152\ \ \ \textcolor{comment}{//============================================================================}}
+\DoxyCodeLine{00153\ \};}
+\DoxyCodeLine{00154\ }
+\DoxyCodeLine{00155\ \}\ \textcolor{comment}{//\ namespace\ synth}}
+\DoxyCodeLine{00156\ \}\ \textcolor{comment}{//\ namespace\ dsp}}
+\DoxyCodeLine{00157\ \}\ \textcolor{comment}{//\ namespace\ dmt}}
+\DoxyCodeLine{00158\ \textcolor{comment}{//==============================================================================}}
+
+\end{DoxyCode}

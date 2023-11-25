@@ -1,0 +1,66 @@
+\hypertarget{structdmt_1_1_i_i_r_filter_state}{}\doxysection{dmt\+::IIRFilter\+State Struct Reference}
+\label{structdmt_1_1_i_i_r_filter_state}\index{dmt::IIRFilterState@{dmt::IIRFilterState}}
+\doxysubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structdmt_1_1_i_i_r_filter_state_abcd181284c70f81e73b3ccbfc95da7e1}\label{structdmt_1_1_i_i_r_filter_state_abcd181284c70f81e73b3ccbfc95da7e1}} 
+enum class {\bfseries Type} \{ \newline
+{\bfseries Low\+Pass}
+, {\bfseries High\+Pass}
+, {\bfseries Band\+Pass}
+, {\bfseries Notch}
+, \newline
+{\bfseries All\+Pass}
+, {\bfseries Low\+Shelf}
+, {\bfseries High\+Shelf}
+, {\bfseries Peak}
+ \}
+\item 
+\mbox{\Hypertarget{structdmt_1_1_i_i_r_filter_state_a3608f516e7b0a0a2444f8cd4127a42d6}\label{structdmt_1_1_i_i_r_filter_state_a3608f516e7b0a0a2444f8cd4127a42d6}} 
+using {\bfseries IIRCoefficients} = juce\+::\+IIRCoefficients
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structdmt_1_1_i_i_r_filter_state_a28f1bb46904c2ac6e2b4ea6c52312370}\label{structdmt_1_1_i_i_r_filter_state_a28f1bb46904c2ac6e2b4ea6c52312370}} 
+juce\+::\+IIRCoefficients {\bfseries make\+Coefficients} (float cutoff, float q, float gain)
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structdmt_1_1_i_i_r_filter_state_a69c49257bf3bf666292b54b9277fc319}\label{structdmt_1_1_i_i_r_filter_state_a69c49257bf3bf666292b54b9277fc319}} 
+float {\bfseries sample\+Rate} = -\/1
+\item 
+\mbox{\Hypertarget{structdmt_1_1_i_i_r_filter_state_a36d3d67b3bb681626c1a07a0bbc32e03}\label{structdmt_1_1_i_i_r_filter_state_a36d3d67b3bb681626c1a07a0bbc32e03}} 
+Type {\bfseries type} = Type\+::\+Low\+Pass
+\item 
+\mbox{\Hypertarget{structdmt_1_1_i_i_r_filter_state_a555180a3f01fa058b8305803d6b13ee6}\label{structdmt_1_1_i_i_r_filter_state_a555180a3f01fa058b8305803d6b13ee6}} 
+juce\+::\+Single\+Threaded\+IIRFilter\+::\+IIRFilter\+Base {\bfseries base}
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static const juce\+::\+String\+Array \mbox{\hyperlink{structdmt_1_1_i_i_r_filter_state_ab8463915dd2f799931a3e61f2538ffbc}{type\+Names}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{structdmt_1_1_i_i_r_filter_state_ab8463915dd2f799931a3e61f2538ffbc}\label{structdmt_1_1_i_i_r_filter_state_ab8463915dd2f799931a3e61f2538ffbc}} 
+\index{dmt::IIRFilterState@{dmt::IIRFilterState}!typeNames@{typeNames}}
+\index{typeNames@{typeNames}!dmt::IIRFilterState@{dmt::IIRFilterState}}
+\doxysubsubsection{\texorpdfstring{typeNames}{typeNames}}
+{\footnotesize\ttfamily const juce\+::\+String\+Array dmt\+::\+IIRFilter\+State\+::type\+Names\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{=\ \{\ \textcolor{stringliteral}{"{}LowPass"{}},\ \ \ \textcolor{stringliteral}{"{}HighPass"{}},}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}BandPass"{}},\ \ \textcolor{stringliteral}{"{}Notch"{}},}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}AllPass"{}},\ \ \ \textcolor{stringliteral}{"{}LowShelf"{}},}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}HighShelf"{}},\ \textcolor{stringliteral}{"{}Peak"{}}\ \}}
+
+\end{DoxyCode}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Source/\+Filter/IIRFilter.\+h\end{DoxyCompactItemize}

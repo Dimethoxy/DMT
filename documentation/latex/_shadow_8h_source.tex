@@ -1,0 +1,49 @@
+\hypertarget{_shadow_8h_source}{}\doxysection{Shadow.\+h}
+\label{_shadow_8h_source}\index{Source/Utility/Shadow.h@{Source/Utility/Shadow.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//==============================================================================}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00003\ }
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ <JuceHeader.h>}}
+\DoxyCodeLine{00005\ }
+\DoxyCodeLine{00006\ \textcolor{comment}{//==============================================================================}}
+\DoxyCodeLine{00007\ \textcolor{keyword}{namespace\ }dmt\ \{}
+\DoxyCodeLine{00008\ \textcolor{comment}{//==============================================================================}}
+\DoxyCodeLine{00009\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structdmt_1_1_shadow}{Shadow}}}
+\DoxyCodeLine{00010\ \{}
+\DoxyCodeLine{00011\ \ \ \textcolor{keywordtype}{void}\ drawInnerForPath(juce::Graphics\&\ g,\ juce::Path\ target)}
+\DoxyCodeLine{00012\ \ \ \{}
+\DoxyCodeLine{00013\ \ \ \ \ juce::Graphics::ScopedSaveState\ saveState(g);}
+\DoxyCodeLine{00014\ \ \ \ \ juce::Path\ shadowPath(target);}
+\DoxyCodeLine{00015\ \ \ \ \ shadowPath.addRectangle(target.getBounds().expanded(10));}
+\DoxyCodeLine{00016\ \ \ \ \ shadowPath.setUsingNonZeroWinding(\textcolor{keyword}{false});}
+\DoxyCodeLine{00017\ \ \ \ \ g.reduceClipRegion(target);}
+\DoxyCodeLine{00018\ \ \ \ \ juce::DropShadow\ ds(colour,\ radius,\ offset);}
+\DoxyCodeLine{00019\ \ \ \ \ ds.drawForPath(g,\ shadowPath);}
+\DoxyCodeLine{00020\ \ \ \}}
+\DoxyCodeLine{00021\ \ \ \textcolor{keywordtype}{void}\ drawOuterForPath(juce::Graphics\&\ g,\ juce::Path\ target)}
+\DoxyCodeLine{00022\ \ \ \{}
+\DoxyCodeLine{00023\ \ \ \ \ juce::Graphics::ScopedSaveState\ saveState(g);}
+\DoxyCodeLine{00024\ \ \ \ \ juce::Path\ shadowPath(target);}
+\DoxyCodeLine{00025\ \ \ \ \ shadowPath.addRectangle(target.getBounds().expanded(10));}
+\DoxyCodeLine{00026\ \ \ \ \ shadowPath.setUsingNonZeroWinding(\textcolor{keyword}{false});}
+\DoxyCodeLine{00027\ \ \ \ \ g.reduceClipRegion(shadowPath);}
+\DoxyCodeLine{00028\ \ \ \ \ juce::DropShadow\ ds(colour,\ radius,\ offset);}
+\DoxyCodeLine{00029\ \ \ \ \ ds.drawForPath(g,\ target);}
+\DoxyCodeLine{00030\ \ \ \}}
+\DoxyCodeLine{00031\ \ \ \textcolor{keywordtype}{void}\ drawForPath(juce::Graphics\&\ g,\ juce::Path\ target)}
+\DoxyCodeLine{00032\ \ \ \{}
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keywordtype}{int}\ cycles\ =\ (int)radius;}
+\DoxyCodeLine{00034\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ cycles;\ i++)\ \{}
+\DoxyCodeLine{00035\ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ amount\ =\ (int)(std::sqrt((\textcolor{keywordtype}{float})i\ /\ (float)cycles)\ *\ 255.0f);}
+\DoxyCodeLine{00036\ \ \ \ \ \}}
+\DoxyCodeLine{00037\ \ \ \}}
+\DoxyCodeLine{00038\ \ \ juce::Colour\ colour\ =\ juce::Colours::black;}
+\DoxyCodeLine{00039\ \ \ juce::Point<int>\ offset\ =\ \{\ 0,\ 0\ \};}
+\DoxyCodeLine{00040\ \ \ \textcolor{keywordtype}{int}\ radius\ =\ 10;}
+\DoxyCodeLine{00041\ \};}
+\DoxyCodeLine{00042\ \textcolor{comment}{//==============================================================================}}
+\DoxyCodeLine{00043\ \}}
+
+\end{DoxyCode}

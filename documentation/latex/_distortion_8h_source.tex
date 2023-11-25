@@ -1,0 +1,221 @@
+\hypertarget{_distortion_8h_source}{}\doxysection{Distortion.\+h}
+\label{_distortion_8h_source}\index{Source/Utility/Distortion.h@{Source/Utility/Distortion.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ <JuceHeader.h>}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{keyword}{namespace\ }dmt\ \{}
+\DoxyCodeLine{00006\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structdmt_1_1_distortion}{Distortion}}}
+\DoxyCodeLine{00007\ \{}
+\DoxyCodeLine{00008\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ \textcolor{keyword}{enum\ class}\ Type\ \{}
+\DoxyCodeLine{00009\ \ \ \ \ Hardclip,}
+\DoxyCodeLine{00010\ \ \ \ \ Root,}
+\DoxyCodeLine{00011\ \ \ \ \ Atan,}
+\DoxyCodeLine{00012\ \ \ \ \ Crunch,}
+\DoxyCodeLine{00013\ \ \ \ \ Bitcrush,}
+\DoxyCodeLine{00014\ \ \ \ \ Sine,}
+\DoxyCodeLine{00015\ \ \ \ \ Cosine,}
+\DoxyCodeLine{00016\ \ \ \ \ Expand,}
+\DoxyCodeLine{00017\ \ \ \ \ Weird,}
+\DoxyCodeLine{00018\ \ \ \ \ Extreme}
+\DoxyCodeLine{00019\ \ \ \};}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00021\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ juce::String\ getString(dmt::Distortion::Type\ type)}
+\DoxyCodeLine{00022\ \ \ \{}
+\DoxyCodeLine{00023\ \ \ \ \ \textcolor{keywordflow}{switch}\ (type)\ \{}
+\DoxyCodeLine{00024\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ Type::Hardclip:}
+\DoxyCodeLine{00025\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (\textcolor{stringliteral}{"{}Hardclip"{}});}
+\DoxyCodeLine{00026\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00027\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ Type::Root:}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (\textcolor{stringliteral}{"{}Sqrt"{}});}
+\DoxyCodeLine{00029\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00030\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ Type::Atan:}
+\DoxyCodeLine{00031\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (\textcolor{stringliteral}{"{}Atan"{}});}
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00033\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ Type::Crunch:}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (\textcolor{stringliteral}{"{}Crunch"{}});}
+\DoxyCodeLine{00035\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ Type::Bitcrush:}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (\textcolor{stringliteral}{"{}Bitcrush"{}});}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ Type::Sine:}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (\textcolor{stringliteral}{"{}Sine"{}});}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ Type::Cosine:}
+\DoxyCodeLine{00043\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (\textcolor{stringliteral}{"{}Cosine"{}});}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00045\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ Type::Expand:}
+\DoxyCodeLine{00046\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (\textcolor{stringliteral}{"{}Expand"{}});}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ Type::Weird:}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (\textcolor{stringliteral}{"{}Weird"{}});}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ Type::Extreme:}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (\textcolor{stringliteral}{"{}Extreme"{}});}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00054\ \ \ \ \ \}}
+\DoxyCodeLine{00055\ \ \ \}}
+\DoxyCodeLine{00056\ }
+\DoxyCodeLine{00057\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ distortSample(\textcolor{keywordtype}{float}\&\ value,}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ dmt::Distortion::Type\ type,}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ drive)}
+\DoxyCodeLine{00060\ \ \ \{}
+\DoxyCodeLine{00061\ \ \ \ \ \textcolor{keywordflow}{switch}\ (type)\ \{}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ Type::Hardclip:\ \{}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \ \ value\ =\ value\ *\ drive;}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \ \ value\ =\ std::clamp(value,\ -\/1.0f,\ 1.0f);}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ Type::Root:\ \{}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (value\ >\ 0.0)\ \{}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ \ \ \ \ value\ =\ std::pow(value,\ 1.0\ /\ ((drive\ /\ 4)\ +\ 0.75));}
+\DoxyCodeLine{00070\ \ \ \ \ \ \ \ \ \ \ value\ =\ std::clamp(value,\ -\/1.0f,\ 1.0f);}
+\DoxyCodeLine{00071\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00072\ \ \ \ \ \ \ \ \ \ \ value\ =\ pow(-\/value,\ 1.0\ /\ ((drive\ /\ 4)\ +\ 0.75));}
+\DoxyCodeLine{00073\ \ \ \ \ \ \ \ \ \ \ value\ =\ -\/std::clamp(value,\ -\/1.0f,\ 1.0f);}
+\DoxyCodeLine{00074\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00075\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00077\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ Type::Atan:\ \{}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (value\ !=\ 0.0f)\ \{}
+\DoxyCodeLine{00079\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (value\ >\ 0.0f)\ \{}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ \ \ \ \ \ \ value\ =\ pow(value,\ 1.0f\ /\ drive);}
+\DoxyCodeLine{00081\ \ \ \ \ \ \ \ \ \ \ \ \ value\ =\ 1.27f\ *\ atan(value);}
+\DoxyCodeLine{00082\ \ \ \ \ \ \ \ \ \ \ \ \ value\ =\ std::clamp(value,\ -\/1.0f,\ 1.0f);}
+\DoxyCodeLine{00083\ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \ \ \ \ \ \ value\ =\ pow(-\/value,\ 1.0f\ /\ drive);}
+\DoxyCodeLine{00085\ \ \ \ \ \ \ \ \ \ \ \ \ value\ =\ 1.27f\ *\ atan(value);}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ \ \ \ \ \ \ value\ =\ -\/value;}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ \ \ \ \ \ \ value\ =\ std::clamp(value,\ -\/1.0f,\ 1.0f);}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00089\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00090\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00091\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00092\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ Type::Crunch:\ \{}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (value\ >\ 0.0)\ \{}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \ \ \ \ value\ =\ pow(value,\ 1.0f\ /\ drive);}
+\DoxyCodeLine{00095\ \ \ \ \ \ \ \ \ \ \ value\ =\ 1.27\ *\ atan(value);}
+\DoxyCodeLine{00096\ \ \ \ \ \ \ \ \ \ \ value\ =\ std::clamp(value,\ -\/1.0f,\ 1.0f);}
+\DoxyCodeLine{00097\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00098\ \ \ \ \ \ \ \ \ \ \ value\ =\ std::clamp(sin(drive\ *\ value),\ -\/1.0f,\ 1.0f);}
+\DoxyCodeLine{00099\ \ \ \ \ \ \ \ \ \ \ value\ =\ std::clamp(drive\ *\ value,\ -\/1.0f,\ 1.0f);}
+\DoxyCodeLine{00100\ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{00101\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00102\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00103\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ Type::Bitcrush:\ \{}
+\DoxyCodeLine{00104\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ bitDepth\ =\ 11.0\ -\/\ drive;}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ exponent\ =\ bitDepth\ -\/\ 1;}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ possibleValues\ =\ pow(2,\ exponent);}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ quantized\ =\ value\ *\ possibleValues;}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (quantized\ >\ 0)\ \{}
+\DoxyCodeLine{00109\ \ \ \ \ \ \ \ \ \ \ quantized\ =\ ceil(quantized);}
+\DoxyCodeLine{00110\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (quantized\ <\ 0)\ \{}
+\DoxyCodeLine{00111\ \ \ \ \ \ \ \ \ \ \ quantized\ =\ floor(quantized);}
+\DoxyCodeLine{00112\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00113\ \ \ \ \ \ \ \ \ value\ =\ quantized\ /\ possibleValues;}
+\DoxyCodeLine{00114\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00115\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00116\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ Type::Sine:\ \{}
+\DoxyCodeLine{00117\ \ \ \ \ \ \ \ \ value\ =\ std::clamp(sin(drive\ *\ value),\ -\/1.0f,\ 1.0f);}
+\DoxyCodeLine{00118\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00119\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00120\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ Type::Cosine:\ \{}
+\DoxyCodeLine{00121\ \ \ \ \ \ \ \ \ value\ =\ std::clamp(cos(drive\ *\ value),\ -\/1.0f,\ 1.0f);}
+\DoxyCodeLine{00122\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00123\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00124\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ Type::Expand:\ \{}
+\DoxyCodeLine{00125\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (std::abs(value)\ >=\ ((drive\ -\/\ 1)\ /\ 9.0f))\ \{}
+\DoxyCodeLine{00126\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ signbit\ =\ (std::signbit(value)\ ?\ -\/1\ :\ 1);}
+\DoxyCodeLine{00127\ \ \ \ \ \ \ \ \ \ \ value\ =\ signbit;}
+\DoxyCodeLine{00128\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00129\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00130\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00131\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ Type::Weird:\ \{}
+\DoxyCodeLine{00132\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ invertedDrive\ =\ (10.0f\ /\ drive)\ *\ 5.0f;}
+\DoxyCodeLine{00133\ \ \ \ \ \ \ \ \ value\ =\ value\ *\ invertedDrive;}
+\DoxyCodeLine{00134\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ h1\ =\ sin(2.0f\ *\ value);}
+\DoxyCodeLine{00135\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ h2\ =\ sin(3.0f\ *\ value);}
+\DoxyCodeLine{00136\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ h3\ =\ sin(4.0f\ *\ value);}
+\DoxyCodeLine{00137\ \ \ \ \ \ \ \ \ value\ =\ (h1\ +\ h2\ +\ h3\ +\ value)\ /\ invertedDrive;}
+\DoxyCodeLine{00138\ \ \ \ \ \ \ \ \ value\ =\ std::clamp(value,\ -\/1.0f,\ 1.0f);}
+\DoxyCodeLine{00139\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00140\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00141\ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ Type::Extreme:\ \{}
+\DoxyCodeLine{00142\ \ \ \ \ \ \ \ \ value\ =\ value\ *\ (drive\ *\ 2);}
+\DoxyCodeLine{00143\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ h1\ =\ sin(2\ *\ value);}
+\DoxyCodeLine{00144\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ h2\ =\ sin(3\ *\ value);}
+\DoxyCodeLine{00145\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ h3\ =\ sin(4\ *\ value);}
+\DoxyCodeLine{00146\ \ \ \ \ \ \ \ \ value\ =\ sin(h1\ +\ h2\ +\ h3\ +\ value);}
+\DoxyCodeLine{00147\ \ \ \ \ \ \ \ \ value\ =\ std::clamp(value,\ -\/1.0f,\ 1.0f);}
+\DoxyCodeLine{00148\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00149\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00150\ \ \ \ \ \}}
+\DoxyCodeLine{00151\ \ \ \}}
+\DoxyCodeLine{00152\ }
+\DoxyCodeLine{00153\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{float}\ getNewGirthSeed()\ \{\ \textcolor{keywordflow}{return}\ (\textcolor{keywordtype}{float})(rand()\ \%\ 100);\ \}}
+\DoxyCodeLine{00154\ }
+\DoxyCodeLine{00155\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ std::vector<float>\ getGirthSeeds(\textcolor{keywordtype}{int}\ numSamples)}
+\DoxyCodeLine{00156\ \ \ \{}
+\DoxyCodeLine{00157\ \ \ \ \ std::vector<float>\ girthSeeds;}
+\DoxyCodeLine{00158\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ numSamples;\ i++)\ \{}
+\DoxyCodeLine{00159\ \ \ \ \ \ \ girthSeeds.push\_back(getNewGirthSeed());}
+\DoxyCodeLine{00160\ \ \ \ \ \}}
+\DoxyCodeLine{00161\ \ \ \ \ \textcolor{keywordflow}{return}\ girthSeeds;}
+\DoxyCodeLine{00162\ \ \ \}}
+\DoxyCodeLine{00163\ }
+\DoxyCodeLine{00164\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ girthSample(\textcolor{keywordtype}{float}\&\ value,\ \textcolor{keywordtype}{float}\ girth)}
+\DoxyCodeLine{00165\ \ \ \{}
+\DoxyCodeLine{00166\ \ \ \ \ value\ =\ value\ *\ ((getNewGirthSeed()\ /\ 100\ *\ girth)\ +\ 1);}
+\DoxyCodeLine{00167\ \ \ \ \ value\ =\ std::clamp(value,\ -\/1.0f,\ 1.0f);}
+\DoxyCodeLine{00168\ \ \ \}}
+\DoxyCodeLine{00169\ }
+\DoxyCodeLine{00170\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ girthSample(\textcolor{keywordtype}{float}\&\ value,\ \textcolor{keywordtype}{float}\ girth,\ \textcolor{keywordtype}{float}\ seed)}
+\DoxyCodeLine{00171\ \ \ \{}
+\DoxyCodeLine{00172\ \ \ \ \ value\ =\ value\ *\ (((seed)\ /\ 100\ *\ girth)\ +\ 1);}
+\DoxyCodeLine{00173\ \ \ \ \ value\ =\ std::clamp(value,\ -\/1.0f,\ 1.0f);}
+\DoxyCodeLine{00174\ \ \ \}}
+\DoxyCodeLine{00175\ }
+\DoxyCodeLine{00176\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ symmetrySample(\textcolor{keywordtype}{float}\&\ value,\ \textcolor{keywordtype}{float}\ symmetry)}
+\DoxyCodeLine{00177\ \ \ \{}
+\DoxyCodeLine{00178\ \ \ \ \ \textcolor{keywordflow}{if}\ (value\ >\ 0)\ \{}
+\DoxyCodeLine{00179\ \ \ \ \ \ \ value\ +=\ value\ *\ symmetry;}
+\DoxyCodeLine{00180\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (value)\ \{}
+\DoxyCodeLine{00181\ \ \ \ \ \ \ value\ -\/=\ value\ *\ symmetry;}
+\DoxyCodeLine{00182\ \ \ \ \ \}}
+\DoxyCodeLine{00183\ \ \ \ \ value\ =\ std::clamp(value,\ -\/1.0f,\ 1.0f);}
+\DoxyCodeLine{00184\ \ \ \}}
+\DoxyCodeLine{00185\ }
+\DoxyCodeLine{00186\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ processBuffer(juce::AudioBuffer<float>\&\ buffer,}
+\DoxyCodeLine{00187\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ dmt::Distortion::Type\ type,}
+\DoxyCodeLine{00188\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ symmetry,}
+\DoxyCodeLine{00189\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ girth,}
+\DoxyCodeLine{00190\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ drive)}
+\DoxyCodeLine{00191\ \ \ \{}
+\DoxyCodeLine{00192\ \ \ \ \ std::vector<float>\ girthSeeds;}
+\DoxyCodeLine{00193\ \ \ \ \ \textcolor{keywordflow}{if}\ (girth\ <\ 0)}
+\DoxyCodeLine{00194\ \ \ \ \ \ \ girthSeeds\ =\ getGirthSeeds(buffer.getNumSamples());}
+\DoxyCodeLine{00195\ }
+\DoxyCodeLine{00196\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ channel\ =\ 0;\ channel\ <\ buffer.getNumChannels();\ channel++)\ \{}
+\DoxyCodeLine{00197\ \ \ \ \ \ \ \textcolor{keyword}{auto}*\ channelData\ =\ buffer.getWritePointer(channel);}
+\DoxyCodeLine{00198\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ sample\ =\ 0;\ sample\ <\ buffer.getNumSamples();\ sample++)\ \{}
+\DoxyCodeLine{00199\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Girth}}
+\DoxyCodeLine{00200\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (girth\ <\ 0)}
+\DoxyCodeLine{00201\ \ \ \ \ \ \ \ \ \ \ dmt::Distortion::girthSample(}
+\DoxyCodeLine{00202\ \ \ \ \ \ \ \ \ \ \ \ \ channelData[sample],\ std::abs(girth),\ girthSeeds[sample]);}
+\DoxyCodeLine{00203\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00204\ \ \ \ \ \ \ \ \ \ \ dmt::Distortion::girthSample(channelData[sample],\ girth);}
+\DoxyCodeLine{00205\ }
+\DoxyCodeLine{00206\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Distortion}}
+\DoxyCodeLine{00207\ \ \ \ \ \ \ \ \ dmt::Distortion::distortSample(channelData[sample],\ type,\ drive);}
+\DoxyCodeLine{00208\ }
+\DoxyCodeLine{00209\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Symmetry}}
+\DoxyCodeLine{00210\ \ \ \ \ \ \ \ \ dmt::Distortion::symmetrySample(channelData[sample],\ symmetry);}
+\DoxyCodeLine{00211\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00212\ \ \ \ \ \}}
+\DoxyCodeLine{00213\ \ \ \}}
+\DoxyCodeLine{00214\ \};}
+\DoxyCodeLine{00215\ \}}
+
+\end{DoxyCode}

@@ -1,0 +1,75 @@
+\hypertarget{classdmt_1_1gui_1_1preset_1_1_preset_manager}{}\doxysection{dmt\+::gui\+::preset\+::Preset\+Manager Class Reference}
+\label{classdmt_1_1gui_1_1preset_1_1_preset_manager}\index{dmt::gui::preset::PresetManager@{dmt::gui::preset::PresetManager}}
+Inheritance diagram for dmt\+::gui\+::preset\+::Preset\+Manager\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classdmt_1_1gui_1_1preset_1_1_preset_manager}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classdmt_1_1gui_1_1preset_1_1_preset_manager_a3cc84e3683fe8aac9626289a4848b5a8}\label{classdmt_1_1gui_1_1preset_1_1_preset_manager_a3cc84e3683fe8aac9626289a4848b5a8}} 
+{\bfseries Preset\+Manager} (juce\+::\+Audio\+Processor\+Value\+Tree\+State \&apvts)
+\item 
+\mbox{\Hypertarget{classdmt_1_1gui_1_1preset_1_1_preset_manager_a05cb373205c87b0f124261d1a812954c}\label{classdmt_1_1gui_1_1preset_1_1_preset_manager_a05cb373205c87b0f124261d1a812954c}} 
+void {\bfseries save\+Preset} (const juce\+::\+String \&preset\+Name)
+\item 
+\mbox{\Hypertarget{classdmt_1_1gui_1_1preset_1_1_preset_manager_a16bea35afe90f8af3e01b4d4eb84710e}\label{classdmt_1_1gui_1_1preset_1_1_preset_manager_a16bea35afe90f8af3e01b4d4eb84710e}} 
+void {\bfseries load\+Preset} (const juce\+::\+String \&preset\+Name)
+\item 
+\mbox{\Hypertarget{classdmt_1_1gui_1_1preset_1_1_preset_manager_a001d9af250abe47f4756dc91e5a3c2c0}\label{classdmt_1_1gui_1_1preset_1_1_preset_manager_a001d9af250abe47f4756dc91e5a3c2c0}} 
+void {\bfseries load\+Init\+Preset} ()
+\item 
+\mbox{\Hypertarget{classdmt_1_1gui_1_1preset_1_1_preset_manager_a6609b07dd0b4aecc36185828933338d8}\label{classdmt_1_1gui_1_1preset_1_1_preset_manager_a6609b07dd0b4aecc36185828933338d8}} 
+void {\bfseries delete\+Preset} (const juce\+::\+String \&preset\+Name)
+\item 
+\mbox{\Hypertarget{classdmt_1_1gui_1_1preset_1_1_preset_manager_a9428f251998b365fbc15fa51a427a521}\label{classdmt_1_1gui_1_1preset_1_1_preset_manager_a9428f251998b365fbc15fa51a427a521}} 
+int {\bfseries load\+Next\+Preset} ()
+\item 
+\mbox{\Hypertarget{classdmt_1_1gui_1_1preset_1_1_preset_manager_aa3ea3067c09738f0451623be37805cc8}\label{classdmt_1_1gui_1_1preset_1_1_preset_manager_aa3ea3067c09738f0451623be37805cc8}} 
+int {\bfseries load\+Previous\+Preset} ()
+\item 
+\mbox{\Hypertarget{classdmt_1_1gui_1_1preset_1_1_preset_manager_ad648a2d971926cdfebccda033f4ca798}\label{classdmt_1_1gui_1_1preset_1_1_preset_manager_ad648a2d971926cdfebccda033f4ca798}} 
+juce\+::\+String\+Array {\bfseries get\+Preset\+List} ()
+\item 
+\mbox{\Hypertarget{classdmt_1_1gui_1_1preset_1_1_preset_manager_ac1e4eb45d65ce02cbb69603481c8fa80}\label{classdmt_1_1gui_1_1preset_1_1_preset_manager_ac1e4eb45d65ce02cbb69603481c8fa80}} 
+juce\+::\+String {\bfseries get\+Current\+Preset} () const
+\item 
+\mbox{\Hypertarget{classdmt_1_1gui_1_1preset_1_1_preset_manager_af1b7bd06934ac886a80dbe07001d727e}\label{classdmt_1_1gui_1_1preset_1_1_preset_manager_af1b7bd06934ac886a80dbe07001d727e}} 
+void {\bfseries value\+Tree\+Redirected} (juce\+::\+Value\+Tree \&tree\+Which\+Has\+Been\+Changed) override
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static const juce\+::\+File \& \mbox{\hyperlink{classdmt_1_1gui_1_1preset_1_1_preset_manager_a495b8fe2b60bf31aa5cc1dd093f257b6}{default\+Directory}}
+\item 
+\mbox{\Hypertarget{classdmt_1_1gui_1_1preset_1_1_preset_manager_aaec980c156b8d3dc8dee07132a894a41}\label{classdmt_1_1gui_1_1preset_1_1_preset_manager_aaec980c156b8d3dc8dee07132a894a41}} 
+static const juce\+::\+String \& {\bfseries extension} = \char`\"{}preset\char`\"{}
+\item 
+\mbox{\Hypertarget{classdmt_1_1gui_1_1preset_1_1_preset_manager_a92553abc79c29f085d60765be8129a02}\label{classdmt_1_1gui_1_1preset_1_1_preset_manager_a92553abc79c29f085d60765be8129a02}} 
+static const juce\+::\+String \& {\bfseries preset\+Name\+Property} = \char`\"{}preset\+Name\char`\"{}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classdmt_1_1gui_1_1preset_1_1_preset_manager_a495b8fe2b60bf31aa5cc1dd093f257b6}\label{classdmt_1_1gui_1_1preset_1_1_preset_manager_a495b8fe2b60bf31aa5cc1dd093f257b6}} 
+\index{dmt::gui::preset::PresetManager@{dmt::gui::preset::PresetManager}!defaultDirectory@{defaultDirectory}}
+\index{defaultDirectory@{defaultDirectory}!dmt::gui::preset::PresetManager@{dmt::gui::preset::PresetManager}}
+\doxysubsubsection{\texorpdfstring{defaultDirectory}{defaultDirectory}}
+{\footnotesize\ttfamily const juce\+::\+File\& dmt\+::gui\+::preset\+::\+Preset\+Manager\+::default\+Directory\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{=}
+\DoxyCodeLine{\ \ \ \ juce::File::getSpecialLocation(}
+\DoxyCodeLine{\ \ \ \ \ \ juce::File::SpecialLocationType::userDocumentsDirectory)}
+\DoxyCodeLine{\ \ \ \ \ \ .getChildFile(ProjectInfo::companyName)}
+\DoxyCodeLine{\ \ \ \ \ \ .getChildFile(ProjectInfo::projectName)}
+
+\end{DoxyCode}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Source/\+Gui/\+Preset/Preset\+Manager.\+h\end{DoxyCompactItemize}

@@ -1,0 +1,39 @@
+\hypertarget{_label_8h_source}{}\doxysection{Label.\+h}
+\label{_label_8h_source}\index{Source/Gui/Widgets/Label.h@{Source/Gui/Widgets/Label.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ "{}../Utility/AppSettings.h"{}}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ <JuceHeader.h>}}
+\DoxyCodeLine{00005\ }
+\DoxyCodeLine{00006\ \textcolor{keyword}{namespace\ }dmt\ \{}
+\DoxyCodeLine{00007\ \textcolor{keyword}{namespace\ }gui\ \{}
+\DoxyCodeLine{00008\ \textcolor{keyword}{namespace\ }widgets\ \{}
+\DoxyCodeLine{00009\ \textcolor{comment}{//==============================================================================}}
+\DoxyCodeLine{00010\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classdmt_1_1gui_1_1widgets_1_1_label}{Label}}\ :\ \textcolor{keyword}{public}\ juce::Label}
+\DoxyCodeLine{00011\ \{}
+\DoxyCodeLine{00012\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00013\ \ \ \mbox{\hyperlink{classdmt_1_1gui_1_1widgets_1_1_label}{Label}}(juce::String\ name,\ \textcolor{keywordtype}{float}\ fontSize,\ juce::Font\ font)}
+\DoxyCodeLine{00014\ \ \ \ \ :\ fontSize(fontSize)}
+\DoxyCodeLine{00015\ \ \ \{}
+\DoxyCodeLine{00016\ \ \ \ \ setText(name,\ juce::NotificationType::dontSendNotification);}
+\DoxyCodeLine{00017\ \ \ \ \ setJustificationType(juce::Justification::centredTop);}
+\DoxyCodeLine{00018\ \ \ \ \ setColour(juce::Label::ColourIds::textColourId,}
+\DoxyCodeLine{00019\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ AppSettings::Fonts::labelFontColour);}
+\DoxyCodeLine{00020\ \ \ \ \ setFont(font);}
+\DoxyCodeLine{00021\ \ \ \}}
+\DoxyCodeLine{00022\ \ \ \textcolor{keywordtype}{void}\ resized()}
+\DoxyCodeLine{00023\ \ \ \{}
+\DoxyCodeLine{00024\ \ \ \ \ setFont(getFont().withHeight(fontSize\ *\ AppSettings::size));}
+\DoxyCodeLine{00025\ \ \ \}}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00028\ \ \ \textcolor{keywordtype}{float}\ fontSize;}
+\DoxyCodeLine{00029\ \ \ \textcolor{keywordtype}{bool}\ isTitle\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00030\ \};}
+\DoxyCodeLine{00031\ \}\ \textcolor{comment}{//\ namespace\ widgets}}
+\DoxyCodeLine{00032\ \}\ \textcolor{comment}{//\ namespace\ gui}}
+\DoxyCodeLine{00033\ \}\ \textcolor{comment}{//\ namespace\ dmt}}
+
+\end{DoxyCode}

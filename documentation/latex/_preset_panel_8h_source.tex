@@ -1,0 +1,150 @@
+\hypertarget{_preset_panel_8h_source}{}\doxysection{Preset\+Panel.\+h}
+\label{_preset_panel_8h_source}\index{Source/Gui/Preset/PresetPanel.h@{Source/Gui/Preset/PresetPanel.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00002\ \textcolor{comment}{\ \ ==============================================================================}}
+\DoxyCodeLine{00003\ \textcolor{comment}{}}
+\DoxyCodeLine{00004\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ PresetPanel.h}}
+\DoxyCodeLine{00005\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Created:\ 20\ Dec\ 2022\ 10:29:23pm}}
+\DoxyCodeLine{00006\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Author:\ \ Lunix}}
+\DoxyCodeLine{00007\ \textcolor{comment}{}}
+\DoxyCodeLine{00008\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Source:\ https://youtu.be/YwAtWuGA4Cg}}
+\DoxyCodeLine{00009\ \textcolor{comment}{}}
+\DoxyCodeLine{00010\ \textcolor{comment}{\ \ ==============================================================================}}
+\DoxyCodeLine{00011\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}PresetManager.h"{}}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ <JuceHeader.h>}}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ \textcolor{comment}{//==============================================================================}}
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00020\ \textcolor{keyword}{namespace\ }dmt\ \{}
+\DoxyCodeLine{00021\ \textcolor{keyword}{namespace\ }gui\ \{}
+\DoxyCodeLine{00022\ \textcolor{keyword}{namespace\ }preset\ \{}
+\DoxyCodeLine{00023\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classdmt_1_1gui_1_1preset_1_1_preset_panel}{PresetPanel}}}
+\DoxyCodeLine{00024\ \ \ :\ \textcolor{keyword}{public}\ juce::Component}
+\DoxyCodeLine{00025\ \ \ ,\ juce::Button::Listener}
+\DoxyCodeLine{00026\ \ \ ,\ juce::ComboBox::Listener}
+\DoxyCodeLine{00027\ \{}
+\DoxyCodeLine{00028\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00029\ \ \ \mbox{\hyperlink{classdmt_1_1gui_1_1preset_1_1_preset_panel}{PresetPanel}}(dmt::PresetManager\&\ pm)}
+\DoxyCodeLine{00030\ \ \ \ \ :\ presetManager(pm)}
+\DoxyCodeLine{00031\ \ \ \{}
+\DoxyCodeLine{00032\ \ \ \ \ configureButton(saveButton,\ \textcolor{stringliteral}{"{}Save"{}});}
+\DoxyCodeLine{00033\ \ \ \ \ configureButton(previousPresetButton,\ \textcolor{stringliteral}{"{}<"{}});}
+\DoxyCodeLine{00034\ \ \ \ \ configureButton(nextPresetButton,\ \textcolor{stringliteral}{"{}>"{}});}
+\DoxyCodeLine{00035\ \ \ \ \ configureButton(deleteButton,\ \textcolor{stringliteral}{"{}Delete"{}});}
+\DoxyCodeLine{00036\ }
+\DoxyCodeLine{00037\ \ \ \ \ presetListBox.setTextWhenNothingSelected(\textcolor{stringliteral}{"{}No\ Preset\ Selected"{}});}
+\DoxyCodeLine{00038\ \ \ \ \ presetListBox.setTextWhenNoChoicesAvailable(\textcolor{stringliteral}{"{}No\ Presets\ Available"{}});}
+\DoxyCodeLine{00039\ \ \ \ \ presetListBox.setMouseCursor(juce::MouseCursor::PointingHandCursor);}
+\DoxyCodeLine{00040\ \ \ \ \ addAndMakeVisible(presetListBox);}
+\DoxyCodeLine{00041\ \ \ \ \ presetListBox.addListener(\textcolor{keyword}{this});}
+\DoxyCodeLine{00042\ }
+\DoxyCodeLine{00043\ \ \ \ \ loadPresetList();}
+\DoxyCodeLine{00044\ \ \ \}}
+\DoxyCodeLine{00045\ }
+\DoxyCodeLine{00046\ \ \ \mbox{\hyperlink{classdmt_1_1gui_1_1preset_1_1_preset_panel}{\string~PresetPanel}}()\textcolor{keyword}{\ override}}
+\DoxyCodeLine{00047\ \textcolor{keyword}{\ \ }\{}
+\DoxyCodeLine{00048\ \ \ \ \ saveButton.removeListener(\textcolor{keyword}{this});}
+\DoxyCodeLine{00049\ \ \ \ \ previousPresetButton.removeListener(\textcolor{keyword}{this});}
+\DoxyCodeLine{00050\ \ \ \ \ nextPresetButton.removeListener(\textcolor{keyword}{this});}
+\DoxyCodeLine{00051\ \ \ \ \ deleteButton.removeListener(\textcolor{keyword}{this});}
+\DoxyCodeLine{00052\ \ \ \ \ presetListBox.removeListener(\textcolor{keyword}{this});}
+\DoxyCodeLine{00053\ \ \ \}}
+\DoxyCodeLine{00054\ }
+\DoxyCodeLine{00055\ \ \ \textcolor{keywordtype}{void}\ paint(juce::Graphics\&)\textcolor{keyword}{\ override\ }\{\}}
+\DoxyCodeLine{00056\ }
+\DoxyCodeLine{00057\ \ \ \textcolor{keywordtype}{void}\ resized()\textcolor{keyword}{\ override}}
+\DoxyCodeLine{00058\ \textcolor{keyword}{\ \ }\{}
+\DoxyCodeLine{00059\ \ \ \ \ \textcolor{keyword}{auto}\ padding\ =\ 1;}
+\DoxyCodeLine{00060\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\ container\ =\ getLocalBounds().reduced(padding);}
+\DoxyCodeLine{00061\ \ \ \ \ \textcolor{keyword}{auto}\ bounds\ =\ container;}
+\DoxyCodeLine{00062\ }
+\DoxyCodeLine{00063\ \ \ \ \ saveButton.setBounds(}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ bounds.removeFromLeft(container.proportionOfWidth(0.2)).reduced(padding));}
+\DoxyCodeLine{00065\ \ \ \ \ previousPresetButton.setBounds(}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ bounds.removeFromLeft(container.proportionOfWidth(0.1)).reduced(padding));}
+\DoxyCodeLine{00067\ \ \ \ \ presetListBox.setBounds(}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ bounds.removeFromLeft(container.proportionOfWidth(0.4)).reduced(padding));}
+\DoxyCodeLine{00069\ \ \ \ \ nextPresetButton.setBounds(}
+\DoxyCodeLine{00070\ \ \ \ \ \ \ bounds.removeFromLeft(container.proportionOfWidth(0.1)).reduced(padding));}
+\DoxyCodeLine{00071\ \ \ \ \ deleteButton.setBounds(bounds.reduced(padding));}
+\DoxyCodeLine{00072\ \ \ \}}
+\DoxyCodeLine{00073\ }
+\DoxyCodeLine{00074\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00075\ \ \ \textcolor{keywordtype}{void}\ buttonClicked(juce::Button*\ button)\textcolor{keyword}{\ override}}
+\DoxyCodeLine{00076\ \textcolor{keyword}{\ \ }\{}
+\DoxyCodeLine{00077\ \ \ \ \ \textcolor{keywordflow}{if}\ (button\ ==\ \&saveButton)\ \{}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ fileChooser\ =\ std::make\_unique<juce::FileChooser>(}
+\DoxyCodeLine{00079\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}Save\ Preset"{}},}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ \ \ dmt::PresetManager::defaultDirectory,}
+\DoxyCodeLine{00081\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}*."{}}\ +\ dmt::PresetManager::extension);}
+\DoxyCodeLine{00082\ }
+\DoxyCodeLine{00083\ \ \ \ \ \ \ fileChooser-\/>launchAsync(juce::FileBrowserComponent::saveMode,}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ [\&](\textcolor{keyword}{const}\ juce::FileChooser\&\ chooser)\ \{}
+\DoxyCodeLine{00085\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\ result\ =\ chooser.getResult();}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ presetManager.savePreset(}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ result.getFileNameWithoutExtension());}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ loadPresetList();}
+\DoxyCodeLine{00089\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \});}
+\DoxyCodeLine{00090\ \ \ \ \ \}}
+\DoxyCodeLine{00091\ \ \ \ \ \textcolor{keywordflow}{if}\ (button\ ==\ \&previousPresetButton)\ \{}
+\DoxyCodeLine{00092\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\ index\ =\ presetManager.loadPreviousPreset();}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ presetListBox.setSelectedItemIndex(index,\ juce::dontSendNotification);}
+\DoxyCodeLine{00094\ \ \ \ \ \}}
+\DoxyCodeLine{00095\ \ \ \ \ \textcolor{keywordflow}{if}\ (button\ ==\ \&nextPresetButton)\ \{}
+\DoxyCodeLine{00096\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\ index\ =\ presetManager.loadNextPreset();}
+\DoxyCodeLine{00097\ \ \ \ \ \ \ presetListBox.setSelectedItemIndex(index,\ juce::dontSendNotification);}
+\DoxyCodeLine{00098\ \ \ \ \ \}}
+\DoxyCodeLine{00099\ \ \ \ \ \textcolor{keywordflow}{if}\ (button\ ==\ \&deleteButton)\ \{}
+\DoxyCodeLine{00100\ \ \ \ \ \ \ presetManager.deletePreset(presetManager.getCurrentPreset());}
+\DoxyCodeLine{00101\ \ \ \ \ \ \ loadPresetList();}
+\DoxyCodeLine{00102\ \ \ \ \ \}}
+\DoxyCodeLine{00103\ \ \ \}}
+\DoxyCodeLine{00104\ }
+\DoxyCodeLine{00105\ \ \ \textcolor{keywordtype}{void}\ comboBoxChanged(juce::ComboBox*\ comboBoxThatHasChanged)\textcolor{keyword}{\ override}}
+\DoxyCodeLine{00106\ \textcolor{keyword}{\ \ }\{}
+\DoxyCodeLine{00107\ \ \ \ \ \textcolor{keywordflow}{if}\ (comboBoxThatHasChanged\ ==\ \&presetListBox)\ \{}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ presetManager.loadPreset(}
+\DoxyCodeLine{00109\ \ \ \ \ \ \ \ \ presetListBox.getItemText(presetListBox.getSelectedItemIndex()));}
+\DoxyCodeLine{00110\ \ \ \ \ \}}
+\DoxyCodeLine{00111\ \ \ \}}
+\DoxyCodeLine{00112\ }
+\DoxyCodeLine{00113\ \ \ \textcolor{keywordtype}{void}\ loadPresetList()}
+\DoxyCodeLine{00114\ \ \ \{}
+\DoxyCodeLine{00115\ \ \ \ \ presetListBox.clear(juce::dontSendNotification);}
+\DoxyCodeLine{00116\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\ allPresets\ =\ presetManager.getPresetList();}
+\DoxyCodeLine{00117\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\ currentPreset\ =\ presetManager.getCurrentPreset();}
+\DoxyCodeLine{00118\ \ \ \ \ presetListBox.addItemList(allPresets,\ 1);}
+\DoxyCodeLine{00119\ \ \ \ \ presetListBox.setSelectedItemIndex(allPresets.indexOf(currentPreset),}
+\DoxyCodeLine{00120\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ juce::dontSendNotification);}
+\DoxyCodeLine{00121\ \ \ \}}
+\DoxyCodeLine{00122\ }
+\DoxyCodeLine{00123\ \ \ \textcolor{keywordtype}{void}\ configureButton(juce::Button\&\ button,\ \textcolor{keyword}{const}\ juce::String\&\ buttontext)}
+\DoxyCodeLine{00124\ \ \ \{}
+\DoxyCodeLine{00125\ \ \ \ \ button.setButtonText(buttontext);}
+\DoxyCodeLine{00126\ \ \ \ \ button.setMouseCursor(juce::MouseCursor::PointingHandCursor);}
+\DoxyCodeLine{00127\ \ \ \ \ addAndMakeVisible(button);}
+\DoxyCodeLine{00128\ \ \ \ \ button.addListener(\textcolor{keyword}{this});}
+\DoxyCodeLine{00129\ \ \ \}}
+\DoxyCodeLine{00130\ }
+\DoxyCodeLine{00131\ \ \ dmt::PresetManager\ presetManager;}
+\DoxyCodeLine{00132\ \ \ std::unique\_ptr<juce::FileChooser>\ fileChooser;}
+\DoxyCodeLine{00133\ \ \ juce::TextButton\ saveButton;}
+\DoxyCodeLine{00134\ \ \ juce::TextButton\ previousPresetButton;}
+\DoxyCodeLine{00135\ \ \ juce::TextButton\ nextPresetButton;}
+\DoxyCodeLine{00136\ \ \ juce::TextButton\ deleteButton;}
+\DoxyCodeLine{00137\ }
+\DoxyCodeLine{00138\ \ \ juce::ComboBox\ presetListBox;}
+\DoxyCodeLine{00139\ }
+\DoxyCodeLine{00140\ \ \ JUCE\_DECLARE\_NON\_COPYABLE\_WITH\_LEAK\_DETECTOR(\mbox{\hyperlink{classdmt_1_1gui_1_1preset_1_1_preset_panel}{PresetPanel}})}
+\DoxyCodeLine{00141\ \};}
+\DoxyCodeLine{00142\ \}\ \textcolor{comment}{//\ namespace\ preset}}
+\DoxyCodeLine{00143\ \}\ \textcolor{comment}{//\ namespace\ gui}}
+\DoxyCodeLine{00144\ \}\ \textcolor{comment}{//\ namespace\ dmt}}
+
+\end{DoxyCode}

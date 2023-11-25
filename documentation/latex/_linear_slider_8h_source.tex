@@ -1,0 +1,36 @@
+\hypertarget{_linear_slider_8h_source}{}\doxysection{Linear\+Slider.\+h}
+\label{_linear_slider_8h_source}\index{Source/Gui/Widgets/LinearSlider.h@{Source/Gui/Widgets/LinearSlider.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ "{}../Utility/AppSettings.h"{}}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ "{}LookAndFeel.h"{}}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ <JuceHeader.h>}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{keyword}{namespace\ }dmt\ \{}
+\DoxyCodeLine{00008\ \textcolor{keyword}{namespace\ }gui\ \{}
+\DoxyCodeLine{00009\ \textcolor{keyword}{namespace\ }widgets\ \{}
+\DoxyCodeLine{00010\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classdmt_1_1gui_1_1widgets_1_1_linear_slider}{LinearSlider}}\ :\ \textcolor{keyword}{public}\ juce::Slider}
+\DoxyCodeLine{00011\ \{}
+\DoxyCodeLine{00012\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00013\ \ \ \mbox{\hyperlink{classdmt_1_1gui_1_1widgets_1_1_linear_slider}{LinearSlider}}()}
+\DoxyCodeLine{00014\ \ \ \ \ :\ juce::Slider()}
+\DoxyCodeLine{00015\ \ \ \ \ ,\ lnf()}
+\DoxyCodeLine{00016\ \ \ \{}
+\DoxyCodeLine{00017\ \ \ \ \ setSliderStyle(juce::Slider::SliderStyle::LinearVertical);}
+\DoxyCodeLine{00018\ \ \ \ \ setTextBoxStyle(juce::Slider::TextBoxBelow,\ \textcolor{keyword}{true},\ 0,\ 0);}
+\DoxyCodeLine{00019\ \ \ \ \ juce::Random\ rand;}
+\DoxyCodeLine{00020\ \ \ \ \ setValue(10.0f\ *\ rand.nextFloat());}
+\DoxyCodeLine{00021\ \ \ \ \ setLookAndFeel(\&lnf);}
+\DoxyCodeLine{00022\ \ \ \}}
+\DoxyCodeLine{00023\ \ \ \mbox{\hyperlink{classdmt_1_1gui_1_1widgets_1_1_linear_slider}{\string~LinearSlider}}()\ \{\ setLookAndFeel(\textcolor{keyword}{nullptr});\ \}}
+\DoxyCodeLine{00024\ }
+\DoxyCodeLine{00025\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00026\ \ \ dmt::LookAndFeel\ lnf;}
+\DoxyCodeLine{00027\ \};}
+\DoxyCodeLine{00028\ \}\ \textcolor{comment}{//\ namespace\ widgets}}
+\DoxyCodeLine{00029\ \}\ \textcolor{comment}{//\ namespace\ gui}}
+\DoxyCodeLine{00030\ \}\ \textcolor{comment}{//\ namespace\ dmt}}
+
+\end{DoxyCode}
