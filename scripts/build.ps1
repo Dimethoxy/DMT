@@ -24,3 +24,26 @@ if ($LastExitCode -ne 0) {
 }
 
 Write-Host "Build completed successfully."
+
+# Step 3: Move the executable
+$sourcePath = "$dir\..\build\src\Neutrino_artefacts\Debug\Standalone\Neutrino.exe"
+$destinationPath = "$dir\..\output\windows"
+# Check if the source file exists
+if (Test-Path $sourcePath) {
+    # Check if the destination directory exists, create it if not
+    if (-not (Test-Path $destinationPath -PathType Container)) {
+        New-Item -ItemType Directory -Path $destinationPath -Force
+    }
+    try {
+        # Move the file
+        Move-Item -Path $sourcePath -Destination $destinationPath -Force
+        Write-Host "Neutrino.exe moved to $destinationPath successfully."
+        # Execute the moved file
+        $movedFilePath = Join-Path $destinationPath "Neutrino.exe"
+        Start-Process -FilePath $movedFilePath
+    } catch {
+        Write-Error "Failed to move Neutrino.exe. $_"
+    }
+} else {
+    Write-Error "Source file not found: $sourcePath"
+}
