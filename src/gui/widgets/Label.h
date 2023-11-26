@@ -7,18 +7,28 @@ namespace dmt {
 namespace gui {
 namespace widgets {
 //==============================================================================
-class Label : public juce::Component {
+class Label : public juce::Component
+{
   using Settings = dmt::AppSettings;
   using Justification = juce::Justification;
-  const float &size = Settings::Layout::size;
+  const float& size = Settings::Layout::size;
 
 public:
-  Label(juce::String text, const juce::Font &font, const float &fontSize,
-        const juce::Colour &colour,
+  Label(juce::String text,
+        const juce::Font& font,
+        const float& fontSize,
+        const juce::Colour& colour,
         const Justification justification = Justification::centredTop)
-      : juce::Component(), text(text), font(font), fontSize(fontSize),
-        colour(colour), justification(justification) {}
-  void paint(juce::Graphics &g) {
+    : juce::Component()
+    , text(text)
+    , font(font)
+    , fontSize(fontSize)
+    , colour(colour)
+    , justification(justification)
+  {
+  }
+  void paint(juce::Graphics& g)
+  {
     auto bounds = getLocalBounds();
 
     // Draw bounds debug
@@ -26,18 +36,18 @@ public:
     if (Settings::debugBounds)
       g.drawRect(bounds, 1.0f);
 
-    g.setFont(fontSize * size);
+    g.setFont(font.withHeight(fontSize * size));
     g.setColour(colour);
     g.drawText(text, this->getLocalBounds(), justification, true);
   }
 
-  inline void setText(const juce::String &text) { this->text = text; }
+  inline void setText(const juce::String& newText) { this->text = newText; }
 
 private:
   juce::String text;
-  const juce::Font &font;
-  const float &fontSize;
-  const juce::Colour &colour;
+  const juce::Font& font;
+  const float& fontSize;
+  const juce::Colour& colour;
   Justification justification;
 
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Label)

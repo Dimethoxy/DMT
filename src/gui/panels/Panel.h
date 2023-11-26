@@ -53,7 +53,7 @@ public:
   Panel(juce::String name) noexcept
     : layout({ 1, 1 })
     , name(name)
-    , titleLabel(name, Fonts::semiBold, fontSize, juce::Colours::white)
+    , titleLabel(name, Fonts::bold, fontSize, juce::Colours::white)
     , nextCallback([]() {})
     , prevCallback([]() {})
     , nextButton(dmt::gui::widgets::TriangleButton::right)
@@ -110,23 +110,25 @@ public:
   void resized() noexcept override
   {
     const auto bounds = getLocalBounds();
+    const auto buttonWidth = Carousel::buttonWidth * size;
+    const auto buttonHeight = Carousel::buttonHeight * size;
+    const auto marginSize = size * margin;
+    const auto padding = rawPadding * size;
+
     auto leftBounds = bounds;
     auto rightBounds = bounds;
 
-    leftBounds.removeFromRight(bounds.getWidth() -
-                               Carousel::buttonWidth * size);
-    leftBounds.setHeight(Carousel::buttonHeight * size);
+    leftBounds.removeFromRight(bounds.getWidth() - buttonWidth);
+    leftBounds.setHeight(buttonHeight);
     leftBounds.setCentre(leftBounds.getCentreX(), bounds.getCentreY());
-    prevButton.setBounds(leftBounds.reduced(size * margin));
+    prevButton.setBounds(leftBounds.reduced(marginSize));
 
-    rightBounds.removeFromLeft(bounds.getWidth() -
-                               Carousel::buttonWidth * size);
-    rightBounds.setHeight(Carousel::buttonHeight * size);
+    rightBounds.removeFromLeft(bounds.getWidth() - buttonWidth);
+    rightBounds.setHeight(buttonHeight);
     rightBounds.setCentre(rightBounds.getCentreX(), bounds.getCentreY());
-    nextButton.setBounds(rightBounds.reduced(size * margin));
+    nextButton.setBounds(rightBounds.reduced(marginSize));
 
-    const float padding = rawPadding * size;
-    titleLabel.setBounds(bounds.reduced(padding * size));
+    titleLabel.setBounds(bounds.reduced(padding));
   }
 
   virtual inline const juce::String getName() noexcept { return "Panel"; }

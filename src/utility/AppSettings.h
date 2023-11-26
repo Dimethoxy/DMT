@@ -55,7 +55,7 @@ struct AppSettings
   struct Panel
   {
     // General
-    static inline float padding = 18.0f;
+    static inline float padding = 12.0f;
     static inline Colour backgroundColor = Colours::background;
     static inline float cornerSize = 15.0f;
     // Border
@@ -72,25 +72,25 @@ struct AppSettings
     static inline float innerShadowRadius = 10.0f;
     // Text
     static inline juce::Colour fontColor = Colours::font;
-    static inline float fontSize = 24.0f;
+    static inline float fontSize = 32.0f;
   };
   struct Slider
   {
     // General
     static inline float padding = 8.0f;
     static inline float baseWidth = 110.0f;
-    static inline float baseHeight = 120.0f;
-    static inline float sliderSize = 0.77f;
-    static inline float labelsSize = 0.28f;
+    static inline float baseHeight = 125.0f;
+    static inline float sliderSize = 0.80f;
+    static inline float labelsSize = 0.30f;
     // Font
     static inline Colour titleFontColour = Colours::font;
     static inline Colour infoFontColour = Colours::font;
-    static inline float titleFontSize = 24.0f;
-    static inline float infoFontSize = 18.0f;
+    static inline float titleFontSize = 26.0f;
+    static inline float infoFontSize = 20.0f;
     // Shaft
     static inline juce::Colour shaftColour = Colours::font;
-    static inline float shaftLineStrength = 4.0f;
-    static inline float shaftSize = 0.5f;
+    static inline float shaftLineStrength = 3.0f;
+    static inline float shaftSize = 0.47f;
     // Rail
     static inline juce::Colour lowerRailColour = Colours::solid_dark;
     static inline juce::Colour upperRailColour = Colours::primary;
@@ -100,7 +100,7 @@ struct AppSettings
     static inline juce::Colour thumbInnerColour = Colours::solid_dark;
     static inline juce::Colour thumOuterColour = Colours::font;
     static inline float thumbSize = 20.0f;
-    static inline float thumbStrength = 4.0f;
+    static inline float thumbStrength = 3.0f;
   };
   struct TriangleButton
   {
