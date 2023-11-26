@@ -5,12 +5,14 @@
 
 namespace dmt {
 
-struct AppSettings {
+struct AppSettings
+{
   using Colour = juce::Colour;
   static inline juce::String name = "Neutrino";
   static inline float size = 1.0f;
   static inline const bool debugBounds = false;
-  struct Colours {
+  struct Colours
+  {
     using Colour = juce::Colour;
     static inline Colour background = Colour(25, 26, 33);
     static inline Colour solid_dark = Colour(40, 42, 54);
@@ -21,7 +23,8 @@ struct AppSettings {
     static inline float opacityStep = 0.05f;
   };
 
-  struct Layout {
+  struct Layout
+  {
     static inline float size = 1.0f;
     static inline float margin = 5.0f;
     static inline float leftWidth = 700.0f;
@@ -31,7 +34,8 @@ struct AppSettings {
     static inline float tabHeight = 40.0f;
     static inline float rowHeight = 200.0f;
     static inline float keyboardHeight = 60.0f;
-    static inline float getHeight() {
+    static inline float getHeight()
+    {
       auto header = headerHeight + 2.0f * margin;
       auto tab = tabHeight + 2.0f * margin;
       auto top = rowHeight + 2.0f * margin;
@@ -40,15 +44,18 @@ struct AppSettings {
       auto keyboard = keyboardHeight;
       return header + tab + top + mid + low + keyboard + 2 * margin;
     }
-    static inline float getWidth() {
+    static inline float getWidth()
+    {
       auto left = leftWidth + 2.0f * margin;
       auto center = centerWidth + 2.0f * margin;
       auto right = rightWidth + 2.0f * margin;
       return left + center + right + 2.0f * margin;
     }
   };
-  struct Panel {
+  struct Panel
+  {
     // General
+    static inline float padding = 18.0f;
     static inline Colour backgroundColor = Colours::background;
     static inline float cornerSize = 15.0f;
     // Border
@@ -67,7 +74,8 @@ struct AppSettings {
     static inline juce::Colour fontColor = Colours::font;
     static inline float fontSize = 24.0f;
   };
-  struct Slider {
+  struct Slider
+  {
     // General
     static inline float padding = 8.0f;
     static inline float baseWidth = 110.0f;
@@ -94,7 +102,8 @@ struct AppSettings {
     static inline float thumbSize = 20.0f;
     static inline float thumbStrength = 4.0f;
   };
-  struct TriangleButton {
+  struct TriangleButton
+  {
     // General
     static inline Colour standbyColour = Colours::shadow.withAlpha(0.5f);
     static inline Colour hoverColour = Colours::shadow.withAlpha(0.1f);
@@ -112,33 +121,60 @@ struct AppSettings {
     static inline float outerShadowRadius = 4.0f;
     static inline float innerShadowRadius = 4.0f;
   };
-  struct Carousel {
+  struct Carousel
+  {
     static inline float buttonWidth = 80.0f;
     static inline float buttonHeight = 210.0f;
   };
-  struct Fonts {
+  struct Fonts
+  {
     using Typeface = juce::Typeface;
+    using Font = juce::Font;
+
+    static inline Typeface::Ptr thinTypeface =
+      Typeface::createSystemTypefaceFor(BinaryData::PoppinsThin_ttf,
+                                        BinaryData::PoppinsThin_ttfSize);
+    static inline Font thin = Font(thinTypeface);
 
     static inline Typeface::Ptr extraLightTypeface =
-        Typeface::createSystemTypefaceFor(
-            BinaryData::PoppinsExtraLight_ttf,
-            BinaryData::PoppinsExtraLight_ttfSize);
+      Typeface::createSystemTypefaceFor(BinaryData::PoppinsExtraLight_ttf,
+                                        BinaryData::PoppinsExtraLight_ttfSize);
+    static inline Font extraLight = Font(extraLightTypeface);
+
     static inline Typeface::Ptr lightTypeface =
-        juce::Typeface::createSystemTypefaceFor(
-            BinaryData::PoppinsSemiBold_ttf,
-            BinaryData::PoppinsSemiBold_ttfSize);
+      Typeface::createSystemTypefaceFor(BinaryData::PoppinsLight_ttf,
+                                        BinaryData::PoppinsLight_ttfSize);
+    static inline Font light = Font(lightTypeface);
 
     static inline Typeface::Ptr regularTypeface =
-        Typeface::createSystemTypefaceFor(BinaryData::PoppinsRegular_ttf,
-                                          BinaryData::PoppinsRegular_ttfSize);
+      Typeface::createSystemTypefaceFor(BinaryData::PoppinsRegular_ttf,
+                                        BinaryData::PoppinsRegular_ttfSize);
+    static inline Font regular = Font(regularTypeface);
+
+    static inline Typeface::Ptr mediumTypeface =
+      Typeface::createSystemTypefaceFor(BinaryData::PoppinsMedium_ttf,
+                                        BinaryData::PoppinsMedium_ttfSize);
+    static inline Font medium = Font(mediumTypeface);
 
     static inline Typeface::Ptr semiBoldTypeface =
-        Typeface::createSystemTypefaceFor(BinaryData::PoppinsSemiBold_ttf,
-                                          BinaryData::PoppinsSemiBold_ttfSize);
+      Typeface::createSystemTypefaceFor(BinaryData::PoppinsSemiBold_ttf,
+                                        BinaryData::PoppinsSemiBold_ttfSize);
+    static inline Font semiBold = Font(semiBoldTypeface);
 
-    static inline juce::Font light = juce::Font(lightTypeface);
-    static inline juce::Font regular = juce::Font(regularTypeface);
-    static inline juce::Font semiBold = juce::Font(semiBoldTypeface);
+    static inline Typeface::Ptr boldTypeface =
+      Typeface::createSystemTypefaceFor(BinaryData::PoppinsBold_ttf,
+                                        BinaryData::PoppinsBold_ttfSize);
+    static inline Font bold = Font(boldTypeface);
+
+    static inline Typeface::Ptr extraBoldTypeface =
+      Typeface::createSystemTypefaceFor(BinaryData::PoppinsExtraBold_ttf,
+                                        BinaryData::PoppinsExtraBold_ttfSize);
+    static inline Font extraBold = Font(extraBoldTypeface);
+
+    static inline Typeface::Ptr blackTypeface =
+      Typeface::createSystemTypefaceFor(BinaryData::PoppinsBlack_ttf,
+                                        BinaryData::PoppinsBlack_ttfSize);
+    static inline Font black = Font(blackTypeface);
   };
 };
 } // namespace dmt

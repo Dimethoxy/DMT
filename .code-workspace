@@ -6,7 +6,6 @@
   ],
   "extensions": {
     "recommendations": [
-      "xaver.clang-format",
       "ms-vscode.cmake-tools",
       "twxs.cmake",
       "ms-vscode.cpptools",
@@ -20,21 +19,13 @@
     "cmake.ctestArgs": ["--verbose"],
     "cmake.configureArgs": [],
     "cmake.preferredGenerators": ["Ninja", "Unix Makefiles"],
-    "[cpp]": {
-      "editor.defaultFormatter": "xaver.clang-format"
-    },
-    "[c]": {
-      "editor.defaultFormatter": "xaver.clang-format"
-    },
-    "[cmake]": {
-      "editor.defaultFormatter": "twxs.cmake"
-    },
-    "C_Cpp.clang_format_fallbackStyle": "Mozilla",
+    "[cpp]": {"editor.defaultFormatter": "ms-vscode.cpptools"},
+    "[c]": {"editor.defaultFormatter": "ms-vscode.cpptools"},
+    "[cmake]": {"editor.defaultFormatter": "twxs.cmake"},
+    "C_Cpp.clang_format_style": "Mozilla",
+    "C_Cpp.vcFormat.space.pointerReferenceAlignment": "right",
+    "C_Cpp.clang_format_sortIncludes": true,
     "editor.tabSize": 2,
-    "C_Cpp.default.includePath": [
-      //"${workspaceFolder}/build/src/Neutrino_artefacts/JuceLibraryCode",
-      //"${workspaceFolder}/external/juce/modules"
-    ],
     "files.associations": {
       "*.mm": "cpp"
     }

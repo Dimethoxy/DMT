@@ -1,9 +1,17 @@
 # Windows PowerShell build script
 
-# Step 0: Get the current script's directory
+# Step 1: Get the current script's directory
 $dir = $PSScriptRoot
 
-# Step 1: Configure the project with CMake
+# Step 2: Check if ./build directory exists, and if it does, delete it
+$buildPath = Join-Path $dir "../build"
+
+if (Test-Path $buildPath -PathType Container) {
+    Write-Host "Deleting existing ./build directory..."
+    Remove-Item -Path $buildPath -Recurse -Force
+}
+
+# Step 3: Configure the project with CMake
 Write-Host "Configuring the project with CMake..."
 cmake -S $dir/../ -B $dir/../build
 
@@ -13,7 +21,7 @@ if ($LastExitCode -ne 0) {
     exit $LastExitCode
 }
 
-# Step 2: Build the project with CMake
+# Step 4: Build the project with CMake
 Write-Host "Building the project with CMake..."
 cmake --build $dir/../build
 
@@ -25,7 +33,7 @@ if ($LastExitCode -ne 0) {
 
 Write-Host "Build completed successfully."
 
-# Step 3: Move the executable
+# Step 5: Move the executable
 $sourcePath = "$dir\..\build\src\Neutrino_artefacts\Debug\Standalone\Neutrino.exe"
 $destinationPath = "$dir\..\output\windows"
 # Check if the source file exists
