@@ -1,4 +1,4 @@
-$directoryPath = "../Source"
+$directoryPath = "./src"
 $totalLoc = 0
 $files = Get-ChildItem -Path $directoryPath -File -Include *.h,*.cpp -Recurse
 
