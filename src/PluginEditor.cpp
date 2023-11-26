@@ -22,9 +22,6 @@ NeutrinoAudioProcessorEditor::NeutrinoAudioProcessorEditor(
 {
   using Settings = dmt::AppSettings;
   using Layout = dmt::AppSettings::Layout;
-  const float& leftWidth = Layout::leftWidth;
-  const float& centerWidth = Layout::centerWidth;
-  const float& rightWidth = Layout::rightWidth;
 
   addAndMakeVisible(oscillatorPanel);
   addAndMakeVisible(voicingPanel);
@@ -39,7 +36,7 @@ NeutrinoAudioProcessorEditor::NeutrinoAudioProcessorEditor(
 
   addAndMakeVisible(keyboardComponent);
 
-  setSize(Layout::getWidth(), Layout::getHeight());
+  setSize((int)Layout::getWidth(), (int)Layout::getHeight());
   setResizable(true, true);
 }
 
@@ -61,8 +58,8 @@ NeutrinoAudioProcessorEditor::resized()
 
   const float rawMargin = Settings::Layout::margin;
   const auto bounds = getLocalBounds();
-  const float width = bounds.getWidth();
-  const float height = bounds.getHeight();
+  const float width = (float)bounds.getWidth();
+  const float height = (float)bounds.getHeight();
   size = height / Layout::getHeight();
   const float margin = rawMargin * size;
 
@@ -80,21 +77,25 @@ NeutrinoAudioProcessorEditor::resized()
   const float rawRowHeight = Settings::Layout::rowHeight + 2.0f * margin;
   const float rowHeight = rawRowHeight * size;
   const float rawKeyboardHeight = Settings::Layout::keyboardHeight;
-  const float keyboardHeight = rawKeyboardHeight * size;
 
-  auto innerBounds = bounds.reduced(margin);
-  const auto headerBounds = innerBounds.removeFromTop(headerHeight);
-  const auto tabBounds = innerBounds.removeFromTop(tabHeight);
-  const auto topBounds = innerBounds.removeFromTop(rowHeight);
-  const auto midBounds = innerBounds.removeFromTop(rowHeight);
-  const auto bottomBounds = innerBounds.removeFromTop(rowHeight);
+  auto innerBounds = bounds.reduced((int)margin);
+  const auto headerBounds = innerBounds.removeFromTop((int)headerHeight);
+  const auto tabBounds = innerBounds.removeFromTop((int)tabHeight);
+  const auto topBounds = innerBounds.removeFromTop((int)rowHeight);
+  const auto midBounds = innerBounds.removeFromTop((int)rowHeight);
+  const auto bottomBounds = innerBounds.removeFromTop((int)rowHeight);
+
+  const int keyboardWidth = (int)width;
+  const int keyboardX = 0;
+  const int keyboardHeight = (int)(rawKeyboardHeight * size);
+  const int keyboardY = (int)height - keyboardHeight;
   const auto keyboardBounds =
-    juce::Rectangle<int>(0, height - keyboardHeight, width, keyboardHeight);
+    juce::Rectangle<int>(keyboardX, keyboardY, keyboardWidth, keyboardHeight);
 
-  innerBounds = bounds.reduced(margin);
-  const auto leftBounds = innerBounds.removeFromLeft(leftWidth);
-  const auto centerBounds = innerBounds.removeFromLeft(centerWidth);
-  const auto rightBounds = innerBounds.removeFromLeft(rightWidth);
+  innerBounds = bounds.reduced((int)margin);
+  const auto leftBounds = innerBounds.removeFromLeft((int)leftWidth);
+  const auto centerBounds = innerBounds.removeFromLeft((int)centerWidth);
+  const auto rightBounds = innerBounds.removeFromLeft((int)rightWidth);
 
   oscillatorPanel.setBounds(leftBounds.getX(),
                             topBounds.getY(),
