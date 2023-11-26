@@ -56,8 +56,8 @@ public:
     , titleLabel(name, Fonts::bold, fontSize, juce::Colours::white)
     , nextCallback([]() {})
     , prevCallback([]() {})
-    , nextButton(dmt::gui::widgets::TriangleButton::right)
-    , prevButton(dmt::gui::widgets::TriangleButton::left)
+    , nextButton(dmt::gui::widgets::TriangleButton::Right)
+    , prevButton(dmt::gui::widgets::TriangleButton::Left)
     , outerShadow(outerShadowColour, outerShadowRadius)
     , innerShadow(innerShadowColour, innerShadowRadius)
   {

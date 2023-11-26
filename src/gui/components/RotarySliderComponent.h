@@ -79,7 +79,7 @@ public:
     if (Settings::debugBounds)
       g.drawRect(bounds, 1);
   }
-  void sliderValueChanged(juce::Slider* activeSlider) { updateLabel(); }
+  void sliderValueChanged(juce::Slider*) { updateLabel(); }
   void setSizeAndCentre(juce::Point<int> centrePoint)
   {
     int width = (int)(baseWidth * size);

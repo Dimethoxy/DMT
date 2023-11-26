@@ -14,9 +14,11 @@
 namespace dmt {
 namespace dsp {
 namespace envelope {
-class AhdEnvelope {
+class AhdEnvelope
+{
 public:
-  struct Parameters {
+  struct Parameters
+  {
     float attack = 0.015f;
     float hold = 0.08f;
     float decay = 0.5f;
@@ -26,15 +28,22 @@ public:
     float decayScew = 10;
   };
 
-  enum class State { Attack, Hold, Decay, Idle };
+  enum class State
+  {
+    Attack,
+    Hold,
+    Decay,
+    Idle
+  };
 
   AhdEnvelope() {}
 
-  void setParameters(Parameters params) { this->params = params; }
-  void setSampleRate(float sampleRate) { this->sampleRate = sampleRate; }
+  void setParameters(Parameters& newParams) { this->params = newParams; }
+  void setSampleRate(float newSampleRate) { this->sampleRate = newSampleRate; }
   void noteOn() { sampleIndex = 0; }
 
-  State getState() {
+  State getState()
+  {
     if (sampleIndex < getHoldStart())
       return State::Attack;
     if (sampleIndex < getDecayStart())
@@ -45,7 +54,8 @@ public:
       return State::Idle;
   }
 
-  float getNextSample() {
+  float getNextSample()
+  {
     auto state = getState();
     float result = getValue(state);
     sampleIndex++;
@@ -53,46 +63,57 @@ public:
   }
 
 private:
-  float getValue(State state) {
+  float getValue(State state)
+  {
     switch (state) {
-    case State::Attack: {
-      float normalizedPosition = sampleIndex / sampleRate;
-      float scew = getScew(State::Attack);
-      float value = std::pow(normalizedPosition / params.attack, scew);
-      return value;
-    }
-    case State::Hold: {
-      return 1.0f;
-    }
-    case State::Decay: {
-      float decayStart = getDecayStart();
-      float normalizedPosition = (sampleIndex - decayStart) / sampleRate;
-      float scew = getScew(State::Decay);
-      float value = 1.0f - std::pow(normalizedPosition / params.decay, scew);
-      return value;
-    }
-    default: {
-      return 0.0f;
-    }
+      case State::Attack: {
+        float normalizedPosition = sampleIndex / sampleRate;
+        float scew = getScew(State::Attack);
+        float value = std::pow(normalizedPosition / params.attack, scew);
+        return value;
+      }
+      case State::Hold: {
+        return 1.0f;
+      }
+      case State::Decay: {
+        float decayStart = (float)getDecayStart();
+        float normalizedPosition = (sampleIndex - decayStart) / sampleRate;
+        float scew = getScew(State::Decay);
+        float value = 1.0f - std::pow(normalizedPosition / params.decay, scew);
+        return value;
+      }
+      default: {
+        return 0.0f;
+      }
     }
   }
-  float getScew(State state) {
+  float getScew(State state)
+  {
     switch (state) {
-    case State::Attack: {
-      return dmt::Math::linearToExponent(params.attackScew);
-    }
-    case State::Decay: {
-      return dmt::Math::linearToExponent(-params.decayScew);
-    }
-    default: {
-      return 1.0f;
-    }
+      case State::Attack: {
+        return dmt::Math::linearToExponent(params.attackScew);
+      }
+      case State::Decay: {
+        return dmt::Math::linearToExponent(-params.decayScew);
+      }
+      default: {
+        return 1.0f;
+      }
     }
   }
-  int getHoldStart() { return params.attack * sampleRate; }
-  int getDecayStart() { return (params.attack + params.hold) * sampleRate + 1; }
-  int getDecayEnd() {
-    return (params.attack + params.hold + params.decay) * sampleRate;
+  int getHoldStart() { return (int)(params.attack * sampleRate); }
+  int getDecayStart()
+  {
+    float rawDecayDelay = params.attack + params.hold;
+    int decayDelay = (int)(rawDecayDelay * sampleRate);
+    int decayStart = decayDelay + 1;
+    return decayStart;
+  }
+  int getDecayEnd()
+  {
+    float rawDecayEnd = (params.attack + params.hold + params.decay);
+    int decayEnd = (int)(rawDecayEnd * sampleRate);
+    return decayEnd;
   }
   float sampleRate = -1.0f;
   Parameters params;

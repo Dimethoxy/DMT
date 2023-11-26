@@ -9,11 +9,13 @@
 //==============================================================================
 namespace dmt {
 //==============================================================================
-struct ChainSettings {
+struct ChainSettings
+{
   //============================================================================
-  ChainSettings(juce::AudioProcessorValueTreeState &apvts) {
+  ChainSettings(juce::AudioProcessorValueTreeState& apvts)
+  {
     waveformType = static_cast<dmt::dsp::synth::AnalogWaveform::Type>(
-        apvts.getRawParameterValue("waveformType")->load());
+      apvts.getRawParameterValue("waveformType")->load());
 
     oscGain = apvts.getRawParameterValue("oscGain")->load();
     oscOctave = apvts.getRawParameterValue("oscOctave")->load();
@@ -33,7 +35,7 @@ struct ChainSettings {
     modScew = apvts.getRawParameterValue("oscModScew")->load();
 
     filterType = static_cast<dmt::dsp::filter::IIRFilterState::Type>(
-        apvts.getRawParameterValue("filterType")->load());
+      apvts.getRawParameterValue("filterType")->load());
     filterCutoff = apvts.getRawParameterValue("filterCutoff")->load();
     filterQ = apvts.getRawParameterValue("filterQ")->load();
     filterGain = apvts.getRawParameterValue("filterGain")->load();
