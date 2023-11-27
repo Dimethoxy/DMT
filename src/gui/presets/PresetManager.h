@@ -154,7 +154,8 @@ public:
 
   juce::String getCurrentPreset() const { return currentPreset.toString(); }
 
-  void valueTreeRedirected(juce::ValueTree& treeWhichHasBeenChanged) override
+  void valueTreeRedirected(
+    juce::ValueTree& /*treeWhichHasBeenChanged*/) override
   {
     currentPreset.referTo(
       valueTreeState.state.getPropertyAsValue(presetNameProperty, nullptr));
@@ -163,7 +164,6 @@ public:
 private:
   //==============================================================================
   juce::AudioProcessorValueTreeState& valueTreeState;
-  juce::StringArray presetList;
   juce::Value currentPreset;
 };
 } // namespace preset

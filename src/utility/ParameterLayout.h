@@ -9,7 +9,7 @@
 //==============================================================================
 namespace dmt {
 //==============================================================================
-static juce::AudioProcessorValueTreeState::ParameterLayout
+static inline juce::AudioProcessorValueTreeState::ParameterLayout
 createParameterLayout()
 {
   using ParameterFloat = juce::AudioParameterFloat;
