@@ -89,7 +89,7 @@ NeutrinoAudioProcessor::setStateInformation(const void* data, int sizeInBytes)
 const juce::String
 NeutrinoAudioProcessor::getName() const
 {
-  return JucePlugin_Name;
+  return juce::String("Neutrino");
 }
 
 bool
@@ -144,19 +144,19 @@ NeutrinoAudioProcessor::getCurrentProgram()
 }
 
 void
-NeutrinoAudioProcessor::setCurrentProgram(int index)
+NeutrinoAudioProcessor::setCurrentProgram(int /*index*/)
 {
 }
 
 const juce::String
-NeutrinoAudioProcessor::getProgramName(int index)
+NeutrinoAudioProcessor::getProgramName(int /*index*/)
 {
   return {};
 }
 
 void
-NeutrinoAudioProcessor::changeProgramName(int index,
-                                          const juce::String& newName)
+NeutrinoAudioProcessor::changeProgramName(int /*index*/,
+                                          const juce::String& /*newName*/)
 {
 }
 

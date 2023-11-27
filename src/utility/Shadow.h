@@ -20,7 +20,7 @@ struct Shadow
     shadowPath.addRectangle(target.getBounds().expanded(10));
     shadowPath.setUsingNonZeroWinding(false);
     g.reduceClipRegion(target);
-    juce::DropShadow ds(colour, radius, offset);
+    juce::DropShadow ds(colour, (int)radius, offset);
     ds.drawForPath(g, shadowPath);
   }
   void drawOuterForPath(juce::Graphics& g, juce::Path target)
@@ -30,15 +30,8 @@ struct Shadow
     shadowPath.addRectangle(target.getBounds().expanded(10));
     shadowPath.setUsingNonZeroWinding(false);
     g.reduceClipRegion(shadowPath);
-    juce::DropShadow ds(colour, radius, offset);
+    juce::DropShadow ds(colour, (int)radius, offset);
     ds.drawForPath(g, target);
-  }
-  void drawForPath(juce::Graphics& g, juce::Path target)
-  {
-    int cycles = (int)radius;
-    for (int i = 0; i < cycles; i++) {
-      int amount = (int)(std::sqrt((float)i / (float)cycles) * 255.0f);
-    }
   }
   const juce::Colour& colour;
   juce::Point<int> offset = { 0, 0 };

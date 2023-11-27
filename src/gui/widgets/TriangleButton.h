@@ -61,11 +61,6 @@ public:
   }
 
 protected:
-  juce::Rectangle<int> getTriangleBounds(const juce::Rectangle<int> bounds)
-  {
-    juce::Rectangle<int> result;
-    return result;
-  }
   juce::Path getPath(juce::Rectangle<int> bounds)
   {
     juce::Path path;
@@ -130,7 +125,8 @@ protected:
                    bool /*shouldDrawButtonAsDown*/) override
   {
     const auto bounds = this->getLocalBounds();
-    const auto bigBounds = bounds.reduced(buttonMargin * size).toNearestInt();
+    const int bigBoundsPadding = (int)(buttonMargin * size);
+    const auto bigBounds = bounds.reduced(bigBoundsPadding);
     juce::Path outerTrianglePath;
     juce::Path innerTrianglePath;
     juce::Path& trianglePath = outerTrianglePath;
@@ -141,8 +137,10 @@ protected:
       innerTrianglePath = getTnnerTrianglePath(bigBounds);
     } else {
       auto smallBounds = bigBounds;
-      smallBounds.setHeight(smallBounds.getHeight() * toggleReduction);
-      smallBounds.setWidth(smallBounds.getWidth() * toggleReduction);
+      const int smallWeight = (int)(smallBounds.getWidth() * toggleReduction);
+      smallBounds.setWidth(smallWeight);
+      const int smallHeight = (int)(smallBounds.getHeight() * toggleReduction);
+      smallBounds.setHeight(smallHeight);
       smallBounds.setCentre(bigBounds.getCentre());
       outerTrianglePath = getPath(smallBounds);
       innerTrianglePath = getTnnerTrianglePath(smallBounds);

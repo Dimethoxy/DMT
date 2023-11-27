@@ -68,6 +68,10 @@ struct AnalogWaveform
         return triangle(x);
       case Type::Square:
         return square(x);
+      default:
+        // impossible to reach this point, exit with assertion
+        jassert(false);
+        return 0.0f;
     }
   }
   //============================================================================

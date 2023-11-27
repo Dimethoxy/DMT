@@ -13,13 +13,13 @@ class AnalogOscillator
   inline static const float pi = juce::MathConstants<float>::pi;
 
 public:
-  inline void setSampleRate(const float sampleRate) noexcept
+  inline void setSampleRate(const float newSampleRate) noexcept
   {
     float rangeEnd =
       std::nextafter(392000.0f, std::numeric_limits<float>::max());
     const juce::Range<float> validRange(20.0f, rangeEnd);
-    jassert(validRange.contains(sampleRate));
-    this->sampleRate = sampleRate;
+    jassert(validRange.contains(newSampleRate));
+    this->sampleRate = newSampleRate;
   }
 
   inline float getNextSample() noexcept
@@ -40,9 +40,9 @@ public:
     return std::clamp(sample, -1.0f, +1.0f);
   }
 
-  inline void setFrequency(const float frequency) noexcept
+  inline void setFrequency(const float newFequency) noexcept
   {
-    this->frequency = frequency;
+    this->frequency = newFequency;
   }
 
   inline void setWaveformType(
@@ -63,32 +63,32 @@ public:
     this->phase = newPhase;
   }
 
-  inline void setBend(const float bendModifier) noexcept
+  inline void setBend(const float newBendModifier) noexcept
   {
     float rangeEnd = std::nextafter(100.0f, std::numeric_limits<float>::max());
     const juce::NormalisableRange<float> sourceRange(-100.0f, rangeEnd);
-    jassert(sourceRange.getRange().contains(bendModifier));
-    const auto normalisedValue = sourceRange.convertTo0to1(bendModifier);
+    jassert(sourceRange.getRange().contains(newBendModifier));
+    const auto normalisedValue = sourceRange.convertTo0to1(newBendModifier);
     const juce::NormalisableRange<float> targetRange(0.1f, 0.9f);
     this->posityCycleRatio = targetRange.convertFrom0to1(normalisedValue);
   }
 
-  inline void setPwm(const float pwmModifier) noexcept
+  inline void setPwm(const float newPwmModifier) noexcept
   {
     float rangeEnd = std::nextafter(100.0f, std::numeric_limits<float>::max());
     const juce::NormalisableRange<float> sourceRange(0.0f, rangeEnd);
-    jassert(sourceRange.getRange().contains(pwmModifier));
-    const auto normalisedValue = sourceRange.convertTo0to1(pwmModifier);
+    jassert(sourceRange.getRange().contains(newPwmModifier));
+    const auto normalisedValue = sourceRange.convertTo0to1(newPwmModifier);
     const juce::NormalisableRange<float> targetRange(1.0f, 5.0f);
     this->pwmModifier = targetRange.convertFrom0to1(normalisedValue);
   }
 
-  inline void setSync(const float syncModifier) noexcept
+  inline void setSync(const float newSyncModifier) noexcept
   {
     float rangeEnd = std::nextafter(100.0f, std::numeric_limits<float>::max());
     const juce::NormalisableRange<float> sourceRange(0.0f, rangeEnd);
-    jassert(sourceRange.getRange().contains(syncModifier));
-    const auto normalisedValue = sourceRange.convertTo0to1(syncModifier);
+    jassert(sourceRange.getRange().contains(newSyncModifier));
+    const auto normalisedValue = sourceRange.convertTo0to1(newSyncModifier);
     const juce::NormalisableRange<float> targetRange(1.0f, 5.0f);
     this->syncModifier = targetRange.convertFrom0to1(normalisedValue);
   }
@@ -146,14 +146,13 @@ private:
 
   inline const void distortSample(float& sample) const noexcept
   {
-    const float tanhConstant = 0.7615941559558;
-
+    float magicNumber = 0.7615941559558f;
     if (drive >= 1.0f) {
       sample = Math::tanh(drive * sample);
     } else {
       float invertedDrive = 1.0f - drive;
       float wetSample = drive * Math::tanh(sample);
-      float drySample = invertedDrive * sample * 0.7615941559558;
+      float drySample = invertedDrive * sample * magicNumber;
       sample = wetSample + drySample;
     }
 

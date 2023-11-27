@@ -11,25 +11,30 @@ namespace dmt {
 namespace dsp {
 namespace filter {
 //==============================================================================
-class FilterProcessor {
+class FilterProcessor
+{
 public:
-  void onNote() {
+  void onNote()
+  {
     // Reset Envelope
   }
-  void prepare(double sampleRate) {
-    this->sampleRate = sampleRate;
-    this->filter.sampleRate = sampleRate;
+  void prepare(double newSampleRate)
+  {
+    this->sampleRate = (float)newSampleRate;
+    this->filter.sampleRate = (float)newSampleRate;
   }
-  void processBlock(juce::AudioBuffer<float> &outputBuffer, int startSample,
-                    int numSamples) {
+  void processBlock(juce::AudioBuffer<float>& outputBuffer,
+                    int startSample,
+                    int numSamples)
+  {
     auto endSample = numSamples + startSample;
-    auto *leftChannel = outputBuffer.getWritePointer(0);
-    auto *rightChannel = outputBuffer.getWritePointer(1);
+    auto* leftChannel = outputBuffer.getWritePointer(0);
+    auto* rightChannel = outputBuffer.getWritePointer(1);
 
     filter.type = chainSettings->filterType;
     float filterBaseCutoff = chainSettings->filterCutoff;
     auto coefficients = filter.makeCoefficients(
-        filterBaseCutoff, chainSettings->filterQ, chainSettings->filterGain);
+      filterBaseCutoff, chainSettings->filterQ, chainSettings->filterGain);
     filter.base.setCoefficients(coefficients);
 
     for (int sample = startSample; sample < endSample; sample++) {
@@ -39,8 +44,10 @@ public:
     }
   }
   //============================================================================
-  void setChainSettings(dmt::ChainSettings chainSettings) {
-    this->chainSettings = std::make_unique<dmt::ChainSettings>(chainSettings);
+  void setChainSettings(dmt::ChainSettings newChainSettings)
+  {
+    this->chainSettings =
+      std::make_unique<dmt::ChainSettings>(newChainSettings);
   };
 
 private:
