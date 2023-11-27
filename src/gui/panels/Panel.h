@@ -110,10 +110,10 @@ public:
   void resized() noexcept override
   {
     const auto bounds = getLocalBounds();
-    const auto buttonWidth = Carousel::buttonWidth * size;
-    const auto buttonHeight = Carousel::buttonHeight * size;
-    const auto marginSize = size * margin;
-    const auto padding = rawPadding * size;
+    const int buttonWidth = (int)(Carousel::buttonWidth * size);
+    const int buttonHeight = (int)(Carousel::buttonHeight * size);
+    const int marginSize = (int)(size * margin);
+    const int padding = (int)(rawPadding * size);
 
     auto leftBounds = bounds;
     auto rightBounds = bounds;
@@ -156,24 +156,24 @@ public:
 
 protected:
   inline const Layout getLayout() noexcept { return layout; }
-  void setLayout(const Layout layout) noexcept
+  void setLayout(const Layout layoutToUse) noexcept
   {
-    const int cols = layout.cols;
-    const int rows = layout.rows;
+    const int cols = layoutToUse.cols;
+    const int rows = layoutToUse.rows;
     const float colSpacing = 1.0f / (float)(cols + 1);
     const float rowSpacing = 1.0f / (float)(rows + 1);
-    Grid grid(cols + 2, std::vector<juce::Point<float>>(rows + 2));
+    Grid newGrid(cols + 2, std::vector<juce::Point<float>>(rows + 2));
 
-    for (int col = 0; col <= (layout.cols + 1); col++) {
-      for (int row = 0; row <= (layout.rows + 1); row++) {
+    for (int col = 0; col <= (layoutToUse.cols + 1); col++) {
+      for (int row = 0; row <= (layoutToUse.rows + 1); row++) {
         const float x = (float)col * colSpacing;
         const float y = (float)row * rowSpacing;
         const auto point = juce::Point<float>(x, y);
-        grid[col][row] = point;
+        newGrid[col][row] = point;
       }
     }
-    this->grid = grid;
-    this->layout = layout;
+    this->grid = newGrid;
+    this->layout = layoutToUse;
   }
   inline const juce::Point<int> getGridPoint(const juce::Rectangle<int> bounds,
                                              const int col,
