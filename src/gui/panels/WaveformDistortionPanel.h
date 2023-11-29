@@ -21,7 +21,7 @@ public:
     , typeSlider(apvts,
                  juce::String("Type"),
                  juce::String("oscGain"),
-                 dmt::InfoUnit::Type::DistortionType)
+                 dmt::InfoUnit::Type::Drive)
     , gainSlider(apvts,
                  juce::String("Gain"),
                  juce::String("oscGain"),

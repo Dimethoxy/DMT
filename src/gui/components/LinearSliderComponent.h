@@ -65,24 +65,26 @@ public:
   }
   void paint(juce::Graphics& g)
   {
-    auto bounds = getLocalBounds();
+    const auto bounds = getLocalBounds();
+
     // Draw bounds debug
     g.setColour(juce::Colours::green);
     if (Settings::debugBounds)
       g.drawRect(bounds, 1);
+
+    // Layout
+    slider.setBounds(bounds);
   }
   void sliderValueChanged(juce::Slider*) { updateLabel(); }
 
   void setBoundsByPoints(juce::Point<int> newPrimaryPoint,
                          juce::Point<int> newSecondaryPoint)
   {
-    primaryPoint = newPrimaryPoint.toFloat();
-    secondaryPoint = newSecondaryPoint.toFloat();
-    const int padding = (int)(rawPadding * size);
-    const float primaryX = (float)primaryPoint.getX();
-    const float primaryY = (float)primaryPoint.getY();
-    const float secondaryX = (float)secondaryPoint.getX();
-    const float secondaryY = (float)secondaryPoint.getY();
+    const float padding = rawPadding * size;
+    const float primaryX = (float)newPrimaryPoint.getX();
+    const float primaryY = (float)newPrimaryPoint.getY();
+    const float secondaryX = (float)newSecondaryPoint.getX();
+    const float secondaryY = (float)newSecondaryPoint.getY();
 
     const float rawMinWidth = 50.0f;
     const float minWidth = rawMinWidth * size;
@@ -100,6 +102,16 @@ public:
 
     const auto outerBounds = innerBounds.expanded(padding).withCentre(centre);
     setBounds(outerBounds.toNearestInt());
+
+    const auto normalizedPrimaryPoint =
+      juce::Point<int>(innerBounds.getX(), centre.getY()) -
+      outerBounds.getPosition().toInt();
+
+    const auto normalizedSecundaryPoint =
+      juce::Point<int>(innerBounds.getRight(), centre.getY()) -
+      outerBounds.getPosition().toInt();
+
+    slider.setBoundsPoints(normalizedPrimaryPoint, normalizedSecundaryPoint);
   }
 
 protected:
@@ -113,8 +125,6 @@ protected:
 private:
   LinearSlider::Orientation orientation;
   dmt::InfoUnit::Type unitType;
-  juce::Point<float> primaryPoint;
-  juce::Point<float> secondaryPoint;
   LinearSlider slider;
   SliderAttachment sliderAttachment;
   Label titleLabel;
