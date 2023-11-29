@@ -12,6 +12,7 @@ class Label : public juce::Component
   using Settings = dmt::AppSettings;
   using Justification = juce::Justification;
   const float& size = Settings::Layout::size;
+  const float& macFontScale = Settings::macFontScale;
 
 public:
   Label(juce::String text,
@@ -36,7 +37,7 @@ public:
     if (Settings::debugBounds)
       g.drawRect(bounds, 1);
     if (JUCE_MAC) {
-      g.setFont(font.withHeight(fontSize * size * 0.9f));
+      g.setFont(font.withHeight(fontSize * size * macFontScale));
     } else {
       g.setFont(font.withHeight(fontSize * size));
     }
