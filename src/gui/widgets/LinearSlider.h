@@ -58,9 +58,11 @@ public:
         break;
     }
   }
-  void setBoundsByPoints(juce::Point<int> primaryPoint,
-                         juce::Point<int> secondaryPoint)
+  void setBoundsByPoints(juce::Point<int> newPrimaryPoint,
+                         juce::Point<int> newSecondaryPoint)
   {
+    primaryPoint = newPrimaryPoint;
+    secondaryPoint = newSecondaryPoint;
     const int padding = (int)(rawPadding * size);
     const float primaryX = (float)primaryPoint.getX();
     const float primaryY = (float)primaryPoint.getY();
@@ -78,16 +80,22 @@ public:
     const auto centre = innerBounds.getCentre();
 
     const auto outerBounds = innerBounds.expanded(padding).withCentre(centre);
-    this->setBounds(outerBounds.toNearestInt());
+    setBounds(outerBounds.toNearestInt());
   }
 
 protected:
-  void drawHorizontal() {}
+  void drawHorizontal()
+  {
+    auto bounds = getLocalBounds();
+    auto railLine = juce::Line<int>(primaryPoint, secondaryPoint);
+  }
   void drawVertical() {}
 
 private:
   Type type;
   Orientation orientation;
+  juce::Point<int> primaryPoint;
+  juce::Point<int> secondaryPoint;
 
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(LinearSlider)
 };
