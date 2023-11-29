@@ -35,8 +35,11 @@ public:
     g.setColour(juce::Colours::red);
     if (Settings::debugBounds)
       g.drawRect(bounds, 1);
-
-    g.setFont(font.withPointHeight(fontSize * size));
+    if (JUCE_MAC) {
+      g.setFont(font.withHeight(fontSize * size * 0.9f));
+    } else {
+      g.setFont(font.withHeight(fontSize * size));
+    }
     g.setColour(colour);
     g.drawText(text, this->getLocalBounds(), justification, true);
   }
