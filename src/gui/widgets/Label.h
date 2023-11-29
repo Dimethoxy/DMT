@@ -36,7 +36,7 @@ public:
     if (Settings::debugBounds)
       g.drawRect(bounds, 1);
 
-    g.setFont(font.withHeight(fontSize * size));
+    g.setFont(font.withPointHeight(fontSize * size));
     g.setColour(colour);
     g.drawText(text, this->getLocalBounds(), justification, true);
   }

@@ -183,7 +183,7 @@ struct Distortion
   {
     if (value > 0) {
       value += value * symmetry;
-    } else if (value) {
+    } else {
       value -= value * symmetry;
     }
     value = std::clamp(value, -1.0f, 1.0f);
