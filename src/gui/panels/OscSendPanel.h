@@ -21,7 +21,7 @@ public:
     : Panel(juce::String("Channel " + channel))
     , channel(channel)
     , gainSlider(apvts,
-                 juce::String("Distortion"),
+                 juce::String("Gain"),
                  juce::String("oscGain"),
                  dmt::InfoUnit::Type::Gain)
   {
