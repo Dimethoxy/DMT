@@ -88,6 +88,14 @@ public:
     setCentrePosition(centrePoint);
   }
 
+protected:
+  void updateLabel()
+  {
+    auto text = dmt::InfoUnit::getString(unitType, (float)slider.getValue());
+    infoLabel.setText(text);
+    infoLabel.repaint();
+  }
+
 private:
   dmt::gui::widgets::RotarySlider slider;
   juce::AudioProcessorValueTreeState::SliderAttachment sliderAttachment;
@@ -95,12 +103,6 @@ private:
   dmt::gui::widgets::Label infoLabel;
   dmt::InfoUnit::Type unitType;
 
-  void updateLabel()
-  {
-    auto text = dmt::InfoUnit::getString(unitType, (float)slider.getValue());
-    infoLabel.setText(text);
-    infoLabel.repaint();
-  }
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(RotarySliderComponent)
 };
 //==============================================================================

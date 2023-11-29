@@ -36,11 +36,15 @@ public:
     g.setColour(juce::Colours::red);
     if (Settings::debugBounds)
       g.drawRect(bounds, 1);
-    if (JUCE_MAC) {
+
+    // Set font size depending on OS
+    if (OS_IS_DARWIN) {
       g.setFont(font.withHeight(fontSize * size * macFontScale));
     } else {
       g.setFont(font.withHeight(fontSize * size));
     }
+
+    // Draw text
     g.setColour(colour);
     g.drawText(text, this->getLocalBounds(), justification, true);
   }

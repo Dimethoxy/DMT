@@ -98,3 +98,14 @@ if(MSVC)
             _SILENCE_CXX23_ALIGEND_STORAGE_DEPRECATION_WARNING
     )
 endif()
+
+
+
+target_compile_definitions(${PROJECT_NAME}
+    PRIVATE
+        OS_IS_WINDOWS=$<BOOL:${WIN32}>
+        OS_IS_DARWIN=$<BOOL:${APPLE}>
+        OS_IS_LINUX=$<BOOL:${UNIX} AND NOT APPLE>
+)
+
+

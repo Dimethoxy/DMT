@@ -46,60 +46,82 @@ public:
     Vertical
   };
 
-  LinearSlider(Type /*type*/, Orientation /*orientation*/)
+  LinearSlider(const Type /*type*/, const Orientation orientation)
     : juce::Slider()
   {
-    setSliderStyle(juce::Slider::SliderStyle::LinearVertical);
+    switch (orientation) {
+      case Orientation::Horizontal: {
+        setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalDrag);
+        break;
+      }
+      case Orientation::Vertical: {
+        setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
+        break;
+      }
+      default: {
+        break;
+      }
+    }
     setTextBoxStyle(juce::Slider::TextBoxBelow, true, 0, 0);
     juce::Random rand;
     setValue(10.0f * rand.nextFloat());
   }
-  void paint(juce::Graphics& g) override
-  {
-    auto bounds = getLocalBounds();
+  /*
+void paint(juce::Graphics& g) override
+{
+  auto bounds = getLocalBounds();
 
-    // Draw bounds debug
-    g.setColour(juce::Colours::red);
-    g.fillRect(bounds);
+  // Draw bounds debug
+  g.setColour(juce::Colours::red);
+  g.fillRect(bounds);
 
-    // Calculate lower rail
-    const auto railWidth = rawRailWidth * size;
-    const auto jointStyle = StrokeType::curved;
-    const auto endCapStyle = StrokeType::butt;
-    const auto strokeType = StrokeType(railWidth, jointStyle, endCapStyle);
-    auto lowerRailPath = juce::Path();
-    lowerRailPath.startNewSubPath(primaryPoint);
-    lowerRailPath.lineTo(secondaryPoint);
+  // Calculate lower rail
+  const auto railWidth = rawRailWidth * size;
+  const auto jointStyle = StrokeType::curved;
+  const auto endCapStyle = StrokeType::butt;
+  const auto strokeType = StrokeType(railWidth, jointStyle, endCapStyle);
+  auto lowerRailPath = juce::Path();
+  lowerRailPath.startNewSubPath(primaryPoint);
+  lowerRailPath.lineTo(secondaryPoint);
 
-    // Draw lower rail
-    g.setColour(lowerRailColour);
-    g.strokePath(lowerRailPath, strokeType);
-  }
-  void setBoundsByPoints(juce::Point<float> newPrimaryPoint,
-                         juce::Point<float> newSecondaryPoint)
-  {
-    primaryPoint = newPrimaryPoint;
-    secondaryPoint = newSecondaryPoint;
-    const int padding = (int)(rawPadding * size);
-    const float primaryX = (float)primaryPoint.getX();
-    const float primaryY = (float)primaryPoint.getY();
-    const float secondaryX = (float)primaryPoint.getX();
-    const float secondaryY = (float)primaryPoint.getY();
+  // Draw lower rail
+  g.setColour(lowerRailColour);
+  g.strokePath(lowerRailPath, strokeType);
+}
 
-    const float thumbSize = rawThumbSize * size;
-    const float xDistance = secondaryX - primaryX;
-    const float innerWidth = (thumbSize > xDistance) ? thumbSize : xDistance;
-    const float yDistance = secondaryY - primaryY;
-    const float innerHeight = (thumbSize > yDistance) ? thumbSize : yDistance;
+juce::Rectangle<float>& setBoundsByPoints(
+  juce::Point<float> newPrimaryPoint,
+  juce::Point<float> newSecondaryPoint)
+{
+  primaryPoint = newPrimaryPoint;
+  secondaryPoint = newSecondaryPoint;
+  const int padding = (int)(rawPadding * size);
+  const float primaryX = (float)primaryPoint.getX();
+  const float primaryY = (float)primaryPoint.getY();
+  const float secondaryX = (float)primaryPoint.getX();
+  const float secondaryY = (float)primaryPoint.getY();
 
-    const auto innerBounds =
-      juce::Rectangle<float>(primaryX, primaryY, innerWidth, innerHeight);
-    const auto centre = innerBounds.getCentre();
+  const float thumbSize = rawThumbSize * size;
+  const float xDistance = secondaryX - primaryX;
+  const float innerWidth = (thumbSize > xDistance) ? thumbSize : xDistance;
+  const float yDistance = secondaryY - primaryY;
+  const float innerHeight = (thumbSize > yDistance) ? thumbSize : yDistance;
 
-    const auto outerBounds = innerBounds.expanded(padding).withCentre(centre);
-    setBounds(outerBounds.toNearestInt());
-  }
+  const auto innerBounds =
+    juce::Rectangle<float>(primaryX, primaryY, innerWidth, innerHeight);
+  const auto centre = innerBounds.getCentre();
 
+  const auto outerBounds = innerBounds.expanded(padding).withCentre(centre);
+  setBounds(outerBounds.toNearestInt());
+  return &outerBounds;
+}
+juce::Rectangle<float>& setBoundsPoints(juce::Point<float> newPrimaryPoint,
+                                        juce::Point<float> newSecondaryPoint)
+{
+  primaryPoint = newPrimaryPoint;
+  secondaryPoint = newSecondaryPoint;
+}
+*/
 private:
   Type type;
   Orientation orientation;
