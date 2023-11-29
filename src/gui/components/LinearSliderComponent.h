@@ -80,18 +80,18 @@ public:
   void setBoundsByPoints(juce::Point<int> newPrimaryPoint,
                          juce::Point<int> newSecondaryPoint)
   {
-    const float padding = rawPadding * size;
+    const float padding = 2.0f * rawPadding * size;
     const float primaryX = (float)newPrimaryPoint.getX();
     const float primaryY = (float)newPrimaryPoint.getY();
     const float secondaryX = (float)newSecondaryPoint.getX();
     const float secondaryY = (float)newSecondaryPoint.getY();
 
-    const float rawMinWidth = 50.0f;
+    const float rawMinWidth = 30.0f;
     const float minWidth = rawMinWidth * size;
     const float xDistance = secondaryX - primaryX;
     const float innerWidth = (minWidth > xDistance) ? minWidth : xDistance;
 
-    const float rawMinHeight = 50.0f;
+    const float rawMinHeight = 30.0f;
     const float minHeight = rawMinHeight * size;
     const float yDistance = secondaryY - primaryY;
     const float innerHeight = (minHeight > yDistance) ? minHeight : yDistance;

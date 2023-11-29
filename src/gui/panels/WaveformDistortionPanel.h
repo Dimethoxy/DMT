@@ -39,7 +39,7 @@ public:
                   juce::String("oscGain"),
                   dmt::InfoUnit::Type::Drive)
   {
-    setLayout({ 18, 10 });
+    setLayout({ 18, 20 });
     addAndMakeVisible(typeSlider);
     addAndMakeVisible(driveSlider);
     addAndMakeVisible(gainSlider);
@@ -50,18 +50,18 @@ public:
   {
     dmt::gui::Panel::resized();
     auto bounds = getLocalBounds();
-    auto typeSliderPoint = this->getGridPoint(bounds, 6, 5);
+    auto typeSliderPoint = this->getGridPoint(bounds, 6, 9);
     typeSlider.setSizeAndCentre(typeSliderPoint);
-    auto gainSliderPoint = this->getGridPoint(bounds, 10, 5);
+    auto gainSliderPoint = this->getGridPoint(bounds, 10, 9);
     gainSlider.setSizeAndCentre(gainSliderPoint);
-    auto driveSliderPoint = this->getGridPoint(bounds, 14, 5);
+    auto driveSliderPoint = this->getGridPoint(bounds, 14, 9);
     driveSlider.setSizeAndCentre(driveSliderPoint);
-    auto biasSliderPrimaryPoint = this->getGridPoint(bounds, 2, 8);
-    auto biasSliderSecondaryPoint = this->getGridPoint(bounds, 9, 8);
+    auto biasSliderPrimaryPoint = this->getGridPoint(bounds, 2, 16);
+    auto biasSliderSecondaryPoint = this->getGridPoint(bounds, 9, 16);
     biasSlider.setBoundsByPoints(biasSliderPrimaryPoint,
                                  biasSliderSecondaryPoint);
-    auto crushSliderPrimaryPoint = this->getGridPoint(bounds, 11, 8);
-    auto crushSliderSecondaryPoint = this->getGridPoint(bounds, 17, 8);
+    auto crushSliderPrimaryPoint = this->getGridPoint(bounds, 11, 16);
+    auto crushSliderSecondaryPoint = this->getGridPoint(bounds, 17, 16);
     crushSlider.setBoundsByPoints(crushSliderPrimaryPoint,
                                   crushSliderSecondaryPoint);
   }
