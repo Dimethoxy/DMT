@@ -11,10 +11,25 @@ class LinearSlider : public juce::Slider
 {
   using Settings = dmt::AppSettings;
   using Slider = Settings::Slider;
+  using Colour = Settings::Colour;
+  using StrokeType = juce::PathStrokeType;
   const float& size = Settings::Layout::size;
+  // General
   const float& rawPadding = Settings::Slider::padding;
+  // Shaft
+  const juce::Colour& shaftColour = Slider::shaftColour;
+  const float& rawShaftLineStrength = Slider::shaftLineStrength;
+  const float& rawShaftSize = Slider::shaftSize;
+  // Rail
+  const juce::Colour& lowerRailColour = Slider::lowerRailColour;
+  const juce::Colour& upperRailColour = Slider::upperRailColour;
+  const float& rawRailWidth = Slider::railWidth;
+  const float& railSize = Slider::railSize;
   // Thumb
-  const float& thumbSize = Slider::thumbSize;
+  const juce::Colour& thumbInnerColour = Slider::thumbInnerColour;
+  const juce::Colour& thumOuterColour = Slider::thumOuterColour;
+  const float& rawThumbSize = Slider::thumbSize;
+  const float& rawThumbStrength = Slider::thumbStrength;
 
 public:
   enum Type
@@ -43,23 +58,25 @@ public:
   {
     auto bounds = getLocalBounds();
 
+    // Draw bounds debug
     g.setColour(juce::Colours::red);
     g.fillRect(bounds);
 
-    switch (orientation) {
-      case Orientation::Horizontal:
-        drawHorizontal();
-        break;
-      case Orientation::Vertical:
-        drawVertical();
-        break;
-      default:
-        jassert(false);
-        break;
-    }
+    // Calculate lower rail
+    const auto railWidth = rawRailWidth * size;
+    const auto jointStyle = StrokeType::curved;
+    const auto endCapStyle = StrokeType::butt;
+    const auto strokeType = StrokeType(railWidth, jointStyle, endCapStyle);
+    auto lowerRailPath = juce::Path();
+    lowerRailPath.startNewSubPath(primaryPoint);
+    lowerRailPath.lineTo(secondaryPoint);
+
+    // Draw lower rail
+    g.setColour(lowerRailColour);
+    g.strokePath(lowerRailPath, strokeType);
   }
-  void setBoundsByPoints(juce::Point<int> newPrimaryPoint,
-                         juce::Point<int> newSecondaryPoint)
+  void setBoundsByPoints(juce::Point<float> newPrimaryPoint,
+                         juce::Point<float> newSecondaryPoint)
   {
     primaryPoint = newPrimaryPoint;
     secondaryPoint = newSecondaryPoint;
@@ -69,11 +86,11 @@ public:
     const float secondaryX = (float)primaryPoint.getX();
     const float secondaryY = (float)primaryPoint.getY();
 
-    const float minSize = thumbSize * size;
+    const float thumbSize = rawThumbSize * size;
     const float xDistance = secondaryX - primaryX;
-    const float innerWidth = (minSize > xDistance) ? minSize : xDistance;
+    const float innerWidth = (thumbSize > xDistance) ? thumbSize : xDistance;
     const float yDistance = secondaryY - primaryY;
-    const float innerHeight = (minSize > yDistance) ? minSize : yDistance;
+    const float innerHeight = (thumbSize > yDistance) ? thumbSize : yDistance;
 
     const auto innerBounds =
       juce::Rectangle<float>(primaryX, primaryY, innerWidth, innerHeight);
@@ -83,19 +100,11 @@ public:
     setBounds(outerBounds.toNearestInt());
   }
 
-protected:
-  void drawHorizontal()
-  {
-    auto bounds = getLocalBounds();
-    auto railLine = juce::Line<int>(primaryPoint, secondaryPoint);
-  }
-  void drawVertical() {}
-
 private:
   Type type;
   Orientation orientation;
-  juce::Point<int> primaryPoint;
-  juce::Point<int> secondaryPoint;
+  juce::Point<float> primaryPoint;
+  juce::Point<float> secondaryPoint;
 
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(LinearSlider)
 };
