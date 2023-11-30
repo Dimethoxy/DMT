@@ -6,6 +6,7 @@ This is a list with the next things to do.
 
 - LinearSlider implementation
 - LinearSliderComponent implementation
+- Analog Waveforms
 
 ### Refactoring
 
