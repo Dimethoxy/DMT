@@ -1,12 +1,13 @@
+//==============================================================================
 #pragma once
-
+//==============================================================================
 #include "../../utility/AppSettings.h"
 #include <JuceHeader.h>
-
+//==============================================================================
 namespace dmt {
 namespace gui {
 namespace widgets {
-
+//==============================================================================
 class LinearSlider : public juce::Slider
 {
   using Settings = dmt::AppSettings;
@@ -88,6 +89,23 @@ public:
     // Draw lower rail
     g.setColour(lowerRailColour);
     g.strokePath(lowerRailPath, strokeType);
+
+    // Calculate upper rail
+    const auto value = getValue();
+    const auto maximum = getMaximum();
+    const auto minimum = getMinimum();
+    const auto range = maximum - minimum;
+    const auto valueRatio = (value - minimum) / range;
+    const auto diffrencePoint = secondaryPoint - primaryPoint;
+    const auto valueDiffrencePoint = diffrencePoint * valueRatio;
+    const auto upperRailPoint = primaryPoint + valueDiffrencePoint;
+    auto upperRailPath = juce::Path();
+    upperRailPath.startNewSubPath(primaryPoint);
+    upperRailPath.lineTo(upperRailPoint);
+
+    // Draw
+    g.setColour(upperRailColour);
+    g.strokePath(upperRailPath, strokeType);
   }
 
   void setBoundsPoints(juce::Point<int> newPrimaryPoint,
