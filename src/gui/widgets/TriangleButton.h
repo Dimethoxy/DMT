@@ -21,8 +21,9 @@ namespace widgets {
 class TriangleButton : public juce::Button
 {
   // Global
+  using AppSettings = dmt::AppSettings;
   using Settings = dmt::AppSettings::TriangleButton;
-  const float& size = dmt::AppSettings::size;
+  const float& size = AppSettings::Layout::size;
   const float& margin = dmt::AppSettings::Layout::margin;
   // General
   const juce::Colour& standbyColour = Settings::standbyColour;

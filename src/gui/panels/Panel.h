@@ -16,13 +16,15 @@ class Panel
   : public juce::Component
   , public juce::Button::Listener
 {
+public:
   using Grid = std::vector<std::vector<juce::Point<float>>>;
   // Settings
-  using Settings = dmt::AppSettings::Panel;
+  using AppSettings = dmt::AppSettings;
+  using Settings = AppSettings::Panel;
   using Fonts = dmt::AppSettings::Fonts;
   using Carousel = dmt::AppSettings::Carousel;
   // Global
-  const float& size = dmt::AppSettings::size;
+  const float& size = AppSettings::Layout::size;
   const float& margin = dmt::AppSettings::Layout::margin;
   // General
   const juce::Colour& backgroundColour = Settings::backgroundColour;
@@ -43,7 +45,6 @@ class Panel
   const juce::Colour& fontColor = Settings::fontColor;
   const float& fontSize = Settings::fontSize;
 
-public:
   struct Layout
   {
     int cols;
