@@ -40,8 +40,9 @@ public:
                         const juce::String text,
                         const juce::String param,
                         const dmt::InfoUnit::Type unitType,
-                        const Type type = Type::Positive)
-    : orientation(LinearSlider::Orientation::Horizontal)
+                        const Type type = Type::Positive,
+                        const Orientation orientation = Orientation::Horizontal)
+    : orientation(orientation)
     , slider(type, orientation)
     , sliderAttachment(apvts, param, slider)
     , titleLabel(text, Fonts::medium, titleFontSize, titleFontColour)
@@ -67,7 +68,7 @@ public:
     slider.setBounds(bounds);
     slider.setAlwaysOnTop(true);
     titleLabel.setBounds(bounds.reduced(padding));
-    infoLabel.setBounds(bounds.reduced(1.5f * padding));
+    infoLabel.setBounds(bounds.reduced(padding));
   }
   void paint(juce::Graphics& g)
   {
@@ -89,12 +90,12 @@ public:
     const float secondaryX = (float)newSecondaryPoint.getX();
     const float secondaryY = (float)newSecondaryPoint.getY();
 
-    const float rawMinWidth = 40.0f;
+    const float rawMinWidth = 34.0f;
     const float minWidth = rawMinWidth * size;
     const float xDistance = secondaryX - primaryX;
     const float innerWidth = (minWidth > xDistance) ? minWidth : xDistance;
 
-    const float rawMinHeight = 40.0f;
+    const float rawMinHeight = 34.0f;
     const float minHeight = rawMinHeight * size;
     const float yDistance = secondaryY - primaryY;
     const float innerHeight = (minHeight > yDistance) ? minHeight : yDistance;
@@ -106,12 +107,14 @@ public:
     const auto outerBounds = innerBounds.expanded(padding).withCentre(centre);
     setBounds(outerBounds.toNearestInt());
 
+    const float sliderOffset = 1.0f * size;
+    const float sliderY = (float)centre.getY() + sliderOffset;
     const auto normalizedPrimaryPoint =
-      juce::Point<int>(innerBounds.getX(), centre.getY()) -
+      juce::Point<int>(innerBounds.getX(), sliderY) -
       outerBounds.getPosition().toInt();
 
     const auto normalizedSecundaryPoint =
-      juce::Point<int>(innerBounds.getRight(), centre.getY()) -
+      juce::Point<int>(innerBounds.getRight(), sliderY) -
       outerBounds.getPosition().toInt();
 
     slider.setBoundsPoints(normalizedPrimaryPoint, normalizedSecundaryPoint);

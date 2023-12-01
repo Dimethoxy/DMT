@@ -77,7 +77,7 @@ private:
     if (Settings::debugBounds)
       g.drawRect(bounds, 1.0f);
 
-    // Draw the circle
+    // Draw the shaft
     const auto shaftSize = rawShaftSize * bounds.getHeight();
     auto shaftBounds = bounds;
     shaftBounds.setSize(shaftSize, shaftSize);
@@ -141,7 +141,9 @@ private:
     // Draw the Thumb
     const auto thumbPoint =
       dmt::Math::pointOnCircle(centre, railRadius, valueAngleInRadians);
-    const float thumbSize = rawThumbSize * size;
+    float thumbSize = rawThumbSize * size;
+    if (!isMouseButtonDown())
+      thumbSize *= 0.85f;
     const float thumbStrength = rawThumbStrength * size;
     const auto thumbBounds = juce::Rectangle<float>()
                                .withSize(thumbSize, thumbSize)

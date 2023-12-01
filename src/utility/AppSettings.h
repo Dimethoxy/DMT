@@ -79,19 +79,19 @@ struct AppSettings
   {
     // General
     static inline float padding = 8.0f;
-    static inline float baseWidth = 110.0f;
-    static inline float baseHeight = 125.0f;
+    static inline float baseWidth = 105.0f;
+    static inline float baseHeight = 119.0f;
     static inline float sliderSize = 0.80f;
     static inline float labelsSize = 0.32f;
     // Font
     static inline Colour titleFontColour = Colours::font;
     static inline Colour infoFontColour = Colours::font;
-    static inline float titleFontSize = 26.0f;
-    static inline float infoFontSize = 20.0f;
+    static inline float titleFontSize = 24.0f;
+    static inline float infoFontSize = 18.0f;
     // Shaft
     static inline juce::Colour shaftColour = Colours::font;
     static inline float shaftLineStrength = 3.0f;
-    static inline float shaftSize = 0.47f;
+    static inline float shaftSize = 0.45f;
     // Rail
     static inline juce::Colour lowerRailColour = Colours::solid_dark;
     static inline juce::Colour upperRailColour = Colours::primary;

@@ -14,6 +14,7 @@ class WaveformDistortionPanel : public dmt::gui::Panel
 {
 
   using RotarySliderType = dmt::gui::widgets::RotarySlider::Type;
+  using LinearSliderType = dmt::gui::widgets::LinearSlider::Type;
 
 public:
   WaveformDistortionPanel(juce::AudioProcessorValueTreeState& apvts)
@@ -31,15 +32,16 @@ public:
                   juce::String("oscGain"),
                   dmt::InfoUnit::Type::Drive)
     , biasSlider(apvts,
-                 juce::String("Bias"),
+                 juce::String("Symmetry"),
                  juce::String("oscGain"),
-                 dmt::InfoUnit::Type::Symmetry)
+                 dmt::InfoUnit::Type::Symmetry,
+                 LinearSliderType::Bipolar)
     , crushSlider(apvts,
                   juce::String("Bitcrush"),
                   juce::String("oscGain"),
                   dmt::InfoUnit::Type::Drive)
   {
-    setLayout({ 18, 20 });
+    setLayout({ 18, 30 });
     addAndMakeVisible(typeSlider);
     addAndMakeVisible(driveSlider);
     addAndMakeVisible(gainSlider);
@@ -50,18 +52,24 @@ public:
   {
     dmt::gui::Panel::resized();
     auto bounds = getLocalBounds();
-    auto typeSliderPoint = this->getGridPoint(bounds, 5, 9);
+    const int rotarySliderRow = 13;
+    const int linearSliderRow = 23;
+    auto typeSliderPoint = this->getGridPoint(bounds, 5, rotarySliderRow);
     typeSlider.setSizeAndCentre(typeSliderPoint);
-    auto gainSliderPoint = this->getGridPoint(bounds, 10, 9);
+    auto gainSliderPoint = this->getGridPoint(bounds, 10, rotarySliderRow);
     gainSlider.setSizeAndCentre(gainSliderPoint);
-    auto driveSliderPoint = this->getGridPoint(bounds, 15, 9);
+    auto driveSliderPoint = this->getGridPoint(bounds, 15, rotarySliderRow);
     driveSlider.setSizeAndCentre(driveSliderPoint);
-    auto biasSliderPrimaryPoint = this->getGridPoint(bounds, 2, 16);
-    auto biasSliderSecondaryPoint = this->getGridPoint(bounds, 9, 16);
+    auto biasSliderPrimaryPoint =
+      this->getGridPoint(bounds, 2, linearSliderRow);
+    auto biasSliderSecondaryPoint =
+      this->getGridPoint(bounds, 9, linearSliderRow);
     biasSlider.setBoundsByPoints(biasSliderPrimaryPoint,
                                  biasSliderSecondaryPoint);
-    auto crushSliderPrimaryPoint = this->getGridPoint(bounds, 11, 16);
-    auto crushSliderSecondaryPoint = this->getGridPoint(bounds, 17, 16);
+    auto crushSliderPrimaryPoint =
+      this->getGridPoint(bounds, 11, linearSliderRow);
+    auto crushSliderSecondaryPoint =
+      this->getGridPoint(bounds, 17, linearSliderRow);
     crushSlider.setBoundsByPoints(crushSliderPrimaryPoint,
                                   crushSliderSecondaryPoint);
   }

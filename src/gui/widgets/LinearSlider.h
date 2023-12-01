@@ -47,8 +47,9 @@ public:
     Vertical
   };
 
-  LinearSlider(const Type /*type*/, const Orientation orientation)
+  LinearSlider(const Type type, const Orientation orientation)
     : juce::Slider()
+    , type(type)
   {
     switch (orientation) {
       case Orientation::Horizontal: {
@@ -80,17 +81,22 @@ public:
     // Calculate lower rail
     const auto railWidth = rawRailWidth * size;
     const auto jointStyle = StrokeType::curved;
-    const auto endCapStyle = StrokeType::rounded;
-    const auto strokeType = StrokeType(railWidth, jointStyle, endCapStyle);
+    const auto lowerEndCapStyle = StrokeType::rounded;
+    const auto lowerStrokeType =
+      StrokeType(railWidth, jointStyle, lowerEndCapStyle);
     auto lowerRailPath = juce::Path();
     lowerRailPath.startNewSubPath(primaryPoint);
     lowerRailPath.lineTo(secondaryPoint);
 
     // Draw lower rail
     g.setColour(lowerRailColour);
-    g.strokePath(lowerRailPath, strokeType);
+    g.strokePath(lowerRailPath, lowerStrokeType);
 
     // Calculate upper rail
+    const auto upperEndCapStyle =
+      (type == Type::Bipolar) ? StrokeType::butt : StrokeType::rounded;
+    const auto upperStrokeType =
+      StrokeType(railWidth, jointStyle, upperEndCapStyle);
     const auto value = getValue();
     const auto maximum = getMaximum();
     const auto minimum = getMinimum();
@@ -99,17 +105,33 @@ public:
     const auto diffrencePoint = secondaryPoint - primaryPoint;
     const auto valueDiffrencePoint = diffrencePoint * valueRatio;
     const auto valuePoint = primaryPoint + valueDiffrencePoint;
+    const auto middlePoint = (primaryPoint + secondaryPoint) / 2.0f;
+    auto upperRailStartPoint = primaryPoint;
+    switch (type) {
+      case Type::Positive:
+        upperRailStartPoint = primaryPoint;
+        break;
+      case Type::Negative:
+        upperRailStartPoint = secondaryPoint;
+        break;
+      case Type::Bipolar:
+        upperRailStartPoint = middlePoint;
+        break;
+    }
+    const auto upperRailEndPoint = valuePoint;
     auto upperRailPath = juce::Path();
-    upperRailPath.startNewSubPath(primaryPoint);
-    upperRailPath.lineTo(valuePoint);
+    upperRailPath.startNewSubPath(upperRailStartPoint);
+    upperRailPath.lineTo(upperRailEndPoint);
 
     // Draw upper rail
     g.setColour(upperRailColour);
-    g.strokePath(upperRailPath, strokeType);
+    g.strokePath(upperRailPath, upperStrokeType);
 
     // Draw the Thumb
     const auto thumbPoint = valuePoint;
-    const float thumbSize = rawThumbSize * size;
+    float thumbSize = rawThumbSize * size;
+    if (!isMouseButtonDown())
+      thumbSize *= 0.85f;
     const float thumbStrength = rawThumbStrength * size;
     const auto thumbBounds = juce::Rectangle<float>()
                                .withSize(thumbSize, thumbSize)
