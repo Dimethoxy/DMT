@@ -11,8 +11,9 @@ struct AppSettings
   static inline juce::String name = "Neutrino";
   static inline float size = 1.0f;
   static inline const bool debugBounds = false;
-  static inline const bool debugGrid = false;
+  static inline const bool debugGrid = true;
   static inline const float macFontScale = 0.9f;
+
   struct Colours
   {
     using Colour = juce::Colour;
@@ -32,14 +33,14 @@ struct AppSettings
     static inline float leftWidth = 700.0f;
     static inline float centerWidth = 400.0f;
     static inline float rightWidth = 200.0f;
-    static inline float headerHeight = 60.0f;
-    static inline float tabHeight = 40.0f;
+    static inline float headerHeight = 0.0f; // 60.0f;
+    static inline float tabHeight = 0.0f;    // 40.0f;
     static inline float rowHeight = 200.0f;
-    static inline float keyboardHeight = 60.0f;
+    static inline float keyboardHeight = 0.0f; // 60.0f;
     static inline float getHeight()
     {
-      auto header = headerHeight + 2.0f * margin;
-      auto tab = tabHeight + 2.0f * margin;
+      auto header = headerHeight; //+ 2.0f * margin;
+      auto tab = tabHeight;       // + 2.0f * margin;
       auto top = rowHeight + 2.0f * margin;
       auto mid = rowHeight + 2.0f * margin;
       auto low = rowHeight + 2.0f * margin;

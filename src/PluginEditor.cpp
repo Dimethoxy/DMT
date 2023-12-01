@@ -37,7 +37,13 @@ NeutrinoAudioProcessorEditor::NeutrinoAudioProcessorEditor(
 
   addAndMakeVisible(keyboardComponent);
 
-  setSize((int)Layout::getWidth(), (int)Layout::getHeight());
+  float ratio = Layout::getWidth() / Layout::getHeight();
+  int minWidth = 600;
+  int maxWidth = 4000;
+  int startWidth = Layout::getWidth();
+  setResizeLimits(minWidth, minWidth / ratio, maxWidth, maxWidth / ratio);
+  getConstrainer()->setFixedAspectRatio(ratio);
+  setSize(startWidth, startWidth / ratio);
   setResizable(true, true);
 }
 
@@ -80,8 +86,8 @@ NeutrinoAudioProcessorEditor::resized()
   const float rawKeyboardHeight = Settings::Layout::keyboardHeight;
 
   auto innerBounds = bounds.reduced((int)margin);
-  const auto headerBounds = innerBounds.removeFromTop((int)headerHeight);
-  const auto tabBounds = innerBounds.removeFromTop((int)tabHeight);
+  // const auto headerBounds = innerBounds.removeFromTop((int)headerHeight);
+  // const auto tabBounds = innerBounds.removeFromTop((int)tabHeight);
   const auto topBounds = innerBounds.removeFromTop((int)rowHeight);
   const auto midBounds = innerBounds.removeFromTop((int)rowHeight);
   const auto bottomBounds = innerBounds.removeFromTop((int)rowHeight);
@@ -101,7 +107,7 @@ NeutrinoAudioProcessorEditor::resized()
   oscillatorPanel.setBounds(leftBounds.getX(),
                             topBounds.getY(),
                             leftBounds.getWidth(),
-                            topBounds.getHeight() + bottomBounds.getHeight());
+                            2.0f * rowHeight);
   voicingPanel.setBounds(leftBounds.getX(),
                          bottomBounds.getY(),
                          leftBounds.getWidth(),

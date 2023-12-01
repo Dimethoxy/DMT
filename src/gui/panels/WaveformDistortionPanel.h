@@ -13,7 +13,6 @@ namespace panels {
 //==============================================================================
 class WaveformDistortionPanel : public dmt::gui::Panel
 {
-
   using RotarySliderType = dmt::gui::widgets::RotarySlider::Type;
   using LinearSliderType = dmt::gui::widgets::LinearSlider::Type;
 
