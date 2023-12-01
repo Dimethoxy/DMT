@@ -52,6 +52,7 @@ public:
 
   Panel(juce::String name) noexcept
     : layout({ 1, 1 })
+    , rawGridOffsetY(40)
     , name(name)
     , titleLabel(name, Fonts::bold, fontSize, juce::Colours::white)
     , nextCallback([]() {})
@@ -62,6 +63,7 @@ public:
     , innerShadow(innerShadowColour, innerShadowRadius)
   {
     addAndMakeVisible(titleLabel);
+    setLayout(layout);
   }
 
   void paint(juce::Graphics& g) noexcept override
@@ -75,8 +77,9 @@ public:
       outerCornerSize - (borderStrength * size * 0.5f), 0.0f, outerCornerSize);
 
     // draw debug bounds
-    // g.setColour(juce::Colours::aqua);
-    // g.drawRect(bounds, 1.0f);
+    g.setColour(juce::Colours::aqua);
+    if (dmt::AppSettings::debugBounds)
+      g.drawRect(bounds, 1.0f);
 
     // Draw outer shadow
     if (drawOuterShadow) {
@@ -104,6 +107,26 @@ public:
       juce::Path innerShadowPath;
       innerShadowPath.addRoundedRectangle(innerBounds, innerCornerSize);
       innerShadow.drawInnerForPath(g, innerShadowPath);
+    }
+
+    // draw debug line grid
+    if (dmt::AppSettings::debugGrid)
+      g.setColour(juce::Colours::red);
+    for (int col = 0; col < grid.size(); col++) {
+      const auto firstPoint = getGridPoint(bounds.toNearestInt(), col, 0);
+      const auto endPoint =
+        juce::Point<int>(firstPoint.getX(), bounds.getHeight() - 1);
+      const auto line =
+        juce::Line<float>(firstPoint.toFloat(), endPoint.toFloat());
+      g.drawLine(line, 1.0f);
+    }
+    for (int row = 0; row < grid[0].size(); row++) {
+      const auto firstPoint = getGridPoint(bounds.toNearestInt(), 0, row);
+      const auto endPoint =
+        juce::Point<int>(bounds.getWidth() - 1, firstPoint.getY());
+      const auto line =
+        juce::Line<float>(firstPoint.toFloat(), endPoint.toFloat());
+      g.drawLine(line, 1.0f);
     }
   }
 
@@ -179,15 +202,31 @@ protected:
                                              const int col,
                                              const int row) noexcept
   {
+    // assert if col and row are out of bounds
+    jassert(col >= 0 && col < grid.size());
+    jassert(row >= 0 && row < grid[col].size());
+
     auto rawPoint = grid[col][row];
-    juce::Point<float> point(rawPoint.getX() * (float)bounds.getWidth(),
-                             rawPoint.getY() * (float)bounds.getHeight());
+
+    const auto x = rawPoint.getX() * (float)bounds.getWidth();
+
+    const float gridOffsetY = (float)rawGridOffsetY * size;
+    const float offsetBoundsHeight = bounds.getHeight() - gridOffsetY;
+    const auto y = rawPoint.getY() * offsetBoundsHeight + gridOffsetY;
+
+    juce::Point<float> point(x, y);
     return point.toInt();
+  }
+
+  void setGridOffsetPixel(const int offset) noexcept
+  {
+    rawGridOffsetY = offset;
   }
 
 private:
   Layout layout;
   Grid grid;
+  int rawGridOffsetY;
   const juce::String name;
   dmt::gui::widgets::Label titleLabel;
   std::function<void()> nextCallback;
