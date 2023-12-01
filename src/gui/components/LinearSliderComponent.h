@@ -62,6 +62,12 @@ public:
   {
     const auto bounds = getLocalBounds();
     const auto padding = rawPadding * size;
+
+    // Layout
+    slider.setBounds(bounds);
+    slider.setAlwaysOnTop(true);
+    titleLabel.setBounds(bounds.reduced(padding));
+    infoLabel.setBounds(bounds.reduced(1.5f * padding));
   }
   void paint(juce::Graphics& g)
   {
@@ -71,9 +77,6 @@ public:
     g.setColour(juce::Colours::green);
     if (Settings::debugBounds)
       g.drawRect(bounds, 1);
-
-    // Layout
-    slider.setBounds(bounds);
   }
   void sliderValueChanged(juce::Slider*) { updateLabel(); }
 
@@ -86,12 +89,12 @@ public:
     const float secondaryX = (float)newSecondaryPoint.getX();
     const float secondaryY = (float)newSecondaryPoint.getY();
 
-    const float rawMinWidth = 30.0f;
+    const float rawMinWidth = 40.0f;
     const float minWidth = rawMinWidth * size;
     const float xDistance = secondaryX - primaryX;
     const float innerWidth = (minWidth > xDistance) ? minWidth : xDistance;
 
-    const float rawMinHeight = 30.0f;
+    const float rawMinHeight = 40.0f;
     const float minHeight = rawMinHeight * size;
     const float yDistance = secondaryY - primaryY;
     const float innerHeight = (minHeight > yDistance) ? minHeight : yDistance;

@@ -23,7 +23,7 @@ public:
                  juce::String("oscGain"),
                  dmt::InfoUnit::Type::Drive)
     , gainSlider(apvts,
-                 juce::String("Gain"),
+                 juce::String("Pregain"),
                  juce::String("oscGain"),
                  dmt::InfoUnit::Type::Drive)
     , driveSlider(apvts,
@@ -50,11 +50,11 @@ public:
   {
     dmt::gui::Panel::resized();
     auto bounds = getLocalBounds();
-    auto typeSliderPoint = this->getGridPoint(bounds, 6, 9);
+    auto typeSliderPoint = this->getGridPoint(bounds, 5, 9);
     typeSlider.setSizeAndCentre(typeSliderPoint);
     auto gainSliderPoint = this->getGridPoint(bounds, 10, 9);
     gainSlider.setSizeAndCentre(gainSliderPoint);
-    auto driveSliderPoint = this->getGridPoint(bounds, 14, 9);
+    auto driveSliderPoint = this->getGridPoint(bounds, 15, 9);
     driveSlider.setSizeAndCentre(driveSliderPoint);
     auto biasSliderPrimaryPoint = this->getGridPoint(bounds, 2, 16);
     auto biasSliderSecondaryPoint = this->getGridPoint(bounds, 9, 16);

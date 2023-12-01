@@ -116,7 +116,7 @@ private:
     // Draw the lower rail
     const auto railWidth = rawRailWidth * size;
     const auto jointStyle = StrokeType::curved;
-    const auto endCapStyle = StrokeType::butt;
+    const auto endCapStyle = StrokeType::rounded;
     const auto strokeType = StrokeType(railWidth, jointStyle, endCapStyle);
     const auto railBounds = bounds;
     const auto railRadius = railBounds.getWidth() * railSize / 2.0f;

@@ -80,7 +80,7 @@ public:
     // Calculate lower rail
     const auto railWidth = rawRailWidth * size;
     const auto jointStyle = StrokeType::curved;
-    const auto endCapStyle = StrokeType::butt;
+    const auto endCapStyle = StrokeType::rounded;
     const auto strokeType = StrokeType(railWidth, jointStyle, endCapStyle);
     auto lowerRailPath = juce::Path();
     lowerRailPath.startNewSubPath(primaryPoint);
@@ -98,14 +98,26 @@ public:
     const auto valueRatio = (value - minimum) / range;
     const auto diffrencePoint = secondaryPoint - primaryPoint;
     const auto valueDiffrencePoint = diffrencePoint * valueRatio;
-    const auto upperRailPoint = primaryPoint + valueDiffrencePoint;
+    const auto valuePoint = primaryPoint + valueDiffrencePoint;
     auto upperRailPath = juce::Path();
     upperRailPath.startNewSubPath(primaryPoint);
-    upperRailPath.lineTo(upperRailPoint);
+    upperRailPath.lineTo(valuePoint);
 
-    // Draw
+    // Draw upper rail
     g.setColour(upperRailColour);
     g.strokePath(upperRailPath, strokeType);
+
+    // Draw the Thumb
+    const auto thumbPoint = valuePoint;
+    const float thumbSize = rawThumbSize * size;
+    const float thumbStrength = rawThumbStrength * size;
+    const auto thumbBounds = juce::Rectangle<float>()
+                               .withSize(thumbSize, thumbSize)
+                               .withCentre(thumbPoint);
+    g.setColour(thumOuterColour);
+    g.fillEllipse(thumbBounds);
+    g.setColour(thumbInnerColour);
+    g.fillEllipse(thumbBounds.reduced(thumbStrength));
   }
 
   void setBoundsPoints(juce::Point<int> newPrimaryPoint,
