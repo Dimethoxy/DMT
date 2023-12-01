@@ -14,11 +14,8 @@ class ModernGainPanel : public dmt::gui::Panel
 {
 public:
   ModernGainPanel(/*juce::AudioProcessorValueTreeState& apvts*/)
-  { //
-  }
-  inline const juce::String getName() noexcept override
+    : Panel("Modern Gain Envelope")
   {
-    return "Modern Gain Panel";
   }
 
 private:

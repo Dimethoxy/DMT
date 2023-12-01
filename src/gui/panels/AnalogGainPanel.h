@@ -14,11 +14,8 @@ class AnalogGainPanel : public dmt::gui::Panel
 {
 public:
   AnalogGainPanel(/*juce::AudioProcessorValueTreeState& apvts*/)
+    : Panel("Analog Gain Envelope")
   { //
-  }
-  inline const juce::String getName() noexcept override
-  {
-    return "Analog Gain Envelope";
   }
 
 private:

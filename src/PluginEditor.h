@@ -9,8 +9,10 @@
 #pragma once
 
 #include "./Utility/AppSettings.h"
+#include "Gui/Panels/GainPanel.h"
 #include "Gui/Panels/OscSendPanel.h"
 #include "Gui/Panels/OscillatorPanel.h"
+#include "Gui/Panels/PitchPanel.h"
 #include "Gui/Panels/VoicingPanel.h"
 #include "Gui/Panels/WaveformDistortionPanel.h"
 #include "PluginProcessor.h"
@@ -40,8 +42,8 @@ private:
   Panels::OscillatorPanel oscillatorPanel;
   Panels::VoicingPanel voicingPanel;
 
-  Panels::OscillatorPanel gainPanel;
-  Panels::OscillatorPanel pitchPanel;
+  Panels::GainPanel gainPanel;
+  Panels::PitchPanel pitchPanel;
   Panels::WaveformDistortionPanel distortionPanel;
 
   Panels::OscSendPanel sendPanelA;

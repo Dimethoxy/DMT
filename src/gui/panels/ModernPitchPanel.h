@@ -14,11 +14,9 @@ class ModernPitchPanel : public dmt::gui::Panel
 {
 public:
   ModernPitchPanel(/*juce::AudioProcessorValueTreeState& apvts*/)
-  { //
-  }
-  inline const juce::String getName() noexcept override
+    : Panel("Modern Pitch Envelope")
   {
-    return "Modern Pitch Panel";
+    //
   }
 
 private:

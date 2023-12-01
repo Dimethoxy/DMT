@@ -13,12 +13,9 @@ namespace panels {
 class AnalogPitchPanel : public dmt::gui::Panel
 {
 public:
-  AnalogPitchPanel(/*juce::AudioProcessorValueTreeState& apvts*/)
+  AnalogPitchPanel(/*juce::AudioProcessorValueTreeState& apvts*/) //
+    : Panel("Analog Pitch Envelope")
   { //
-  }
-  inline const juce::String getName() noexcept override
-  {
-    return "Analog Pitch Envelope";
   }
 
 private:

@@ -14,7 +14,7 @@ class ModernOscillatorPanel : public dmt::gui::Panel
 {
 public:
   ModernOscillatorPanel(/*juce::AudioProcessorValueTreeState& apvts*/)
-    : Panel("Modern Oscillator Panel")
+    : Panel("Modern Oscillator")
   { //
   }
 

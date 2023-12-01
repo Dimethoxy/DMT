@@ -14,7 +14,7 @@ class AnalogOscillatorPanel : public dmt::gui::Panel
 {
 public:
   AnalogOscillatorPanel(/*juce::AudioProcessorValueTreeState& apvts*/)
-    : Panel("Analog Oscillator Envelope")
+    : Panel("Classic Oscillator")
   { //
   }
 

@@ -25,7 +25,7 @@ public:
   }
 
 private:
-  JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(OscillatorPanel)
+  JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(GainPanel)
 };
 //==============================================================================
 } // namespace panels

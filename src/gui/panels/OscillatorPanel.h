@@ -13,9 +13,12 @@ namespace dmt {
 namespace gui {
 namespace panels {
 //==============================================================================
-class OscillatorPanel : public dmt::gui::panels::Carousel {
+class OscillatorPanel : public dmt::gui::panels::Carousel
+{
 public:
-  OscillatorPanel() : Carousel() {
+  OscillatorPanel()
+    : Carousel()
+  {
     panels.push_back(std::make_unique<AnalogOscillatorPanel>());
     panels.push_back(std::make_unique<ModernOscillatorPanel>());
     init();
