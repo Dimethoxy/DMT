@@ -2,6 +2,7 @@
 #pragma once
 //==============================================================================
 #include "../../utility/Unit.h"
+#include "../components/LinearSliderComponent.h"
 #include "../components/RotarySliderComponent.h"
 #include "Panel.h"
 #include <JuceHeader.h>
@@ -41,7 +42,7 @@ public:
                   juce::String("oscGain"),
                   dmt::InfoUnit::Type::Drive)
   {
-    setLayout({ 18, 30 });
+    setLayout({ 18, 32 });
     addAndMakeVisible(typeSlider);
     addAndMakeVisible(driveSlider);
     addAndMakeVisible(gainSlider);
@@ -51,24 +52,26 @@ public:
   void resized() noexcept override
   {
     dmt::gui::Panel::resized();
-    auto bounds = getLocalBounds();
-    const int rotarySliderRow = 13;
+    const auto bounds = getLocalBounds();
+    const int rotarySliderRow = 10;
     const int linearSliderRow = 23;
-    auto typeSliderPoint = this->getGridPoint(bounds, 5, rotarySliderRow);
+    const auto typeSliderPoint = this->getGridPoint(bounds, 5, rotarySliderRow);
     typeSlider.setSizeAndCentre(typeSliderPoint);
-    auto gainSliderPoint = this->getGridPoint(bounds, 10, rotarySliderRow);
+    const auto gainSliderPoint =
+      this->getGridPoint(bounds, 10, rotarySliderRow);
     gainSlider.setSizeAndCentre(gainSliderPoint);
-    auto driveSliderPoint = this->getGridPoint(bounds, 15, rotarySliderRow);
+    const auto driveSliderPoint =
+      this->getGridPoint(bounds, 15, rotarySliderRow);
     driveSlider.setSizeAndCentre(driveSliderPoint);
-    auto biasSliderPrimaryPoint =
+    const auto biasSliderPrimaryPoint =
       this->getGridPoint(bounds, 2, linearSliderRow);
-    auto biasSliderSecondaryPoint =
+    const auto biasSliderSecondaryPoint =
       this->getGridPoint(bounds, 9, linearSliderRow);
     biasSlider.setBoundsByPoints(biasSliderPrimaryPoint,
                                  biasSliderSecondaryPoint);
-    auto crushSliderPrimaryPoint =
+    const auto crushSliderPrimaryPoint =
       this->getGridPoint(bounds, 11, linearSliderRow);
-    auto crushSliderSecondaryPoint =
+    const auto crushSliderSecondaryPoint =
       this->getGridPoint(bounds, 17, linearSliderRow);
     crushSlider.setBoundsByPoints(crushSliderPrimaryPoint,
                                   crushSliderSecondaryPoint);

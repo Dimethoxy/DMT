@@ -110,23 +110,24 @@ public:
     }
 
     // draw debug line grid
-    if (dmt::AppSettings::debugGrid)
+    if (dmt::AppSettings::debugGrid) {
       g.setColour(juce::Colours::red);
-    for (int col = 0; col < grid.size(); col++) {
-      const auto firstPoint = getGridPoint(bounds.toNearestInt(), col, 0);
-      const auto endPoint =
-        juce::Point<int>(firstPoint.getX(), bounds.getHeight() - 1);
-      const auto line =
-        juce::Line<float>(firstPoint.toFloat(), endPoint.toFloat());
-      g.drawLine(line, 1.0f);
-    }
-    for (int row = 0; row < grid[0].size(); row++) {
-      const auto firstPoint = getGridPoint(bounds.toNearestInt(), 0, row);
-      const auto endPoint =
-        juce::Point<int>(bounds.getWidth() - 1, firstPoint.getY());
-      const auto line =
-        juce::Line<float>(firstPoint.toFloat(), endPoint.toFloat());
-      g.drawLine(line, 1.0f);
+      for (int col = 0; col < grid.size(); col++) {
+        const auto firstPoint = getGridPoint(bounds.toNearestInt(), col, 0);
+        const auto endPoint =
+          juce::Point<int>(firstPoint.getX(), bounds.getHeight() - 1);
+        const auto line =
+          juce::Line<float>(firstPoint.toFloat(), endPoint.toFloat());
+        g.drawLine(line, 1.0f);
+      }
+      for (int row = 0; row < grid[0].size(); row++) {
+        const auto firstPoint = getGridPoint(bounds.toNearestInt(), 0, row);
+        const auto endPoint =
+          juce::Point<int>(bounds.getWidth() - 1, firstPoint.getY());
+        const auto line =
+          juce::Line<float>(firstPoint.toFloat(), endPoint.toFloat());
+        g.drawLine(line, 1.0f);
+      }
     }
   }
 
@@ -218,10 +219,8 @@ protected:
     return point.toInt();
   }
 
-  void setGridOffsetPixel(const int offset) noexcept
-  {
-    rawGridOffsetY = offset;
-  }
+  void setRawGridOffset(const int offset) noexcept { rawGridOffsetY = offset; }
+  const inline int getRawGridOffset() const noexcept { return rawGridOffsetY; }
 
 private:
   Layout layout;

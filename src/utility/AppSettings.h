@@ -11,7 +11,7 @@ struct AppSettings
   static inline juce::String name = "Neutrino";
   static inline float size = 1.0f;
   static inline const bool debugBounds = false;
-  static inline const bool debugGrid = true;
+  static inline const bool debugGrid = false;
   static inline const float macFontScale = 0.9f;
   struct Colours
   {
@@ -20,7 +20,7 @@ struct AppSettings
     static inline Colour solid_dark = Colour(40, 42, 54);
     static inline Colour solid_mid = Colour(61, 64, 82);
     static inline Colour font = Colour(248, 248, 248);
-    static inline Colour primary = Colour(255, 121, 198);
+    static inline Colour primary = Colour(80, 250, 123);
     static inline Colour shadow = Colour(0, 0, 0);
     static inline float opacityStep = 0.05f;
   };
@@ -74,7 +74,7 @@ struct AppSettings
     static inline float innerShadowRadius = 10.0f;
     // Text
     static inline juce::Colour fontColor = Colours::font;
-    static inline float fontSize = 32.0f;
+    static inline float fontSize = 34.0f;
   };
   struct Slider
   {
