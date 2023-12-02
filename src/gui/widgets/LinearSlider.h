@@ -79,6 +79,30 @@ public:
       g.drawRect(bounds, 1);
 
     // Calculate lower rail
+    float primaryPointX;
+    float primaryPointY;
+    float secondaryPointX;
+    float secondaryPointY;
+    switch (orientation) {
+      case Orientation::Horizontal:
+        primaryPointX = bounds.getX();
+        primaryPointY = bounds.getCentreY();
+        secondaryPointX = bounds.getRight();
+        secondaryPointY = bounds.getCentreY();
+        break;
+      case Orientation::Vertical:
+        primaryPointX = bounds.getCentreX();
+        primaryPointY = bounds.getY();
+        secondaryPointX = bounds.getCentreX();
+        secondaryPointY = bounds.getBottom();
+        break;
+      default:
+        jassert(false);
+        return;
+    }
+    const juce::Point<float> primaryPoint(primaryPointX, primaryPointY);
+    const juce::Point<float> secondaryPoint(secondaryPointX, secondaryPointY);
+
     const auto railWidth = rawRailWidth * size;
     const auto jointStyle = StrokeType::curved;
     const auto lowerEndCapStyle = StrokeType::rounded;
@@ -142,18 +166,9 @@ public:
     g.fillEllipse(thumbBounds.reduced(thumbStrength));
   }
 
-  void setBoundsPoints(juce::Point<int> newPrimaryPoint,
-                       juce::Point<int> newSecondaryPoint)
-  {
-    primaryPoint = newPrimaryPoint.toFloat();
-    secondaryPoint = newSecondaryPoint.toFloat();
-  }
-
 private:
   Type type;
   Orientation orientation;
-  juce::Point<float> primaryPoint;
-  juce::Point<float> secondaryPoint;
 
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(LinearSlider)
 };

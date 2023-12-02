@@ -13,25 +13,36 @@ namespace panels {
 //==============================================================================
 class AnalogPitchPanel : public dmt::gui::Panel
 {
+  using LinearSliderType = dmt::gui::widgets::LinearSlider::Type;
+  using LinearSliderOrientation = dmt::gui::widgets::LinearSlider::Orientation;
+
 public:
   AnalogPitchPanel(juce::AudioProcessorValueTreeState& apvts)
     : Panel("Analog Pitch Envelope")
     , attackSlider(apvts,
                    juce::String("Attack"),
                    juce::String("oscGain"),
-                   dmt::InfoUnit::Type::Drive)
+                   dmt::InfoUnit::Type::Drive,
+                   LinearSliderType::Positive,
+                   LinearSliderOrientation::Vertical)
     , holdSlider(apvts,
                  juce::String("Hold"),
                  juce::String("oscGain"),
-                 dmt::InfoUnit::Type::Drive)
+                 dmt::InfoUnit::Type::Drive,
+                 LinearSliderType::Positive,
+                 LinearSliderOrientation::Vertical)
     , decaySlider(apvts,
                   juce::String("Decay"),
                   juce::String("oscGain"),
-                  dmt::InfoUnit::Type::Drive)
+                  dmt::InfoUnit::Type::Drive,
+                  LinearSliderType::Positive,
+                  LinearSliderOrientation::Vertical)
     , skewSlider(apvts,
                  juce::String("Skew"),
                  juce::String("oscGain"),
-                 dmt::InfoUnit::Type::Drive)
+                 dmt::InfoUnit::Type::Drive,
+                 LinearSliderType::Positive,
+                 LinearSliderOrientation::Vertical)
   {
     setLayout({ 4, 32 });
     addAndMakeVisible(attackSlider);
