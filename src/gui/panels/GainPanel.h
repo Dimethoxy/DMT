@@ -16,10 +16,10 @@ namespace panels {
 class GainPanel : public dmt::gui::panels::Carousel
 {
 public:
-  GainPanel()
+  GainPanel(juce::AudioProcessorValueTreeState& apvts)
     : Carousel()
   {
-    panels.push_back(std::make_unique<AnalogGainPanel>());
+    panels.push_back(std::make_unique<AnalogGainPanel>(apvts));
     panels.push_back(std::make_unique<ModernGainPanel>());
     init();
   }

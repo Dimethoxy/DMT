@@ -96,9 +96,9 @@ public:
         break;
       case Orientation::Vertical:
         primaryPointX = railBounds.getCentreX();
-        primaryPointY = railBounds.getY();
+        primaryPointY = railBounds.getBottom();
         secondaryPointX = railBounds.getCentreX();
-        secondaryPointY = railBounds.getBottom();
+        secondaryPointY = railBounds.getY();
         break;
       default:
         jassert(false);

@@ -14,6 +14,7 @@ NeutrinoAudioProcessorEditor::NeutrinoAudioProcessorEditor(
   NeutrinoAudioProcessor& p)
   : AudioProcessorEditor(&p)
   , audioProcessor(p)
+  , gainPanel(p.apvts)
   , pitchPanel(p.apvts)
   , distortionPanel(p.apvts)
   , sendPanelA(p.apvts, juce::String("A"))

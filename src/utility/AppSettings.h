@@ -30,8 +30,8 @@ struct AppSettings
     static inline float size = 1.0f;
     static inline float margin = 5.0f;
     static inline float leftWidth = 700.0f;
-    static inline float centerWidth = 400.0f;
-    static inline float rightWidth = 200.0f;
+    static inline float centerWidth = 300.0f;
+    static inline float rightWidth = 130.0f;
     static inline float headerHeight = 0.0f; // 60.0f;
     static inline float tabHeight = 0.0f;    // 40.0f;
     static inline float rowHeight = 200.0f;
@@ -108,7 +108,7 @@ struct AppSettings
   {
     // General
     static inline Colour standbyColour = Colours::shadow.withAlpha(0.5f);
-    static inline Colour hoverColour = Colours::shadow.withAlpha(0.1f);
+    static inline Colour hoverColour = Colours::font;
     static inline float margin = 15.0f;
     static inline float toggleReduction = 0.9f;
     // Border
@@ -125,8 +125,8 @@ struct AppSettings
   };
   struct Carousel
   {
-    static inline float buttonWidth = 80.0f;
-    static inline float buttonHeight = 210.0f;
+    static inline float buttonWidth = 60.0f;
+    static inline float buttonHeight = 180.0f;
   };
   struct Fonts
   {
