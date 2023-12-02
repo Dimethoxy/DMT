@@ -78,19 +78,19 @@ NeutrinoAudioProcessorEditor::resized()
   size = height / Layout::getHeight();
   const float margin = rawMargin * size;
 
-  const float rawLeftWidth = Settings::Layout::leftWidth + 2.0f * margin;
-  const float leftWidth = rawLeftWidth * size;
-  const float rawCenterWidth = Settings::Layout::centerWidth + 2.0f * margin;
-  const float centerWidth = rawCenterWidth * size;
-  const float rawRightWidth = Settings::Layout::rightWidth + 2.0f * margin;
-  const float rightWidth = rawRightWidth * size;
+  const float rawLeftWidth = Settings::Layout::leftWidth;
+  const float leftWidth = rawLeftWidth * size + 2.0f * margin;
+  const float rawCenterWidth = Settings::Layout::centerWidth;
+  const float centerWidth = rawCenterWidth * size + 2.0f * margin;
+  const float rawRightWidth = Settings::Layout::rightWidth;
+  const float rightWidth = rawRightWidth * size + 2.0f * margin;
 
-  const float rawHeaderHeight = Settings::Layout::headerHeight + 2.0f * margin;
-  const float headerHeight = rawHeaderHeight * size;
-  const float rawTabHeight = Settings::Layout::tabHeight + 2.0f * margin;
-  const float tabHeight = rawTabHeight * size;
-  const float rawRowHeight = Settings::Layout::rowHeight + 2.0f * margin;
-  const float rowHeight = rawRowHeight * size;
+  const float rawHeaderHeight = Settings::Layout::headerHeight;
+  const float headerHeight = rawHeaderHeight * size + 2.0f * margin;
+  const float rawTabHeight = Settings::Layout::tabHeight;
+  const float tabHeight = rawTabHeight * size + 2.0f * margin;
+  const float rawRowHeight = Settings::Layout::rowHeight;
+  const float rowHeight = rawRowHeight * size + 2.0f * margin;
   const float rawKeyboardHeight = Settings::Layout::keyboardHeight;
 
   auto innerBounds = bounds.reduced((int)margin);
@@ -132,18 +132,12 @@ NeutrinoAudioProcessorEditor::resized()
                             bottomBounds.getY(),
                             centerBounds.getWidth(),
                             bottomBounds.getHeight());
-  sendPanelA.setBounds(rightBounds.getX(),
-                       topBounds.getY(),
-                       rightBounds.getWidth(),
-                       topBounds.getHeight());
-  sendPanelB.setBounds(rightBounds.getX(),
-                       midBounds.getY(),
-                       rightBounds.getWidth(),
-                       midBounds.getHeight());
-  sendPanelC.setBounds(rightBounds.getX(),
-                       bottomBounds.getY(),
-                       rightBounds.getWidth(),
-                       bottomBounds.getHeight());
+  sendPanelA.setBounds(
+    rightBounds.getX(), topBounds.getY(), rightBounds.getWidth(), rowHeight);
+  sendPanelB.setBounds(
+    rightBounds.getX(), midBounds.getY(), rightBounds.getWidth(), rowHeight);
+  sendPanelC.setBounds(
+    rightBounds.getX(), bottomBounds.getY(), rightBounds.getWidth(), rowHeight);
   keyboardComponent.setBounds(keyboardBounds);
 }
 //==============================================================================
