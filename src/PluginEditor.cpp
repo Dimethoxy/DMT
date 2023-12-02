@@ -14,6 +14,7 @@ NeutrinoAudioProcessorEditor::NeutrinoAudioProcessorEditor(
   NeutrinoAudioProcessor& p)
   : AudioProcessorEditor(&p)
   , audioProcessor(p)
+  , pitchPanel(p.apvts)
   , distortionPanel(p.apvts)
   , sendPanelA(p.apvts, juce::String("A"))
   , sendPanelB(p.apvts, juce::String("B"))
@@ -21,8 +22,9 @@ NeutrinoAudioProcessorEditor::NeutrinoAudioProcessorEditor(
   , keyboardComponent(p.keyboardState,
                       juce::MidiKeyboardComponent::horizontalKeyboard)
 {
-  openGLContext.attachTo(*getTopLevelComponent());
   openGLContext.setComponentPaintingEnabled(true);
+  openGLContext.setContinuousRepainting(false);
+  openGLContext.attachTo(*getTopLevelComponent());
 
   using Settings = dmt::AppSettings;
   using Layout = dmt::AppSettings::Layout;

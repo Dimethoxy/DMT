@@ -16,10 +16,10 @@ namespace panels {
 class PitchPanel : public dmt::gui::panels::Carousel
 {
 public:
-  PitchPanel()
+  PitchPanel(juce::AudioProcessorValueTreeState& apvts)
     : Carousel()
   {
-    panels.push_back(std::make_unique<AnalogPitchPanel>());
+    panels.push_back(std::make_unique<AnalogPitchPanel>(apvts));
     panels.push_back(std::make_unique<ModernPitchPanel>());
     init();
   }
