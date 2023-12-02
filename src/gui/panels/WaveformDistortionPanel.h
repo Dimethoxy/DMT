@@ -53,7 +53,7 @@ public:
     dmt::gui::Panel::resized();
     const auto bounds = getLocalBounds();
     const int rotarySliderRow = 10;
-    const int linearSliderRow = 23;
+    const int linearSliderRow = 26;
     const auto typeSliderPoint = this->getGridPoint(bounds, 5, rotarySliderRow);
     typeSlider.setSizeAndCentre(typeSliderPoint);
     const auto gainSliderPoint =

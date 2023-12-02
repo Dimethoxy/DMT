@@ -44,7 +44,7 @@ public:
                  LinearSliderType::Positive,
                  LinearSliderOrientation::Vertical)
   {
-    setLayout({ 4, 32 });
+    setLayout({ 25, 32 });
     addAndMakeVisible(attackSlider);
     addAndMakeVisible(holdSlider);
     addAndMakeVisible(decaySlider);
@@ -55,10 +55,15 @@ public:
   {
     dmt::gui::Panel::resized();
     const auto bounds = getLocalBounds();
-    const int primaryRow = 4;
-    const int secundaryRow = 25;
 
-    const int attackCol = 1;
+    const int primaryRow = 3;
+    const int secundaryRow = 28;
+
+    const int attackCol = 7;
+    const int holdCol = 11;
+    const int decayCol = 15;
+    const int skewCol = 19;
+
     const auto attackSliderPrimaryPoint =
       this->getGridPoint(bounds, attackCol, primaryRow);
     const auto attackSliderSecondaryPoint =
@@ -66,7 +71,6 @@ public:
     attackSlider.setBoundsByPoints(attackSliderPrimaryPoint,
                                    attackSliderSecondaryPoint);
 
-    const int holdCol = 2;
     const auto holdSliderPrimaryPoint =
       this->getGridPoint(bounds, holdCol, primaryRow);
     const auto holdSliderSecondaryPoint =
@@ -74,7 +78,6 @@ public:
     holdSlider.setBoundsByPoints(holdSliderPrimaryPoint,
                                  holdSliderSecondaryPoint);
 
-    const int decayCol = 3;
     const auto decaySliderPrimaryPoint =
       this->getGridPoint(bounds, decayCol, primaryRow);
     const auto decaySliderSecondaryPoint =
@@ -82,7 +85,6 @@ public:
     decaySlider.setBoundsByPoints(decaySliderPrimaryPoint,
                                   decaySliderSecondaryPoint);
 
-    const int skewCol = 4;
     const auto skewSliderPrimaryPoint =
       this->getGridPoint(bounds, skewCol, primaryRow);
     const auto skewSliderSecondaryPoint =
