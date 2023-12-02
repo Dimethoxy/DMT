@@ -1,7 +1,7 @@
 
 #pragma once
 
-#include "../utility/Distortion.h"
+#include "../dsp/effects/Distortion.h"
 #include <JuceHeader.h>
 
 namespace dmt {

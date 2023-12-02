@@ -9,19 +9,19 @@
 
 #pragma once
 
-#include "./dsp/filter/FilterProcessor.h"
-#include "./dsp/synth/SynthSound.h"
-#include "./dsp/synth/SynthVoice.h"
-#include "./gui/presets/PresetManager.h"
-#include "./utility/ChainSettings.h"
-#include "./utility/ParameterLayout.h"
+#include "../dsp/filter/FilterProcessor.h"
+#include "../dsp/synth/SynthSound.h"
+#include "../dsp/synth/SynthVoice.h"
+#include "../gui/presets/PresetManager.h"
+#include "../model/ChainSettings.h"
+#include "../model/ParameterLayout.h"
 #include <JuceHeader.h>
 
 //==============================================================================
-class NeutrinoAudioProcessor : public juce::AudioProcessor
+class NeutrinoAudioProcessor
+  : public juce::AudioProcessor
 #if JucePlugin_Enable_ARA
-    ,
-                               public juce::AudioProcessorARAExtension
+  , public juce::AudioProcessorARAExtension
 #endif
 {
 public:
@@ -36,13 +36,13 @@ public:
   juce::AudioProcessorValueTreeState apvts;
   //============================================================================
 #ifndef JucePlugin_PreferredChannelConfigurations
-  bool isBusesLayoutSupported(const BusesLayout &layouts) const override;
+  bool isBusesLayoutSupported(const BusesLayout& layouts) const override;
 #endif
 
-  void processBlock(juce::AudioBuffer<float> &, juce::MidiBuffer &) override;
+  void processBlock(juce::AudioBuffer<float>&, juce::MidiBuffer&) override;
 
   //============================================================================
-  juce::AudioProcessorEditor *createEditor() override;
+  juce::AudioProcessorEditor* createEditor() override;
   bool hasEditor() const override;
 
   //============================================================================
@@ -58,14 +58,14 @@ public:
   int getCurrentProgram() override;
   void setCurrentProgram(int index) override;
   const juce::String getProgramName(int index) override;
-  void changeProgramName(int index, const juce::String &newName) override;
+  void changeProgramName(int index, const juce::String& newName) override;
 
   //============================================================================
-  void getStateInformation(juce::MemoryBlock &destData) override;
-  void setStateInformation(const void *data, int sizeInBytes) override;
+  void getStateInformation(juce::MemoryBlock& destData) override;
+  void setStateInformation(const void* data, int sizeInBytes) override;
 
   //============================================================================
-  dmt::gui::preset::PresetManager &getPresetManager() { return *presetManager; }
+  dmt::gui::preset::PresetManager& getPresetManager() { return *presetManager; }
   juce::MidiKeyboardState keyboardState;
 
 private:

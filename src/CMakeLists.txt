@@ -31,8 +31,8 @@ juce_add_plugin(${PROJECT_NAME}
 # Add the source files to the project
 target_sources(${PROJECT_NAME}
     PRIVATE
-        PluginEditor.cpp
-        PluginProcessor.cpp)
+        app/PluginEditor.cpp
+        app/PluginProcessor.cpp)
 
 # Add the Poppins font using juce_add_binary_data
 juce_add_binary_data(FontBinaryData

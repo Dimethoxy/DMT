@@ -3,8 +3,8 @@
 #pragma once
 
 #include "../../utility/AppSettings.h"
-#include "../../utility/Shadow.h"
 #include "../widgets/Label.h"
+#include "../widgets/Shadow.h"
 #include "../widgets/TriangleButton.h"
 #include <JuceHeader.h>
 

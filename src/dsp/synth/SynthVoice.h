@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "../../utility/ChainSettings.h"
+#include "../../model/ChainSettings.h"
 #include "../envelope/AdhEnvelope.h"
 #include "../synth/AnalogOscillator.h"
 #include <JuceHeader.h>

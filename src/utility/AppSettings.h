@@ -10,7 +10,7 @@ struct AppSettings
   using Colour = juce::Colour;
   static inline juce::String name = "Neutrino";
   static inline const bool debugBounds = false;
-  static inline const bool debugGrid = true;
+  static inline const bool debugGrid = false;
   static inline const float macFontScale = 0.9f;
 
   struct Colours
