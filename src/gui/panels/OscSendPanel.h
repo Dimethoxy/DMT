@@ -42,8 +42,8 @@ public:
     auto bounds = getLocalBounds();
     auto gainSliderPoint = this->getGridPoint(bounds, 2, 10);
     gainSlider.setSizeAndCentre(gainSliderPoint);
-    auto panSliderPrimaryPoint = this->getGridPoint(bounds, 1, 23);
-    auto panSliderSecundaryPoint = this->getGridPoint(bounds, 3, 23);
+    auto panSliderPrimaryPoint = this->getGridPoint(bounds, 1, 26);
+    auto panSliderSecundaryPoint = this->getGridPoint(bounds, 3, 26);
     panSlider.setBoundsByPoints(panSliderPrimaryPoint, panSliderSecundaryPoint);
   }
 

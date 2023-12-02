@@ -50,6 +50,7 @@ public:
   LinearSlider(const Type type, const Orientation orientation)
     : juce::Slider()
     , type(type)
+    , orientation(orientation)
   {
     switch (orientation) {
       case Orientation::Horizontal: {
@@ -79,22 +80,25 @@ public:
       g.drawRect(bounds, 1);
 
     // Calculate lower rail
+    float thumbSize = rawThumbSize * size;
+    const auto padding = rawPadding * size;
+    const auto railBounds = bounds.reduced(thumbSize / 2.0f);
     float primaryPointX;
     float primaryPointY;
     float secondaryPointX;
     float secondaryPointY;
     switch (orientation) {
       case Orientation::Horizontal:
-        primaryPointX = bounds.getX();
-        primaryPointY = bounds.getCentreY();
-        secondaryPointX = bounds.getRight();
-        secondaryPointY = bounds.getCentreY();
+        primaryPointX = railBounds.getX();
+        primaryPointY = railBounds.getCentreY();
+        secondaryPointX = railBounds.getRight();
+        secondaryPointY = railBounds.getCentreY();
         break;
       case Orientation::Vertical:
-        primaryPointX = bounds.getCentreX();
-        primaryPointY = bounds.getY();
-        secondaryPointX = bounds.getCentreX();
-        secondaryPointY = bounds.getBottom();
+        primaryPointX = railBounds.getCentreX();
+        primaryPointY = railBounds.getY();
+        secondaryPointX = railBounds.getCentreX();
+        secondaryPointY = railBounds.getBottom();
         break;
       default:
         jassert(false);
@@ -153,7 +157,6 @@ public:
 
     // Draw the Thumb
     const auto thumbPoint = valuePoint;
-    float thumbSize = rawThumbSize * size;
     if (!isMouseButtonDown())
       thumbSize *= 0.85f;
     const float thumbStrength = rawThumbStrength * size;

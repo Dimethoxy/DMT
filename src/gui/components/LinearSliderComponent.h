@@ -64,11 +64,23 @@ public:
     const auto bounds = getLocalBounds();
     const auto padding = rawPadding * size;
 
-    // Layout
-    slider.setBounds(bounds.reduced(padding));
-    slider.setAlwaysOnTop(true);
     titleLabel.setBounds(bounds.reduced(padding));
     infoLabel.setBounds(bounds.reduced(padding));
+
+    slider.setAlwaysOnTop(true);
+    switch (orientation) {
+      case Orientation::Horizontal: {
+        const int rawHorizontalSliderOffset = (int)(1.0f * size);
+        const juce::Point<int> offset(0, rawHorizontalSliderOffset);
+        const auto centre = bounds.getCentre() + offset;
+        slider.setBounds(bounds.reduced((int)padding).withCentre(centre));
+        return;
+      }
+      case Orientation::Vertical: {
+        slider.setBounds(bounds.reduced(3.0f * padding));
+        return;
+      }
+    }
   }
   void paint(juce::Graphics& g)
   {
@@ -85,21 +97,23 @@ public:
                          juce::Point<int> secondaryPoint)
   {
     const float padding = 2.0f * rawPadding * size;
-    const float minSize = 34 * size;
+    const float minHeight = 34 * size;
+    const float minWidth = 40 * size;
+
     const auto centre = (primaryPoint + secondaryPoint).toFloat() / 2.0f;
     const int pointDistance = primaryPoint.getDistanceFrom(secondaryPoint);
 
     switch (orientation) {
       case Orientation::Horizontal: {
         setBounds(juce::Rectangle<int>()
-                    .withSize(pointDistance, minSize)
+                    .withSize(pointDistance, minHeight)
                     .expanded(padding)
                     .withCentre(centre.toInt()));
         return;
       }
       case Orientation::Vertical: {
         setBounds(juce::Rectangle<int>()
-                    .withSize(minSize, pointDistance)
+                    .withSize(minWidth, pointDistance)
                     .expanded(padding)
                     .withCentre(centre.toInt()));
         return;
