@@ -21,6 +21,9 @@ NeutrinoAudioProcessorEditor::NeutrinoAudioProcessorEditor(
   , keyboardComponent(p.keyboardState,
                       juce::MidiKeyboardComponent::horizontalKeyboard)
 {
+  openGLContext.attachTo(*getTopLevelComponent());
+  openGLContext.setComponentPaintingEnabled(true);
+
   using Settings = dmt::AppSettings;
   using Layout = dmt::AppSettings::Layout;
 
@@ -47,7 +50,10 @@ NeutrinoAudioProcessorEditor::NeutrinoAudioProcessorEditor(
   setResizable(true, true);
 }
 
-NeutrinoAudioProcessorEditor::~NeutrinoAudioProcessorEditor() {}
+NeutrinoAudioProcessorEditor::~NeutrinoAudioProcessorEditor()
+{
+  openGLContext.detach();
+}
 
 //==============================================================================
 void

@@ -50,5 +50,6 @@ private:
   Panels::OscSendPanel sendPanelB;
   Panels::OscSendPanel sendPanelC;
 
+  OpenGLContext openGLContext;
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(NeutrinoAudioProcessorEditor)
 };
