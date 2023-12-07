@@ -14,6 +14,7 @@ NeutrinoAudioProcessorEditor::NeutrinoAudioProcessorEditor(
   NeutrinoAudioProcessor& p)
   : AudioProcessorEditor(&p)
   , audioProcessor(p)
+  , voicingPanel(p.apvts)
   , gainPanel(p.apvts)
   , pitchPanel(p.apvts)
   , distortionPanel(p.apvts)
