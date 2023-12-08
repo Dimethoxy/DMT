@@ -4,6 +4,7 @@
 
 #include "../dsp/filter/FilterProcessor.h"
 #include "../dsp/synth/AnalogWaveform.h"
+#include "VoiceParameters.h"
 #include <JuceHeader.h>
 
 //==============================================================================
@@ -12,8 +13,10 @@ namespace dmt {
 static inline juce::AudioProcessorValueTreeState::ParameterLayout
 createParameterLayout()
 {
+  using ParameterInt = juce::AudioParameterInt;
   using ParameterFloat = juce::AudioParameterFloat;
   using ParameterChoice = juce::AudioParameterChoice;
+  using ParameterGroup = juce::AudioProcessorParameterGroup;
   using NormalisableRange = juce::NormalisableRange<float>;
   return juce::AudioProcessorValueTreeState::ParameterLayout{
     //==========================================================================
@@ -22,6 +25,7 @@ createParameterLayout()
       "Waveform",
       dmt::dsp::synth::AnalogWaveform::waveformNames,
       2),
+    std::make_unique<ParameterGroup>(dmt::model::voiceParameterGroup()),
     std::make_unique<ParameterFloat>("oscGain",
                                      "Osc Gain",
                                      NormalisableRange(
