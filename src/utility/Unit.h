@@ -16,7 +16,9 @@ struct InfoUnit
     DistortionType,
     Symmetry,
     Girth,
-    Drive
+    Drive,
+    Milliseconds,
+    Skew,
   };
 
   static inline juce::String getString(dmt::InfoUnit::Type type, float value)
@@ -60,6 +62,12 @@ struct InfoUnit
         break;
       case dmt::InfoUnit::Type::Drive:
         return { juce::String(round(value * 10.0f) / 10.0f) + "x" };
+        break;
+      case dmt::InfoUnit::Type::Milliseconds:
+        return { juce::String(round(1000 * value)) + " ms" };
+        break;
+      case dmt::InfoUnit::Type::Skew:
+        return { juce::String(round(value / 32.f * 100.f)) + "%" };
         break;
       default:
         jassert(false);

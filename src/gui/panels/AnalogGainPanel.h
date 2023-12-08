@@ -22,25 +22,25 @@ public:
     , attackSlider(apvts,
                    juce::String("Attack"),
                    juce::String("osc1GainEnvAttack"),
-                   dmt::InfoUnit::Type::Drive,
+                   dmt::InfoUnit::Type::Milliseconds,
                    LinearSliderType::Positive,
                    LinearSliderOrientation::Vertical)
     , holdSlider(apvts,
                  juce::String("Hold"),
                  juce::String("osc1GainEnvHold"),
-                 dmt::InfoUnit::Type::Drive,
+                 dmt::InfoUnit::Type::Milliseconds,
                  LinearSliderType::Positive,
                  LinearSliderOrientation::Vertical)
     , decaySlider(apvts,
                   juce::String("Decay"),
                   juce::String("osc1GainEnvDecay"),
-                  dmt::InfoUnit::Type::Drive,
+                  dmt::InfoUnit::Type::Milliseconds,
                   LinearSliderType::Positive,
                   LinearSliderOrientation::Vertical)
     , skewSlider(apvts,
                  juce::String("Skew"),
                  juce::String("osc1GainEnvSkew"),
-                 dmt::InfoUnit::Type::Drive,
+                 dmt::InfoUnit::Type::Skew,
                  LinearSliderType::Positive,
                  LinearSliderOrientation::Vertical)
   {

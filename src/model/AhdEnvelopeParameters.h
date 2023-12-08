@@ -22,21 +22,21 @@ envelopeParameterGroup(juce::String parentUid, juce::String suffix)
     std::make_unique<ParameterFloat>(uid + "Attack",           // parameter ID
                                      "Attack",                 // parameter name
                                      NormalisableRange(0.0f,   // rangeStart
-                                                       1.0f,   // rangeEnd
+                                                       0.3f,   // rangeEnd
                                                        0.001f, // intervalValue
                                                        0.5f),  // skewFactor
                                      0.0f),                    // defaultValue
     std::make_unique<ParameterFloat>(uid + "Hold",             // parameter ID
                                      "Hold",                   // parameter name
                                      NormalisableRange(0.0f,   // rangeStart
-                                                       1.0f,   // rangeEnd
+                                                       0.3f,   // rangeEnd
                                                        0.001f, // intervalValue
                                                        0.5f),  // skewFactor
                                      0.08f),                   // defaultValue
     std::make_unique<ParameterFloat>(uid + "Decay",            // parameter ID
                                      "Decay",                  // parameter name
                                      NormalisableRange(0.0f,   // rangeStart
-                                                       3.0f,   // rangeEnd
+                                                       1.0f,   // rangeEnd
                                                        0.001f, // intervalValue
                                                        0.5f),  // skewFactor
                                      0.5f),                    // defaultValue
@@ -46,7 +46,7 @@ envelopeParameterGroup(juce::String parentUid, juce::String suffix)
                                                        32.0f,  // rangeEnd
                                                        0.1f,   // intervalValue
                                                        1.0f),  // skewFactor
-                                     32.0f));                  // defaultValue
+                                     16.0f));                  // defaultValue
 }
 } // namespace model
 } // namespace dmt
