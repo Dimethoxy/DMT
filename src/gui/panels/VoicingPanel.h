@@ -28,6 +28,11 @@ public:
                       juce::String("Semitones"),
                       juce::String("oscGain"),
                       dmt::InfoUnit::Type::Drive)
+    , fineSlider(apvts,
+                 juce::String("Fine"),
+                 juce::String("oscGain"),
+                 dmt::InfoUnit::Type::Symmetry,
+                 LinearSliderType::Bipolar)
     , densitySlider(apvts,
                     juce::String("Density"),
                     juce::String("oscGain"),
@@ -36,10 +41,20 @@ public:
                    juce::String("Detune"),
                    juce::String("oscGain"),
                    dmt::InfoUnit::Type::Drive)
-    , blendSlider(apvts,
-                  juce::String("Blend"),
+    , distributionSlider(apvts,
+                         juce::String("Distibution"),
+                         juce::String("oscGain"),
+                         dmt::InfoUnit::Type::Drive)
+    , widthSlider(apvts,
+                  juce::String("Width"),
                   juce::String("oscGain"),
-                  dmt::InfoUnit::Type::Drive)
+                  dmt::InfoUnit::Type::Symmetry,
+                  LinearSliderType::Bipolar)
+    , blendSlider(apvts,
+                  juce::String("Bend"),
+                  juce::String("oscGain"),
+                  dmt::InfoUnit::Type::Symmetry,
+                  LinearSliderType::Bipolar)
     , seedSlider(apvts,
                  juce::String("Seed"),
                  juce::String("oscGain"),
@@ -48,31 +63,27 @@ public:
                   juce::String("Random"),
                   juce::String("oscGain"),
                   dmt::InfoUnit::Type::Drive)
-    , fineSlider(apvts,
-                 juce::String("Symmetry"),
-                 juce::String("oscGain"),
-                 dmt::InfoUnit::Type::Symmetry,
-                 LinearSliderType::Bipolar)
+
     , phaseSlider(apvts,
                   juce::String("Phase"),
                   juce::String("oscGain"),
                   dmt::InfoUnit::Type::Symmetry,
                   LinearSliderType::Bipolar)
-
   {
     setLayout({ 31, 32 });
 
     addAndMakeVisible(osctaveSlider);
     addAndMakeVisible(semitonesSlider);
+    addAndMakeVisible(fineSlider);
 
     addAndMakeVisible(densitySlider);
     addAndMakeVisible(detuneSlider);
+    addAndMakeVisible(distributionSlider);
+    addAndMakeVisible(widthSlider);
     addAndMakeVisible(blendSlider);
 
     addAndMakeVisible(seedSlider);
     addAndMakeVisible(randomlider);
-
-    addAndMakeVisible(fineSlider);
     addAndMakeVisible(phaseSlider);
   }
   void resized() noexcept override
@@ -108,7 +119,7 @@ public:
     // Middle Layout
     const int densitySliderCol = 12;
     const int detuneSliderCol = 16;
-    const int blendSliderCol = 20;
+    const int distributionSliderCol = 20;
 
     const auto densitySliderPoint =
       this->getGridPoint(bounds, densitySliderCol, rotarySliderRow);
@@ -118,9 +129,28 @@ public:
       this->getGridPoint(bounds, detuneSliderCol, rotarySliderRow);
     detuneSlider.setSizeAndCentre(detuneSliderPoint);
 
-    const auto blendSliderPoint =
-      this->getGridPoint(bounds, blendSliderCol, rotarySliderRow);
-    blendSlider.setSizeAndCentre(blendSliderPoint);
+    const auto distributionSliderPoint =
+      this->getGridPoint(bounds, distributionSliderCol, rotarySliderRow);
+    distributionSlider.setSizeAndCentre(distributionSliderPoint);
+
+    const int widthSliderPrimaryCol = 10;
+    const int widthSliderSecondaryCol = 15;
+    const int blendSliderPrimaryCol = 17;
+    const int blendSliderSecondaryCol = 22;
+
+    const auto blendSliderPrimaryPoint =
+      this->getGridPoint(bounds, widthSliderPrimaryCol, linearSliderRow);
+    const auto blendSliderSecondaryPoint =
+      this->getGridPoint(bounds, widthSliderSecondaryCol, linearSliderRow);
+    blendSlider.setBoundsByPoints(blendSliderPrimaryPoint,
+                                  blendSliderSecondaryPoint);
+
+    const auto widthSliderPrimaryPoint =
+      this->getGridPoint(bounds, blendSliderPrimaryCol, linearSliderRow);
+    const auto widthSliderSecondaryPoint =
+      this->getGridPoint(bounds, blendSliderSecondaryCol, linearSliderRow);
+    widthSlider.setBoundsByPoints(widthSliderPrimaryPoint,
+                                  widthSliderSecondaryPoint);
 
     //==============================================================================
     // Right Layout
@@ -153,12 +183,14 @@ private:
 
   RotarySliderComponent densitySlider;
   RotarySliderComponent detuneSlider;
-  RotarySliderComponent blendSlider;
+  RotarySliderComponent distributionSlider;
 
   RotarySliderComponent seedSlider;
   RotarySliderComponent randomlider;
 
   LinearSliderComponent fineSlider;
+  LinearSliderComponent widthSlider;
+  LinearSliderComponent blendSlider;
   LinearSliderComponent phaseSlider;
 };
 //==============================================================================
