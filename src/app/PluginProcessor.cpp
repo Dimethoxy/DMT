@@ -65,8 +65,8 @@ NeutrinoAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer,
 
   synth.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
 
-  filterProcessor.setChainSettings(chainSettings);
-  filterProcessor.processBlock(buffer, 0, buffer.getNumSamples());
+  // filterProcessor.setChainSettings(chainSettings);
+  // filterProcessor.processBlock(buffer, 0, buffer.getNumSamples());
 }
 //==============================================================================
 void

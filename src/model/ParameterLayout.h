@@ -21,11 +21,14 @@ createParameterLayout()
   using NormalisableRange = juce::NormalisableRange<float>;
   namespace Model = dmt::model;
   return juce::AudioProcessorValueTreeState::ParameterLayout{
-    std::make_unique<ParameterGroup>(Model::oscillatorParameterGroup(1)),
-    std::make_unique<ParameterGroup>(Model::oscillatorParameterGroup(2)),
-    std::make_unique<ParameterGroup>(Model::oscillatorParameterGroup(3)),
-    std::make_unique<ParameterGroup>(Model::oscillatorParameterGroup(4)),
-    std::make_unique<ParameterGroup>(Model::oscillatorParameterGroup(5))
+    std::make_unique<ParameterFloat>("oscGain",                // parameter ID
+                                     "Attack",                 // parameter name
+                                     NormalisableRange(0.0f,   // rangeStart
+                                                       1.0f,   // rangeEnd
+                                                       0.001f, // intervalValue
+                                                       0.5f),  // skewFactor
+                                     0.0f),                    // defaultValue
+    std::make_unique<ParameterGroup>(Model::oscillatorParameterGroup(1))
   };
 }
 } // namespace dmt

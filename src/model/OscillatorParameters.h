@@ -11,13 +11,16 @@ static inline juce::AudioProcessorParameterGroup
 oscillatorParameterGroup(int index)
 {
   using ParameterGroup = juce::AudioProcessorParameterGroup;
+
+  juce::String uid = juce::String("osc" + juce::String(index));
+
   return juce::AudioProcessorParameterGroup(
-    "osc" + juce::String(index), // group ID
-    "Oscillator",                // group name
-    "|",                         // separator
+    uid,          // group ID
+    "Oscillator", // group name
+    "|",          // separator
     std::make_unique<ParameterGroup>(voiceParameterGroup()),
-    std::make_unique<ParameterGroup>(envelopeParameterGroup("gain")),
-    std::make_unique<ParameterGroup>(envelopeParameterGroup("pitch")));
+    std::make_unique<ParameterGroup>(envelopeParameterGroup(uid, "Gain")),
+    std::make_unique<ParameterGroup>(envelopeParameterGroup(uid, "Pitch")));
 }
 } // namespace model
 } // namespace dmt

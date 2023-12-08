@@ -21,25 +21,25 @@ public:
     : Panel("Analog Gain Envelope")
     , attackSlider(apvts,
                    juce::String("Attack"),
-                   juce::String("oscGain"),
+                   juce::String("osc1GainEnvAttack"),
                    dmt::InfoUnit::Type::Drive,
                    LinearSliderType::Positive,
                    LinearSliderOrientation::Vertical)
     , holdSlider(apvts,
                  juce::String("Hold"),
-                 juce::String("oscGain"),
+                 juce::String("osc1GainEnvHold"),
                  dmt::InfoUnit::Type::Drive,
                  LinearSliderType::Positive,
                  LinearSliderOrientation::Vertical)
     , decaySlider(apvts,
                   juce::String("Decay"),
-                  juce::String("oscGain"),
+                  juce::String("osc1GainEnvDecay"),
                   dmt::InfoUnit::Type::Drive,
                   LinearSliderType::Positive,
                   LinearSliderOrientation::Vertical)
     , skewSlider(apvts,
                  juce::String("Skew"),
-                 juce::String("oscGain"),
+                 juce::String("osc1GainEnvSkew"),
                  dmt::InfoUnit::Type::Drive,
                  LinearSliderType::Positive,
                  LinearSliderOrientation::Vertical)
