@@ -46,15 +46,15 @@ voiceParameterGroup()
                                                        .1f,    // intervalValue
                                                        1.f),   // skewFactor
                                      0),
-    //    std::make_unique<ParameterInt>("density",            // parameter ID
-    //                                   "Density",            // parameter name
-    //                                   NormalisableRange(1,  // rangeStart
-    //                                                     8,  // rangeEnd
-    //                                                     1,  // intervalValue
-    //                                                     1), // skewFactor
-    //                                   1),                   // defaultValue
-    std::make_unique<ParameterChoice>("distribution", // parameter ID
-                                      "Distribution", // parameter name
+    std::make_unique<ParameterInt>("density",            // parameter ID
+                                   "Density",            // parameter name
+                                   NormalisableRange(1,  // rangeStart
+                                                     8,  // rangeEnd
+                                                     1,  // intervalValue
+                                                     1), // skewFactor
+                                   1),                   // defaultValue
+    std::make_unique<ParameterChoice>("distribution",    // parameter ID
+                                      "Distribution",    // parameter name
                                       juce::StringArray{ "Linear",
                                                          "Quadratic",
                                                          "Cubic",

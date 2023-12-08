@@ -3,7 +3,7 @@
 #pragma once
 
 #include "../dsp/filter/FilterProcessor.h"
-#include "../dsp/synth/AnalogWaveform.h"
+#include "OscillatorParameters.h"
 #include "VoiceParameters.h"
 #include <JuceHeader.h>
 
@@ -19,131 +19,9 @@ createParameterLayout()
   using ParameterGroup = juce::AudioProcessorParameterGroup;
   using NormalisableRange = juce::NormalisableRange<float>;
   return juce::AudioProcessorValueTreeState::ParameterLayout{
-    //==========================================================================
-    std::make_unique<ParameterChoice>(
-      "waveformType",
-      "Waveform",
-      dmt::dsp::synth::AnalogWaveform::waveformNames,
-      2),
     std::make_unique<ParameterGroup>(dmt::model::voiceParameterGroup()),
-    std::make_unique<ParameterFloat>("oscGain",
-                                     "Osc Gain",
-                                     NormalisableRange(
-                                       // rangeStart
-                                       -96.0f,
-                                       // rangeEnd
-                                       0.0f,
-                                       // intervalValue
-                                       0.1f,
-                                       // skewFactor
-                                       1.0f),
-                                     // defaultValue
-                                     0.0f),
-    std::make_unique<ParameterFloat>("oscDrive",
-                                     "Osc Drive",
-                                     NormalisableRange(
-                                       // rangeStart
-                                       0.0f,
-                                       // rangeEnd
-                                       10.0f,
-                                       // intervalValue
-                                       0.01f,
-                                       // skewFactor
-                                       1.0f),
-                                     // defaultValue
-                                     4.0f),
-    std::make_unique<ParameterFloat>("oscBias",
-                                     "Osc Bias",
-                                     NormalisableRange(
-                                       // rangeStart
-                                       -1.0f,
-                                       // rangeEnd
-                                       1.0f,
-                                       // intervalValue
-                                       0.01f,
-                                       // skewFactor
-                                       1.0f),
-                                     // defaultValue
-                                     0.0f),
-    std::make_unique<ParameterFloat>("oscBend",
-                                     "Osc Bend",
-                                     NormalisableRange(
-                                       // rangeStart
-                                       -100.0f,
-                                       // rangeEnd
-                                       100.0f,
-                                       // intervalValue
-                                       0.1f,
-                                       // skewFactor
-                                       1.0f),
-                                     // defaultValue
-                                     0.0f),
-    std::make_unique<ParameterFloat>("oscPwm",
-                                     "Osc PWM",
-                                     NormalisableRange(
-                                       // rangeStart
-                                       0.0f,
-                                       // rangeEnd
-                                       100.0f,
-                                       // intervalValue
-                                       0.01f,
-                                       // skewFactor
-                                       1.0f),
-                                     // defaultValue
-                                     0.0f),
-    std::make_unique<ParameterFloat>("oscSync",
-                                     "Osc Sync",
-                                     NormalisableRange(
-                                       // rangeStart
-                                       0.0f,
-                                       // rangeEnd
-                                       100.0f,
-                                       // intervalValue
-                                       0.01f,
-                                       // skewFactor
-                                       1.0f),
-                                     // defaultValue
-                                     0.0f),
-    //============================================================================
-    std::make_unique<ParameterFloat>("oscOctave",
-                                     "Octave",
-                                     NormalisableRange(
-                                       // rangeStart
-                                       -4.0f,
-                                       // rangeEnd
-                                       +4.0f,
-                                       // intervalValue
-                                       1.0f,
-                                       // skewFactor
-                                       1.0f),
-                                     // defaultValue
-                                     0.0f),
-    std::make_unique<ParameterFloat>("oscSemitone",
-                                     "Semitone",
-                                     NormalisableRange(
-                                       // rangeStart
-                                       -24.0f,
-                                       // rangeEnd
-                                       +24.0f,
-                                       // intervalValue
-                                       1.0f,
-                                       // skewFactor
-                                       1.0f),
-                                     // defaultValue
-                                     0.0f),
-    std::make_unique<ParameterFloat>("oscFine",
-                                     "Fine",
-                                     NormalisableRange(
-                                       // rangeStart
-                                       -100.0f,
-                                       // rangeEnd
-                                       +100.0f,
-                                       // intervalValue
-                                       1.0f,
-                                       // skewFactor
-                                       1.0f),
-                                     // defaultValue
-                                     0.0f),
+    std::make_unique<ParameterGroup>(dmt::model::oscillatorParameterGroup()),
+
     //============================================================================
     std::make_unique<ParameterFloat>("oscAmpAttack",
                                      "Amp Attack",
