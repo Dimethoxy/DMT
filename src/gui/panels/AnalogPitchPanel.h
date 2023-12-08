@@ -21,26 +21,26 @@ public:
     : Panel("Analog Pitch Envelope")
     , attackSlider(apvts,
                    juce::String("Attack"),
-                   juce::String("oscGain"),
-                   dmt::InfoUnit::Type::Drive,
+                   juce::String("osc1PitchEnvAttack"),
+                   dmt::InfoUnit::Type::Milliseconds,
                    LinearSliderType::Positive,
                    LinearSliderOrientation::Vertical)
     , holdSlider(apvts,
                  juce::String("Hold"),
-                 juce::String("oscGain"),
-                 dmt::InfoUnit::Type::Drive,
+                 juce::String("osc1PitchEnvHold"),
+                 dmt::InfoUnit::Type::Milliseconds,
                  LinearSliderType::Positive,
                  LinearSliderOrientation::Vertical)
     , decaySlider(apvts,
                   juce::String("Decay"),
-                  juce::String("oscGain"),
-                  dmt::InfoUnit::Type::Drive,
+                  juce::String("osc1PitchEnvDecay"),
+                  dmt::InfoUnit::Type::Milliseconds,
                   LinearSliderType::Positive,
                   LinearSliderOrientation::Vertical)
     , skewSlider(apvts,
                  juce::String("Skew"),
-                 juce::String("oscGain"),
-                 dmt::InfoUnit::Type::Drive,
+                 juce::String("osc1PitchEnvSkew"),
+                 dmt::InfoUnit::Type::Skew,
                  LinearSliderType::Positive,
                  LinearSliderOrientation::Vertical)
   {
