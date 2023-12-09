@@ -23,11 +23,11 @@ public:
     , channel(channel)
     , gainSlider(apvts,
                  juce::String("Gain"),
-                 juce::String("oscGain"),
+                 juce::String("osc1Send" + channel + "Gain"),
                  dmt::InfoUnit::Type::Gain)
     , panSlider(apvts,
                 juce::String("Pan"),
-                juce::String("oscGain"),
+                juce::String("osc1Send" + channel + "Pan"),
                 dmt::InfoUnit::Type::Gain,
                 LinearSliderType::Bipolar)
   {
