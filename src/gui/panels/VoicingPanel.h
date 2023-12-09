@@ -22,53 +22,53 @@ public:
     : Panel("Voices")
     , osctaveSlider(apvts,
                     juce::String("Osctave"),
-                    juce::String("oscGain"),
-                    dmt::InfoUnit::Type::Drive)
+                    juce::String("osc1VoiceOsctave"),
+                    dmt::InfoUnit::Type::Octave)
     , semitonesSlider(apvts,
                       juce::String("Semitones"),
-                      juce::String("oscGain"),
-                      dmt::InfoUnit::Type::Drive)
+                      juce::String("osc1VoiceSemitones"),
+                      dmt::InfoUnit::Type::Semitone)
     , fineSlider(apvts,
                  juce::String("Fine"),
-                 juce::String("oscGain"),
-                 dmt::InfoUnit::Type::Symmetry,
+                 juce::String("osc1VoiceFine"),
+                 dmt::InfoUnit::Type::Fine,
                  LinearSliderType::Bipolar)
     , densitySlider(apvts,
                     juce::String("Density"),
-                    juce::String("oscGain"),
-                    dmt::InfoUnit::Type::Drive)
+                    juce::String("osc1VoiceDensity"),
+                    dmt::InfoUnit::Type::Density)
     , detuneSlider(apvts,
                    juce::String("Detune"),
-                   juce::String("oscGain"),
-                   dmt::InfoUnit::Type::Drive)
+                   juce::String("osc1VoiceDetune"),
+                   dmt::InfoUnit::Type::Detune)
     , distributionSlider(apvts,
                          juce::String("Distibution"),
-                         juce::String("oscGain"),
-                         dmt::InfoUnit::Type::Drive)
+                         juce::String("osc1VoiceDistribution"),
+                         dmt::InfoUnit::Type::Distribution)
     , widthSlider(apvts,
                   juce::String("Width"),
-                  juce::String("oscGain"),
-                  dmt::InfoUnit::Type::Symmetry,
-                  LinearSliderType::Bipolar)
+                  juce::String("osc1VoiceWidth"),
+                  dmt::InfoUnit::Type::Percent,
+                  LinearSliderType::Positive)
     , blendSlider(apvts,
                   juce::String("Bend"),
-                  juce::String("oscGain"),
-                  dmt::InfoUnit::Type::Symmetry,
-                  LinearSliderType::Bipolar)
+                  juce::String("osc1VoiceBlend"),
+                  dmt::InfoUnit::Type::Percent,
+                  LinearSliderType::Positive)
     , seedSlider(apvts,
                  juce::String("Seed"),
-                 juce::String("oscGain"),
-                 dmt::InfoUnit::Type::Drive)
+                 juce::String("osc1VoiceSeed"),
+                 dmt::InfoUnit::Type::Seed)
     , randomlider(apvts,
                   juce::String("Random"),
-                  juce::String("oscGain"),
-                  dmt::InfoUnit::Type::Drive)
+                  juce::String("osc1VoiceRandom"),
+                  dmt::InfoUnit::Type::Percent)
 
     , phaseSlider(apvts,
                   juce::String("Phase"),
-                  juce::String("oscGain"),
-                  dmt::InfoUnit::Type::Symmetry,
-                  LinearSliderType::Bipolar)
+                  juce::String("osc1VoicePhase"),
+                  dmt::InfoUnit::Type::Phase,
+                  LinearSliderType::Positive)
   {
     setLayout({ 31, 32 });
 

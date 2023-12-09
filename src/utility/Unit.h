@@ -19,6 +19,15 @@ struct InfoUnit
     Drive,
     Milliseconds,
     Skew,
+    Percent,
+    Octave,
+    Semitone,
+    Fine,
+    Density,
+    Distribution,
+    Phase,
+    Detune,
+    Seed
   };
 
   static inline juce::String getString(dmt::InfoUnit::Type type, float value)
@@ -68,6 +77,35 @@ struct InfoUnit
         break;
       case dmt::InfoUnit::Type::Skew:
         return { juce::String(round(value / 32.f * 100.f)) + "%" };
+        break;
+      case dmt::InfoUnit::Type::Percent:
+        return { juce::String(round(value)) + " %" };
+        break;
+      case dmt::InfoUnit::Type::Octave:
+        return { juce::String(round(value)) + " oct" };
+        break;
+      case dmt::InfoUnit::Type::Semitone:
+        return { juce::String(round(value)) + " st" };
+        break;
+      case dmt::InfoUnit::Type::Fine:
+        return { juce::String(round(value)) + " cent" };
+        break;
+      case dmt::InfoUnit::Type::Density:
+        return { juce::String(value) + " Voices" };
+        break;
+      case dmt::InfoUnit::Type::Distribution:
+        return { Distortion::getString(
+          static_cast<Distortion::Type>((int)value)) };
+        break;
+      case dmt::InfoUnit::Type::Phase:
+        return { juce::String(round(value * 10.0f) / 10.0f) + "°" };
+        break;
+      case dmt::InfoUnit::Type::Detune:
+        return { juce::String(round(value * 10.0f) / 10.0f) + " cent" };
+        break;
+      case dmt::InfoUnit::Type::Seed:
+        return { Distortion::getString(
+          static_cast<Distortion::Type>((int)value)) };
         break;
       default:
         jassert(false);

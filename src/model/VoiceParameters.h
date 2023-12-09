@@ -41,6 +41,13 @@ voiceParameterGroup(juce::String parentUid)
                                    1,                       // rangeStart
                                    8,                       // rangeEnd
                                    1),                      // defaultValue
+    std::make_unique<ParameterFloat>(uid + "Detune",        // parameter ID
+                                     "Detune",              // parameter name
+                                     NormalisableRange(0.f, // rangeStart
+                                                       100.f,
+                                                       .1f,
+                                                       1.f),
+                                     0.f),
     std::make_unique<ParameterChoice>(uid + "Distribution", // parameter ID
                                       "Distribution",       // parameter name
                                       juce::StringArray{ "Linear",
@@ -76,9 +83,22 @@ voiceParameterGroup(juce::String parentUid)
                          "Static #2",
                          "Static #3",
                          "Static #4",
-                         "Static #5" }, // choices
-      0)                                // default index
-  );
+                         "Static #5" },                       // choices
+      0),                                                     // default index
+    std::make_unique<ParameterFloat>(uid + "Random",          // parameter ID
+                                     "Random",                // parameter name
+                                     NormalisableRange(0.f,   // rangeStart
+                                                       100.f, // rangeEnd
+                                                       .1f,   // intervalValue
+                                                       1.f),  // skewFactor
+                                     0.f),
+    std::make_unique<ParameterFloat>(uid + "Phase",           // parameter ID
+                                     "Phase",                 // parameter name
+                                     NormalisableRange(0.f,   // rangeStart
+                                                       100.f, // rangeEnd
+                                                       .1f,   // intervalValue
+                                                       1.f),  // skewFactor
+                                     0.f));                   // defaultValue
 }
 } // namespace model
 } // namespace dmt
