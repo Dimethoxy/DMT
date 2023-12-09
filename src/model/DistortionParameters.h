@@ -6,18 +6,18 @@
 namespace dmt {
 namespace model {
 static inline juce::AudioProcessorParameterGroup
-waveformDistortionParameterGroup(juce::String parentUid)
+distortionParameterGroup(juce::String parentUid)
 {
   using ParameterInt = juce::AudioParameterInt;
   using ParameterFloat = juce::AudioParameterFloat;
   using ParameterChoice = juce::AudioParameterChoice;
   using NormalisableRange = juce::NormalisableRange<float>;
 
-  juce::String uid = parentUid + "WaveformDistortion";
+  juce::String uid = parentUid + "Distortion";
 
   return juce::AudioProcessorParameterGroup(
     uid,                                            // group ID
-    "Waveform Distortion",                          // group name
+    "Distortion",                          // group name
     "|",                                            // separator
     std::make_unique<ParameterChoice>(uid + "Type", // parameter ID
                                       "Type",       // parameter name

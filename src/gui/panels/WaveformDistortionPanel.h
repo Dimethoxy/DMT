@@ -21,24 +21,24 @@ public:
     : Panel("Waveform Distortion")
     , typeSlider(apvts,
                  juce::String("Type"),
-                 juce::String("osc1WaveformDistortionType"),
+                 juce::String("osc1DistortionType"),
                  dmt::InfoUnit::Type::Drive)
     , gainSlider(apvts,
                  juce::String("Pregain"),
-                 juce::String("osc1WaveformDistortionPreGain"),
+                 juce::String("osc1DistortionPreGain"),
                  dmt::InfoUnit::Type::Drive)
     , driveSlider(apvts,
                   juce::String("Drive"),
-                  juce::String("osc1WaveformDistortionDrive"),
+                  juce::String("osc1DistortionDrive"),
                   dmt::InfoUnit::Type::Drive)
     , biasSlider(apvts,
                  juce::String("Symmetry"),
-                 juce::String("osc1WaveformDistortionSymmetry"),
+                 juce::String("osc1DistortionSymmetry"),
                  dmt::InfoUnit::Type::Symmetry,
                  LinearSliderType::Bipolar)
     , crushSlider(apvts,
                   juce::String("Bitcrush"),
-                  juce::String("osc1WaveformDistortionCrush"),
+                  juce::String("osc1DistortionCrush"),
                   dmt::InfoUnit::Type::Drive)
   {
     setLayout({ 17, 32 });

@@ -4,7 +4,7 @@
 #include "AhdEnvelopeParameters.h"
 #include "OscSendParameterGroup.h"
 #include "VoiceParameters.h"
-#include "WaveformDistortionParameters.h"
+#include "DistortionParameters.h"
 #include <JuceHeader.h>
 //==============================================================================
 namespace dmt {
@@ -21,7 +21,7 @@ oscillatorParameterGroup(int index)
     "Oscillator", // group name
     "|",          // separator
     std::make_unique<ParameterGroup>(voiceParameterGroup(uid)),
-    std::make_unique<ParameterGroup>(waveformDistortionParameterGroup(uid)),
+    std::make_unique<ParameterGroup>(distortionParameterGroup(uid)),
     std::make_unique<ParameterGroup>(envelopeParameterGroup(uid, "Gain")),
     std::make_unique<ParameterGroup>(envelopeParameterGroup(uid, "Pitch")),
     std::make_unique<ParameterGroup>(oscSendParameterGroup(uid, "A")),

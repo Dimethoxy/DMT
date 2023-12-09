@@ -27,7 +27,7 @@ NeutrinoAudioProcessor::NeutrinoAudioProcessor()
   presetManager = std::make_unique<dmt::gui::preset::PresetManager>(apvts);
 
   synth.addSound(new dmt::dsp::synth::SynthSound());
-  synth.addVoice(new dmt::dsp::synth::SynthVoice());
+  synth.addVoice(new dmt::dsp::synth::SynthVoice(apvts));
 }
 NeutrinoAudioProcessor::~NeutrinoAudioProcessor() {}
 
@@ -68,12 +68,14 @@ NeutrinoAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer,
   for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
     buffer.clear(i, 0, buffer.getNumSamples());
 
-  dmt::ChainSettings chainSettings(apvts);
+  // dmt::ChainSettings chainSettings(apvts);
 
-  if (auto voice = dynamic_cast<juce::SynthesiserVoice*>(synth.getVoice(0))) {
-    auto* ref = dynamic_cast<dmt::dsp::synth::SynthVoice*>(synth.getVoice(0));
-    ref->setChainSettings(chainSettings);
-  }
+  // if (auto voice = dynamic_cast<juce::SynthesiserVoice*>(synth.getVoice(0)))
+  // {
+  //   auto* ref =
+  //   dynamic_cast<dmt::dsp::synth::SynthVoice*>(synth.getVoice(0));
+  //  ref->setChainSettings(chainSettings);
+  // }
 
   synth.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
 

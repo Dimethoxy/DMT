@@ -12,7 +12,7 @@ namespace dmt {
 struct ChainSettings
 {
   //============================================================================
-  ChainSettings(juce::AudioProcessorValueTreeState& apvts)
+  ChainSettings(juce::AudioProcessorValueTreeState& /*apvts*/)
   {
     // waveformType = static_cast<dmt::dsp::synth::AnalogWaveform::Type>(
     //   apvts.getRawParameterValue("waveformType")->load());

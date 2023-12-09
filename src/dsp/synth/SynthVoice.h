@@ -16,6 +16,10 @@ class SynthVoice : public juce::SynthesiserVoice
 {
 
 public:
+  SynthVoice(juce::AudioProcessorValueTreeState& apvts)
+    : apvts(apvts)
+  {
+  }
   //============================================================================
   bool canPlaySound(juce::SynthesiserSound* sound) override
   {
@@ -54,10 +58,9 @@ public:
     // Set oscillator frequency
     osc.setPhase(0.0f);
     note = midiNoteNumber;
-    ;
 
     // Start envelopes
-    setEnvelopes();
+    updateEnvelopeParameters();
     gainEnvelope.noteOn();
     pitchEnvelope.noteOn();
 
@@ -73,30 +76,30 @@ public:
     if (!isVoiceActive() || !isPrepared)
       return;
 
-    osc.setWaveformType(chainSettings->waveformType);
-    osc.setDrive(chainSettings->oscDrive);
-    osc.setBias(chainSettings->oscBias);
-    osc.setBend(chainSettings->oscBend);
-    osc.setPwm(chainSettings->oscPwm);
-    osc.setSync(chainSettings->oscSync);
+    // Update envelope parameters
+    updateEnvelopeParameters();
+
+    // Set oscillator parameters
+    updateOscillatorParameters();
+
+    // Buffer parameters
+    const float oscGain = apvts.getRawParameterValue("osc1Gain")->load();
+    const int oscOctave = apvts.getRawParameterValue("osc1Octave")->load();
+    const int oscSemitone = apvts.getRawParameterValue("osc1Semitone")->load();
+    const float oscModDepth =
+      apvts.getRawParameterValue("osc1ModDepth")->load();
 
     auto endSample = numSamples + startSample;
     auto* leftChannel = outputBuffer.getWritePointer(0);
     auto* rightChannel = outputBuffer.getWritePointer(1);
     for (int sample = startSample; sample < endSample; sample++) {
-      osc.setFrequency(getFrequency());
-      float currentSample = osc.getNextSample();
-      gain(currentSample);
-      leftChannel[sample] = currentSample;
-      rightChannel[sample] = currentSample;
+      osc.setFrequency(getNextFrequency(oscOctave, oscSemitone, oscModDepth));
+      const auto rawSample = osc.getNextSample();
+      const auto gainedSample = applyGain(rawSample, oscGain);
+      leftChannel[sample] = gainedSample;
+      rightChannel[sample] = gainedSample;
     }
   }
-  //============================================================================
-  void setChainSettings(dmt::ChainSettings newChainSettings)
-  {
-    this->chainSettings =
-      std::make_unique<dmt::ChainSettings>(newChainSettings);
-  };
   //============================================================================
   void addOnNoteReceivers(std::function<void()> callbackFunction)
   {
@@ -108,57 +111,79 @@ public:
       func();
     }
   }
+
+protected:
+  //============================================================================
+  void updateEnvelopeParameters()
+  {
+    // Gain envelope
+    dmt::dsp::envelope::AhdEnvelope::Parameters gainEnvParameters;
+    gainEnvParameters.attack =
+      apvts.getRawParameterValue("osc1GainEnvAttack")->load();
+    gainEnvParameters.hold =
+      apvts.getRawParameterValue("osc1GainEnvHold")->load();
+    gainEnvParameters.decay =
+      apvts.getRawParameterValue("osc1GainEnvDecay")->load();
+    gainEnvParameters.decayScew =
+      apvts.getRawParameterValue("osc1GainEnvScew")->load();
+    gainEnvParameters.attackScew = 0;
+    gainEnvelope.setParameters(gainEnvParameters);
+
+    // Pitch envelope
+    dmt::dsp::envelope::AhdEnvelope::Parameters pitchEnvParameters;
+    pitchEnvParameters.attack =
+      apvts.getRawParameterValue("osc1PitchEnvAttack")->load();
+    pitchEnvParameters.hold =
+      apvts.getRawParameterValue("osc1PitchEnvHold")->load();
+    pitchEnvParameters.decay =
+      apvts.getRawParameterValue("osc1PitchEnvDecay")->load();
+    pitchEnvParameters.decayScew =
+      apvts.getRawParameterValue("osc1PitchEnvScew")->load();
+    pitchEnvParameters.attackScew = 0;
+    pitchEnvelope.setParameters(pitchEnvParameters);
+  }
+  //============================================================================
+  void updateOscillatorParameters()
+  {
+    osc.setWaveformType(static_cast<dmt::dsp::synth::AnalogWaveform::Type>(
+      apvts.getRawParameterValue("osc1WaveformType")->load()));
+    osc.setDrive(apvts.getRawParameterValue("osc1DistortionType")->load());
+    osc.setBias(apvts.getRawParameterValue("osc1DistortionSymmetry")->load());
+    osc.setBend(apvts.getRawParameterValue("osc1WaveformBend")->load());
+    osc.setPwm(apvts.getRawParameterValue("osc1WaveformPwm")->load());
+    osc.setSync(apvts.getRawParameterValue("osc1WaveformSync")->load());
+  }
+  //============================================================================
+  float getNextFrequency(const int rawOctave,
+                         const int rawSemitone,
+                         const float rawModDepth)
+  {
+    const int octaves = 12 * rawOctave;
+    const int semitone = octaves + rawSemitone;
+    const int baseNote = note + semitone;
+    const float baseFreq = juce::MidiMessage::getMidiNoteInHertz(baseNote);
+    const float modDepth = rawOctave * baseFreq + rawModDepth;
+    const float envelopeSample = pitchEnvelope.getNextSample();
+    const float maxFreq = baseFreq + modDepth;
+    const float newFreq = juce::mapToLog10(envelopeSample, baseFreq, maxFreq);
+    return std::clamp(newFreq, 20.0f, 20000.0f);
+  }
+  //============================================================================
+  const float applyGain(float sample, float oscGain)
+  {
+    const float envGain = gainEnvelope.getNextSample();
+    const float gain = juce::Decibels::decibelsToGain(oscGain, -96.0f);
+    return sample * envGain * gain;
+  }
   //============================================================================
 private:
-  std::unique_ptr<dmt::ChainSettings> chainSettings;
+  juce::AudioProcessorValueTreeState& apvts;
   dmt::dsp::synth::AnalogOscillator osc;
   dmt::dsp::envelope::AhdEnvelope gainEnvelope;
   dmt::dsp::envelope::AhdEnvelope pitchEnvelope;
   int note = 0;
-  float pitchDepth = 0.7f;
   bool isPrepared = false;
-
   std::vector<std::function<void()>> onNoteReceivers;
-  //============================================================================
-  float getFrequency()
-  {
-    const int rawOctaves = (int)chainSettings->oscOctave;
-    const int octaves = 12 * rawOctaves;
-    const int semitones = octaves + (int)chainSettings->oscSemitone;
-    const float baseFreq =
-      (float)juce::MidiMessage::getMidiNoteInHertz(note + semitones);
-    const float rawModDepth = chainSettings->modDepth;
-    const float freqModDepth = rawOctaves * baseFreq + rawModDepth;
-    const float envelopeSample = pitchEnvelope.getNextSample();
-    const float newFreq =
-      juce::mapToLog10(envelopeSample, baseFreq, baseFreq + freqModDepth);
-    return std::clamp(newFreq, 20.0f, 20000.0f);
-  }
-
-  void gain(float& currentSample)
-  {
-    float envGain = gainEnvelope.getNextSample();
-    float oscGain =
-      juce::Decibels::decibelsToGain(chainSettings->oscGain, -96.0f);
-    currentSample = currentSample * envGain * oscGain;
-  }
-  //============================================================================
-  void setEnvelopes()
-  {
-    dmt::dsp::envelope::AhdEnvelope::Parameters envParameters;
-    envParameters.attack = chainSettings->ampAttack;
-    envParameters.hold = chainSettings->ampHold;
-    envParameters.decay = chainSettings->ampDecay;
-    envParameters.attackScew = 0;
-    envParameters.decayScew = 0;
-    gainEnvelope.setParameters(envParameters);
-    envParameters.attack = 0.0;
-    envParameters.hold = 0.0f;
-    envParameters.decay = chainSettings->modDecay;
-    envParameters.decayScew = chainSettings->modScew;
-    pitchEnvelope.setParameters(envParameters);
-  }
-  //============================================================================
 };
 
 } // namespace synth
