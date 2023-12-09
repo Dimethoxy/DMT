@@ -3,12 +3,11 @@
 This is a list with the next things to do.
 
 ### Feature
-
-- LinearSlider implementation
-- LinearSliderComponent implementation
+- RotarySelector implementation
 - Analog Waveforms
 
 ### Refactoring
 
 - Change sampleRate to double
-- Fix all compiler warnings
+- Fix new compiler warnings
+- Rewire ChainSettings logic to use raw parameters
