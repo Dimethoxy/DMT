@@ -1,14 +1,16 @@
-/*
-  ==============================================================================
-
-        This file contains the basic framework code for a JUCE plugin processor.
-
-  ==============================================================================
-*/
+//==============================================================================
+//
+//  Neutrino.cpp
+//
+//==============================================================================
 
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
 
+//==============================================================================
+//
+//  Constructor / Destructor / Setup
+//
 //==============================================================================
 NeutrinoAudioProcessor::NeutrinoAudioProcessor()
   : AudioProcessor(BusesProperties().withOutput("Output",
@@ -28,7 +30,15 @@ NeutrinoAudioProcessor::NeutrinoAudioProcessor()
   synth.addVoice(new dmt::dsp::synth::SynthVoice());
 }
 NeutrinoAudioProcessor::~NeutrinoAudioProcessor() {}
+
 //==============================================================================
+//
+//  Prepare / Process
+//
+//==============================================================================
+
+//==============================================================================
+// Prepare To Play
 void
 NeutrinoAudioProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
 {
@@ -42,6 +52,8 @@ NeutrinoAudioProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
 
   filterProcessor.prepare(sampleRate);
 }
+//==============================================================================
+// Process Block
 void
 NeutrinoAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer,
                                      juce::MidiBuffer& midiMessages)
@@ -69,6 +81,13 @@ NeutrinoAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer,
   // filterProcessor.processBlock(buffer, 0, buffer.getNumSamples());
 }
 //==============================================================================
+//
+//  State Information / Presets
+//
+//==============================================================================
+
+//==============================================================================
+// Save State Information
 void
 NeutrinoAudioProcessor::getStateInformation(juce::MemoryBlock& destData)
 {
@@ -76,6 +95,9 @@ NeutrinoAudioProcessor::getStateInformation(juce::MemoryBlock& destData)
   const auto xml = state.createXml();
   copyXmlToBinary(*xml, destData);
 }
+
+//==============================================================================
+// Load State Information
 void
 NeutrinoAudioProcessor::setStateInformation(const void* data, int sizeInBytes)
 {
@@ -85,6 +107,11 @@ NeutrinoAudioProcessor::setStateInformation(const void* data, int sizeInBytes)
   const auto newTree = juce::ValueTree::fromXml(*xmlState);
   apvts.replaceState(newTree);
 }
+
+//==============================================================================
+//
+//  Misc / Other
+//
 //==============================================================================
 const juce::String
 NeutrinoAudioProcessor::getName() const
