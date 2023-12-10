@@ -19,12 +19,12 @@ voiceParameterGroup(juce::String parentUid)
     uid,                                                       // group ID
     "Voice",                                                   // group name
     "|",                                                       // separator
-    std::make_unique<ParameterInt>(uid + "Osctave",            // parameter ID
-                                   "Osctave",                  // parameter name
+    std::make_unique<ParameterInt>(uid + "Octave",             // parameter ID
+                                   "Octave",                   // parameter name
                                    -4,                         // rangeStart
                                    4,                          // rangeEnd
                                    0),                         // defaultValue
-    std::make_unique<ParameterInt>(uid + "Semitones",          // parameter ID
+    std::make_unique<ParameterInt>(uid + "Semitone",           // parameter ID
                                    "Semitones",                // parameter name
                                    0,                          // rangeStart
                                    12,                         // rangeEnd

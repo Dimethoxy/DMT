@@ -25,12 +25,6 @@ public:
                    dmt::InfoUnit::Type::Milliseconds,
                    LinearSliderType::Positive,
                    LinearSliderOrientation::Vertical)
-    , holdSlider(apvts,
-                 juce::String("Hold"),
-                 juce::String("osc1PitchEnvHold"),
-                 dmt::InfoUnit::Type::Milliseconds,
-                 LinearSliderType::Positive,
-                 LinearSliderOrientation::Vertical)
     , decaySlider(apvts,
                   juce::String("Decay"),
                   juce::String("osc1PitchEnvDecay"),
@@ -43,10 +37,16 @@ public:
                  dmt::InfoUnit::Type::Skew,
                  LinearSliderType::Positive,
                  LinearSliderOrientation::Vertical)
+    , depthSlider(apvts,
+                  juce::String("Depth"),
+                  juce::String("osc1PitchEnvDepth"),
+                  dmt::InfoUnit::Type::Percent,
+                  LinearSliderType::Positive,
+                  LinearSliderOrientation::Vertical)
   {
     setLayout({ 25, 32 });
     addAndMakeVisible(attackSlider);
-    addAndMakeVisible(holdSlider);
+    addAndMakeVisible(depthSlider);
     addAndMakeVisible(decaySlider);
     addAndMakeVisible(skewSlider);
   }
@@ -60,9 +60,9 @@ public:
     const int secundaryRow = 28;
 
     const int attackCol = 7;
-    const int holdCol = 11;
-    const int decayCol = 15;
-    const int skewCol = 19;
+    const int decayCol = 11;
+    const int skewCol = 15;
+    const int depthCol = 19;
 
     const auto attackSliderPrimaryPoint =
       this->getGridPoint(bounds, attackCol, primaryRow);
@@ -70,13 +70,6 @@ public:
       this->getGridPoint(bounds, attackCol, secundaryRow);
     attackSlider.setBoundsByPoints(attackSliderPrimaryPoint,
                                    attackSliderSecondaryPoint);
-
-    const auto holdSliderPrimaryPoint =
-      this->getGridPoint(bounds, holdCol, primaryRow);
-    const auto holdSliderSecondaryPoint =
-      this->getGridPoint(bounds, holdCol, secundaryRow);
-    holdSlider.setBoundsByPoints(holdSliderPrimaryPoint,
-                                 holdSliderSecondaryPoint);
 
     const auto decaySliderPrimaryPoint =
       this->getGridPoint(bounds, decayCol, primaryRow);
@@ -91,11 +84,18 @@ public:
       this->getGridPoint(bounds, skewCol, secundaryRow);
     skewSlider.setBoundsByPoints(skewSliderPrimaryPoint,
                                  skewSliderSecondaryPoint);
+
+    const auto depthSliderPrimaryPoint =
+      this->getGridPoint(bounds, depthCol, primaryRow);
+    const auto depthSliderSecondaryPoint =
+      this->getGridPoint(bounds, depthCol, secundaryRow);
+    depthSlider.setBoundsByPoints(depthSliderPrimaryPoint,
+                                  depthSliderSecondaryPoint);
   }
 
 private:
   dmt::gui::components::LinearSliderComponent attackSlider;
-  dmt::gui::components::LinearSliderComponent holdSlider;
+  dmt::gui::components::LinearSliderComponent depthSlider;
   dmt::gui::components::LinearSliderComponent decaySlider;
   dmt::gui::components::LinearSliderComponent skewSlider;
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(AnalogPitchPanel)

@@ -32,9 +32,16 @@ envelopeParameterGroup(juce::String parentUid, juce::String suffix)
                                                        0.3f,   // rangeEnd
                                                        0.001f, // intervalValue
                                                        0.5f),  // skewFactor
-                                     0.08f),                   // defaultValue
+                                     0.00f),                   // defaultValue
     std::make_unique<ParameterFloat>(uid + "Decay",            // parameter ID
                                      "Decay",                  // parameter name
+                                     NormalisableRange(0.0f,   // rangeStart
+                                                       1.0f,   // rangeEnd
+                                                       0.001f, // intervalValue
+                                                       0.5f),  // skewFactor
+                                     0.5f),                    // defaultValue
+    std::make_unique<ParameterFloat>(uid + "Depth",            // parameter ID
+                                     "Depth",                  // parameter name
                                      NormalisableRange(0.0f,   // rangeStart
                                                        1.0f,   // rangeEnd
                                                        0.001f, // intervalValue
@@ -46,7 +53,7 @@ envelopeParameterGroup(juce::String parentUid, juce::String suffix)
                                                        32.0f,  // rangeEnd
                                                        0.1f,   // intervalValue
                                                        1.0f),  // skewFactor
-                                     16.0f));                  // defaultValue
+                                     0.0f));                   // defaultValue
 }
 } // namespace model
 } // namespace dmt

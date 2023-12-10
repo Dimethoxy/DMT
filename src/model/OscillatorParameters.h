@@ -2,9 +2,10 @@
 
 #include "../dsp/synth/AnalogWaveform.h"
 #include "AhdEnvelopeParameters.h"
+#include "DistortionParameters.h"
 #include "OscSendParameterGroup.h"
 #include "VoiceParameters.h"
-#include "DistortionParameters.h"
+#include "WaveformParameters.h"
 #include <JuceHeader.h>
 //==============================================================================
 namespace dmt {
@@ -20,6 +21,7 @@ oscillatorParameterGroup(int index)
     uid,          // group ID
     "Oscillator", // group name
     "|",          // separator
+    std::make_unique<ParameterGroup>(waveformParameterGroup(uid)),
     std::make_unique<ParameterGroup>(voiceParameterGroup(uid)),
     std::make_unique<ParameterGroup>(distortionParameterGroup(uid)),
     std::make_unique<ParameterGroup>(envelopeParameterGroup(uid, "Gain")),

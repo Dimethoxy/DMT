@@ -83,11 +83,13 @@ public:
     updateOscillatorParameters();
 
     // Buffer parameters
-    const float oscGain = apvts.getRawParameterValue("osc1Gain")->load();
-    const int oscOctave = apvts.getRawParameterValue("osc1Octave")->load();
-    const int oscSemitone = apvts.getRawParameterValue("osc1Semitone")->load();
+    const float oscGain =
+      apvts.getRawParameterValue("osc1DistortionPreGain")->load();
+    const int oscOctave = apvts.getRawParameterValue("osc1VoiceOctave")->load();
+    const int oscSemitone =
+      apvts.getRawParameterValue("osc1VoiceSemitone")->load();
     const float oscModDepth =
-      apvts.getRawParameterValue("osc1ModDepth")->load();
+      apvts.getRawParameterValue("osc1PitchEnvDepth")->load();
 
     auto endSample = numSamples + startSample;
     auto* leftChannel = outputBuffer.getWritePointer(0);
@@ -125,7 +127,7 @@ protected:
     gainEnvParameters.decay =
       apvts.getRawParameterValue("osc1GainEnvDecay")->load();
     gainEnvParameters.decayScew =
-      apvts.getRawParameterValue("osc1GainEnvScew")->load();
+      apvts.getRawParameterValue("osc1GainEnvSkew")->load();
     gainEnvParameters.attackScew = 0;
     gainEnvelope.setParameters(gainEnvParameters);
 
@@ -138,7 +140,7 @@ protected:
     pitchEnvParameters.decay =
       apvts.getRawParameterValue("osc1PitchEnvDecay")->load();
     pitchEnvParameters.decayScew =
-      apvts.getRawParameterValue("osc1PitchEnvScew")->load();
+      apvts.getRawParameterValue("osc1PitchEnvSkew")->load();
     pitchEnvParameters.attackScew = 0;
     pitchEnvelope.setParameters(pitchEnvParameters);
   }
@@ -162,9 +164,9 @@ protected:
     const int semitone = octaves + rawSemitone;
     const int baseNote = note + semitone;
     const float baseFreq = juce::MidiMessage::getMidiNoteInHertz(baseNote);
-    const float modDepth = rawOctave * baseFreq + rawModDepth;
+    const float modDepth = rawModDepth * 20000.f;
     const float envelopeSample = pitchEnvelope.getNextSample();
-    const float maxFreq = baseFreq + modDepth;
+    const float maxFreq = std::clamp(baseFreq + modDepth, baseFreq, 20000.f);
     const float newFreq = juce::mapToLog10(envelopeSample, baseFreq, maxFreq);
     return std::clamp(newFreq, 20.0f, 20000.0f);
   }

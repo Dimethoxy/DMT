@@ -21,12 +21,12 @@ public:
   VoicingPanel(juce::AudioProcessorValueTreeState& apvts)
     : Panel("Voices")
     , osctaveSlider(apvts,
-                    juce::String("Osctave"),
-                    juce::String("osc1VoiceOsctave"),
+                    juce::String("Octave"),
+                    juce::String("osc1VoiceOctave"),
                     dmt::InfoUnit::Type::Octave)
     , semitonesSlider(apvts,
-                      juce::String("Semitones"),
-                      juce::String("osc1VoiceSemitones"),
+                      juce::String("Semitone"),
+                      juce::String("osc1VoiceSemitone"),
                       dmt::InfoUnit::Type::Semitone)
     , fineSlider(apvts,
                  juce::String("Fine"),
