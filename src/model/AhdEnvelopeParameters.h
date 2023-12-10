@@ -6,7 +6,9 @@
 namespace dmt {
 namespace model {
 static inline juce::AudioProcessorParameterGroup
-envelopeParameterGroup(juce::String parentUid, juce::String suffix)
+envelopeParameterGroup(juce::String parentUid,
+                       juce::String suffix,
+                       std::array<float, 5> defaultValues)
 {
   using ParameterInt = juce::AudioParameterInt;
   using ParameterFloat = juce::AudioParameterFloat;
@@ -25,35 +27,35 @@ envelopeParameterGroup(juce::String parentUid, juce::String suffix)
                                                        0.3f,   // rangeEnd
                                                        0.001f, // intervalValue
                                                        0.5f),  // skewFactor
-                                     0.0f),                    // defaultValue
+                                     defaultValues[0]),        // defaultValue
     std::make_unique<ParameterFloat>(uid + "Hold",             // parameter ID
                                      "Hold",                   // parameter name
                                      NormalisableRange(0.0f,   // rangeStart
                                                        0.3f,   // rangeEnd
                                                        0.001f, // intervalValue
                                                        0.5f),  // skewFactor
-                                     0.00f),                   // defaultValue
+                                     defaultValues[1]),        // defaultValue
     std::make_unique<ParameterFloat>(uid + "Decay",            // parameter ID
                                      "Decay",                  // parameter name
                                      NormalisableRange(0.0f,   // rangeStart
                                                        1.0f,   // rangeEnd
                                                        0.001f, // intervalValue
                                                        0.5f),  // skewFactor
-                                     0.19f),                   // defaultValue
+                                     defaultValues[2]),        // defaultValue
     std::make_unique<ParameterFloat>(uid + "Depth",            // parameter ID
                                      "Depth",                  // parameter name
                                      NormalisableRange(0.0f,   // rangeStart
                                                        1.0f,   // rangeEnd
                                                        0.001f, // intervalValue
                                                        0.5f),  // skewFactor
-                                     1.0f),                    // defaultValue
+                                     defaultValues[3]),        // defaultValue
     std::make_unique<ParameterFloat>(uid + "Skew",             // parameter ID
                                      "Skew",                   // parameter name
                                      NormalisableRange(0.0f,   // rangeStart
-                                                       32.0f,  // rangeEnd
+                                                       16.0f,  // rangeEnd
                                                        0.1f,   // intervalValue
                                                        1.0f),  // skewFactor
-                                     16.0f));                  // defaultValue
+                                     defaultValues[4]));       // defaultValue
 }
 } // namespace model
 } // namespace dmt

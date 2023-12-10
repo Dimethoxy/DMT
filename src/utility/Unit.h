@@ -77,7 +77,7 @@ struct InfoUnit
         return { juce::String(round(1000 * value)) + " ms" };
         break;
       case dmt::InfoUnit::Type::Skew:
-        return { juce::String(round(value / 32.f * 100.f)) + "%" };
+        return { juce::String(round(value / 16.f * 100.f)) + "%" };
         break;
       case dmt::InfoUnit::Type::Percent:
         return { juce::String(round(value)) + " %" };
