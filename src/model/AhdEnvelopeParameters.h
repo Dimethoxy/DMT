@@ -39,21 +39,21 @@ envelopeParameterGroup(juce::String parentUid, juce::String suffix)
                                                        1.0f,   // rangeEnd
                                                        0.001f, // intervalValue
                                                        0.5f),  // skewFactor
-                                     0.5f),                    // defaultValue
+                                     0.19f),                   // defaultValue
     std::make_unique<ParameterFloat>(uid + "Depth",            // parameter ID
                                      "Depth",                  // parameter name
                                      NormalisableRange(0.0f,   // rangeStart
                                                        1.0f,   // rangeEnd
                                                        0.001f, // intervalValue
                                                        0.5f),  // skewFactor
-                                     0.5f),                    // defaultValue
+                                     1.0f),                    // defaultValue
     std::make_unique<ParameterFloat>(uid + "Skew",             // parameter ID
                                      "Skew",                   // parameter name
                                      NormalisableRange(0.0f,   // rangeStart
                                                        32.0f,  // rangeEnd
                                                        0.1f,   // intervalValue
                                                        1.0f),  // skewFactor
-                                     0.0f));                   // defaultValue
+                                     16.0f));                  // defaultValue
 }
 } // namespace model
 } // namespace dmt

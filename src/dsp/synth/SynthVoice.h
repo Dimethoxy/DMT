@@ -133,8 +133,7 @@ protected:
 
     // Pitch envelope
     dmt::dsp::envelope::AhdEnvelope::Parameters pitchEnvParameters;
-    pitchEnvParameters.attack =
-      apvts.getRawParameterValue("osc1PitchEnvAttack")->load();
+    pitchEnvParameters.attack = 0;
     pitchEnvParameters.hold =
       apvts.getRawParameterValue("osc1PitchEnvHold")->load();
     pitchEnvParameters.decay =
@@ -164,11 +163,11 @@ protected:
     const int semitone = octaves + rawSemitone;
     const int baseNote = note + semitone;
     const float baseFreq = juce::MidiMessage::getMidiNoteInHertz(baseNote);
-    const float modDepth = rawModDepth * 20000.f;
+    const float modDepth = rawModDepth * 2e4f;
     const float envelopeSample = pitchEnvelope.getNextSample();
-    const float maxFreq = std::clamp(baseFreq + modDepth, baseFreq, 20000.f);
+    const float maxFreq = std::clamp(baseFreq + modDepth, baseFreq, 2e4f);
     const float newFreq = juce::mapToLog10(envelopeSample, baseFreq, maxFreq);
-    return std::clamp(newFreq, 20.0f, 20000.0f);
+    return std::clamp(newFreq, 20.0f, 2e4f);
   }
   //============================================================================
   const float applyGain(float sample, float oscGain)

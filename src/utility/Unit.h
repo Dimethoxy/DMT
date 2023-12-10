@@ -27,7 +27,8 @@ struct InfoUnit
     Distribution,
     Phase,
     Detune,
-    Seed
+    Seed,
+    ModDepth,
   };
 
   static inline juce::String getString(dmt::InfoUnit::Type type, float value)
@@ -106,6 +107,9 @@ struct InfoUnit
       case dmt::InfoUnit::Type::Seed:
         return { Distortion::getString(
           static_cast<Distortion::Type>((int)value)) };
+        break;
+      case dmt::InfoUnit::Type::ModDepth:
+        return { juce::String(round(value * 2e4f)) + " Hz" };
         break;
       default:
         jassert(false);

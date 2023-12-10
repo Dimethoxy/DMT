@@ -40,7 +40,7 @@ public:
     , depthSlider(apvts,
                   juce::String("Depth"),
                   juce::String("osc1PitchEnvDepth"),
-                  dmt::InfoUnit::Type::Percent,
+                  dmt::InfoUnit::Type::ModDepth,
                   LinearSliderType::Positive,
                   LinearSliderOrientation::Vertical)
   {
