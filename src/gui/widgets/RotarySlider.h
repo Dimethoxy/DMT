@@ -107,36 +107,36 @@ private:
     const auto tickLine = getTick(shaftBounds, centre, valueAngleInRadians);
     g.drawLine(tickLine, lineStrength);
 
-    // Draw selector and exit
-    if (type == Type::Selector) {
-      // drawSelectorDots(g, bounds);
-      return;
-    }
-
-    // Draw the lower rail
-    const auto railWidth = rawRailWidth * size;
-    const auto jointStyle = StrokeType::curved;
-    const auto endCapStyle = StrokeType::rounded;
-    const auto strokeType = StrokeType(railWidth, jointStyle, endCapStyle);
+    // Rail and selector
     const auto railBounds = bounds;
     const auto railRadius = railBounds.getWidth() * railSize / 2.0f;
-    const auto startAngleInRadians =
-      dmt::Math::degreeToRadians(normalizedStartAngle + angleOffset);
-    const auto endAngleInRadians =
-      dmt::Math::degreeToRadians(normalizedEndAngle + angleOffset);
-    const auto lowerRail =
-      getLowerRail(centre, railRadius, startAngleInRadians, endAngleInRadians);
-    g.setColour(lowerRailColour);
-    g.strokePath(lowerRail, strokeType);
 
-    // Draw the upper rail
-    const auto upperRail = getUpperRail(centre,
-                                        railRadius,
-                                        startAngleInRadians,
-                                        endAngleInRadians,
-                                        valueAngleInRadians);
-    g.setColour(upperRailColour);
-    g.strokePath(upperRail, strokeType);
+    // Draw the lower rail
+    if (type != Type::Selector) {
+      const auto railWidth = rawRailWidth * size;
+      const auto jointStyle = StrokeType::curved;
+      const auto endCapStyle = StrokeType::rounded;
+      const auto strokeType = StrokeType(railWidth, jointStyle, endCapStyle);
+      const auto startAngleInRadians =
+        dmt::Math::degreeToRadians(normalizedStartAngle + angleOffset);
+      const auto endAngleInRadians =
+        dmt::Math::degreeToRadians(normalizedEndAngle + angleOffset);
+      const auto lowerRail = getLowerRail(
+        centre, railRadius, startAngleInRadians, endAngleInRadians);
+      g.setColour(lowerRailColour);
+      g.strokePath(lowerRail, strokeType);
+
+      // Draw the upper rail
+      const auto upperRail = getUpperRail(centre,
+                                          railRadius,
+                                          startAngleInRadians,
+                                          endAngleInRadians,
+                                          valueAngleInRadians);
+      g.setColour(upperRailColour);
+      g.strokePath(upperRail, strokeType);
+    } else {
+      // TODO: Implement
+    }
 
     // Draw the Thumb
     const auto thumbPoint =
