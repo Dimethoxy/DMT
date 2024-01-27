@@ -22,11 +22,12 @@ public:
     , typeSlider(apvts,
                  juce::String("Type"),
                  juce::String("osc1DistortionType"),
-                 dmt::InfoUnit::Type::Drive)
+                 dmt::InfoUnit::Type::DistortionType,
+                 RotarySliderType::Selector)
     , gainSlider(apvts,
                  juce::String("Pregain"),
                  juce::String("osc1DistortionPreGain"),
-                 dmt::InfoUnit::Type::Drive)
+                 dmt::InfoUnit::Type::Gain)
     , driveSlider(apvts,
                   juce::String("Drive"),
                   juce::String("osc1DistortionDrive"),

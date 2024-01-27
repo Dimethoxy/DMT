@@ -135,7 +135,26 @@ private:
       g.setColour(upperRailColour);
       g.strokePath(upperRail, strokeType);
     } else {
-      // TODO: Implement
+      const int numSelections = maxValue - minValue;
+      for (int i = 0; i <= numSelections; i++) {
+        const float selectionValue = minValue + i;
+        const float rawSelectionAngle = juce::jmap(selectionValue,
+                                                   minValue,
+                                                   maxValue,
+                                                   normalizedStartAngle,
+                                                   normalizedEndAngle);
+        const float selectionAngleInRadians =
+          dmt::Math::degreeToRadians(rawSelectionAngle + angleOffset);
+        const auto slectionCentre =
+          dmt::Math::pointOnCircle(centre, railRadius, selectionAngleInRadians);
+        const float selectionSize =
+          rawThumbSize * size * 0.5f; // TODO: Remove magic number
+        const auto selectionBounds = juce::Rectangle<float>()
+                                       .withSize(selectionSize, selectionSize)
+                                       .withCentre(slectionCentre);
+        g.setColour(thumOuterColour);
+        g.fillEllipse(selectionBounds);
+      }
     }
 
     // Draw the Thumb
