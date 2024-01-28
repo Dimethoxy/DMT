@@ -103,6 +103,13 @@ struct AppSettings
     static inline juce::Colour thumOuterColour = Colours::font;
     static inline float thumbSize = 20.0f;
     static inline float thumbStrength = 3.0f;
+    // Selections
+    static inline juce::Colour selectionOuterColour = Colours::font;
+    static inline juce::Colour selectionInnerColour = Colours::solid_dark;
+    static inline juce::Colour selectionActiveColour = Colours::primary;
+    static inline float selectionWidth = 2.4f;
+    static inline float selectionSize = 11.0f;
+    static inline float selectionActivePadding = 2.0f;
   };
   struct TriangleButton
   {

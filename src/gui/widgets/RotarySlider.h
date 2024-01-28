@@ -31,6 +31,13 @@ class RotarySlider : public juce::Slider
   const juce::Colour& thumOuterColour = Slider::thumOuterColour;
   const float& rawThumbSize = Slider::thumbSize;
   const float& rawThumbStrength = Slider::thumbStrength;
+  // Selections
+  const juce::Colour& selectionOuterColour = Slider::selectionOuterColour;
+  const juce::Colour& selectionInnerColour = Slider::selectionInnerColour;
+  const juce::Colour& selectionActiveColour = Slider::selectionActiveColour;
+  const float& rawSelectionWidth = Slider::selectionWidth;
+  const float& rawSelectionSize = Slider::selectionSize;
+  const float& rawSelectionActivePadding = Slider::selectionActivePadding;
   //==============================================================================
 public:
   enum class Type
@@ -64,10 +71,7 @@ public:
   }
   Type getType() { return type; };
 
-private:
-  Type type;
-  //============================================================================
-  // Main Draw Function
+protected:
   void drawSlider(juce::Graphics& g,
                   const juce::Rectangle<float>& bounds) const noexcept
   {
@@ -147,13 +151,18 @@ private:
           dmt::Math::degreeToRadians(rawSelectionAngle + angleOffset);
         const auto slectionCentre =
           dmt::Math::pointOnCircle(centre, railRadius, selectionAngleInRadians);
-        const float selectionSize =
-          rawThumbSize * size * 0.5f; // TODO: Remove magic number
+        const float selectionSize = rawSelectionSize * size;
         const auto selectionBounds = juce::Rectangle<float>()
                                        .withSize(selectionSize, selectionSize)
                                        .withCentre(slectionCentre);
-        g.setColour(thumOuterColour);
+        g.setColour(selectionOuterColour);
         g.fillEllipse(selectionBounds);
+
+        const auto selectionInnerBounds =
+          selectionBounds.reduced(rawSelectionWidth * size);
+
+        g.setColour(selectionInnerColour);
+        g.fillEllipse(selectionInnerBounds);
       }
     }
 
@@ -167,39 +176,18 @@ private:
     const auto thumbBounds = juce::Rectangle<float>()
                                .withSize(thumbSize, thumbSize)
                                .withCentre(thumbPoint);
+    const auto thumbInnerBounds = thumbBounds.reduced(thumbStrength);
     g.setColour(thumOuterColour);
     g.fillEllipse(thumbBounds);
     g.setColour(thumbInnerColour);
-    g.fillEllipse(thumbBounds.reduced(thumbStrength));
-  }
-  //============================================================================
-  void drawSelectorDots(juce::Graphics& /*g*/,
-                        const juce::Rectangle<float>& /*bounds*/,
-                        const float /*arcRadius*/,
-                        const float /*startAngleInRadians*/,
-                        const float /*endAngleInRadians*/,
-                        const int numDots,
-                        const int slection) const noexcept
-  {
-    for (int i = 0; i <= numDots; i++) {
-      if (i == slection)
-        // TODO: Add parameters
-        drawSelectorThumb();
-      else
-        // TODO: Add parameters
-        drawDot();
+    g.fillEllipse(thumbInnerBounds);
+
+    if (type == Type::Selector) {
+      const float activePadding = rawSelectionActivePadding * size;
+      const auto activeBounds = thumbInnerBounds.reduced(activePadding);
+      g.setColour(selectionActiveColour);
+      g.fillEllipse(activeBounds);
     }
-  }
-  //============================================================================
-  void drawDot() const
-  {
-    // TODO: Implement
-    return;
-  }
-  void drawSelectorThumb() const
-  {
-    // TODO: Implement
-    return;
   }
   //============================================================================
   const juce::Path getUpperRail(const juce::Point<float>& centre,
@@ -278,7 +266,8 @@ private:
     return juce::Line<float>(outerPoint, innerPoint);
   }
   //============================================================================
-
+private:
+  Type type;
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(RotarySlider)
 };
 } // namespace widgets
