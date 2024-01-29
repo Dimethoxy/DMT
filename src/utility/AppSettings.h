@@ -107,8 +107,8 @@ struct AppSettings
     static inline juce::Colour selectionOuterColour = Colours::font;
     static inline juce::Colour selectionInnerColour = Colours::solid_dark;
     static inline juce::Colour selectionActiveColour = Colours::primary;
-    static inline float selectionWidth = 2.4f;
-    static inline float selectionSize = 11.0f;
+    static inline float selectionWidth = 2.0f;
+    static inline float selectionSize = 9.0f;
     static inline float selectionActivePadding = 2.0f;
   };
   struct TriangleButton

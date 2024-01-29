@@ -40,7 +40,7 @@ public:
     , crushSlider(apvts,
                   juce::String("Bitcrush"),
                   juce::String("osc1DistortionCrush"),
-                  dmt::InfoUnit::Type::Drive)
+                  dmt::InfoUnit::Type::Bitcrush)
   {
     setLayout({ 17, 32 });
     addAndMakeVisible(typeSlider);

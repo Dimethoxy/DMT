@@ -112,6 +112,9 @@ struct InfoUnit
       case dmt::InfoUnit::Type::ModDepth:
         return { juce::String(round(value * 2e4f)) + " Hz" };
         break;
+      case dmt::InfoUnit::Type::Bitcrush:
+        return { juce::String(value + 1.0f) + " bits" };
+        break;
       default:
         jassert(false);
         return { juce::String("ERROR") };
