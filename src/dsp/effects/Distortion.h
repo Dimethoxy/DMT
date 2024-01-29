@@ -3,30 +3,37 @@
 #include <JuceHeader.h>
 
 namespace dmt {
+namespace dsp {
+namespace distortion {
 struct Distortion
 {
   enum class Type
   {
     Hardclip,
-    Root,
+    Softclip,
+    Saturate,
     Atan,
     Crunch,
-    Bitcrush,
+    Extreme,
+    Scream,
     Sine,
     Cosine,
-    Expand,
+    Harmonize,
     Weird,
-    Extreme
+    Bitcrush,
   };
 
-  static inline const juce::String getString(const dmt::Distortion::Type type)
+  static inline const juce::String getString(const Type type)
   {
     switch (type) {
       case Distortion::Type::Hardclip:
         return ("Hardclip");
         break;
-      case Distortion::Type::Root:
-        return ("Sqrt");
+      case Distortion::Type::Softclip:
+        return ("Softclip");
+        break;
+      case Distortion::Type::Saturate:
+        return ("Saturate");
         break;
       case Distortion::Type::Atan:
         return ("Atan");
@@ -34,8 +41,11 @@ struct Distortion
       case Distortion::Type::Crunch:
         return ("Crunch");
         break;
-      case Distortion::Type::Bitcrush:
-        return ("Bitcrush");
+      case Distortion::Type::Extreme:
+        return ("Extreme");
+        break;
+      case Distortion::Type::Scream:
+        return ("Scream");
         break;
       case Distortion::Type::Sine:
         return ("Sine");
@@ -43,14 +53,14 @@ struct Distortion
       case Distortion::Type::Cosine:
         return ("Cosine");
         break;
-      case Distortion::Type::Expand:
-        return ("Expand");
+      case Distortion::Type::Harmonize:
+        return ("Harmonize");
         break;
       case Distortion::Type::Weird:
         return ("Weird");
         break;
-      case Distortion::Type::Extreme:
-        return ("Extreme");
+      case Distortion::Type::Bitcrush:
+        return ("Bitcrush");
         break;
       default:
         // impossible to reach exit with assertion
@@ -60,100 +70,36 @@ struct Distortion
     }
   }
 
-  static inline void distortSample(float& value,
-                                   dmt::Distortion::Type type,
-                                   float drive)
+  template<typename ValueType,
+           typename = std::enable_if_t<std::is_floating_point_v<ValueType>>>
+  static inline const ValueType distortSample(const ValueType value,
+                                              const Type type,
+                                              const ValueType drive)
   {
     switch (type) {
-      case Type::Hardclip: {
-        value = value * drive;
-        value = std::clamp(value, -1.0f, 1.0f);
-        break;
+      case Distortion::Hardclip: {
+        return std::clamp(drive * value, -1.0, 1.0);
       }
-      case Type::Root: {
-        if (value > 0.0) {
-          value = std::pow(value, 1.0f / ((drive / 4.0f) + 0.75f));
-          value = std::clamp(value, -1.0f, 1.0f);
-        } else {
-          value = pow(-value, 1.0f / ((drive / 4.0f) + 0.75f));
-          value = -std::clamp(value, -1.0f, 1.0f);
-        }
-        break;
-      }
-      case Type::Atan: {
-        if (value != 0.0f) {
-          if (value > 0.0f) {
-            value = pow(value, 1.0f / drive);
-            value = 1.27f * atan(value);
-            value = std::clamp(value, -1.0f, 1.0f);
-          } else {
-            value = pow(-value, 1.0f / drive);
-            value = 1.27f * atan(value);
-            value = -value;
-            value = std::clamp(value, -1.0f, 1.0f);
-          }
-        }
-        break;
-      }
-      case Type::Crunch: {
-        if (value > 0.0) {
-          value = pow(value, 1.0f / drive);
-          value = 1.27f * atan(value);
-          value = std::clamp(value, -1.0f, 1.0f);
-        } else {
-          value = std::clamp(sin(drive * value), -1.0f, 1.0f);
-          value = std::clamp(drive * value, -1.0f, 1.0f);
-        };
-        break;
-      }
-      case Type::Bitcrush: {
-        float bitDepth = 11.0f - drive;
-        float exponent = bitDepth - 1;
-        float possibleValues = (float)pow(2, exponent);
-        float quantized = value * possibleValues;
-        if (quantized > 0) {
-          quantized = ceil(quantized);
-        } else if (quantized < 0) {
-          quantized = floor(quantized);
-        }
-        value = quantized / possibleValues;
-        break;
-      }
-      case Type::Sine: {
-        value = std::clamp(sin(drive * value), -1.0f, 1.0f);
-        break;
-      }
-      case Type::Cosine: {
-        value = std::clamp(cos(drive * value), -1.0f, 1.0f);
-        break;
-      }
-      case Type::Expand: {
-        if (std::abs(value) >= ((drive - 1) / 9.0f)) {
-          auto signbit = (std::signbit(value) ? -1 : 1);
-          value = (float)signbit;
-        }
-        break;
-      }
-      case Type::Weird: {
-        float invertedDrive = (10.0f / drive) * 5.0f;
-        value = value * invertedDrive;
-        float h1 = sin(2.0f * value);
-        float h2 = sin(3.0f * value);
-        float h3 = sin(4.0f * value);
-        value = (h1 + h2 + h3 + value) / invertedDrive;
-        value = std::clamp(value, -1.0f, 1.0f);
-        break;
-      }
-      case Type::Extreme: {
-        value = value * (drive * 2);
-        float h1 = sin(2 * value);
-        float h2 = sin(3 * value);
-        float h3 = sin(4 * value);
-        value = sin(h1 + h2 + h3 + value);
-        value = std::clamp(value, -1.0f, 1.0f);
-        break;
+      case Distortion::Softclip: {
+        float threshold1 = 1.0f / 3.0f;
+        float threshold2 = 2.0f / 3.0f;
+        const auto newValue = drive * value;
+        if (newValue > threshold2)
+          return 1.0f;
+        else if (newValue > threshold1)
+          return 1.0f - powf(2.0f - 3.0f * newValue, 2.0f) / 3.0f;
+        else if (newValue < -threshold2)
+          return = -1.0f;
+        else if (newValue < -threshold1)
+          return -1.0f + powf(2.0f + 3.0f * newValue, 2.0f) / 3.0f;
+        else
+          return 2.0f * newValue;
       }
     }
+
+    // Make sure to return a value at the end of the function
+    // (replace the return statement with the appropriate value)
+    return /* some value */;
   }
 
   static inline float getNewGirthSeed() { return (float)(rand() % 100); }
@@ -190,7 +136,7 @@ struct Distortion
   }
 
   static inline void processBuffer(juce::AudioBuffer<float>& buffer,
-                                   dmt::Distortion::Type type,
+                                   Type type,
                                    float symmetry,
                                    float girth,
                                    float drive)
@@ -204,18 +150,19 @@ struct Distortion
       for (int sample = 0; sample < buffer.getNumSamples(); sample++) {
         // Girth
         if (girth < 0)
-          dmt::Distortion::girthSample(
-            channelData[sample], std::abs(girth), girthSeeds[sample]);
+          girthSample(channelData[sample], std::abs(girth), girthSeeds[sample]);
         else
-          dmt::Distortion::girthSample(channelData[sample], girth);
+          girthSample(channelData[sample], girth);
 
         // Distortion
-        dmt::Distortion::distortSample(channelData[sample], type, drive);
+        distortSample(channelData[sample], type, drive);
 
         // Symmetry
-        dmt::Distortion::symmetrySample(channelData[sample], symmetry);
+        symmetrySample(channelData[sample], symmetry);
       }
     }
   }
 };
+} // namespace distortion
+} // namespace dsp
 } // namespace dmt

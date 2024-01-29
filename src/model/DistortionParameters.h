@@ -17,17 +17,22 @@ distortionParameterGroup(juce::String parentUid)
 
   return juce::AudioProcessorParameterGroup(
     uid,                                            // group ID
-    "Distortion",                          // group name
+    "Distortion",                                   // group name
     "|",                                            // separator
     std::make_unique<ParameterChoice>(uid + "Type", // parameter ID
                                       "Type",       // parameter name
                                       juce::StringArray{ "Hardclip",
                                                          "Softclip",
-                                                         "Saturation",
+                                                         "Saturate",
                                                          "Atan",
+                                                         "Crunch",
+                                                         "Extreme",
+                                                         "Scream",
                                                          "Sine",
-                                                         "Cosine" }, // choices
-                                      2), // defaultIndex
+                                                         "Cosine",
+                                                         "Harmonize",
+                                                         "Weird" }, // choices
+                                      0), // defaultIndex
     std::make_unique<ParameterFloat>(uid + "PreGain",
                                      "PreGain",
                                      NormalisableRange(-96.f, // rangeStart

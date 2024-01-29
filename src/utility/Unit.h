@@ -29,6 +29,7 @@ struct InfoUnit
     Detune,
     Seed,
     ModDepth,
+    Bitcrush,
   };
 
   static inline juce::String getString(dmt::InfoUnit::Type type, float value)
