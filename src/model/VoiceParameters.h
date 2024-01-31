@@ -27,7 +27,7 @@ voiceParameterGroup(juce::String parentUid)
     std::make_unique<ParameterInt>(uid + "Semitone",           // parameter ID
                                    "Semitones",                // parameter name
                                    0,                          // rangeStart
-                                   12,                         // rangeEnd
+                                   11,                         // rangeEnd
                                    0),                         // defaultValue
     std::make_unique<ParameterFloat>(uid + "Fine",             // parameter ID
                                      "Fine",                   // parameter name

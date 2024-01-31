@@ -87,7 +87,7 @@ struct InfoUnit
         return { juce::String(round(value)) + " oct" };
         break;
       case dmt::InfoUnit::Type::Semitone:
-        return { juce::String(round(value)) + " st" };
+        return { "+" + juce::String(round(value)) + " st" };
         break;
       case dmt::InfoUnit::Type::Fine:
         return { juce::String(round(value)) + " cent" };

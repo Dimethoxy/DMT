@@ -101,7 +101,7 @@ struct AppSettings
     // Thumb
     static inline juce::Colour thumbInnerColour = Colours::solid_dark;
     static inline juce::Colour thumOuterColour = Colours::font;
-    static inline float thumbSize = 20.0f;
+    static inline float thumbSize = 18.0f;
     static inline float thumbStrength = 3.0f;
     // Selections
     static inline juce::Colour selectionOuterColour = Colours::font;

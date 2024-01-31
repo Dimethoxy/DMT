@@ -23,11 +23,13 @@ public:
     , osctaveSlider(apvts,
                     juce::String("Octave"),
                     juce::String("osc1VoiceOctave"),
-                    dmt::InfoUnit::Type::Octave)
+                    dmt::InfoUnit::Type::Octave,
+                    RotarySliderType::Selector)
     , semitonesSlider(apvts,
                       juce::String("Semitone"),
                       juce::String("osc1VoiceSemitone"),
-                      dmt::InfoUnit::Type::Semitone)
+                      dmt::InfoUnit::Type::Semitone,
+                      RotarySliderType::Selector)
     , fineSlider(apvts,
                  juce::String("Fine"),
                  juce::String("osc1VoiceFine"),
@@ -36,7 +38,8 @@ public:
     , densitySlider(apvts,
                     juce::String("Density"),
                     juce::String("osc1VoiceDensity"),
-                    dmt::InfoUnit::Type::Density)
+                    dmt::InfoUnit::Type::Density,
+                    RotarySliderType::Selector)
     , detuneSlider(apvts,
                    juce::String("Detune"),
                    juce::String("osc1VoiceDetune"),
@@ -58,7 +61,8 @@ public:
     , seedSlider(apvts,
                  juce::String("Seed"),
                  juce::String("osc1VoiceSeed"),
-                 dmt::InfoUnit::Type::Seed)
+                 dmt::InfoUnit::Type::Seed,
+                 RotarySliderType::Selector)
     , randomlider(apvts,
                   juce::String("Random"),
                   juce::String("osc1VoiceRandom"),
