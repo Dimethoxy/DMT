@@ -3,9 +3,8 @@
 #pragma once
 
 #include "../../dsp/Synth/AnalogOscillator.h"
+#include "../../gui/widgets/Shadow.h"
 #include "../../utility/AppSettings.h"
-#include "../../utility/ChainSettings.h"
-#include "../../utility/Shadow.h"
 #include <JuceHeader.h>
 
 //==============================================================================
@@ -13,25 +12,36 @@ namespace dmt {
 namespace gui {
 namespace components {
 //==============================================================================
-class OscillatorDisplayComponent : public juce::Component, public juce::Timer {
+class OscillatorDisplayComponent
+  : public juce::Component
+  , public juce::Timer
+{
+  // General
   using Settings = dmt::AppSettings::OscillatorDisplay;
-  const int resolution = 256;
+  const int& resolution = Settings::resolution;
+  // Shadows
+  const bool& drawOuterShadow = Settings::drawOuterShadow;
+  const bool& drawInnerShadow = Settings::drawInnerShadow;
+  const juce::Colour& outerShadowColour = Settings::outerShadowColour;
+  const juce::Colour& innerShadowColour = Settings::innerShadowColour;
+  const float& outerShadowRadius = Settings::outerShadowRadius;
+  const float& innerShadowRadius = Settings::innerShadowRadius;
 
 public:
   //============================================================================
-  OscillatorDisplayComponent(juce::AudioProcessorValueTreeState &apvts)
-      : apvts(apvts), chainSettings(apvts) {
-    outerShadow.radius = Settings::outerShadowRadius;
-    outerShadow.colour = Settings::outerShadowColour;
-    innerShadow.radius = Settings::innerShadowRadius;
-    innerShadow.colour = Settings::innerShadowColour;
+  OscillatorDisplayComponent(juce::AudioProcessorValueTreeState& apvts)
+    : apvts(apvts)
+    , outerShadow(outerShadowColour, outerShadowRadius)
+    , innerShadow(innerShadowColour, innerShadowRadius)
+  {
     osc.setSampleRate((float)resolution + 1.0f);
     osc.setFrequency(1.0f);
     updateDisplay(chainSettings);
     startTimerHz(60);
   }
   //============================================================================
-  void paint(juce::Graphics &g) override {
+  void paint(juce::Graphics& g) override
+  {
     const auto bounds = this->getLocalBounds().toFloat();
 
     g.setColour(Settings::backgroundColour);
@@ -73,19 +83,10 @@ public:
                   Settings::borderSize);
   }
 
-  //============================================================================
-private:
-  dmt::Shadow outerShadow;
-  dmt::Shadow innerShadow;
-  dmt::Shadow lineShadow;
-
-  dmt::dsp::synth::AnalogOscillator osc;
-  juce::dsp::LookupTable<float> table;
-  dmt::ChainSettings chainSettings;
-  juce::AudioProcessorValueTreeState &apvts;
-
+protected:
   //==============================================================================
-  void timerCallback() {
+  void timerCallback()
+  {
     dmt::ChainSettings newChainSettings(apvts);
     if (isParametersChanged(newChainSettings)) {
       chainSettings = newChainSettings;
@@ -100,7 +101,8 @@ private:
     }
   }
 
-  void updateDisplay(dmt::ChainSettings &newChainSettings) {
+  void updateDisplay(dmt::ChainSettings& newChainSettings)
+  {
     chainSettings = newChainSettings;
     osc.setWaveformType(chainSettings.waveformType);
     osc.setBend(chainSettings.oscBend);
@@ -110,15 +112,17 @@ private:
     this->repaint();
   }
 
-  void buildTable() {
+  void buildTable()
+  {
     osc.setPhase(0.0f);
     table.initialise([&](size_t index) { return (float)osc.getNextSample(); },
                      resolution);
   }
 
-  bool isParametersChanged(dmt::ChainSettings &newChainSettings) {
+  bool isParametersChanged(dmt::ChainSettings& newChainSettings)
+  {
     bool waveformChanged =
-        chainSettings.waveformType != newChainSettings.waveformType;
+      chainSettings.waveformType != newChainSettings.waveformType;
     bool driveChanged = chainSettings.oscDrive != newChainSettings.oscDrive;
     bool biasChanged = chainSettings.oscBias != newChainSettings.oscBias;
     bool bendChanged = chainSettings.oscBend != newChainSettings.oscBend;
@@ -129,7 +133,8 @@ private:
   }
 
   //==============================================================================
-  juce::Path getPath(juce::Rectangle<float> bounds) {
+  juce::Path getPath(juce::Rectangle<float> bounds)
+  {
     bounds.setY(bounds.getY() + (bounds.getHeight() / 10.0f));
     bounds.setHeight(bounds.getHeight() - (bounds.getHeight() / 5.0f));
 
@@ -160,8 +165,16 @@ private:
 
     return path;
   }
-
   //============================================================================
+private:
+  dmt::Shadow outerShadow;
+  dmt::Shadow innerShadow;
+  dmt::Shadow lineShadow;
+
+  dmt::dsp::synth::AnalogOscillator osc;
+  juce::dsp::LookupTable<float> table;
+  dmt::ChainSettings chainSettings;
+  juce::AudioProcessorValueTreeState& apvts;
 };
 } // namespace components
 } // namespace gui

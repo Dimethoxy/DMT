@@ -130,6 +130,18 @@ struct AppSettings
     static inline float outerShadowRadius = 4.0f;
     static inline float innerShadowRadius = 4.0f;
   };
+  struct OscillatorDisplay
+  {
+    // General
+    static inline int resolution = 256;
+    // Shadow
+    static inline bool drawOuterShadow = false;
+    static inline bool drawInnerShadow = true;
+    static inline Colour outerShadowColour = Colours::shadow;
+    static inline Colour innerShadowColour = Colours::primary;
+    static inline float outerShadowRadius = 4.0f;
+    static inline float innerShadowRadius = 4.0f;
+  };
   struct Carousel
   {
     static inline float buttonWidth = 60.0f;
