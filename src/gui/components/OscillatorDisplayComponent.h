@@ -36,80 +36,23 @@ public:
   {
     osc.setSampleRate((float)resolution + 1.0f);
     osc.setFrequency(1.0f);
-    updateDisplay(chainSettings);
     startTimerHz(60);
   }
   //============================================================================
   void paint(juce::Graphics& g) override
   {
     const auto bounds = this->getLocalBounds().toFloat();
-
-    g.setColour(Settings::backgroundColour);
-    g.fillEllipse(bounds);
-
-    const auto borderSize = Settings::borderSize;
-    const auto borderBounds = bounds.reduced(Settings::margin);
-    const auto innerBounds = borderBounds.reduced(borderSize);
-    const auto outerCornerSize = Settings::outerCornerSize;
-    const auto innerCornerSize = Settings::innerCornerSize;
-
-    if (Settings::drawOuterShadow) {
-      juce::Path outerShadowPath;
-      outerShadowPath.addEllipse(borderBounds);
-      outerShadow.drawOuterForPath(g, outerShadowPath);
-    }
-
-    g.setColour(Settings::foregroundColour);
-    g.fillEllipse(innerBounds);
-
-    if (Settings::drawInnerShadow) {
-      juce::Path innerShadowPath;
-      innerShadowPath.addEllipse(innerBounds);
-      innerShadow.drawInnerForPath(g, innerShadowPath);
-    }
-
-    auto graphPath = getPath(borderBounds.reduced(Settings::graphSize / 2.0f));
-    auto integralPath = graphPath;
-    integralPath.closeSubPath();
-
-    g.setColour(Settings::integralColour);
-    g.fillPath(integralPath);
-
-    g.setColour(Settings::graphColor);
-    g.strokePath(graphPath, juce::PathStrokeType(Settings::graphSize));
-
-    g.setColour(Settings::borderColour);
-    g.drawEllipse(borderBounds.reduced(Settings::borderSize / 2.0f),
-                  Settings::borderSize);
   }
 
 protected:
   //==============================================================================
   void timerCallback()
   {
-    dmt::ChainSettings newChainSettings(apvts);
-    if (isParametersChanged(newChainSettings)) {
-      chainSettings = newChainSettings;
-      osc.setWaveformType(chainSettings.waveformType);
-      osc.setDrive(chainSettings.oscDrive);
-      osc.setBias(chainSettings.oscBias);
-      osc.setBend(chainSettings.oscBend);
-      osc.setPwm(chainSettings.oscPwm);
-      osc.setSync(chainSettings.oscSync);
+    if (isParametersChanged()) {
+      // TODO: Load new values
       this->buildTable();
       this->repaint();
     }
-  }
-
-  void updateDisplay(dmt::ChainSettings& newChainSettings)
-  {
-    chainSettings = newChainSettings;
-    osc.setWaveformType(chainSettings.waveformType);
-    osc.setBend(chainSettings.oscBend);
-    osc.setPwm(chainSettings.oscPwm);
-    osc.setSync(chainSettings.oscSync);
-    this->buildTable();
-    this->repaint();
   }
 
   void buildTable()
@@ -119,18 +62,7 @@ protected:
                      resolution);
   }
 
-  bool isParametersChanged(dmt::ChainSettings& newChainSettings)
-  {
-    bool waveformChanged =
-      chainSettings.waveformType != newChainSettings.waveformType;
-    bool driveChanged = chainSettings.oscDrive != newChainSettings.oscDrive;
-    bool biasChanged = chainSettings.oscBias != newChainSettings.oscBias;
-    bool bendChanged = chainSettings.oscBend != newChainSettings.oscBend;
-    bool pwmChanged = chainSettings.oscPwm != newChainSettings.oscPwm;
-    bool syncChanged = chainSettings.oscSync != newChainSettings.oscSync;
-    return waveformChanged || driveChanged || biasChanged || bendChanged ||
-           pwmChanged || syncChanged;
-  }
+  bool isParametersChanged() {}
 
   //==============================================================================
   juce::Path getPath(juce::Rectangle<float> bounds)
@@ -169,11 +101,9 @@ protected:
 private:
   dmt::Shadow outerShadow;
   dmt::Shadow innerShadow;
-  dmt::Shadow lineShadow;
 
   dmt::dsp::synth::AnalogOscillator osc;
   juce::dsp::LookupTable<float> table;
-  dmt::ChainSettings chainSettings;
   juce::AudioProcessorValueTreeState& apvts;
 };
 } // namespace components
