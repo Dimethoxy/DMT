@@ -12,6 +12,7 @@ struct AppSettings
   static inline const bool debugBounds = false;
   static inline const bool debugGrid = false;
   static inline const float macFontScale = 0.9f;
+  static inline int fps = 60;
 
   struct Colours
   {

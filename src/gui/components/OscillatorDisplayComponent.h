@@ -18,6 +18,7 @@ class OscillatorDisplayComponent
 {
   // General
   using Settings = dmt::AppSettings::OscillatorDisplay;
+  const int& fps = dmt::AppSettings::fps;
   const int& resolution = Settings::resolution;
   // Shadows
   const bool& drawOuterShadow = Settings::drawOuterShadow;
@@ -49,7 +50,6 @@ protected:
   void timerCallback()
   {
     if (isParametersChanged()) {
-      // TODO: Load new values
       this->buildTable();
       this->repaint();
     }
