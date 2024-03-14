@@ -10,18 +10,9 @@ class OscilloscopePanel : public dmt::gui::Panel
 {
 public:
   OscilloscopePanel()
+    : dmt::gui::Panel("Oscilloscope")
   {
     // Constructor code goes here
-  }
-
-  void paint(juce::Graphics& g) override
-  {
-    // Paint code goes here
-  }
-
-  void resized() override
-  {
-    // Resizing code goes here
   }
 
 private:

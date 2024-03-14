@@ -19,13 +19,13 @@ class Panel
 public:
   using Grid = std::vector<std::vector<juce::Point<float>>>;
   // Settings
-  using AppSettings = dmt::AppSettings;
-  using Settings = AppSettings::Panel;
-  using Fonts = dmt::AppSettings::Fonts;
-  using Carousel = dmt::AppSettings::Carousel;
-  // Global
-  const float& size = AppSettings::Layout::size;
-  const float& margin = dmt::AppSettings::Layout::margin;
+  using LibrarySettings = dmt::LibrarySettings;
+  using Settings = LibrarySettings::Panel;
+  using Fonts = LibrarySettings::Fonts;
+  using Carousel = LibrarySettings::Carousel;
+  // Layout
+  const float& size = LibrarySettings::Layout::size;
+  const float& margin = LibrarySettings::Layout::margin;
   // General
   const juce::Colour& backgroundColour = Settings::backgroundColour;
   const float& cornerSize = Settings::cornerSize;
@@ -44,6 +44,9 @@ public:
   // Fonts
   const juce::Colour& fontColor = Settings::fontColor;
   const float& fontSize = Settings::fontSize;
+  // Debug
+  const bool& debugBounds = LibrarySettings::debugBounds;
+  const bool& debugGrid = LibrarySettings::debugGrid;
 
   struct Layout
   {
@@ -79,7 +82,7 @@ public:
 
     // draw debug bounds
     g.setColour(juce::Colours::aqua);
-    if (dmt::AppSettings::debugBounds)
+    if (debugBounds)
       g.drawRect(bounds, 1.0f);
 
     // Draw outer shadow
@@ -111,7 +114,7 @@ public:
     }
 
     // draw debug line grid
-    if (dmt::AppSettings::debugGrid) {
+    if (debugGrid) {
       g.setColour(juce::Colours::red);
       for (int col = 0; col < grid.size(); col++) {
         const auto firstPoint = getGridPoint(bounds.toNearestInt(), col, 0);
