@@ -26,6 +26,12 @@ struct LibrarySettings
     static inline float opacityStep = 0.05f;
   };
 
+  struct Layout
+  {
+    static inline float size = 1.0f;
+    static inline float margin = 5.0f;
+  };
+
   struct Panel
   {
     // General

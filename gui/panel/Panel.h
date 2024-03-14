@@ -2,10 +2,10 @@
 
 #pragma once
 
-#include "../../utility/AppSettings.h"
-#include "../widgets/Label.h"
-#include "../widgets/Shadow.h"
-#include "../widgets/TriangleButton.h"
+#include "../../utility/LibrarySettings.h"
+#include "../widget/Label.h"
+#include "../widget/Shadow.h"
+#include "../widget/TriangleButton.h"
 #include <JuceHeader.h>
 
 //==============================================================================
