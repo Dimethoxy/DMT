@@ -10,14 +10,11 @@ class OscilloscopePanel : public dmt::gui::Panel
 {
 public:
   OscilloscopePanel()
-    : dmt::gui::Panel("Oscilloscope")
+    : dmt::gui::Panel("Oscilloscope", false)
   {
-    // Constructor code goes here
   }
 
 private:
-  // Private member variables go here
-
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(OscilloscopePanel)
 };
 

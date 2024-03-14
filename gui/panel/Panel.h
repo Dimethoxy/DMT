@@ -54,9 +54,9 @@ public:
     int rows;
   };
 
-  Panel(juce::String name) noexcept
+  Panel(const juce::String name, const bool displayName = true) noexcept
     : layout({ 1, 1 })
-    , rawGridOffsetY(40)
+    , rawGridOffsetY(40 * static_cast<int>(displayName))
     , name(name)
     , titleLabel(name, Fonts::bold, fontSize, juce::Colours::white)
     , nextCallback([]() {})
@@ -66,7 +66,9 @@ public:
     , outerShadow(outerShadowColour, outerShadowRadius)
     , innerShadow(innerShadowColour, innerShadowRadius)
   {
-    addAndMakeVisible(titleLabel);
+    if (displayName) {
+      addAndMakeVisible(titleLabel);
+    }
     setLayout(layout);
   }
 
