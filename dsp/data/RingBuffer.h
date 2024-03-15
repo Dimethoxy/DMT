@@ -119,7 +119,7 @@ public:
     const int startingPosition = position.get();
 
     // Iterate the samples first to improve thread safety
-    for (int sample = 0; sample < bufferSize; ++sample) {
+    for (int sample = 0; sample < bufferToWrite.getNumSamples(); ++sample) {
       const int ringPosition = (startingPosition + sample) % bufferSize;
       for (int channel = 0; channel < numChannels; ++channel) {
         buffer->copyFrom(
