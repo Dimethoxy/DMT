@@ -82,27 +82,28 @@ public:
   //============================================================================
   const BufferData getAmplitudes(const int numDataPoints) noexcept
   {
-    const auto buffer = ringBuffer->read();
+    // Buffer with the original audio data
+    auto buffer = ringBuffer->read();
 
+    // Return the buffer with the downsampled audio data
+    BufferData data(ringBufferNumChannels, ChannelData(numDataPoints));
+
+    // Downsample the audio data using a lookup table
     for (int channel = 0; channel < ringBufferNumChannels; ++channel) {
-      const auto& channelData = buffer[channel];
-
+      // Create a lookup table for the audio data
       juce::dsp::LookupTable<SampleType> lookupTable(
-        [this, numDataPoints, channelData](SampleType x) {
-          const auto normalizedX = x / numDataPoints;
-          const auto rawIndex = (float)this->ringBufferNumSamples * normalizedX;
-          const int lowerIndex = (int)std::floor(rawIndex);
-          const int upperIndex = (int)std::ceil(rawIndex);
-          const auto normalizedIndex = rawIndex - lowerIndex;
-          const auto lowerValue = channelData[lowerIndex];
-          const auto upperValue = channelData[upperIndex];
-          const auto interpolatedValue =
-            lowerValue + normalizedIndex * (upperValue - lowerValue);
-          return interpolatedValue;
-        },
-        numDataPoints);
+        [buffer, channel](int x) { return buffer[channel][x]; },
+        ringBufferNumSamples);
+      // Downsample the audio data
+      for (int dataPoint = 0; dataPoint < numDataPoints; ++dataPoint) {
+        const auto normalizedIndex = (float)dataPoint / (float)numDataPoints;
+        const auto index = normalizedIndex * (float)ringBufferNumSamples;
+        const auto value = lookupTable.get(index);
+        data[channel][dataPoint] = value;
+      }
     }
-    return {};
+
+    return data;
   }
   //============================================================================
 

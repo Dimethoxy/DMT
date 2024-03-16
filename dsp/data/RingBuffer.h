@@ -132,7 +132,7 @@ public:
     }
 
     // We update the position for the readers after we've written the buffer
-    position.set((startingPosition + bufferSize) % bufferSize);
+    position.set((startingPosition + channelSize) % bufferSize);
 
     // We need to unlock the buffer after writing to ensure thread safety
     lock.exitWrite();

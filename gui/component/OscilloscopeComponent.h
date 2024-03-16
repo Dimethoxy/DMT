@@ -24,7 +24,7 @@ public:
   void paint(juce::Graphics& g) override
   {
     g.fillAll(juce::Colours::green);
-    const auto amplitudes = processor.getAmplitudes(4096);
+    const auto amplitudes = processor.getAmplitudes(100);
   }
 
   void resized() override {}
