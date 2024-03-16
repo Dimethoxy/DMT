@@ -20,6 +20,13 @@ public:
     : dmt::gui::Panel("Oscilloscope", false)
     , oscilloscopeComponent(processor)
   {
+    addAndMakeVisible(oscilloscopeComponent);
+  }
+
+  void resized() noexcept override
+  {
+    Panel::resized();
+    oscilloscopeComponent.setBounds(getLocalBounds().reduced(30));
   }
 
 private:

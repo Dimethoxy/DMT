@@ -6,7 +6,7 @@
 
 //==============================================================================
 namespace dmt {
-namespace Math {
+namespace math {
 //==============================================================================
 static inline const float pi = juce::MathConstants<float>::pi;
 static inline const float twoPi = juce::MathConstants<float>::twoPi;

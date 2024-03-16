@@ -25,6 +25,9 @@ namespace data {
 template<typename SampleType>
 class RingBuffer
 {
+  using BufferData = std::vector<std::vector<SampleType>>;
+  using ChannelData = std::vector<SampleType>;
+
 public:
   //============================================================================
   /**
@@ -38,8 +41,10 @@ public:
   */
   enum class OperationResult
   {
-    Success,           /**< The operation was successful. */
-    ErrorSizeMismatch, /**< The operation failed due to a size mismatch. */
+    Success,               /**< The operation was successful. */
+    ErrorSizeMismatch,     /**< The operation failed due to a size mismatch. */
+    ErrorInnerSizeMismatch /**< The operation failed due to an inner size
+                                mismatch. */
   };
   //============================================================================
   /**
@@ -55,8 +60,7 @@ public:
     : bufferSize(numSamplesToAllocate)
     , numChannels(numChannelsToAllocate)
     , position(0)
-    , buffer(std::make_unique<AudioBuffer<SampleType>>(numChannelsToAllocate,
-                                                       numSamplesToAllocate))
+    , buffer(numChannels, ChannelData(bufferSize))
   {
   }
   //============================================================================
@@ -65,36 +69,30 @@ public:
 
       @param targetBuffer The buffer to copy the audio data into.
   */
-  const OperationResult read(
-    AudioBuffer<SampleType>& targetBuffer) const noexcept
+  const BufferData read() const noexcept
   {
-    // If targetBuffer is smaller than the RingBuffer we need to return early
-    if (targetBuffer.getNumChannels() < numChannels ||
-        targetBuffer.getNumSamples() < bufferSize) {
-      jassertfalse;
-      return OperationResult::ErrorSizeMismatch;
-    }
-
     // We need to lock the buffer for reading to ensure thread safety
     lock.enterRead();
 
     // Caching the atomic should be cheaper than calling get() every iteration
     const int startingPosition = position.get();
 
+    // Allocate a vector of vectors to store the audio data
+    BufferData data(numChannels, ChannelData(bufferSize));
+
     // Iterate the samples first to improve thread safety
     for (int sample = 0; sample < bufferSize; ++sample) {
       const int ringPosition = (startingPosition + sample) % bufferSize;
       for (int channel = 0; channel < numChannels; ++channel) {
-        targetBuffer.copyFrom(
-          channel, sample, buffer, channel, ringPosition, 1);
+        data[channel][sample] = buffer[channel][ringPosition];
       }
     }
 
     // We need to unlock the buffer after reading to ensure thread safety
     lock.exitRead();
 
-    // We return the result of the operation
-    return OperationResult::Success;
+    // We return the audio data
+    return data;
   }
   //============================================================================
   /**
@@ -102,12 +100,19 @@ public:
 
       @param bufferToWrite The buffer containing the audio data to write.
   */
-  const OperationResult write(
-    const AudioBuffer<SampleType>& bufferToWrite) noexcept
+  const OperationResult write(BufferData& bufferToWrite) noexcept
   {
-    // If bufferToWrite is larger than the RingBuffer we need to return early
-    if (bufferToWrite.getNumChannels() > numChannels ||
-        bufferToWrite.getNumSamples() > bufferSize) {
+    // Check if all channels of bufferToWrite have the same size
+    size_t channelSize = bufferToWrite[0].size();
+    for (size_t i = 1; i < bufferToWrite.size(); ++i) {
+      if (bufferToWrite[i].size() != channelSize) {
+        jassertfalse;
+        return OperationResult::ErrorInnerSizeMismatch;
+      }
+    }
+
+    // Check if the bufferToWrite has the same size as the RingBuffer
+    if (bufferToWrite.size() != numChannels || channelSize >= bufferSize) {
       jassertfalse;
       return OperationResult::ErrorSizeMismatch;
     }
@@ -115,15 +120,14 @@ public:
     // We need to lock the buffer for writing to ensure thread safety
     lock.enterWrite();
 
-    // Caching the atomic should be cheaper than calling get() every iteration
+    // Caching the atomic should be cheaper than calling get() ever iteration
     const int startingPosition = position.get();
 
-    // Iterate the samples first to improve thread safety
-    for (int sample = 0; sample < bufferToWrite.getNumSamples(); ++sample) {
+    // Copy the audio data from the bufferToWrite into the buffer
+    for (int sample = 0; sample < channelSize; ++sample) {
       const int ringPosition = (startingPosition + sample) % bufferSize;
       for (int channel = 0; channel < numChannels; ++channel) {
-        buffer->copyFrom(
-          channel, ringPosition, bufferToWrite, channel, sample, 1);
+        buffer[channel][ringPosition] = bufferToWrite[channel][sample];
       }
     }
 
@@ -136,13 +140,13 @@ public:
     // We return the result of the operation
     return OperationResult::Success;
   }
-  //============================================================================
+
 private:
-  const int bufferSize;                            // Number of samples
-  const int numChannels;                           // Number of channels
-  juce::Atomic<int> position;                      // Current starting position
-  std::unique_ptr<AudioBuffer<SampleType>> buffer; // Buffer to store audio data
-  juce::ReadWriteLock lock;                        // Lock for thread safety
+  const int bufferSize;       // Number of samples
+  const int numChannels;      // Number of channels
+  juce::Atomic<int> position; // Current starting position
+  BufferData buffer;          // Buffer to store audio data
+  juce::ReadWriteLock lock;   // Lock for thread safety
 };
 } // namespace data
 } // namespace dsp

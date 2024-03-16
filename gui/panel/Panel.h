@@ -121,7 +121,7 @@ public:
       for (int col = 0; col < grid.size(); col++) {
         const auto firstPoint = getGridPoint(bounds.toNearestInt(), col, 0);
         const auto endPoint =
-          juce::Point<int>(firstPoint.getX(), bounds.getHeight() - 1);
+          juce::Point<int>(firstPoint.getX(), (int)bounds.getHeight() - 1);
         const auto line =
           juce::Line<float>(firstPoint.toFloat(), endPoint.toFloat());
         g.drawLine(line, 1.0f);
@@ -129,7 +129,7 @@ public:
       for (int row = 0; row < grid[0].size(); row++) {
         const auto firstPoint = getGridPoint(bounds.toNearestInt(), 0, row);
         const auto endPoint =
-          juce::Point<int>(bounds.getWidth() - 1, firstPoint.getY());
+          juce::Point<int>((int)bounds.getWidth() - 1, firstPoint.getY());
         const auto line =
           juce::Line<float>(firstPoint.toFloat(), endPoint.toFloat());
         g.drawLine(line, 1.0f);
