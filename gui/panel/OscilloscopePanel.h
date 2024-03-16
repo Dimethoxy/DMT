@@ -1,7 +1,7 @@
 #pragma once
 //==============================================================================
-#include "../component/OscilloscopeComponent.h"
-#include "./Panel.h"
+#include "gui/component/OscilloscopeComponent.h"
+#include "gui/panel/Panel.h"
 #include <JuceHeader.h>
 //==============================================================================
 namespace dmt {

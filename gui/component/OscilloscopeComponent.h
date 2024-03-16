@@ -1,6 +1,6 @@
 #pragma once
 //==============================================================================
-#include "../../dsp/processor/OscilloscopeProcessor.h"
+#include "dsp/processor/OscilloscopeProcessor.h"
 #include <JuceHeader.h>
 //==============================================================================
 namespace dmt {
