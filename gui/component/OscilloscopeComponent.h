@@ -1,24 +1,28 @@
 #pragma once
 //==============================================================================
 #include "dsp/processor/OscilloscopeProcessor.h"
+#include "gui/widget/Curve.h"
+#include "utility/RepaintTimer.h"
 #include <JuceHeader.h>
 //==============================================================================
 namespace dmt {
 namespace gui {
 namespace component {
 template<typename SampleType>
-class OscilloscopeComponent
-  : public juce::Component
-  , public juce::Timer
+class OscilloscopeComponent : public juce::Component
 {
+
   using OscilloscopeProcessor =
     dmt::dsp::processor::OscilloscopeProcessor<SampleType>;
 
 public:
   OscilloscopeComponent(OscilloscopeProcessor& processor)
     : processor(processor)
+    , curve([this](int numDataPoints) {
+      return this->getLeftChannelAmplitudes(numDataPoints);
+    })
   {
-    startTimerHz(60);
+    addAndMakeVisible(curve);
   }
 
   void paint(juce::Graphics& g) override
@@ -27,12 +31,16 @@ public:
     const auto amplitudes = processor.getAmplitudes(100);
   }
 
-  void resized() override {}
+  void resized() override { curve.setBounds(getLocalBounds()); }
 
-  void timerCallback() override { repaint(); }
+  std::vector<SampleType> getLeftChannelAmplitudes(int numDataPoints)
+  {
+    return processor.getAmplitudes(numDataPoints)[0];
+  }
 
 private:
   OscilloscopeProcessor& processor;
+  dmt::gui::widget::Curve<SampleType> curve;
 };
 } // namespace component
 } // namespace gui

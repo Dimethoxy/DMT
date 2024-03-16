@@ -11,27 +11,27 @@ class RepaintTimer : juce::Timer
 
 public:
   //============================================================================
-  void start() noexcept
+  void startRepaintTimer() noexcept
   {
     this->currentFps = fps;
     startTimerHz(fps);
   }
   //============================================================================
-  void stop() noexcept { stopTimer(); }
+  void stopRepaintTimer() noexcept { stopTimer(); }
+  //============================================================================
+  virtual void repaintTimerCallback() = 0;
+
+private:
   //===========================================================================
   void timerCallback() override
   {
     repaintTimerCallback();
     if (fps != currentFps) {
       currentFps = fps;
-      stop();
-      start();
+      stopRepaintTimer();
+      startRepaintTimer();
     }
   }
-  //===========================================================================
-  virtual void repaintTimerCallback() = 0;
-
-private:
   int currentFps;
 };
 } // namespace utility

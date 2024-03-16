@@ -1,12 +1,15 @@
 #pragma once
 //==============================================================================
+#include "utility/RepaintTimer.h"
 #include <JuceHeader.h>
 //==============================================================================
 namespace dmt {
 namespace gui {
 namespace widget {
 template<typename SampleType>
-class Curve : public juce::Component
+class Curve
+  : public juce::Component
+  , public dmt::utility::RepaintTimer
 {
   using Data = std::vector<SampleType>;
   using DataSource = std::function<std::vector<SampleType>(int)>;
@@ -15,27 +18,33 @@ public:
   Curve(DataSource dataSource)
     : dataSource(dataSource)
   {
+    startRepaintTimer();
   }
 
-  void paint(juce::Graphics& g) noexcept override {}
-
-  void resized() noexcept override
+  void paint(juce::Graphics& g) noexcept override
   {
     const int width = getWidth();
+    const int height = getHeight();
     this->data = dataSource(width);
-  }
 
-  void update() noexcept
-  {
-    const int width = getWidth();
-    this->data = dataSource(width);
-    repaint();
+    juce::Path path;
+    path.startNewSubPath(0, height / 2);
+    for (int i = 0; i < width; ++i) {
+      path.lineTo(i, height / 2 - this->data[i] * height / 2);
+    }
+    path.lineTo(width, height / 2);
+    path.closeSubPath();
+
+    g.setColour(juce::Colours::red);
+    g.strokePath(path, juce::PathStrokeType(2.0f));
   }
 
   void setDataSource(DataSource dataSource) noexcept
   {
     this->dataSource = dataSource;
   }
+
+  void repaintTimerCallback() override { repaint(); }
 
 private:
   Data data;
