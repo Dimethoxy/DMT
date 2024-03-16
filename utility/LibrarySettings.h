@@ -1,13 +1,13 @@
+//==============================================================================
 #pragma once
-
+//==============================================================================
 #include "BinaryData.h"
 #include <JuceHeader.h>
-
+//==============================================================================
 namespace dmt {
-
+//==============================================================================
 struct LibrarySettings
 {
-
   using Colour = juce::Colour;
   static inline const bool debugBounds = false;
   static inline const bool debugGrid = false;
@@ -36,7 +36,6 @@ struct LibrarySettings
   {
     // General
     static inline float padding = 12.0f;
-    static inline Colour backgroundColor = Colours::background;
     static inline float cornerSize = 15.0f;
     // Border
     static inline bool drawBorder = true;
@@ -118,6 +117,24 @@ struct LibrarySettings
     static inline bool drawInnerShadow = true;
     static inline Colour outerShadowColour = Colours::shadow;
     static inline Colour innerShadowColour = Colours::primary;
+    static inline float outerShadowRadius = 4.0f;
+    static inline float innerShadowRadius = 4.0f;
+  };
+  struct Oscilloscope
+  {
+    // General
+    static inline Colour backgroundColour = Colours::background;
+    static inline float padding = 10.0f;
+    static inline float cornerSize = 15.0f;
+    // Border
+    static inline bool drawBorder = true;
+    static inline Colour borderColour = Colours::solid_dark;
+    static inline float borderStrength = 4.0f;
+    // Shadow
+    static inline bool drawOuterShadow = false;
+    static inline bool drawInnerShadow = true;
+    static inline Colour outerShadowColour = Colours::shadow;
+    static inline Colour innerShadowColour = Colours::shadow;
     static inline float outerShadowRadius = 4.0f;
     static inline float innerShadowRadius = 4.0f;
   };

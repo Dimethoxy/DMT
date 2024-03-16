@@ -1,13 +1,11 @@
 //==============================================================================
-
 #pragma once
-
+//==============================================================================
 #include "../../utility/LibrarySettings.h"
 #include "../widget/Label.h"
 #include "../widget/Shadow.h"
 #include "../widget/TriangleButton.h"
 #include <JuceHeader.h>
-
 //==============================================================================
 namespace dmt {
 namespace gui {

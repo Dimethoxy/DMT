@@ -1,3 +1,4 @@
+//==============================================================================
 #pragma once
 //==============================================================================
 #include "utility/RepaintTimer.h"
@@ -6,6 +7,7 @@
 namespace dmt {
 namespace gui {
 namespace widget {
+//==============================================================================
 template<typename SampleType>
 class Curve
   : public juce::Component
@@ -33,10 +35,10 @@ public:
       path.lineTo(i, height / 2 - this->data[i] * height / 2);
     }
     path.lineTo(width, height / 2);
-    path.closeSubPath();
+    // path.closeSubPath();
 
-    g.setColour(juce::Colours::red);
-    g.strokePath(path, juce::PathStrokeType(2.0f));
+    g.setColour(juce::Colours::white);
+    g.strokePath(path, juce::PathStrokeType(3.0f));
   }
 
   void setDataSource(DataSource dataSource) noexcept
