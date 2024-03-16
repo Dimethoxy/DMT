@@ -46,21 +46,27 @@ public:
   void transferThreadCallback() noexcept
   {
     std::unique_lock<std::mutex> lock(queueMutex);
+
+    // Run this thread until the kill flag is set
     while (!kill.get()) {
+
+      // Wait until the buffer queue is not empty or the kill flag is set
       queueConditionVariable.wait(lock, [this] {
         return !this->bufferQueue.empty() || this->kill.get();
       });
+
+      // Consumes the buffer queue
       while (!bufferQueue.empty()) {
-        // Copy the front
+
+        // Get the buffer from the queue
         const auto& buffer = bufferQueue.front();
         const auto numChannels = buffer.getNumChannels();
         const auto numSamples = buffer.getNumSamples();
 
-        // Allocate a vector of vectors to store the audio data
-        std::vector<std::vector<SampleType>> data(
-          numChannels, std::vector<SampleType>(numSamples));
+        // Create a raw vector of audio data
+        BufferData data(numChannels, ChannelData(numSamples));
 
-        // Copy the audio data from the buffer into the vector of vectors
+        // Copy the audio data from the buffer to the raw vector
         for (int channel = 0; channel < numChannels; ++channel) {
           auto* channelData = buffer.getReadPointer(channel);
           for (int sample = 0; sample < numSamples; ++sample) {
@@ -71,14 +77,17 @@ public:
         // Write the audio data to the ring buffer
         ringBuffer->write(data);
 
-        // Pop the front of the queue
+        // Remove the consumed buffer from the queue
         bufferQueue.pop();
       }
     }
+
+    // Gracefully close the thread and notify the destructor
     lock.unlock();
     closed = true;
     closeConditionVariable.notify_one();
   }
+
   //============================================================================
   const BufferData getAmplitudes(const int numDataPoints) noexcept
   {
@@ -105,8 +114,9 @@ public:
 
     return data;
   }
-  //============================================================================
 
+  //============================================================================
+private:
   const int ringBufferNumChannels = 2;
   const int ringBufferNumSamples = 4096;
   std::shared_ptr<RingBuffer> ringBuffer;
