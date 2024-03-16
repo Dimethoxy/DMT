@@ -19,8 +19,9 @@ public:
   //============================================================================
   ~OscilloscopeProcessor() noexcept
   {
+    // Set the kill flag to true to stop the transfer thread
     kill = true;
-
+    // Wait until the transfer thread is closed
     std::unique_lock<std::mutex> lock(closeMutex);
     closeConditionVariable.wait(lock,
                                 [this] { return this->closed.get() == true; });
@@ -29,8 +30,10 @@ public:
   //============================================================================
   void prepareToPlay(double /*sampleRate*/, int /*samplesPerBlock*/) noexcept
   {
+    // Create the ring buffer
     ringBuffer =
       std::make_unique<RingBuffer>(ringBufferNumChannels, ringBufferNumSamples);
+    // Start the transfer thread
     transferThread =
       std::thread(&OscilloscopeProcessor::transferThreadCallback, this);
     transferThread.detach();
@@ -45,27 +48,21 @@ public:
   //============================================================================
   void transferThreadCallback() noexcept
   {
-    std::unique_lock<std::mutex> lock(queueMutex);
-
     // Run this thread until the kill flag is set
+    std::unique_lock<std::mutex> lock(queueMutex);
     while (!kill.get()) {
-
       // Wait until the buffer queue is not empty or the kill flag is set
       queueConditionVariable.wait(lock, [this] {
         return !this->bufferQueue.empty() || this->kill.get();
       });
-
       // Consumes the buffer queue
       while (!bufferQueue.empty()) {
-
         // Get the buffer from the queue
         const auto& buffer = bufferQueue.front();
         const auto numChannels = buffer.getNumChannels();
         const auto numSamples = buffer.getNumSamples();
-
         // Create a raw vector of audio data
         BufferData data(numChannels, ChannelData(numSamples));
-
         // Copy the audio data from the buffer to the raw vector
         for (int channel = 0; channel < numChannels; ++channel) {
           auto* channelData = buffer.getReadPointer(channel);
@@ -73,15 +70,12 @@ public:
             data[channel][sample] = channelData[sample];
           }
         }
-
         // Write the audio data to the ring buffer
         ringBuffer->write(data);
-
         // Remove the consumed buffer from the queue
         bufferQueue.pop();
       }
     }
-
     // Gracefully close the thread and notify the destructor
     lock.unlock();
     closed = true;
@@ -93,10 +87,8 @@ public:
   {
     // Buffer with the original audio data
     auto buffer = ringBuffer->read();
-
     // Return the buffer with the downsampled audio data
     BufferData data(ringBufferNumChannels, ChannelData(numDataPoints));
-
     // Downsample the audio data using a lookup table
     for (int channel = 0; channel < ringBufferNumChannels; ++channel) {
       // Create a lookup table for the audio data
@@ -111,7 +103,7 @@ public:
         data[channel][dataPoint] = value;
       }
     }
-
+    // Return the downsampled audio data
     return data;
   }
 
