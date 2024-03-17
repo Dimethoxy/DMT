@@ -31,8 +31,10 @@ public:
 
     juce::Path path;
     path.startNewSubPath(0, height / 2);
-    for (int i = 0; i < width; ++i) {
+
+    for (int i = 0; i < width; i += 2) {
       path.lineTo(i, height / 2 - this->data[i] * height / 2);
+      path.lineTo(i, height / 2 - this->data[i + 1] * height / 2);
     }
     path.lineTo(width, height / 2);
     // path.closeSubPath();

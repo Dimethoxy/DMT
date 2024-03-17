@@ -31,8 +31,7 @@ public:
   void prepareToPlay(double /*sampleRate*/, int /*samplesPerBlock*/) noexcept
   {
     // Create the ring buffer
-    ringBuffer =
-      std::make_unique<RingBuffer>(ringBufferNumChannels, ringBufferNumSamples);
+    ringBuffer = std::make_unique<RingBuffer>(numChannels, numSamples);
     // Start the transfer thread
     transferThread =
       std::thread(&OscilloscopeProcessor::transferThreadCallback, this);
@@ -52,9 +51,8 @@ public:
     std::unique_lock<std::mutex> lock(queueMutex);
     while (!kill.get()) {
       // Persistent data
-      std::vector<SampleType> sampleSumCache(ringBufferNumChannels);
-      int currentCacheSize = 0;
-      int currentIndex = 0;
+      BufferData bufferCache(numChannels, ChannelData(samplesPerPoint));
+      int cacheIndex = 0;
       // Wait until the buffer queue is not empty or the kill flag is set
       queueConditionVariable.wait(lock, [this] {
         return !this->bufferQueue.empty() || this->kill.get();
@@ -63,29 +61,31 @@ public:
       while (!bufferQueue.empty()) {
         // Get the buffer from the queue
         const auto& buffer = bufferQueue.front();
-        const auto numChannels = buffer.getNumChannels();
-        const auto numSamples = buffer.getNumSamples();
+        const auto newNumSamples = buffer.getNumSamples();
         // Create a raw vector of audio data
-        BufferData data(numChannels, ChannelData(numSamples));
+        BufferData data(numChannels, ChannelData(newNumSamples));
+        int bufferIndex = 0;
         // Copy the audio data from the buffer to the raw vector
-        for (int sample = 0; sample < numSamples; ++sample) {
+        for (int sample = 0; sample < newNumSamples; ++sample) {
           for (int channel = 0; channel < numChannels; ++channel) {
-            sampleSumCache[channel] += buffer.getSample(channel, sample);
+            bufferCache[channel][cacheIndex] =
+              buffer.getSample(channel, sample);
           }
-          currentCacheSize++;
-          if (currentCacheSize == samplesPerPoint) {
+          cacheIndex++;
+          if (cacheIndex == samplesPerPoint) {
+            auto points = extractPointsFromCache(bufferCache);
             for (int channel = 0; channel < numChannels; ++channel) {
-              data[channel][currentIndex] =
-                sampleSumCache[channel] / (SampleType)samplesPerPoint;
-              sampleSumCache[channel] = 0;
+              for (int point = 0; point < points[channel].size(); ++point) {
+                data[channel][bufferIndex] = points[channel][point];
+              }
             }
-            currentIndex++;
-            currentCacheSize = 0;
+            cacheIndex = 0;
+            bufferIndex++;
           }
         }
         // Resize all channels
         for (int channel = 0; channel < numChannels; ++channel) {
-          data[channel].resize(currentIndex);
+          data[channel].resize(bufferIndex);
         }
         // Write the audio data to the ring buffer
         ringBuffer->write(data);
@@ -98,6 +98,24 @@ public:
     closed = true;
     closeConditionVariable.notify_one();
   }
+  const BufferData extractPointsFromCache(BufferData& cache) noexcept
+  {
+    BufferData result(numChannels, ChannelData(2));
+    for (int channel = 0; channel < numChannels; ++channel) {
+      auto max = std::max_element(cache[channel].begin(), cache[channel].end());
+      auto maxIndex = std::distance(cache[channel].begin(), max);
+      auto min = std::min_element(cache[channel].begin(), cache[channel].end());
+      auto minIndex = std::distance(cache[channel].begin(), min);
+      if (maxIndex < minIndex) {
+        result[channel][0] = cache[channel][maxIndex];
+        result[channel][1] = cache[channel][minIndex];
+      } else {
+        result[channel][0] = cache[channel][minIndex];
+        result[channel][1] = cache[channel][maxIndex];
+      }
+    }
+    return result;
+  }
 
   //============================================================================
   const BufferData getAmplitudes(const int numDataPoints) noexcept
@@ -105,7 +123,7 @@ public:
     // Buffer with the original audio data
     auto buffer = ringBuffer->read();
     // Return the buffer with the downsampled audio data
-    BufferData data(ringBufferNumChannels, ChannelData(numDataPoints));
+    BufferData data(numChannels, ChannelData(numDataPoints));
     // Downsample the audio data using a lookup table
     // for (int channel = 0; channel < ringBufferNumChannels; ++channel) {
     //  // Create a lookup table for the audio data
@@ -121,8 +139,8 @@ public:
     //  }
     //}
     // Return the downsampled audio data
-    const auto offset = ringBufferNumSamples - numDataPoints;
-    for (int channel = 0; channel < ringBufferNumChannels; ++channel) {
+    const auto offset = numSamples - numDataPoints;
+    for (int channel = 0; channel < numChannels; ++channel) {
       for (int dataPoint = 0; dataPoint < numDataPoints; ++dataPoint) {
         data[channel][dataPoint] = buffer[channel][dataPoint + offset];
       }
@@ -132,9 +150,9 @@ public:
 
   //============================================================================
 private:
-  const int ringBufferNumChannels = 2;
-  const int ringBufferNumSamples = 4096;
-  const int samplesPerPoint = 32;
+  const int numChannels = 2;
+  const int numSamples = 4096;
+  const int samplesPerPoint = 16;
   std::shared_ptr<RingBuffer> ringBuffer;
   std::queue<juce::AudioBuffer<SampleType>> bufferQueue;
   std::condition_variable queueConditionVariable;
