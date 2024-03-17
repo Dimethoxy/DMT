@@ -65,7 +65,8 @@ public:
   }
   //============================================================================
   /**
-      Reads audio data from the buffer into the target buffer.
+      Reads audio data from the buffer into the target buffer. This method is
+      thread-safe.
 
       @param targetBuffer The buffer to copy the audio data into.
   */
@@ -96,7 +97,8 @@ public:
   }
   //============================================================================
   /**
-      Writes audio data from the bufferToWrite into the buffer.
+      Writes audio data from the bufferToWrite into the buffer. This method is
+      thread-safe.
 
       @param bufferToWrite The buffer containing the audio data to write.
   */
@@ -140,9 +142,45 @@ public:
     // We return the result of the operation
     return OperationResult::Success;
   }
+  //============================================================================
+  /**
+      Resizes the buffer to the specified number of samples. This method is
+      thread-safe.
 
+      @param numSamplesToAllocate The number of samples to allocate in the
+      buffer.
+  */
+  void resize(const int numSamplesToAllocate)
+  {
+    // We need to lock the buffer for writing to ensure thread safety
+    lock.enterWrite();
+
+    // Caching the atomic should be cheaper than calling get() every iteration
+    const int startingPosition = position.get();
+
+    // Allocate a vector of vectors to store the audio data
+    BufferData data(numChannels, ChannelData(numSamplesToAllocate));
+
+    // Iterate the samples first to improve thread safety
+    for (int sample = 0; sample < bufferSize; ++sample) {
+      const int ringPosition = (startingPosition + sample) % bufferSize;
+      for (int channel = 0; channel < numChannels; ++channel) {
+        data[channel][sample] = buffer[channel][ringPosition];
+      }
+    }
+
+    // Replace the buffer with the new buffer
+    buffer = data;
+
+    // Reset the position
+    position.set(0);
+
+    // We need to unlock the buffer after writing to ensure thread safety
+    lock.exitWrite();
+  }
+  //============================================================================
 private:
-  const int bufferSize;       // Number of samples
+  int bufferSize;             // Number of samples
   const int numChannels;      // Number of channels
   juce::Atomic<int> position; // Current starting position
   BufferData buffer;          // Buffer to store audio data
