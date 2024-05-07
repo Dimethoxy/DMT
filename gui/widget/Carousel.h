@@ -10,7 +10,7 @@
 
 #pragma once
 
-#include "../panels/Panel.h"
+#include "../panel/AbstractPanel.h"
 #include <JuceHeader.h>
 
 //==============================================================================
@@ -60,7 +60,7 @@ public:
   }
 
 protected:
-  std::vector<std::unique_ptr<Panel>> panels;
+  std::vector<std::unique_ptr<AbstractPanel>> panels;
 
 private:
   int index;

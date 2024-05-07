@@ -1,6 +1,6 @@
 #pragma once
 //==============================================================================
-#include "../../utility/AppSettings.h"
+#include "../../utility/LibrarySettings.h"
 #include "../../utility/Math.h"
 #include <JuceHeader.h>
 //==============================================================================
@@ -10,7 +10,7 @@ namespace widgets {
 //==============================================================================
 class RotarySlider : public juce::Slider
 {
-  using Settings = dmt::AppSettings;
+  using Settings = dmt::LibrarySettings;
   using Slider = Settings::Slider;
   using Colour = Settings::Colour;
   using StrokeType = juce::PathStrokeType;
@@ -107,7 +107,7 @@ protected:
     const float rawAngle = juce::jmap(
       value, minValue, maxValue, normalizedStartAngle, normalizedEndAngle);
     const float valueAngleInRadians =
-      dmt::Math::degreeToRadians(rawAngle + angleOffset);
+      dmt::math::degreeToRadians(rawAngle + angleOffset);
     const auto tickLine = getTick(shaftBounds, centre, valueAngleInRadians);
     g.drawLine(tickLine, lineStrength);
 
@@ -122,9 +122,9 @@ protected:
       const auto endCapStyle = StrokeType::rounded;
       const auto strokeType = StrokeType(railWidth, jointStyle, endCapStyle);
       const auto startAngleInRadians =
-        dmt::Math::degreeToRadians(normalizedStartAngle + angleOffset);
+        dmt::math::degreeToRadians(normalizedStartAngle + angleOffset);
       const auto endAngleInRadians =
-        dmt::Math::degreeToRadians(normalizedEndAngle + angleOffset);
+        dmt::math::degreeToRadians(normalizedEndAngle + angleOffset);
       const auto lowerRail = getLowerRail(
         centre, railRadius, startAngleInRadians, endAngleInRadians);
       g.setColour(lowerRailColour);
@@ -148,9 +148,9 @@ protected:
                                                    normalizedStartAngle,
                                                    normalizedEndAngle);
         const float selectionAngleInRadians =
-          dmt::Math::degreeToRadians(rawSelectionAngle + angleOffset);
+          dmt::math::degreeToRadians(rawSelectionAngle + angleOffset);
         const auto slectionCentre =
-          dmt::Math::pointOnCircle(centre, railRadius, selectionAngleInRadians);
+          dmt::math::pointOnCircle(centre, railRadius, selectionAngleInRadians);
         const float selectionSize = rawSelectionSize * size;
         const auto selectionBounds = juce::Rectangle<float>()
                                        .withSize(selectionSize, selectionSize)
@@ -168,7 +168,7 @@ protected:
 
     // Draw the Thumb
     const auto thumbPoint =
-      dmt::Math::pointOnCircle(centre, railRadius, valueAngleInRadians);
+      dmt::math::pointOnCircle(centre, railRadius, valueAngleInRadians);
     float thumbSize = rawThumbSize * size;
     if (!isMouseButtonDown())
       thumbSize *= 0.85f;
@@ -259,10 +259,10 @@ protected:
   {
     const float outerRadius = bounds.getWidth() / 2.0f;
     const auto outerPoint =
-      dmt::Math::pointOnCircle(centre, outerRadius, angleInRadians);
+      dmt::math::pointOnCircle(centre, outerRadius, angleInRadians);
     const float innerRadius = outerRadius / 5.0f;
     const auto innerPoint =
-      dmt::Math::pointOnCircle(centre, innerRadius, angleInRadians);
+      dmt::math::pointOnCircle(centre, innerRadius, angleInRadians);
     return juce::Line<float>(outerPoint, innerPoint);
   }
   //============================================================================

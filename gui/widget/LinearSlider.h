@@ -1,7 +1,7 @@
 //==============================================================================
 #pragma once
 //==============================================================================
-#include "../../utility/AppSettings.h"
+#include "../../utility/LibrarySettings.h"
 #include <JuceHeader.h>
 //==============================================================================
 namespace dmt {
@@ -10,7 +10,7 @@ namespace widgets {
 //==============================================================================
 class LinearSlider : public juce::Slider
 {
-  using Settings = dmt::AppSettings;
+  using Settings = dmt::LibrarySettings;
   using Slider = Settings::Slider;
   using Colour = Settings::Colour;
   using StrokeType = juce::PathStrokeType;
