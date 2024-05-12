@@ -1,0 +1,101 @@
+#pragma once
+//==============================================================================
+#include <JuceHeader.h>
+//==============================================================================
+namespace dmt {
+namespace gui {
+namespace widget {
+//==============================================================================
+template<typename SampleType>
+class Graph
+  : public juce::Component
+  , public dmt::utility::RepaintTimer
+{
+  using Data = std::vector<SampleType>;
+  using DataSource = std::function<std::vector<SampleType>(int)>;
+
+public:
+  enum class Quality
+  {
+    Low,
+    High
+  };
+  //==============================================================================
+  Graph(DataSource dataSource,
+        bool continuousRepainting = false,
+        Quality quality = Quality::Low)
+    : dataSource(dataSource){}
+    , detail(detail)
+    , continuousRepainting(continuousRepainting)
+  {
+    if (continuousRepainting) {
+      startRepaintTimer();
+    }
+  }
+
+  ~Graph() override;
+
+  //==============================================================================
+  void paint(juce::Graphics&)
+  {
+    const int width = getWidth();
+    const int height = getHeight();
+    this->data = dataSource(width);
+
+    juce::Path path;
+    switch (quality) {
+      case Quality::Low:
+        path = makeLowQualityPath(data, width, height);
+        break;
+      case Quality::High:
+        path = makeHighQualityPath(data, width, height);
+        break;
+    }
+
+    g.setColour(juce::Colours::white);
+    g.strokePath(path, juce::PathStrokeType(3.0f));
+  } noexcept
+  override;
+  void resized() override;
+
+protected:
+  juce::Path makeLowQualityPath(const Data& data, int width, int height)
+  {
+    juce::Path path;
+    path.preallocateSpace((3 * width) + 6);
+    path.startNewSubPath(0, height / 2);
+    for (int i = 0; i < width; ++i) {
+      path.lineTo(i, height / 2 - this->data[i] * height / 2);
+    }
+    path.lineTo(width, height / 2);
+    path.closeSubPath();
+    return path;
+  }
+
+  juce::Path makeHighQualityPath(const Data& data, int width, int height)
+  {
+    int numPoints = width * 3;
+    float pointSpacing = width / (float)(numPoints - 1);
+    juce::Path path;
+    path.preallocateSpace(numPoints * 3 + 6);
+    path.startNewSubPath(0, height / 2);
+    for (int i = 0; i < numPoints; ++i) {
+      float x = i * pointSpacing;
+      float y = height / 2 - this->data[i] * height / 2;
+      path.lineTo(x, y);
+    }
+    path.lineTo(width, height / 2);
+    path.closeSubPath();
+    return path;
+  }
+
+  //==============================================================================
+private:
+  Quality quality;
+  bool continuousRepainting;
+  //==============================================================================
+  JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Graph)
+};
+} // namespace widget
+} // namespace gui
+} // namespace dmt
