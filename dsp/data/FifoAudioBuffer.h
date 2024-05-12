@@ -12,9 +12,9 @@ class FifoAudioBuffer : juce::AbstractFifo
   //============================================================================
 public:
   FifoAudioBuffer(int channels, int bufferSize)
-    : AbstractFifo(buffersize)
+    : AbstractFifo(bufferSize)
   {
-    buffer.setSize(channels, buffersize);
+    buffer.setSize(channels, bufferSize);
   }
   //============================================================================
   void addToFifo(const juce::AudioBuffer<SampleType>& target)
@@ -42,7 +42,7 @@ public:
     finishedWrite(size1 + size2);
   }
   //============================================================================
-  void readFromFifo(juce::AudioBuffer<SampleType>& target, int numSamples = -1)
+  void readFromFifo(juce::AudioBuffer<SampleType>& target)
   {
     // Prepare to read
     const int numSamples = target.getNumSamples();
