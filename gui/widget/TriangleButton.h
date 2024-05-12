@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../utility/LibrarySettings.h"
+#include "../../utility/Settings.h"
 #include <JuceHeader.h>
 
 //==============================================================================
@@ -11,26 +11,27 @@ namespace widgets {
 class TriangleButton : public juce::Button
 {
   // Global
-  using LibrarySettings = dmt::LibrarySettings;
-  using Settings = LibrarySettings::TriangleButton;
-  const float& size = LibrarySettings::Layout::size;
-  const float& margin = LibrarySettings::Layout::margin;
+  using Settings = dmt::Settings;
+  const float& size = Settings::Layout::size;
+  const float& margin = Settings::Layout::margin;
   // General
-  const juce::Colour& standbyColour = Settings::standbyColour;
-  const juce::Colour& hoverColour = Settings::hoverColour;
-  const float& buttonMargin = Settings::margin;
-  const float& toggleReduction = Settings::toggleReduction;
+  const juce::Colour& standbyColour = Settings::TriangleButton::standbyColour;
+  const juce::Colour& hoverColour = Settings::TriangleButton::hoverColour;
+  const float& buttonMargin = Settings::TriangleButton::margin;
+  const float& toggleReduction = Settings::TriangleButton::toggleReduction;
   // Border
-  const bool& drawBorder = Settings::drawBorder;
-  const juce::Colour& borderColour = Settings::borderColour;
-  const float& rawBorderStrength = Settings::borderStrength;
+  const bool& drawBorder = Settings::TriangleButton::drawBorder;
+  const juce::Colour& borderColour = Settings::TriangleButton::borderColour;
+  const float& rawBorderStrength = Settings::TriangleButton::borderStrength;
   // Shadows
-  const bool& drawOuterShadow = Settings::drawOuterShadow;
-  const bool& drawInnerShadow = Settings::drawInnerShadow;
-  const juce::Colour& outerShadowColour = Settings::outerShadowColour;
-  const juce::Colour& innerShadowColour = Settings::innerShadowColour;
-  const float& outerShadowRadius = Settings::outerShadowRadius;
-  const float& innerShadowRadius = Settings::innerShadowRadius;
+  const bool& drawOuterShadow = Settings::TriangleButton::drawOuterShadow;
+  const bool& drawInnerShadow = Settings::TriangleButton::drawInnerShadow;
+  const juce::Colour& outerShadowColour =
+    Settings::TriangleButton::outerShadowColour;
+  const juce::Colour& innerShadowColour =
+    Settings::TriangleButton::innerShadowColour;
+  const float& outerShadowRadius = Settings::TriangleButton::outerShadowRadius;
+  const float& innerShadowRadius = Settings::TriangleButton::innerShadowRadius;
 
 public:
   //============================================================================

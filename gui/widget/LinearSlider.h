@@ -1,7 +1,7 @@
 //==============================================================================
 #pragma once
 //==============================================================================
-#include "../../utility/LibrarySettings.h"
+#include "../../utility/Settings.h"
 #include <JuceHeader.h>
 //==============================================================================
 namespace dmt {
@@ -10,27 +10,26 @@ namespace widgets {
 //==============================================================================
 class LinearSlider : public juce::Slider
 {
-  using Settings = dmt::LibrarySettings;
-  using Slider = Settings::Slider;
+  using Settings = dmt::Settings;
   using Colour = Settings::Colour;
   using StrokeType = juce::PathStrokeType;
   const float& size = Settings::Layout::size;
   // General
   const float& rawPadding = Settings::Slider::padding;
   // Shaft
-  const juce::Colour& shaftColour = Slider::shaftColour;
-  const float& rawShaftLineStrength = Slider::shaftLineStrength;
-  const float& rawShaftSize = Slider::shaftSize;
+  const juce::Colour& shaftColour = Settings::Slider::shaftColour;
+  const float& rawShaftLineStrength = Settings::Slider::shaftLineStrength;
+  const float& rawShaftSize = Settings::Slider::shaftSize;
   // Rail
-  const juce::Colour& lowerRailColour = Slider::lowerRailColour;
-  const juce::Colour& upperRailColour = Slider::upperRailColour;
-  const float& rawRailWidth = Slider::railWidth;
-  const float& railSize = Slider::railSize;
+  const juce::Colour& lowerRailColour = Settings::Slider::lowerRailColour;
+  const juce::Colour& upperRailColour = Settings::Slider::upperRailColour;
+  const float& rawRailWidth = Settings::Slider::railWidth;
+  const float& railSize = Settings::Slider::railSize;
   // Thumb
-  const juce::Colour& thumbInnerColour = Slider::thumbInnerColour;
-  const juce::Colour& thumOuterColour = Slider::thumOuterColour;
-  const float& rawThumbSize = Slider::thumbSize;
-  const float& rawThumbStrength = Slider::thumbStrength;
+  const juce::Colour& thumbInnerColour = Settings::Slider::thumbInnerColour;
+  const juce::Colour& thumOuterColour = Settings::Slider::thumOuterColour;
+  const float& rawThumbSize = Settings::Slider::thumbSize;
+  const float& rawThumbStrength = Settings::Slider::thumbStrength;
 
 public:
   enum Type

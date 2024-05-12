@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../utility/LibrarySettings.h"
+#include "../../utility/Settings.h"
 #include <JuceHeader.h>
 
 namespace dmt {
@@ -9,10 +9,10 @@ namespace widgets {
 //==============================================================================
 class Label : public juce::Component
 {
-  using LibrarySettings = dmt::LibrarySettings;
+  using Settings = dmt::Settings;
   using Justification = juce::Justification;
-  const float& size = LibrarySettings::Layout::size;
-  const float& macFontScale = LibrarySettings::macFontScale;
+  const float& size = Settings::Layout::size;
+  const float& macFontScale = Settings::macFontScale;
 
 public:
   Label(juce::String text,
@@ -34,7 +34,7 @@ public:
 
     // Draw bounds debug
     g.setColour(juce::Colours::red);
-    if (LibrarySettings::debugBounds)
+    if (Settings::debugBounds)
       g.drawRect(bounds, 1);
 
     // Set font size depending on OS

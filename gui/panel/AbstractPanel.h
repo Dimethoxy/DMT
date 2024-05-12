@@ -1,7 +1,7 @@
 //==============================================================================
 #pragma once
 //==============================================================================
-#include "../../utility/LibrarySettings.h"
+#include "../../utility/Settings.h"
 #include "../widget/Label.h"
 #include "../widget/Shadow.h"
 #include "../widget/TriangleButton.h"
@@ -17,7 +17,7 @@ class AbstractPanel
 public:
   using Grid = std::vector<std::vector<juce::Point<float>>>;
   // Settings
-  using LibrarySettings = dmt::LibrarySettings;
+  using LibrarySettings = dmt::Settings;
   using Settings = LibrarySettings::Panel;
   using Fonts = LibrarySettings::Fonts;
   using Carousel = LibrarySettings::Carousel;

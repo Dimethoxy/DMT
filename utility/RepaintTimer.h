@@ -1,13 +1,13 @@
 #pragma once
 //==============================================================================
-#include "utility/LibrarySettings.h"
+#include "utility/Settings.h"
 #include <JuceHeader.h>
 //==============================================================================
 namespace dmt {
 namespace utility {
 class RepaintTimer : juce::Timer
 {
-  const int& fps = LibrarySettings::fps;
+  const int& fps = Settings::fps;
 
 public:
   //============================================================================
