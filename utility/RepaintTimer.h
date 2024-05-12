@@ -19,7 +19,12 @@ public:
   //============================================================================
   void stopRepaintTimer() noexcept { stopTimer(); }
   //============================================================================
-  virtual void repaintTimerCallback() = 0;
+  void repaintTimerCallback()
+  {
+    const auto component = dynamic_cast<juce::Component*>(this);
+    if (component != nullptr)
+      component->repaint();
+  }
 
 private:
   //===========================================================================

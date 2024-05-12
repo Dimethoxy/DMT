@@ -32,6 +32,7 @@ class LinearSlider : public juce::Slider
   const float& rawThumbStrength = Settings::Slider::thumbStrength;
 
 public:
+  //==============================================================================
   enum Type
   {
     Positive,
@@ -39,13 +40,12 @@ public:
     Bipolar,
     Selector
   };
-
   enum Orientation
   {
     Horizontal,
     Vertical
   };
-
+  //==============================================================================
   LinearSlider(const Type type, const Orientation orientation)
     : juce::Slider()
     , type(type)
@@ -80,24 +80,23 @@ public:
 
     // Calculate lower rail
     float thumbSize = rawThumbSize * size;
-    const auto padding = rawPadding * size;
-    const auto railBounds = bounds.reduced(thumbSize / 2.0f);
+    const auto railBounds = bounds.reduced((int)(thumbSize / 2.0f));
     float primaryPointX;
     float primaryPointY;
     float secondaryPointX;
     float secondaryPointY;
     switch (orientation) {
       case Orientation::Horizontal:
-        primaryPointX = railBounds.getX();
-        primaryPointY = railBounds.getCentreY();
-        secondaryPointX = railBounds.getRight();
-        secondaryPointY = railBounds.getCentreY();
+        primaryPointX = (float)railBounds.getX();
+        primaryPointY = (float)railBounds.getCentreY();
+        secondaryPointX = (float)railBounds.getRight();
+        secondaryPointY = (float)railBounds.getCentreY();
         break;
       case Orientation::Vertical:
-        primaryPointX = railBounds.getCentreX();
-        primaryPointY = railBounds.getBottom();
-        secondaryPointX = railBounds.getCentreX();
-        secondaryPointY = railBounds.getY();
+        primaryPointX = (float)railBounds.getCentreX();
+        primaryPointY = (float)railBounds.getBottom();
+        secondaryPointX = (float)railBounds.getCentreX();
+        secondaryPointY = (float)railBounds.getY();
         break;
       default:
         jassert(false);

@@ -5,13 +5,13 @@ namespace dsp {
 namespace data {
 //==============================================================================
 template<typename SampleType>
-class FifoAudioBuffer : juce::AbstractFifo
+class AudioFifoBuffer : juce::AbstractFifo
 {
   using BufferData = std::vector<std::vector<float>>;
   using ChannelData = std::vector<float>;
   //============================================================================
 public:
-  FifoAudioBuffer(int channels, int bufferSize)
+  AudioFifoBuffer(int channels, int bufferSize)
     : AbstractFifo(bufferSize)
   {
     buffer.setSize(channels, bufferSize);
@@ -87,7 +87,7 @@ public:
 private:
   juce::AudioBuffer<SampleType> buffer;
 
-  JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(FifoAudioBuffer)
+  JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(AudioFifoBuffer)
 };
 } // namespace data
 } // namespace dsp

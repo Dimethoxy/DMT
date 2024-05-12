@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../utility/Settings.h"
+#include "utility/Settings.h"
 #include <JuceHeader.h>
 
 namespace dmt {
@@ -12,7 +12,7 @@ class Label : public juce::Component
   using Settings = dmt::Settings;
   using Justification = juce::Justification;
   const float& size = Settings::Layout::size;
-  const float& macFontScale = Settings::macFontScale;
+  const float& unixScale = Settings::macFontScale;
 
 public:
   Label(juce::String text,
@@ -38,10 +38,10 @@ public:
       g.drawRect(bounds, 1);
 
     // Set font size depending on OS
-    if (OS_IS_DARWIN) {
-      g.setFont(font.withHeight(fontSize * size * macFontScale));
-    } else {
+    if (OS_IS_WINDOWS) {
       g.setFont(font.withHeight(fontSize * size));
+    } else {
+      g.setFont(font.withHeight(fontSize * size * unixScale));
     }
 
     // Draw text

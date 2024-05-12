@@ -4,6 +4,16 @@
 #include "BinaryData.h"
 #include <JuceHeader.h>
 //==============================================================================
+#ifndef OS_IS_WINDOWS
+#define OS_IS_WINDOWS 0
+#endif
+#ifndef OS_IS_DARWIN
+#define OS_IS_DARWIN 0
+#endif
+#ifndef OS_IS_LINUX
+#define OS_IS_LINUX 0
+#endif
+//==============================================================================
 namespace dmt {
 //==============================================================================
 struct Settings

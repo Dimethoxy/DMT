@@ -142,7 +142,7 @@ protected:
       g.setColour(upperRailColour);
       g.strokePath(upperRail, strokeType);
     } else {
-      const int numSelections = maxValue - minValue;
+      const int numSelections = (int)maxValue - (int)minValue;
       for (int i = 0; i <= numSelections; i++) {
         const float selectionValue = minValue + i;
         const float rawSelectionAngle = juce::jmap(selectionValue,

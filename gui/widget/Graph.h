@@ -1,5 +1,6 @@
 #pragma once
 //==============================================================================
+#include "utility/RepaintTimer.h"
 #include <JuceHeader.h>
 //==============================================================================
 namespace dmt {
@@ -24,8 +25,8 @@ public:
   Graph(DataSource dataSource,
         bool continuousRepainting = false,
         Quality quality = Quality::Low)
-    : dataSource(dataSource){}
-    , detail(detail)
+    : dataSource(dataSource)
+    , quality(quality)
     , continuousRepainting(continuousRepainting)
   {
     if (continuousRepainting) {
@@ -33,16 +34,14 @@ public:
     }
   }
 
-  ~Graph() override;
-
   //==============================================================================
-  void paint(juce::Graphics&)
+  void paint(juce::Graphics& g) noexcept override
   {
+    juce::Path path;
     const int width = getWidth();
     const int height = getHeight();
-    this->data = dataSource(width);
+    auto data = dataSource(width);
 
-    juce::Path path;
     switch (quality) {
       case Quality::Low:
         path = makeLowQualityPath(data, width, height);
@@ -54,9 +53,9 @@ public:
 
     g.setColour(juce::Colours::white);
     g.strokePath(path, juce::PathStrokeType(3.0f));
-  } noexcept
-  override;
-  void resized() override;
+  };
+
+  void resized() override {}
 
 protected:
   juce::Path makeLowQualityPath(const Data& data, int width, int height)
@@ -65,7 +64,7 @@ protected:
     path.preallocateSpace((3 * width) + 6);
     path.startNewSubPath(0, height / 2);
     for (int i = 0; i < width; ++i) {
-      path.lineTo(i, height / 2 - this->data[i] * height / 2);
+      path.lineTo(i, height / 2 - data[i] * height / 2);
     }
     path.lineTo(width, height / 2);
     path.closeSubPath();
@@ -81,7 +80,7 @@ protected:
     path.startNewSubPath(0, height / 2);
     for (int i = 0; i < numPoints; ++i) {
       float x = i * pointSpacing;
-      float y = height / 2 - this->data[i] * height / 2;
+      float y = height / 2 - data[i] * height / 2;
       path.lineTo(x, y);
     }
     path.lineTo(width, height / 2);
@@ -91,6 +90,7 @@ protected:
 
   //==============================================================================
 private:
+  DataSource dataSource;
   Quality quality;
   bool continuousRepainting;
   //==============================================================================
