@@ -1,5 +1,6 @@
 #pragma once
 //==============================================================================
+#include "dsp/data/AudioRingBuffer.h"
 #include "gui/component/OscilloscopeComponent.h"
 #include "gui/panel/AbstractPanel.h"
 #include <JuceHeader.h>
@@ -29,6 +30,7 @@ public:
 
 private:
   OscilloscopeComponent oscilloscopeComponent;
+
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(OscilloscopePanel)
 };
 

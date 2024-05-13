@@ -53,7 +53,7 @@ public:
 
     g.setColour(juce::Colours::white);
     g.strokePath(path, juce::PathStrokeType(3.0f));
-  };
+  }
 
   void resized() override {}
 
