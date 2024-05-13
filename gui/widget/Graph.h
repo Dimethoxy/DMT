@@ -62,11 +62,12 @@ protected:
   {
     juce::Path path;
     path.preallocateSpace((3 * width) + 6);
-    path.startNewSubPath(0, height / 2);
+    path.startNewSubPath(0, (float)height / 2.0f);
     for (int i = 0; i < width; ++i) {
-      path.lineTo(i, height / 2 - data[i] * height / 2);
+      path.lineTo((float)i,
+                  (float)height / 2.0f - data[i] * (float)height / 2.0f);
     }
-    path.lineTo(width, height / 2);
+    path.lineTo((float)width, (float)height / 2.0f);
     path.closeSubPath();
     return path;
   }
@@ -77,13 +78,13 @@ protected:
     float pointSpacing = width / (float)(numPoints - 1);
     juce::Path path;
     path.preallocateSpace(numPoints * 3 + 6);
-    path.startNewSubPath(0, height / 2);
+    path.startNewSubPath(0, (float)height / 2.0f);
     for (int i = 0; i < numPoints; ++i) {
       float x = i * pointSpacing;
       float y = height / 2 - data[i] * height / 2;
       path.lineTo(x, y);
     }
-    path.lineTo(width, height / 2);
+    path.lineTo((float)width, (float)height / 2.0f);
     path.closeSubPath();
     return path;
   }
