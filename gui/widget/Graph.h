@@ -12,8 +12,8 @@ class Graph
   : public juce::Component
   , public dmt::utility::RepaintTimer
 {
-  using Data = std::vector<SampleType>;
-  using DataSource = std::function<std::vector<SampleType>(int)>;
+  using DataReadPointer = const SampleType*;
+  using DataSource = std::function<const SampleType*(int)>;
 
 public:
   enum class Quality
@@ -40,7 +40,7 @@ public:
     juce::Path path;
     const int width = getWidth();
     const int height = getHeight();
-    auto data = dataSource(width);
+    DataReadPointer data = dataSource(width);
 
     switch (quality) {
       case Quality::Low:
@@ -58,7 +58,7 @@ public:
   void resized() override {}
 
 protected:
-  juce::Path makeLowQualityPath(const Data& data, int width, int height)
+  juce::Path makeLowQualityPath(DataReadPointer data, int width, int height)
   {
     juce::Path path;
     path.preallocateSpace((3 * width) + 6);
@@ -72,7 +72,7 @@ protected:
     return path;
   }
 
-  juce::Path makeHighQualityPath(const Data& data, int width, int height)
+  juce::Path makeHighQualityPath(DataReadPointer data, int width, int height)
   {
     int numPoints = width * 3;
     float pointSpacing = width / (float)(numPoints - 1);

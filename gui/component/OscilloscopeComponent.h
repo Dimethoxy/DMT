@@ -26,7 +26,7 @@ public:
   void paint(juce::Graphics&) override {}
   void resized() override {}
   //==============================================================================
-  std::vector<SampleType> getLeftChannelAmplitudes(int /*numDataPoints*/)
+  const SampleType* getLeftChannelAmplitudes(int /*numDataPoints*/)
   {
     return {};
   }
