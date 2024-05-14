@@ -1,2 +1,3 @@
 #pragma once
-#include "./AudioFifoBuffer.h"
+#include "./FifoAudioBuffer.h"
+#include "./SlicingRingAudioBuffer.h"

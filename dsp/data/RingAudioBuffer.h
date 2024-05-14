@@ -7,16 +7,16 @@ namespace dsp {
 namespace data {
 //==============================================================================
 template<typename SampleType>
-class SlicingRingAudioBuffer
+class RingAudioBuffer
 {
 public:
   //============================================================================
-  SlicingAudioRingBuffer(const int numChannelsToAllocate,
-                         const int numSamplesToAllocate)
+  RingAudioBuffer(const int numChannelsToAllocate,
+                  const int numSamplesToAllocate)
     : bufferSize(numSamplesToAllocate)
     , numChannels(numChannelsToAllocate)
-    , position(0)
-    , buffer(numChannelsToAllocate, numSamplesToAllocate)
+    , writePosition(0)
+    , ringBuffer(numChannelsToAllocate, numSamplesToAllocate)
   {
   }
   //============================================================================
@@ -51,35 +51,52 @@ public:
     writePosition = (writePosition + samplesToWrite) % getNumSamples();
   }
   //============================================================================
-  // Overload [] operator to access the buffer in a read-only fashion
-  const SampleType* operator[](const int channel) const noexcept
+  inline SampleType getSample(const int channel,
+                              const int sample) const noexcept
   {
-    return ringBuffer.getReadPointer(channel);
+    if (sample < 0 || sample >= getNumSamples()) {
+      jassertfalse;
+      return SampleType(0);
+    }
+    const int readPosition = (position + sample) % getNumSamples();
+    return ringBuffer.getSample(channel, readPosition);
   }
   //============================================================================
-  const void resize(const int numChannelsToAllocate,
-                    const int numSamplesToAllocate) noexcept
+  inline SampleType getSampleFromNewestSlice(const int channel,
+                                             const int sample,
+                                             const int sliceSize) const noexcept
+  {
+    if (sample < 0 || sample >= sliceSize) {
+      jassertfalse;
+      return SampleType(0);
+    }
+    const int sliceStart = (writePosition - sliceSize) % getNumSamples();
+    const int readPosition = (sliceStart + sample) % getNumSamples();
+    return ringBuffer.getSample(channel, readPosition);
+  }
+  //============================================================================
+  void resize(const int numChannelsToAllocate,
+              const int numSamplesToAllocate) noexcept
   {
     ringBuffer.setSize(numChannelsToAllocate, numSamplesToAllocate);
-    return ringBuffer.getNumSamples();
   }
   //============================================================================
-  inline const int getNumChannels() const noexcept
+  inline int getNumChannels() const noexcept
   {
     return ringBuffer.getNumChannels();
   }
   //============================================================================
-  inline const int getNumSamples() const noexcept
+  inline int getNumSamples() const noexcept
   {
     return ringBuffer.getNumSamples();
   }
   //============================================================================
-  inline const void setSliceSize(const int newSliceSize) noexcept
+  inline void setSliceSize(const int newSliceSize) noexcept
   {
     sliceSize = newSliceSize;
   }
   //============================================================================
-  const void clear() noexcept
+  void clear() noexcept
   {
     ringBuffer.clear();
     writePosition = 0;
@@ -88,7 +105,6 @@ public:
 private:
   int writePosition;                  // Current starting position
   AudioBuffer<SampleType> ringBuffer; // Buffer to store audio data
-  int sliceSize;                      // Size of the slice
 };
 } // namespace data
 } // namespace dsp
