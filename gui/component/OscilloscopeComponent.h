@@ -31,8 +31,12 @@ public:
   }
 
   //==============================================================================
-  void paint(juce::Graphics&) override
+  void paint(juce::Graphics& g) override
   {
+    // TODO: Move painting the background to the OscilloscopePanel class
+    g.setColour(juce::Colours::black);
+    g.fillRect(getLocalBounds());
+
     ringBuffer.write(fifoBuffer);
     leftGraph.repaint();
   }
