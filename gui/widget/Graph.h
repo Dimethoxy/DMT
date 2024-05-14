@@ -45,6 +45,9 @@ public:
     path.lineTo((float)width, (float)height / 2.0f);
     path.closeSubPath();
 
+    g.setColour(juce::Colours::green.withAlpha(0.5f));
+    g.fillRect(getLocalBounds());
+
     g.setColour(juce::Colours::white);
     g.strokePath(path, juce::PathStrokeType(3.0f));
   }

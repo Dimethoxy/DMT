@@ -19,55 +19,66 @@ public:
   //============================================================================
   void addToFifo(const juce::AudioBuffer<SampleType>& target)
   {
-    // Prepare to write
     const int numSamples = target.getNumSamples();
-    int start1, size1, start2, size2;
-    prepareToWrite(numSamples, start1, size1, start2, size2);
+    int firstBlockStart, firstBlockSize, secondBlockStart, secondBlockSize;
 
-    // Block 1
-    if (size1 > 0) {
-      for (int channel = 0; channel < buffer.getNumChannels(); ++channel) {
-        buffer.copyFrom(channel, start1, target.getReadPointer(channel), size1);
-      }
+    prepareToWrite(numSamples,
+                   firstBlockStart,
+                   firstBlockSize,
+                   secondBlockStart,
+                   secondBlockSize);
+
+    for (int channel = 0; channel < buffer.getNumChannels(); ++channel) {
+      if (firstBlockSize > 0)
+        buffer.copyFrom(channel,         // destChannel
+                        firstBlockStart, // destStartSample
+                        target,          // source
+                        channel,         // sourceChannel
+                        0,               // sourceStartSample
+                        firstBlockSize); // numSamples
+      if (secondBlockSize > 0)
+        buffer.copyFrom(channel,          // destChannel
+                        secondBlockStart, // destStartSample
+                        target,           // source
+                        channel,          // sourceChannel
+                        firstBlockSize,   // sourceStartSample
+                        secondBlockSize); // numSamples
     }
 
-    // Block 2
-    if (size2 > 0) {
-      for (int channel = 0; channel < buffer.getNumChannels(); ++channel) {
-        buffer.copyFrom(
-          channel, start2, target.getReadPointer(channel, size1), size2);
-      }
-    }
-    // Finish writing
-    finishedWrite(size1 + size2);
+    finishedWrite(firstBlockSize + secondBlockSize);
   }
   //============================================================================
   void readFromFifo(juce::AudioBuffer<SampleType>& target)
   {
-    // Prepare to read
     const int numSamples = target.getNumSamples();
-    int start1, size1, start2, size2;
-    prepareToRead(numSamples, start1, size1, start2, size2);
+    int firstBlockStart, firstBlockSize, secondBlockStart, secondBlockSize;
 
-    // Block 1
-    if (size1 > 0) {
-      for (int channel = 0; channel < buffer.getNumChannels(); ++channel) {
-        target.copyFrom(
-          channel, 0, buffer.getReadPointer(channel, start1), size1);
-      }
+    prepareToRead(numSamples,
+                  firstBlockStart,
+                  firstBlockSize,
+                  secondBlockStart,
+                  secondBlockSize);
+
+    for (int channel = 0; channel < buffer.getNumChannels(); ++channel) {
+      if (firstBlockSize > 0)
+        target.copyFrom(channel,         // destChannel
+                        0,               // destStartSample
+                        buffer,          // source
+                        channel,         // sourceChannel
+                        firstBlockStart, // sourceStartSample
+                        firstBlockSize); // numSamples
+      if (secondBlockSize > 0)
+        target.copyFrom(channel,          // destChannel
+                        firstBlockSize,   // destStartSample
+                        buffer,           // source
+                        channel,          // sourceChannel
+                        secondBlockStart, // sourceStartSample
+                        secondBlockSize); // numSamples
     }
 
-    // Block 2
-    if (size2 > 0) {
-      for (int channel = 0; channel < buffer.getNumChannels(); ++channel) {
-        target.copyFrom(
-          channel, size1, buffer.getReadPointer(channel, start2), size2);
-
-        // Finish reading
-        finishedRead(size1 + size2);
-      }
-    }
+    finishedRead(firstBlockSize + secondBlockSize);
   }
+
   //============================================================================
   void setSize(const int channels, const int newBufferSize)
   {
@@ -83,6 +94,8 @@ public:
   }
   //============================================================================
   int getNumChannels() const { return buffer.getNumChannels(); }
+  //============================================================================
+  int getNumSamples() const { return buffer.getNumSamples(); }
   //============================================================================
 private:
   juce::AudioBuffer<SampleType> buffer;
