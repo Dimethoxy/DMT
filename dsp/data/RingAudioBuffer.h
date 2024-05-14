@@ -20,10 +20,10 @@ public:
                   bool trackQueriedSamples = false)
     : writePosition(0)
     , ringBuffer(numChannelsToAllocate, numSamplesToAllocate)
+    , trackQueriedSamples(trackQueriedSamples)
   {
     if (trackQueriedSamples) {
-      queriedSamples = std::make_unique<QueryList>(numSamplesToAllocate);
-      std::fill(queriedSamples->begin(), queriedSamples->end(), false);
+      queriedSamples = std::make_unique<QueryList>(numSamplesToAllocate, false);
     }
   }
   //============================================================================
