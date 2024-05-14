@@ -10,7 +10,7 @@ namespace data {
 template<typename SampleType>
 class RingAudioBuffer
 {
-  using QueryList = std::array<bool>;
+  using QueryList = std::vector<bool>;
   using QueryListPtr = std::unique_ptr<QueryList>;
 
   //============================================================================
@@ -22,7 +22,7 @@ class RingAudioBuffer
   {
     if (trackQueriedSamples) {
       queriedSamples = std::make_unique<QueryList>(numSamplesToAllocate);
-      queriedSamples->fill(false);
+      std::fill(queriedSamples->begin(), queriedSamples->end(), false);
     }
   }
   //============================================================================
@@ -60,8 +60,8 @@ class RingAudioBuffer
 
     if (trackQueriedSamples) {
       for (int i = 0; i < samplesToWrite; ++i) {
-        const index = (writePosition + i) % getNumSamples();
-        queriedSamples.get()[index] = false;
+        const int index = (writePosition + i) % getNumSamples();
+        queriedSamples->at(index) = false;
       }
     }
 
@@ -136,8 +136,8 @@ class RingAudioBuffer
 
     if (trackQueriedSamples) {
       for (int i = 0; i < samplesToWrite; ++i) {
-        const index = (writePosition + i) % getNumSamples();
-        queriedSamples.get()[index] = false;
+        const int index = (writePosition + i) % getNumSamples();
+        queriedSamples->at(index) = false;
       }
     }
 
@@ -154,7 +154,7 @@ class RingAudioBuffer
     }
     const int readPosition = (writePosition + sample) % getNumSamples();
     if (trackQueriedSamples) {
-      queriedSamples.get()[readPosition] = true;
+      queriedSamples->at(readPosition) = true;
     }
     return ringBuffer.getSample(channel, readPosition);
   }
@@ -172,7 +172,7 @@ class RingAudioBuffer
       (writePosition - sliceSize + numSamples) % numSamples;
     const int readPosition = (sliceStart + sample) % numSamples;
     if (trackQueriedSamples) {
-      queriedSamples.get()[readPosition] = true;
+      queriedSamples->at(readPosition) = true;
     }
     return ringBuffer.getSample(channel, readPosition);
   }
@@ -185,7 +185,7 @@ class RingAudioBuffer
     }
     const int numSamples = getNumSamples();
     for (int i = 0; i < numSamples; ++i) {
-      if (!queriedSamples.get()[i]) {
+      if (!queriedSamples->at(i)) {
         return i;
       }
     }
@@ -194,7 +194,7 @@ class RingAudioBuffer
   //============================================================================
   int getOldestUnqueriedIndex() const noexcept
   {
-    const rawIndex = getOldestUnqueriedIndexRaw();
+    const int rawIndex = getOldestUnqueriedIndexRaw();
     if (rawIndex < 0) {
       return -1;
     }
@@ -209,7 +209,7 @@ class RingAudioBuffer
     }
     const int numSamples = getNumSamples();
     for (int i = numSamples - 1; i >= 0; --i) {
-      if (!queriedSamples.get()[i]) {
+      if (!queriedSamples->at(i)) {
         return i;
       }
     }
@@ -218,7 +218,7 @@ class RingAudioBuffer
   //============================================================================
   int getNewestUnqueriedIndex() const noexcept
   {
-    const rawIndex = getNewestUnqueriedIndexRaw();
+    const int rawIndex = getNewestUnqueriedIndexRaw();
     if (rawIndex < 0) {
       return -1;
     }
@@ -259,7 +259,7 @@ class RingAudioBuffer
     ringBuffer.clear();
     writePosition = 0;
     if (trackQueriedSamples) {
-      queriedSamples->fill(false);
+      std::fill(queriedSamples->begin(), queriedSamples->end(), false);
     }
   }
   //============================================================================
@@ -267,6 +267,7 @@ private:
   int writePosition;
   AudioBuffer<SampleType> ringBuffer;
   QueryListPtr queriedSamples;
+  bool trackQueriedSamples;
   //============================================================================
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(RingAudioBuffer)
 };
