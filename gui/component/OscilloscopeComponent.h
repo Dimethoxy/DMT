@@ -22,7 +22,7 @@ class OscilloscopeComponent
 public:
   //==============================================================================
   OscilloscopeComponent(FifoAudioBuffer& fifoBuffer)
-    : ringBuffer(2, 2048)
+    : ringBuffer(2, 65536)
     , fifoBuffer(fifoBuffer)
     , leftGraph([this](int index) { return this->getLeftChannelSample(index); })
   {
