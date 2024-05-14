@@ -1,6 +1,6 @@
 #pragma once
 //==============================================================================
-#include "dsp/data/AudioRingBuffer.h"
+#include "dsp/data/RingAudioBuffer.h"
 #include "gui/widget/Graph.h"
 #include <JuceHeader.h>
 //==============================================================================
@@ -12,15 +12,13 @@ template<typename SampleType>
 class OscilloscopeComponent : public juce::Component
 {
   using Graph = dmt::gui::widget::Graph<SampleType>;
-  using AudioRingBuffer = dmt::dsp::data::AudioRingBuffer<SampleType>;
+  using RingAudioBuffer = dmt::dsp::data::RingAudioBuffer<SampleType>;
 
 public:
   //==============================================================================
   OscilloscopeComponent()
-    : graph([this](int numDataPoints) {
-      return this->getLeftChannelAmplitudes(numDataPoints);
-    })
-    , audioRingBuffer(2, 65536)
+    : leftGraph([this](int index) { return this->getLeftChannelSample(index); })
+    , ringBuffer(2, 65536)
   {
   }
 
@@ -28,15 +26,16 @@ public:
   void paint(juce::Graphics&) override {}
   void resized() override {}
   //==============================================================================
-  const SampleType* getLeftChannelAmplitudes(int /*numDataPoints*/) {}
+  SampleType getLeftChannelSample(int sampleIndex)
+  {
+    int channel = 0;
+    int sliceSize = leftGraph.getWidth();
+    return ringBuffer.getSampleFromNewestSlice(channel, sampleIndex, sliceSize);
+  }
   //==============================================================================
-  void fillDrawBuffer(int numDataPoints) { drawBuffer.clear(); }
-
 private:
-  Graph graph;
-  std::vector<std::Vector<SampleType>> drawBuffer;
-  AudioRingBuffer storageBuffer;
-  juce::AudioBuffer<SampleType> drawBuffer;
+  Graph leftGraph;
+  RingAudioBuffer ringBuffer;
   //==============================================================================
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(OscilloscopeComponent)
 };

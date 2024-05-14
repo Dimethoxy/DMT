@@ -1,4 +1,3 @@
-//==============================================================================
 #pragma once
 //==============================================================================
 #include <JuceHeader.h>
@@ -13,17 +12,17 @@ public:
   //============================================================================
   RingAudioBuffer(const int numChannelsToAllocate,
                   const int numSamplesToAllocate)
-    : bufferSize(numSamplesToAllocate)
-    , numChannels(numChannelsToAllocate)
-    , writePosition(0)
+    : writePosition(0)
     , ringBuffer(numChannelsToAllocate, numSamplesToAllocate)
   {
   }
   //============================================================================
   void write(const juce::AudioBuffer<SampleType>& bufferToWrite) noexcept
   {
-    samplesToWrite = bufferToWrite.getNumSamples();
-    channelsToWrite = bufferToWrite.getNumChannels();
+    const int numChannels = getNumChannels();
+    const int bufferSize = getNumSamples();
+    const int channelsToWrite = bufferToWrite.getNumChannels();
+    const int samplesToWrite = bufferToWrite.getNumSamples();
 
     if (channelsToWrite > numChannels || samplesToWrite > bufferSize) {
       jassertfalse;
@@ -58,7 +57,7 @@ public:
       jassertfalse;
       return SampleType(0);
     }
-    const int readPosition = (position + sample) % getNumSamples();
+    const int readPosition = (writePosition + sample) % getNumSamples();
     return ringBuffer.getSample(channel, readPosition);
   }
   //============================================================================
@@ -91,11 +90,6 @@ public:
     return ringBuffer.getNumSamples();
   }
   //============================================================================
-  inline void setSliceSize(const int newSliceSize) noexcept
-  {
-    sliceSize = newSliceSize;
-  }
-  //============================================================================
   void clear() noexcept
   {
     ringBuffer.clear();
@@ -105,6 +99,8 @@ public:
 private:
   int writePosition;                  // Current starting position
   AudioBuffer<SampleType> ringBuffer; // Buffer to store audio data
+  //============================================================================
+  JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(RingAudioBuffer)
 };
 } // namespace data
 } // namespace dsp
