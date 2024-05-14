@@ -54,18 +54,19 @@ public:
     writePosition = (writePosition + samplesToWrite) % getNumSamples();
   }
   void write(
-    const dmt::dsp::data::RingAudioBuffer<SampleType>& bufferToWrite) noexcept
+    dmt::dsp::data::FifoAudioBuffer<SampleType>& bufferToWrite) noexcept
   {
     const int numChannels = getNumChannels();
     const int bufferSize = getNumSamples();
     const int channelsToWrite = bufferToWrite.getNumChannels();
-    const int samplesToWrite = bufferToWrite.getNumSamples();
+    const int samplesToWrite = bufferToWrite.getNumReady();
 
     if (channelsToWrite > numChannels || samplesToWrite > bufferSize) {
       jassertfalse;
       return;
     }
 
+    const AudioBuffer<SampleType> source = bufferToWrite.getBuffer();
     int start1, size1, start2, size2;
     bufferToWrite.prepareToRead(samplesToWrite, start1, size1, start2, size2);
 
@@ -75,7 +76,7 @@ public:
       for (int channel = 0; channel < channelsToWrite; ++channel) {
         ringBuffer.copyFrom(channel,       // destChannel
                             writePosition, // destStartSample
-                            bufferToWrite, // source
+                            source,        // source
                             channel,       // sourceChannel
                             start1,        // sourceStartSample
                             section1size); // numSamples
@@ -86,7 +87,7 @@ public:
         for (int channel = 0; channel < channelsToWrite; ++channel) {
           ringBuffer.copyFrom(channel,               // destChannel
                               0,                     // destStartSample
-                              bufferToWrite,         // source
+                              source,                // source
                               channel,               // sourceChannel
                               start1 + section1size, // sourceStartSample
                               section2size);         // numSamples
@@ -101,7 +102,7 @@ public:
       for (int channel = 0; channel < channelsToWrite; ++channel) {
         ringBuffer.copyFrom(channel,       // destChannel
                             block2start,   // destStartSample
-                            bufferToWrite, // source
+                            source,        // source
                             channel,       // sourceChannel
                             start2,        // sourceStartSample
                             section3size); // numSamples
@@ -112,7 +113,7 @@ public:
         for (int channel = 0; channel < channelsToWrite; ++channel) {
           ringBuffer.copyFrom(channel,               // destChannel
                               0,                     // destStartSample
-                              bufferToWrite,         // source
+                              source,                // source
                               channel,               // sourceChannel
                               start2 + section3size, // sourceStartSample
                               section4size);         // numSamples

@@ -1,6 +1,5 @@
 #pragma once
 //==============================================================================
-#include "utility/RepaintTimer.h"
 #include <JuceHeader.h>
 //==============================================================================
 namespace dmt {
@@ -8,21 +7,15 @@ namespace gui {
 namespace widget {
 //==============================================================================
 template<typename SampleType>
-class Graph
-  : public juce::Component
-  , public dmt::utility::RepaintTimer
+class Graph : public juce::Component
 {
   using DataSource = std::function<SampleType(int)>;
 
 public:
   //==============================================================================
-  Graph(DataSource dataSource, bool continuousRepainting = true)
+  Graph(DataSource dataSource)
     : dataSource(dataSource)
-    , continuousRepainting(continuousRepainting)
   {
-    if (continuousRepainting) {
-      startRepaintTimer();
-    }
   }
   //==============================================================================
   void resized() override {}
@@ -54,7 +47,6 @@ public:
   //==============================================================================
 private:
   DataSource dataSource;
-  bool continuousRepainting;
   //==============================================================================
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Graph)
 };

@@ -3,6 +3,7 @@
 #include "dsp/data/FifoAudioBuffer.h"
 #include "dsp/data/RingAudioBuffer.h"
 #include "gui/widget/Graph.h"
+#include "utility/RepaintTimer.h"
 #include <JuceHeader.h>
 //==============================================================================
 namespace dmt {
@@ -10,7 +11,9 @@ namespace gui {
 namespace component {
 //==============================================================================
 template<typename SampleType>
-class OscilloscopeComponent : public juce::Component
+class OscilloscopeComponent
+  : public juce::Component
+  , public dmt::utility::RepaintTimer
 {
   using Graph = dmt::gui::widget::Graph<SampleType>;
   using RingAudioBuffer = dmt::dsp::data::RingAudioBuffer<SampleType>;
@@ -18,15 +21,21 @@ class OscilloscopeComponent : public juce::Component
 
 public:
   //==============================================================================
-  OscilloscopeComponent()
-    : leftGraph([this](int index) { return this->getLeftChannelSample(index); })
-    , ringBuffer(2, 2048)
+  OscilloscopeComponent(FifoAudioBuffer& fifoBuffer)
+    : ringBuffer(2, 2048)
+    , fifoBuffer(fifoBuffer)
+    , leftGraph([this](int index) { return this->getLeftChannelSample(index); })
   {
     addAndMakeVisible(leftGraph);
+    startRepaintTimer();
   }
 
   //==============================================================================
-  void paint(juce::Graphics&) override {}
+  void paint(juce::Graphics&) override
+  {
+    ringBuffer.write(fifoBuffer);
+    leftGraph.repaint();
+  }
   void resized() override { leftGraph.setBounds(getLocalBounds()); }
   //==============================================================================
   SampleType getLeftChannelSample(int sampleIndex)
@@ -37,9 +46,9 @@ public:
   }
   //==============================================================================
 private:
-  Graph leftGraph;
   RingAudioBuffer ringBuffer;
-
+  FifoAudioBuffer& fifoBuffer;
+  Graph leftGraph;
   //==============================================================================
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(OscilloscopeComponent)
 };

@@ -12,11 +12,12 @@ class OscilloscopePanel : public AbstractPanel
 {
   using OscilloscopeComponent =
     dmt::gui::component::OscilloscopeComponent<SampleType>;
+  using FifoAudioBuffer = dmt::dsp::data::FifoAudioBuffer<SampleType>;
 
 public:
-  OscilloscopePanel()
+  OscilloscopePanel(FifoAudioBuffer& fifoBuffer)
     : AbstractPanel("Oscilloscope", false)
-    , oscilloscopeComponent()
+    , oscilloscopeComponent(fifoBuffer)
   {
     addAndMakeVisible(oscilloscopeComponent);
   }

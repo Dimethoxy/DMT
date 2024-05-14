@@ -7,7 +7,7 @@ namespace dsp {
 namespace data {
 //==============================================================================
 template<typename SampleType>
-class FifoAudioBuffer : juce::AbstractFifo
+class FifoAudioBuffer : public juce::AbstractFifo
 {
   using BufferData = std::vector<std::vector<float>>;
   using ChannelData = std::vector<float>;
@@ -98,6 +98,8 @@ public:
   int getNumChannels() const { return buffer.getNumChannels(); }
   //============================================================================
   int getNumSamples() const { return buffer.getNumSamples(); }
+  //============================================================================
+  const juce::AudioBuffer<SampleType>& getBuffer() const { return buffer; }
   //============================================================================
 private:
   juce::AudioBuffer<SampleType> buffer;
