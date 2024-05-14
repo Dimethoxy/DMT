@@ -13,6 +13,7 @@ class RingAudioBuffer
   using QueryList = std::vector<bool>;
   using QueryListPtr = std::unique_ptr<QueryList>;
 
+public:
   //============================================================================
   RingAudioBuffer(const int numChannelsToAllocate,
                   const int numSamplesToAllocate,
