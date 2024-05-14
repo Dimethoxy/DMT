@@ -1,6 +1,8 @@
 #pragma once
 //==============================================================================
+#include "dsp/data/FifoAudioBuffer.h"
 #include <JuceHeader.h>
+//==============================================================================
 namespace dmt {
 namespace dsp {
 namespace data {
