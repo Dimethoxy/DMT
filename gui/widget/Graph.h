@@ -7,13 +7,22 @@ namespace dmt {
 namespace gui {
 namespace widget {
 //==============================================================================
-template<typename SampleType>
+template<typename Container>
 class Graph
   : public juce::Component
   , public dmt::utility::RepaintTimer
 {
-  using DataReadPointer = const SampleType*;
-  using DataSource = std::function<const SampleType*(int)>;
+
+  using SampleType = typename Container::value_type;
+
+  using Data = const SampleType*;
+  using DataSource = std::function<const Container*(int)>;
+
+  static_assert(std::is_floating_point_v<SampleType>,
+                "Containers SampleType must be a floating point type!");
+  static_assert(std::is_same_v<decltype(std::declval<Container>()[0]),
+                               typename Container::value_type&>,
+                "Container must support element access via []!");
 
 public:
   enum class Quality
@@ -40,7 +49,7 @@ public:
     juce::Path path;
     const int width = getWidth();
     const int height = getHeight();
-    DataReadPointer data = dataSource(width);
+    Data data = dataSource(width);
 
     switch (quality) {
       case Quality::Low:
@@ -58,7 +67,7 @@ public:
   void resized() override {}
 
 protected:
-  juce::Path makeLowQualityPath(DataReadPointer data, int width, int height)
+  juce::Path makeLowQualityPath(Data data, int width, int height)
   {
     juce::Path path;
     path.preallocateSpace((3 * width) + 6);
@@ -72,7 +81,7 @@ protected:
     return path;
   }
 
-  juce::Path makeHighQualityPath(DataReadPointer data, int width, int height)
+  juce::Path makeHighQualityPath(Data data, int width, int height)
   {
     int numPoints = width * 3;
     float pointSpacing = width / (float)(numPoints - 1);
