@@ -258,6 +258,22 @@ public:
     }
   }
   //============================================================================
+  int getNumUnqueriedSamples() const noexcept
+  {
+    if (!trackQueriedSamples) {
+      jassertfalse;
+      return -1;
+    }
+    const int numSamples = getNumSamples();
+    int numUnqueriedSamples = 0;
+    for (int i = 0; i < numSamples; ++i) {
+      if (!queriedSamples->at(i)) {
+        ++numUnqueriedSamples;
+      }
+    }
+    return numUnqueriedSamples;
+  }
+  //============================================================================
   void resize(const int numChannelsToAllocate,
               const int numSamplesToAllocate) noexcept
   {
