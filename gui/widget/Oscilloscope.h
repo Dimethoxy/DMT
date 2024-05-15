@@ -37,7 +37,7 @@ public:
     const int width = getWidth();
     const int height = getHeight();
     const int halfHeight = height / 2;
-    float samplesPerPixel = 100.0f;
+    float samplesPerPixel = 10.0f;
 
     const int newestSampleIndex = ringBuffer.getNewestUnqueriedIndex();
     const int oldestSampleIndex = ringBuffer.getOldestUnqueriedIndex();
@@ -48,7 +48,7 @@ public:
 
     const int pixelToDraw = samplesToDraw / samplesPerPixel;
 
-    if (pixelToDraw < 4) {
+    if (pixelToDraw < 2) {
       g.drawImage(image, 0, 0, width, height, 0, 0, width, height);
       return; // Drawing less than 4 pixels is not worth it
     }
@@ -71,13 +71,14 @@ public:
     float pixelsPerSample = 1.0f / samplesPerPixel;
 
     lastFullyDrawnSample.applyTransform(
-      juce::AffineTransform::translation(-samplesPerPixel, 0.0f));
+      juce::AffineTransform::translation(-pixelToDraw, 0.0f));
 
     juce::Path path;
     path.startNewSubPath(lastFullyDrawnSample);
 
     for (int i = 0; i < samplesToDraw; ++i) {
-      const float sample = ringBuffer.getSample(0, oldestSampleIndex + i);
+      const int sampleIndex = newestSampleIndex - samplesToDraw + i;
+      const float sample = ringBuffer.getSample(0, sampleIndex);
       const float x = (float)drawStartX + i * pixelsPerSample;
       const float y = halfHeight + sample * halfHeight;
       const auto point = juce::Point<float>(x, y);
@@ -94,6 +95,9 @@ public:
 
     // Draw image to screen
     g.drawImageAt(image, 0, 0);
+
+    // Remove skipped samples
+    ringBuffer.removeSkippedSamplesFromQueriedList();
   }
   //==============================================================================
 private:

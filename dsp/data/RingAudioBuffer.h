@@ -294,6 +294,31 @@ public:
     return ringBuffer.getNumSamples();
   }
   //============================================================================
+  void removeSkippedSamplesFromQueriedList() noexcept
+  {
+    if (!trackQueriedSamples) {
+      jassertfalse;
+      return;
+    }
+    const int numSamples = getNumSamples();
+    int stepsBackTaken = 0;
+    while (true) {
+      int index = (writePosition - stepsBackTaken) % numSamples;
+      if (!queriedSamples->at(writePosition - stepsBackTaken)) {
+        break;
+      }
+      ++stepsBackTaken;
+    }
+    while (true) {
+      int index = (writePosition - stepsBackTaken) % numSamples;
+      queriedSamples->at(index) = true;
+      if (stepsBackTaken < numSamples) {
+        break;
+      }
+      ++stepsBackTaken;
+    }
+  }
+  //============================================================================
   inline int getWritePosition() const noexcept { return writePosition; }
   //============================================================================
   void clear() noexcept
