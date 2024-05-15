@@ -301,18 +301,22 @@ public:
       return;
     }
     const int numSamples = getNumSamples();
-    int stepsBackTaken = 0;
+    int stepsBackTaken = 1;
     while (true) {
       int index = (writePosition - stepsBackTaken) % numSamples;
-      if (!queriedSamples->at(writePosition - stepsBackTaken)) {
+      if (index < 0)
+        index += numSamples;
+      if (queriedSamples->at(index) || stepsBackTaken >= numSamples) {
         break;
       }
       ++stepsBackTaken;
     }
     while (true) {
       int index = (writePosition - stepsBackTaken) % numSamples;
+      if (index < 0)
+        index += numSamples;
       queriedSamples->at(index) = true;
-      if (stepsBackTaken < numSamples) {
+      if (stepsBackTaken >= numSamples) {
         break;
       }
       ++stepsBackTaken;

@@ -34,10 +34,12 @@ public:
   //==============================================================================
   void paint(juce::Graphics& g) noexcept override
   {
+    ringBuffer.removeSkippedSamplesFromQueriedList();
+
     const int width = getWidth();
     const int height = getHeight();
     const int halfHeight = height / 2;
-    float samplesPerPixel = 10.0f;
+    float samplesPerPixel = 1.0f;
 
     const int newestSampleIndex = ringBuffer.getNewestUnqueriedIndex();
     const int oldestSampleIndex = ringBuffer.getOldestUnqueriedIndex();
@@ -91,13 +93,10 @@ public:
     // Draw path to image
     juce::Graphics imageGraphics(image);
     imageGraphics.setColour(juce::Colours::white);
-    imageGraphics.strokePath(path, juce::PathStrokeType(1.0f));
+    imageGraphics.strokePath(path, juce::PathStrokeType(3.0f));
 
     // Draw image to screen
     g.drawImageAt(image, 0, 0);
-
-    // Remove skipped samples
-    ringBuffer.removeSkippedSamplesFromQueriedList();
   }
   //==============================================================================
 private:
