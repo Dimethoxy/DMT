@@ -146,6 +146,16 @@ public:
     bufferToWrite.finishedRead(size1 + size2);
   }
   //============================================================================
+  inline int mapRawIndex(const int rawIndex) const noexcept
+  {
+    const int numSamples = getNumSamples();
+    if (rawIndex < 0 || rawIndex >= numSamples) {
+      jassertfalse;
+      return -1;
+    }
+    return (writePosition + rawIndex) % numSamples;
+  }
+  //============================================================================
   inline SampleType getSample(const int channel,
                               const int sample) const noexcept
   {
@@ -153,11 +163,21 @@ public:
       jassertfalse;
       return SampleType(0);
     }
-    const int readPosition = (writePosition + sample) % getNumSamples();
+    const int readPosition = mapRawIndex(sample);
     if (trackQueriedSamples) {
       queriedSamples->at(readPosition) = true;
     }
     return ringBuffer.getSample(channel, readPosition);
+  }
+  //============================================================================
+  inline SampleType getSampleRaw(const int channel,
+                                 const int sample) const noexcept
+  {
+    if (sample < 0 || sample >= getNumSamples()) {
+      jassertfalse;
+      return SampleType(0);
+    }
+    return ringBuffer.getSample(channel, sample);
   }
   //============================================================================
   inline SampleType getSampleFromNewestSlice(const int channel,
@@ -195,11 +215,17 @@ public:
   //============================================================================
   int getOldestUnqueriedIndex() const noexcept
   {
-    const int rawIndex = getOldestUnqueriedIndexRaw();
-    if (rawIndex < 0) {
+    if (!trackQueriedSamples) {
+      jassertfalse;
       return -1;
     }
-    return mapRawIndex(rawIndex);
+    const int numSamples = getNumSamples();
+    for (int i = 0; i < numSamples; ++i) {
+      int readPosition = mapRawIndex(i);
+      if (!queriedSamples->at(readPosition)) {
+        return readPosition;
+      }
+    }
   }
   //============================================================================
   int getNewestUnqueriedIndexRaw() const noexcept
@@ -219,20 +245,17 @@ public:
   //============================================================================
   int getNewestUnqueriedIndex() const noexcept
   {
-    const int rawIndex = getNewestUnqueriedIndexRaw();
-    if (rawIndex < 0) {
-      return -1;
-    }
-    return mapRawIndex(rawIndex);
-  }
-  //============================================================================
-  int mapRawIndex(const int rawIndex) const noexcept
-  {
-    if (rawIndex < 0) {
+    if (!trackQueriedSamples) {
+      jassertfalse;
       return -1;
     }
     const int numSamples = getNumSamples();
-    return (writePosition + rawIndex) % numSamples;
+    for (int i = numSamples - 1; i >= 0; --i) {
+      int readPosition = mapRawIndex(i);
+      if (!queriedSamples->at(readPosition)) {
+        return readPosition;
+      }
+    }
   }
   //============================================================================
   void resize(const int numChannelsToAllocate,
@@ -254,6 +277,8 @@ public:
   {
     return ringBuffer.getNumSamples();
   }
+  //============================================================================
+  inline int getWritePosition() const noexcept { return writePosition; }
   //============================================================================
   void clear() noexcept
   {

@@ -22,7 +22,7 @@ class OscilloscopeComponent
 public:
   //==============================================================================
   OscilloscopeComponent(FifoAudioBuffer& fifoBuffer)
-    : ringBuffer(2, 65536)
+    : ringBuffer(2, 65536, true)
     , fifoBuffer(fifoBuffer)
     , leftGraph([this](int index) { return this->getLeftChannelSample(index); })
   {
@@ -36,6 +36,11 @@ public:
     // TODO: Move painting the background to the OscilloscopePanel class
     g.setColour(juce::Colours::black);
     g.fillRect(getLocalBounds());
+
+    const int newestRaw = ringBuffer.getNewestUnqueriedIndexRaw();
+    const int newest = ringBuffer.getNewestUnqueriedIndex();
+    const int oldestRaw = ringBuffer.getOldestUnqueriedIndexRaw();
+    const int oldest = ringBuffer.getOldestUnqueriedIndex();
 
     ringBuffer.write(fifoBuffer);
     leftGraph.repaint();
