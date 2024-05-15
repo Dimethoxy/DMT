@@ -23,7 +23,7 @@ public:
     , trackQueriedSamples(trackQueriedSamples)
   {
     if (trackQueriedSamples) {
-      queriedSamples = std::make_unique<QueryList>(numSamplesToAllocate, false);
+      queriedSamples = std::make_unique<QueryList>(numSamplesToAllocate, true);
     }
   }
   //============================================================================
@@ -285,7 +285,8 @@ public:
     ringBuffer.clear();
     writePosition = 0;
     if (trackQueriedSamples) {
-      std::fill(queriedSamples->begin(), queriedSamples->end(), false);
+      queriedSamples =
+        std::make_unique<QueryList>(ringBuffer.getNumSamples(), true);
     }
   }
   //============================================================================
