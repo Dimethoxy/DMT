@@ -34,20 +34,19 @@ public:
   //==============================================================================
   void paint(juce::Graphics& g) noexcept override
   {
-    // ringBuffer.markSkippedSamples();
-
-    /*
     const int width = getWidth();
     const int height = getHeight();
     const int halfHeight = height / 2;
-    float samplesPerPixel = 1.0f;
+    const float currentScale = 300.0f / (float)width;
+    float samplesPerPixel = 10.0f * currentScale;
 
-    const int newestSampleIndex = ringBuffer.getNewestUnqueriedIndex();
-    const int oldestSampleIndex = ringBuffer.getOldestUnqueriedIndex();
+    const int bufferSize = ringBuffer.getNumSamples();
+    const int readPosition = ringBuffer.getReadPosition(0);
+    const int samplesToRead = bufferSize - readPosition;
 
     const int maxSamplesToDraw = floor(samplesPerPixel * (float)width);
-    const int samplesToQuery = newestSampleIndex - oldestSampleIndex;
-    const int samplesToDraw = jmin(samplesToQuery, maxSamplesToDraw);
+    const int samplesToDraw = jmin(samplesToRead, maxSamplesToDraw);
+    const int firstSamplesToDraw = bufferSize - samplesToDraw;
 
     const int pixelToDraw = samplesToDraw / samplesPerPixel;
 
@@ -80,7 +79,7 @@ public:
     path.startNewSubPath(lastFullyDrawnSample);
 
     for (int i = 0; i < samplesToDraw; ++i) {
-      const int sampleIndex = newestSampleIndex - samplesToDraw + i;
+      const int sampleIndex = firstSamplesToDraw + i;
       const float sample = ringBuffer.getSample(0, sampleIndex);
       const float x = (float)drawStartX + i * pixelsPerSample;
       const float y = halfHeight + sample * halfHeight;
@@ -98,7 +97,6 @@ public:
 
     // Draw image to screen
     g.drawImageAt(image, 0, 0);
-    */
   }
   //==============================================================================
 private:

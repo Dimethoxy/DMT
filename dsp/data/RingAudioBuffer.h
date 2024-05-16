@@ -9,27 +9,24 @@ namespace dsp {
 namespace data {
 //==============================================================================
 template<typename SampleType>
-class RingAudioBuffer
+class RingAudioBuffer : public RingBufferInterface<SampleType>
 {
   using AudioBuffer = juce::AudioBuffer<SampleType>;
   using FifoAudioBuffer = dmt::dsp::data::FifoAudioBuffer<SampleType>;
+  using RingBufferInterface = dmt::dsp::data::RingBufferInterface<SampleType>;
 
 public:
   //============================================================================
   RingAudioBuffer(const int numChannelsToAllocate,
                   const int numSamplesToAllocate)
-    : writePosition(0)
+    : RingBufferInterface(ringBuffer, writePosition, readPositions)
+    , writePosition(0)
     , ringBuffer(numChannelsToAllocate, numSamplesToAllocate)
-    , trackQueriedSamples(trackQueriedSamples)
-    , ringBufferInterface(ringBuffer, *queriedSamples, writePosition)
+    , readPositions(numChannelsToAllocate, 0)
   {
-    if (trackQueriedSamples) {
-      queriedSamples = std::make_unique<QueryList>(
-        numChannelsToAllocate, std::vector<bool>(numSamplesToAllocate, true));
-    }
   }
   //============================================================================
-  void write(const AudioBuffer<SampleType>& bufferToWrite) noexcept
+  void write(const AudioBuffer& bufferToWrite) noexcept
   {
     const int numChannels = getNumChannels();
     const int bufferSize = getNumSamples();
@@ -64,7 +61,7 @@ public:
     updateWritePosition(samplesToWrite);
   }
   //============================================================================
-  void write(FifoAudioBuffer<SampleType>& bufferToWrite) noexcept
+  void write(FifoAudioBuffer& bufferToWrite) noexcept
   {
     const int numChannels = getNumChannels();
     const int bufferSize = getNumSamples();
@@ -76,7 +73,7 @@ public:
       return;
     }
 
-    const AudioBuffer<SampleType> source = bufferToWrite.getBuffer();
+    const AudioBuffer& source = bufferToWrite.getBuffer();
     int start1, size1, start2, size2;
     bufferToWrite.prepareToRead(samplesToWrite, start1, size1, start2, size2);
 
@@ -159,7 +156,7 @@ public:
     writePosition = 0;
   }
   //============================================================================
-  inline AudioBuffer<SampleType>& getBuffer() noexcept { return ringBuffer; }
+  inline AudioBuffer& getBuffer() noexcept { return ringBuffer; }
   //============================================================================
 protected:
   //============================================================================
@@ -170,9 +167,8 @@ protected:
 
     // Check if the new write position overlaps with any read positions
     for (int channel = 0; channel < getNumChannels(); ++channel) {
-      int readPosition = ringBufferInterface.getReadPosition(channel);
       for (int i = 0; i < increment; ++i) {
-        if ((writePosition + i) % getNumSamples() == readPosition) {
+        if ((writePosition + i) % getNumSamples() == readPositions[channel]) {
           moveWriteOverRead = true;
           break;
         }
@@ -191,8 +187,7 @@ protected:
 
   //============================================================================
 private:
-  RingBufferInterface<SampleType> ringBufferInterface;
-  AudioBuffer<SampleType> ringBuffer;
+  AudioBuffer ringBuffer;
   int writePosition;
   std::vector<int> readPositions;
   //============================================================================

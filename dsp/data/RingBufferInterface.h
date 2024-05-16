@@ -27,15 +27,15 @@ public:
   SampleType getSample(const int channel, const int sample) const noexcept
   {
     const int numSamples = audioBuffer.getNumSamples();
-    block1size = numSamples - writePosition;
-    block2size = numSamples - block1size;
+    const int block1size = numSamples - writePosition;
+    const int block2size = numSamples - block1size;
     if (sample < block1size) {
       return audioBuffer.getSample(channel, writePosition + sample);
     }
     return audioBuffer.getSample(channel, sample - block1size);
   }
   //============================================================================
-  void getReadPosition(int channel) const noexcept
+  int getReadPosition(int channel) const noexcept
   {
     const int numSamples = audioBuffer.getNumSamples();
     const int rawReadPosition = readPosition[channel];
@@ -49,6 +49,7 @@ public:
     const int oldReadPosition = readPosition[channel];
     const int newReadPosition = (oldReadPosition + increment) % numSamples;
     readPosition[channel] = newReadPosition;
+    readPosition[channel + 1] = newReadPosition;
   }
   //============================================================================
 private:
