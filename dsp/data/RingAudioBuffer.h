@@ -164,6 +164,10 @@ protected:
   {
     bool moveWriteOverRead = false;
     int newWritePosition = (writePosition + increment) % getNumSamples();
+    if (writePosition == readPositions[0]) {
+      writePosition = newWritePosition;
+      return;
+    }
 
     // Check if the new write position overlaps with any read positions
     for (int channel = 0; channel < getNumChannels(); ++channel) {

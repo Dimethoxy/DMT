@@ -39,7 +39,7 @@ public:
     const int height = getHeight();
     const int halfHeight = height / 2;
     const float currentScale = 300.0f / (float)width;
-    float samplesPerPixel = 200.0f * currentScale;
+    float samplesPerPixel = 500.0f * currentScale;
 
     const int bufferSize = ringBuffer.getNumSamples();
     const int readPosition = ringBuffer.getReadPosition(0);
@@ -50,9 +50,10 @@ public:
     const int firstSamplesToDraw = readPosition; // bufferSize - samplesToDraw;
 
     const int pixelToDraw = samplesToDraw / samplesPerPixel;
+    ringBuffer.incrementReadPosition(0, samplesToDraw);
 
     if (pixelToDraw < 2) {
-      g.drawImage(image, 0, 0, width, height, 0, 0, width, height);
+      // g.drawImage(image, 0, 0, width, height, 0, 0, width, height);
       return; // Drawing less than 4 pixels is not worth it
     }
 
