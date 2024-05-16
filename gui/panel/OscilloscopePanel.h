@@ -14,6 +14,8 @@ class OscilloscopePanel : public AbstractPanel
     dmt::gui::component::OscilloscopeComponent<SampleType>;
   using FifoAudioBuffer = dmt::dsp::data::FifoAudioBuffer<SampleType>;
 
+  using Settings = dmt::Settings;
+
 public:
   OscilloscopePanel(FifoAudioBuffer& fifoBuffer)
     : AbstractPanel("Oscilloscope", false)

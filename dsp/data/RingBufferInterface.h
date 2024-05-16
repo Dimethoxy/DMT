@@ -39,8 +39,10 @@ public:
   {
     const int numSamples = audioBuffer.getNumSamples();
     const int rawReadPosition = readPosition[channel];
-    const int readPosition = (writePosition + rawReadPosition) % numSamples;
-    return readPosition;
+    if (rawReadPosition > writePosition) {
+      return rawReadPosition - writePosition;
+    }
+    return numSamples - writePosition + rawReadPosition;
   }
   //============================================================================
   void incrementReadPosition(int channel, int increment) noexcept
@@ -49,7 +51,6 @@ public:
     const int oldReadPosition = readPosition[channel];
     const int newReadPosition = (oldReadPosition + increment) % numSamples;
     readPosition[channel] = newReadPosition;
-    readPosition[channel + 1] = newReadPosition;
   }
   //============================================================================
 private:

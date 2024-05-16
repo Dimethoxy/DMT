@@ -22,35 +22,45 @@ class OscilloscopeComponent
 public:
   //==============================================================================
   OscilloscopeComponent(FifoAudioBuffer& fifoBuffer)
-    : ringBuffer(2, 100000)
+    : ringBuffer(2, 4096)
     , fifoBuffer(fifoBuffer)
-    , oscilloscope(ringBuffer, 0)
+    , leftOscilloscope(ringBuffer, 1)
+    , rightOscilloscope(ringBuffer, 0)
   {
-    addAndMakeVisible(oscilloscope);
+    // addAndMakeVisible(leftOscilloscope);
+    addAndMakeVisible(rightOscilloscope);
     startRepaintTimer();
   }
 
   //==============================================================================
   void paint(juce::Graphics& g) override
   {
-    // TODO: Move painting the background to the OscilloscopePanel class
-    g.setColour(juce::Colours::black);
-    g.fillRect(getLocalBounds());
-    /*
-      const int newestRaw = ringBuffer.getNewestUnqueriedIndexRaw();
-      const int newest = ringBuffer.getNewestUnqueriedIndex();
-      const int oldestRaw = ringBuffer.getOldestUnqueriedIndexRaw();
-      const int oldest = ringBuffer.getOldestUnqueriedIndex();
-    */
-    ringBuffer.write(fifoBuffer);
-    oscilloscope.repaint();
+    // leftOscilloscope.paint(g);
+    rightOscilloscope.paint(g);
   }
-  void resized() override { oscilloscope.setBounds(getLocalBounds()); }
+  //==============================================================================
+  void prepareToPaint() noexcept override
+  {
+    ringBuffer.write(fifoBuffer);
+    leftOscilloscope.prepareToPaint();
+    rightOscilloscope.prepareToPaint();
+  }
+  //==============================================================================
+  void resized() override
+  {
+    auto bounds = getLocalBounds();
+    auto halfHeight = bounds.getHeight() / 2;
+    auto topBounds = bounds.removeFromTop(halfHeight);
+    leftOscilloscope.setBounds(topBounds);
+    auto lowerBounds = bounds.removeFromBottom(halfHeight);
+    rightOscilloscope.setBounds(lowerBounds);
+  }
   //==============================================================================
 private:
   RingAudioBuffer ringBuffer;
   FifoAudioBuffer& fifoBuffer;
-  Oscilloscope oscilloscope;
+  Oscilloscope leftOscilloscope;
+  Oscilloscope rightOscilloscope;
   //==============================================================================
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(OscilloscopeComponent)
 };

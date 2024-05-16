@@ -21,10 +21,14 @@ public:
   //============================================================================
   void repaintTimerCallback()
   {
+    this->prepareToPaint();
     const auto component = dynamic_cast<juce::Component*>(this);
     if (component != nullptr)
       component->repaint();
   }
+  //============================================================================
+protected:
+  virtual void prepareToPaint() noexcept { return; }
 
 private:
   //===========================================================================
