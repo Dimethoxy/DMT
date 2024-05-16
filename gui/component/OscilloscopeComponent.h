@@ -51,7 +51,7 @@ public:
     auto bounds = getLocalBounds();
     auto halfHeight = bounds.getHeight() / 2;
     auto topBounds = bounds.removeFromTop(halfHeight);
-    leftOscilloscope.setBounds(topBounds);
+    // leftOscilloscope.setBounds(topBounds);
     auto lowerBounds = bounds.removeFromBottom(halfHeight);
     rightOscilloscope.setBounds(lowerBounds);
   }
