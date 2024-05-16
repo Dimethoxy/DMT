@@ -19,6 +19,7 @@ public:
     : ringBuffer(ringBuffer)
     , lastFullyDrawnSample(0.0f, 0.0f)
     , image(Image(PixelFormat::ARGB, 1, 1, true))
+    , chunkNumber(0)
   {
   }
   //==============================================================================
@@ -38,7 +39,7 @@ public:
     const int height = getHeight();
     const int halfHeight = height / 2;
     const float currentScale = 300.0f / (float)width;
-    float samplesPerPixel = 10.0f * currentScale;
+    float samplesPerPixel = 200.0f * currentScale;
 
     const int bufferSize = ringBuffer.getNumSamples();
     const int readPosition = ringBuffer.getReadPosition(0);
@@ -46,7 +47,7 @@ public:
 
     const int maxSamplesToDraw = floor(samplesPerPixel * (float)width);
     const int samplesToDraw = jmin(samplesToRead, maxSamplesToDraw);
-    const int firstSamplesToDraw = bufferSize - samplesToDraw;
+    const int firstSamplesToDraw = readPosition; // bufferSize - samplesToDraw;
 
     const int pixelToDraw = samplesToDraw / samplesPerPixel;
 
@@ -91,9 +92,16 @@ public:
     }
 
     // Draw path to image
+    juce::Colour colours[8] = { juce::Colours::green,  juce::Colours::red,
+                                juce::Colours::blue,   juce::Colours::yellow,
+                                juce::Colours::purple, juce::Colours::orange,
+                                juce::Colours::cyan,   juce::Colours::magenta };
+    juce::Colour randomColour = colours[chunkNumber % 8];
+    chunkNumber++;
+
     juce::Graphics imageGraphics(image);
-    imageGraphics.setColour(juce::Colours::white);
-    imageGraphics.strokePath(path, juce::PathStrokeType(3.0f));
+    imageGraphics.setColour(randomColour);
+    imageGraphics.strokePath(path, juce::PathStrokeType(1.0f));
 
     // Draw image to screen
     g.drawImageAt(image, 0, 0);
@@ -103,6 +111,7 @@ private:
   RingBuffer& ringBuffer;
   Image image;
   juce::Point<float> lastFullyDrawnSample;
+  int chunkNumber;
   //==============================================================================
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Oscilloscope)
 };

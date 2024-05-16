@@ -22,7 +22,7 @@ class OscilloscopeComponent
 public:
   //==============================================================================
   OscilloscopeComponent(FifoAudioBuffer& fifoBuffer)
-    : ringBuffer(2, 2048)
+    : ringBuffer(2, 16384)
     , fifoBuffer(fifoBuffer)
     , oscilloscope(ringBuffer, 0)
   {
