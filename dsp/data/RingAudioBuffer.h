@@ -1,6 +1,7 @@
 #pragma once
 //==============================================================================
 #include "dsp/data/FifoAudioBuffer.h"
+#include "dsp/data/RingBufferInterface.h"
 #include <JuceHeader.h>
 //==============================================================================
 namespace dmt {
@@ -10,24 +11,25 @@ namespace data {
 template<typename SampleType>
 class RingAudioBuffer
 {
-  using QueryList = std::vector<bool>;
-  using QueryListPtr = std::unique_ptr<QueryList>;
+  using AudioBuffer = juce::AudioBuffer<SampleType>;
+  using FifoAudioBuffer = dmt::dsp::data::FifoAudioBuffer<SampleType>;
 
 public:
   //============================================================================
   RingAudioBuffer(const int numChannelsToAllocate,
-                  const int numSamplesToAllocate,
-                  bool trackQueriedSamples = false)
+                  const int numSamplesToAllocate)
     : writePosition(0)
     , ringBuffer(numChannelsToAllocate, numSamplesToAllocate)
     , trackQueriedSamples(trackQueriedSamples)
+    , ringBufferInterface(ringBuffer, *queriedSamples, writePosition)
   {
     if (trackQueriedSamples) {
-      queriedSamples = std::make_unique<QueryList>(numSamplesToAllocate, true);
+      queriedSamples = std::make_unique<QueryList>(
+        numChannelsToAllocate, std::vector<bool>(numSamplesToAllocate, true));
     }
   }
   //============================================================================
-  void write(const juce::AudioBuffer<SampleType>& bufferToWrite) noexcept
+  void write(const AudioBuffer<SampleType>& bufferToWrite) noexcept
   {
     const int numChannels = getNumChannels();
     const int bufferSize = getNumSamples();
@@ -60,16 +62,16 @@ public:
     }
 
     if (trackQueriedSamples) {
-      for (int i = 0; i < samplesToWrite; ++i) {
-        const int index = (writePosition + i) % getNumSamples();
-        queriedSamples->at(index) = false;
-      }
+      for (int channel = 0; channel < channelsToWrite; ++channel)
+        for (int i = 0; i < samplesToWrite; ++i) {
+          const int index = (writePosition + i) % getNumSamples();
+          queriedSamples->at(channel).at(index) = false;
+        }
     }
 
     writePosition = (writePosition + samplesToWrite) % getNumSamples();
   }
-  void write(
-    dmt::dsp::data::FifoAudioBuffer<SampleType>& bufferToWrite) noexcept
+  void write(FifoAudioBuffer<SampleType>& bufferToWrite) noexcept
   {
     const int numChannels = getNumChannels();
     const int bufferSize = getNumSamples();
@@ -135,153 +137,14 @@ public:
       }
     }
 
-    if (trackQueriedSamples) {
-      for (int i = 0; i < samplesToWrite; ++i) {
-        const int index = (writePosition + i) % getNumSamples();
-        queriedSamples->at(index) = false;
-      }
-    }
-
     writePosition = (writePosition + samplesToWrite) % getNumSamples();
     bufferToWrite.finishedRead(size1 + size2);
-  }
-  //============================================================================
-  inline int mapRawIndex(const int rawIndex) const noexcept
-  {
-    const int numSamples = getNumSamples();
-    if (rawIndex < 0 || rawIndex >= numSamples) {
-      jassertfalse;
-      return -1;
-    }
-    return (writePosition + rawIndex) % numSamples;
-  }
-  //============================================================================
-  inline SampleType getSample(const int channel,
-                              const int sample) const noexcept
-  {
-    if (sample < 0 || sample >= getNumSamples()) {
-      jassertfalse;
-      return SampleType(0);
-    }
-    const int readPosition = mapRawIndex(sample);
-    if (trackQueriedSamples) {
-      queriedSamples->at(readPosition) = true;
-    }
-    return ringBuffer.getSample(channel, readPosition);
-  }
-  //============================================================================
-  inline SampleType getSampleRaw(const int channel,
-                                 const int sample) const noexcept
-  {
-    if (sample < 0 || sample >= getNumSamples()) {
-      jassertfalse;
-      return SampleType(0);
-    }
-    return ringBuffer.getSample(channel, sample);
-  }
-  //============================================================================
-  inline SampleType getSampleFromNewestSlice(const int channel,
-                                             const int sample,
-                                             const int sliceSize) const noexcept
-  {
-    if (sample < 0 || sample >= sliceSize) {
-      jassertfalse;
-      return SampleType(0);
-    }
-    const int numSamples = getNumSamples();
-    const int sliceStart =
-      (writePosition - sliceSize + numSamples) % numSamples;
-    const int readPosition = (sliceStart + sample) % numSamples;
-    if (trackQueriedSamples) {
-      queriedSamples->at(readPosition) = true;
-    }
-    return ringBuffer.getSample(channel, readPosition);
-  }
-  //============================================================================
-  int getOldestUnqueriedIndexRaw() const noexcept
-  {
-    if (!trackQueriedSamples) {
-      jassertfalse;
-      return -1;
-    }
-    const int numSamples = getNumSamples();
-    for (int i = 0; i < numSamples; ++i) {
-      if (!queriedSamples->at(i)) {
-        return i;
-      }
-    }
-    return -1;
-  }
-  //============================================================================
-  int getOldestUnqueriedIndex() const noexcept
-  {
-    if (!trackQueriedSamples) {
-      jassertfalse;
-      return -1;
-    }
-    const int numSamples = getNumSamples();
-    for (int i = 0; i < numSamples; ++i) {
-      int readPosition = mapRawIndex(i);
-      if (!queriedSamples->at(readPosition)) {
-        return readPosition;
-      }
-    }
-  }
-  //============================================================================
-  int getNewestUnqueriedIndexRaw() const noexcept
-  {
-    if (!trackQueriedSamples) {
-      jassertfalse;
-      return -1;
-    }
-    const int numSamples = getNumSamples();
-    for (int i = numSamples - 1; i >= 0; --i) {
-      if (!queriedSamples->at(i)) {
-        return i;
-      }
-    }
-    return -1;
-  }
-  //============================================================================
-  int getNewestUnqueriedIndex() const noexcept
-  {
-    if (!trackQueriedSamples) {
-      jassertfalse;
-      return -1;
-    }
-    const int numSamples = getNumSamples();
-    for (int i = numSamples - 1; i >= 0; --i) {
-      int readPosition = mapRawIndex(i);
-      if (!queriedSamples->at(readPosition)) {
-        return readPosition;
-      }
-    }
-  }
-  //============================================================================
-  int getNumUnqueriedSamples() const noexcept
-  {
-    if (!trackQueriedSamples) {
-      jassertfalse;
-      return -1;
-    }
-    const int numSamples = getNumSamples();
-    int numUnqueriedSamples = 0;
-    for (int i = 0; i < numSamples; ++i) {
-      if (!queriedSamples->at(i)) {
-        ++numUnqueriedSamples;
-      }
-    }
-    return numUnqueriedSamples;
   }
   //============================================================================
   void resize(const int numChannelsToAllocate,
               const int numSamplesToAllocate) noexcept
   {
     ringBuffer.setSize(numChannelsToAllocate, numSamplesToAllocate);
-    if (trackQueriedSamples) {
-      queriedSamples = std::make_unique<QueryList>(numSamplesToAllocate);
-      queriedSamples->fill(false);
-    }
   }
   //============================================================================
   inline int getNumChannels() const noexcept
@@ -294,52 +157,20 @@ public:
     return ringBuffer.getNumSamples();
   }
   //============================================================================
-  void removeSkippedSamplesFromQueriedList() noexcept
-  {
-    if (!trackQueriedSamples) {
-      jassertfalse;
-      return;
-    }
-    const int numSamples = getNumSamples();
-    int stepsBackTaken = 1;
-    while (true) {
-      int index = (writePosition - stepsBackTaken) % numSamples;
-      if (index < 0)
-        index += numSamples;
-      if (queriedSamples->at(index) || stepsBackTaken >= numSamples) {
-        break;
-      }
-      ++stepsBackTaken;
-    }
-    while (true) {
-      int index = (writePosition - stepsBackTaken) % numSamples;
-      if (index < 0)
-        index += numSamples;
-      queriedSamples->at(index) = true;
-      if (stepsBackTaken >= numSamples) {
-        break;
-      }
-      ++stepsBackTaken;
-    }
-  }
-  //============================================================================
   inline int getWritePosition() const noexcept { return writePosition; }
   //============================================================================
   void clear() noexcept
   {
     ringBuffer.clear();
     writePosition = 0;
-    if (trackQueriedSamples) {
-      queriedSamples =
-        std::make_unique<QueryList>(ringBuffer.getNumSamples(), true);
-    }
   }
   //============================================================================
+  inline AudioBuffer<SampleType>& getBuffer() noexcept { return ringBuffer; }
+  //============================================================================
 private:
-  int writePosition;
+  RingBufferInterface<SampleType> ringBufferInterface;
   AudioBuffer<SampleType> ringBuffer;
-  QueryListPtr queriedSamples;
-  bool trackQueriedSamples;
+  int writePosition;
   //============================================================================
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(RingAudioBuffer)
 };

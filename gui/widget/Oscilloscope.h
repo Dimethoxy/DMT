@@ -34,8 +34,9 @@ public:
   //==============================================================================
   void paint(juce::Graphics& g) noexcept override
   {
-    ringBuffer.removeSkippedSamplesFromQueriedList();
+    // ringBuffer.markSkippedSamples();
 
+    /*
     const int width = getWidth();
     const int height = getHeight();
     const int halfHeight = height / 2;
@@ -97,6 +98,7 @@ public:
 
     // Draw image to screen
     g.drawImageAt(image, 0, 0);
+    */
   }
   //==============================================================================
 private:
