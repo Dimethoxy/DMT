@@ -61,16 +61,9 @@ public:
                             secondBlockSize); // numSamples
     }
 
-    if (trackQueriedSamples) {
-      for (int channel = 0; channel < channelsToWrite; ++channel)
-        for (int i = 0; i < samplesToWrite; ++i) {
-          const int index = (writePosition + i) % getNumSamples();
-          queriedSamples->at(channel).at(index) = false;
-        }
-    }
-
-    writePosition = (writePosition + samplesToWrite) % getNumSamples();
+    updateWritePosition(samplesToWrite);
   }
+  //============================================================================
   void write(FifoAudioBuffer<SampleType>& bufferToWrite) noexcept
   {
     const int numChannels = getNumChannels();
@@ -137,9 +130,10 @@ public:
       }
     }
 
-    writePosition = (writePosition + samplesToWrite) % getNumSamples();
+    updateWritePosition(samplesToWrite);
     bufferToWrite.finishedRead(size1 + size2);
   }
+
   //============================================================================
   void resize(const int numChannelsToAllocate,
               const int numSamplesToAllocate) noexcept
@@ -167,10 +161,40 @@ public:
   //============================================================================
   inline AudioBuffer<SampleType>& getBuffer() noexcept { return ringBuffer; }
   //============================================================================
+protected:
+  //============================================================================
+  void updateWritePosition(const int increment) noexcept
+  {
+    bool moveWriteOverRead = false;
+    int newWritePosition = (writePosition + increment) % getNumSamples();
+
+    // Check if the new write position overlaps with any read positions
+    for (int channel = 0; channel < getNumChannels(); ++channel) {
+      int readPosition = ringBufferInterface.getReadPosition(channel);
+      for (int i = 0; i < increment; ++i) {
+        if ((writePosition + i) % getNumSamples() == readPosition) {
+          moveWriteOverRead = true;
+          break;
+        }
+      }
+    }
+    // Update write position
+    writePosition = newWritePosition;
+
+    // Update read positions if necessary
+    if (moveWriteOverRead) {
+      for (int channel = 0; channel < getNumChannels(); ++channel) {
+        readPositions[channel] = writePosition;
+      }
+    }
+  }
+
+  //============================================================================
 private:
   RingBufferInterface<SampleType> ringBufferInterface;
   AudioBuffer<SampleType> ringBuffer;
   int writePosition;
+  std::vector<int> readPositions;
   //============================================================================
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(RingAudioBuffer)
 };
