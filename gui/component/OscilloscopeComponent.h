@@ -90,6 +90,39 @@ public:
       g.fillRoundedRectangle(innerBounds, innerCornerSize);
     }
 
+    // Paint Oscilloscope Horizontal Lines
+    const float scopeX = leftOscilloscope.getX();
+    const float scopeWidth = leftOscilloscope.getWidth();
+    const float leftScopeY = leftOscilloscope.getY();
+    const float leftScopeHeight = leftOscilloscope.getHeight();
+    g.setColour(Settings::Colours::background.brighter(0.05));
+    float lineThicknessModifiers[5] = { 1.5f, 1.0f, 1.5f, 1.0f, 1.5f };
+    for (int i = 0; i < 5; ++i) {
+      const float y = leftScopeY + (leftScopeHeight * 0.25f) * i;
+      g.drawLine(juce::Line<float>(scopeX, y, scopeX + scopeWidth, y),
+                 3.0f * lineThicknessModifiers[i]);
+    }
+    const float rightScopeY = rightOscilloscope.getY();
+    const float rightScopeHeight = rightOscilloscope.getHeight();
+    for (int i = 0; i < 5; ++i) {
+      const float y = rightScopeY + (rightScopeHeight * 0.25f) * i;
+      g.drawLine(juce::Line<float>(scopeX, y, scopeX + scopeWidth, y),
+                 3.0f * lineThicknessModifiers[i]);
+    }
+
+    // Paint Oscilloscope Vertical Lines
+    const int numLines = 20;
+    const float lineSpacing = scopeWidth / numLines;
+    for (int i = 0; i < numLines; ++i) {
+      const float x = scopeX + lineSpacing * i;
+      g.drawLine(
+        juce::Line<float>(x, leftScopeY, x, leftScopeY + leftScopeHeight),
+        3.0f);
+      g.drawLine(
+        juce::Line<float>(x, rightScopeY, x, rightScopeY + rightScopeHeight),
+        3.0f);
+    }
+
     // Draw the inner shadow
     if (drawInnerShadow) {
       juce::Path innerShadowPath;
@@ -126,12 +159,14 @@ public:
       rawScopeBounds.withHeight(rawScopeBounds.getHeight() * 0.9f)
         .withCentre(bounds.getCentre());
 
-    const auto leftScopeBounds =
+    auto leftScopeBounds =
       scopeBounds.removeFromTop(scopeBounds.getHeight() * 0.5f);
-    const auto rightScopeBounds = scopeBounds;
+    auto rightScopeBounds = scopeBounds;
 
-    leftOscilloscope.setBounds(leftScopeBounds);
-    rightOscilloscope.setBounds(rightScopeBounds);
+    leftOscilloscope.setBounds(
+      leftScopeBounds.removeFromTop(leftScopeBounds.getHeight() * 0.98));
+    rightOscilloscope.setBounds(
+      rightScopeBounds.removeFromBottom(rightScopeBounds.getHeight() * 0.98));
   }
   //==============================================================================
 private:

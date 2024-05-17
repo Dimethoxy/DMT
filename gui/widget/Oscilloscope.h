@@ -98,7 +98,7 @@ public:
 
     PathStrokeType strokeType(3.0f,
                               juce::PathStrokeType::JointStyle::curved,
-                              juce::PathStrokeType::EndCapStyle::butt);
+                              juce::PathStrokeType::EndCapStyle::rounded);
 
     juce::Graphics imageGraphics(image);
     imageGraphics.setColour(juce::Colours::white);
