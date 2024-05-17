@@ -158,6 +158,16 @@ public:
   //============================================================================
   inline AudioBuffer& getBuffer() noexcept { return ringBuffer; }
   //============================================================================
+  void setRawReadPosition(const int channel, const int position) noexcept
+  {
+    readPositions[channel] = position;
+  }
+  //============================================================================
+  void getRawReadPosition(const int channel, int& position) const noexcept
+  {
+    position = readPositions[channel];
+  }
+
 protected:
   //============================================================================
   void updateWritePosition(const int increment) noexcept

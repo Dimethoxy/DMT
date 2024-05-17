@@ -27,7 +27,7 @@ public:
     , leftOscilloscope(ringBuffer, 1)
     , rightOscilloscope(ringBuffer, 0)
   {
-    // addAndMakeVisible(leftOscilloscope);
+    addAndMakeVisible(leftOscilloscope);
     addAndMakeVisible(rightOscilloscope);
     startRepaintTimer();
   }
@@ -35,13 +35,14 @@ public:
   //==============================================================================
   void paint(juce::Graphics& g) override
   {
-    // leftOscilloscope.paint(g);
-    rightOscilloscope.paint(g);
+    leftOscilloscope.paint(g);
+    // rightOscilloscope.paint(g);
   }
   //==============================================================================
   void prepareToPaint() noexcept override
   {
     ringBuffer.write(fifoBuffer);
+    ringBuffer.equalizeReadPositions();
     leftOscilloscope.prepareToPaint();
     rightOscilloscope.prepareToPaint();
   }
@@ -51,9 +52,9 @@ public:
     auto bounds = getLocalBounds();
     auto halfHeight = bounds.getHeight() / 2;
     auto topBounds = bounds.removeFromTop(halfHeight);
-    // leftOscilloscope.setBounds(topBounds);
+    leftOscilloscope.setBounds(topBounds);
     auto lowerBounds = bounds.removeFromBottom(halfHeight);
-    rightOscilloscope.setBounds(lowerBounds);
+    // rightOscilloscope.setBounds(lowerBounds);
   }
   //==============================================================================
 private:

@@ -53,6 +53,34 @@ public:
     readPosition[channel] = newReadPosition;
   }
   //============================================================================
+  void equalizeReadPositions() noexcept
+  {
+    void equalizeReadPositions() noexcept
+    {
+      int highestReadPosition = 0;
+      int highestReadChannel = 0;
+
+      // Find the highest read position among all channels
+      for (int channel = 0; channel < audioBuffer.getNumChannels(); ++channel) {
+        const int readPos = getReadPosition(channel);
+        if (readPos > highestReadPosition) {
+          highestReadPosition = readPos;
+          highestReadChannel = channel;
+        }
+      }
+
+      // Get the raw read position for the channel with the highest read
+      // position
+      const int highestRawReadPosition =
+        audioBuffer.getRawReadPosition(highestReadChannel);
+
+      // Set all channels to the highest raw read position found
+      for (int channel = 0; channel < audioBuffer.getNumChannels(); ++channel) {
+        audioBuffer.setRawReadPosition(channel, highestRawReadPosition);
+      }
+    }
+  }
+
 private:
   AudioBuffer& audioBuffer;
   const int& writePosition;
