@@ -27,11 +27,14 @@ public:
   void resized() override
   {
     Image oldImage(image);
-    image = Image(Image::RGB, jmax(1, getWidth()), jmax(1, getHeight()), true);
-    image.clear(image.getBounds(), Colours::black);
+    image = Image(Image::ARGB, jmax(1, getWidth()), jmax(1, getHeight()), true);
+    image.clear(image.getBounds(), Colours::transparentBlack);
 
-    if (oldImage.isValid())
-      image = oldImage.rescaled(image.getWidth(), image.getHeight());
+    // Draw a mid line on the image
+    juce::Graphics imageGraphics(image);
+    imageGraphics.setColour(juce::Colours::white);
+    imageGraphics.drawLine(
+      0, getHeight() / 2, getWidth(), getHeight() / 2, 3.0f);
   }
   //==============================================================================
   void paint(juce::Graphics& g) noexcept override
@@ -57,11 +60,6 @@ public:
 
     const int pixelToDraw = samplesToDraw / samplesPerPixel;
     ringBuffer.incrementReadPosition(channel, samplesToDraw);
-
-    if (pixelToDraw < 2) {
-      // g.drawImage(image, 0, 0, width, height, 0, 0, width, height);
-      return; // Draw ing less than 4 pixels is not worth it
-    }
 
     // Image move
     const int destX = 0 - pixelToDraw;
@@ -96,7 +94,7 @@ public:
       path.lineTo(point);
       if (i == samplesToDraw - 1) {
         lastFullyDrawnSampleValue = sample;
-        lastFullyDrawnSampleOffsetX = x - pixelToDraw;
+        lastFullyDrawnSampleOffsetX = x - width;
       }
     }
 

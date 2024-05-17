@@ -4,6 +4,7 @@
 #include "dsp/data/RingAudioBuffer.h"
 #include "gui/widget/Oscilloscope.h"
 #include "utility/RepaintTimer.h"
+#include "utility/Settings.h"
 #include <JuceHeader.h>
 //==============================================================================
 namespace dmt {
@@ -18,6 +19,7 @@ class OscilloscopeComponent
   using Oscilloscope = dmt::gui::widget::Oscilloscope<SampleType>;
   using RingAudioBuffer = dmt::dsp::data::RingAudioBuffer<SampleType>;
   using FifoAudioBuffer = dmt::dsp::data::FifoAudioBuffer<SampleType>;
+  using Settings = dmt::Settings;
 
 public:
   //==============================================================================
@@ -27,7 +29,7 @@ public:
     , leftOscilloscope(ringBuffer, 0)
     , rightOscilloscope(ringBuffer, 1)
   {
-    // addAndMakeVisible(leftOscilloscope);
+    addAndMakeVisible(leftOscilloscope);
     addAndMakeVisible(rightOscilloscope);
     startRepaintTimer();
   }
@@ -35,8 +37,11 @@ public:
   //==============================================================================
   void paint(juce::Graphics& g) override
   {
-    // leftOscilloscope.paint(g);
-    rightOscilloscope.paint(g);
+    g.setColour(Settings::Colours::background);
+    g.fillRoundedRectangle(backgroundBounds.toFloat(), 15.0f);
+
+    leftOscilloscope.repaint();
+    rightOscilloscope.repaint();
   }
   //==============================================================================
   void prepareToPaint() noexcept override
@@ -49,8 +54,9 @@ public:
   //==============================================================================
   void resized() override
   {
-    // leftOscilloscope.setBoundsRelative(0.0f, 0.0f, 1.0f, 0.5f);
-    rightOscilloscope.setBoundsRelative(0.0f, 0.5f, 1.0f, 0.5f);
+    leftOscilloscope.setBoundsRelative(0.0f, 0.05f, 1.0f, 0.45f);
+    rightOscilloscope.setBoundsRelative(0.0f, 0.5f, 1.0f, 0.45f);
+    backgroundBounds = getLocalBounds();
   }
   //==============================================================================
 private:
@@ -58,6 +64,7 @@ private:
   FifoAudioBuffer& fifoBuffer;
   Oscilloscope leftOscilloscope;
   Oscilloscope rightOscilloscope;
+  juce::Rectangle<int> backgroundBounds;
   //==============================================================================
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(OscilloscopeComponent)
 };
