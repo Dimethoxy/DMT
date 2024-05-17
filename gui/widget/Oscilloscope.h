@@ -17,7 +17,8 @@ public:
   //==============================================================================
   Oscilloscope(RingBuffer& ringBuffer, int channel)
     : ringBuffer(ringBuffer)
-    , lastFullyDrawnSample(0.0f, 0.0f)
+    , lastFullyDrawnSampleValue(0)
+    , lastFullyDrawnSampleOffsetX(0)
     , image(Image(PixelFormat::ARGB, 1, 1, true))
     , channel(channel)
   {
@@ -79,8 +80,9 @@ public:
     const int drawStartX = width - pixelToDraw;
     float pixelsPerSample = 1.0f / samplesPerPixel;
 
-    lastFullyDrawnSample.applyTransform(
-      juce::AffineTransform::translation(-pixelToDraw, 0.0f));
+    const auto lastFullyDrawnSample =
+      juce::Point<float>(lastFullyDrawnSampleOffsetX + drawStartX,
+                         halfHeight + lastFullyDrawnSampleValue * halfHeight);
 
     juce::Path path;
     path.startNewSubPath(lastFullyDrawnSample);
@@ -93,7 +95,8 @@ public:
       const auto point = juce::Point<float>(x, y);
       path.lineTo(point);
       if (i == samplesToDraw - 1) {
-        lastFullyDrawnSample = point;
+        lastFullyDrawnSampleValue = sample;
+        lastFullyDrawnSampleOffsetX = x - pixelToDraw;
       }
     }
 
@@ -105,8 +108,9 @@ public:
 private:
   RingBuffer& ringBuffer;
   Image image;
-  juce::Point<float> lastFullyDrawnSample;
-  int channel;
+  SampleType lastFullyDrawnSampleValue;
+  float lastFullyDrawnSampleOffsetX;
+  const int channel;
   //==============================================================================
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Oscilloscope)
 };

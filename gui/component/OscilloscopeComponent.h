@@ -24,10 +24,10 @@ public:
   OscilloscopeComponent(FifoAudioBuffer& fifoBuffer)
     : ringBuffer(2, 4096)
     , fifoBuffer(fifoBuffer)
-    , leftOscilloscope(ringBuffer, 1)
-    , rightOscilloscope(ringBuffer, 0)
+    , leftOscilloscope(ringBuffer, 0)
+    , rightOscilloscope(ringBuffer, 1)
   {
-    addAndMakeVisible(leftOscilloscope);
+    // addAndMakeVisible(leftOscilloscope);
     addAndMakeVisible(rightOscilloscope);
     startRepaintTimer();
   }
@@ -35,8 +35,8 @@ public:
   //==============================================================================
   void paint(juce::Graphics& g) override
   {
-    leftOscilloscope.paint(g);
-    // rightOscilloscope.paint(g);
+    // leftOscilloscope.paint(g);
+    rightOscilloscope.paint(g);
   }
   //==============================================================================
   void prepareToPaint() noexcept override
@@ -49,12 +49,8 @@ public:
   //==============================================================================
   void resized() override
   {
-    auto bounds = getLocalBounds();
-    auto halfHeight = bounds.getHeight() / 2;
-    auto topBounds = bounds.removeFromTop(halfHeight);
-    leftOscilloscope.setBounds(topBounds);
-    auto lowerBounds = bounds.removeFromBottom(halfHeight);
-    // rightOscilloscope.setBounds(lowerBounds);
+    // leftOscilloscope.setBoundsRelative(0.0f, 0.0f, 1.0f, 0.5f);
+    rightOscilloscope.setBoundsRelative(0.0f, 0.5f, 1.0f, 0.5f);
   }
   //==============================================================================
 private:
