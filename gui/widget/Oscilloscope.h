@@ -55,7 +55,7 @@ public:
     const int samplesToRead = bufferSize - readPosition;
 
     const int maxSamplesToDraw = floor(samplesPerPixel * (float)width);
-    const int samplesToDraw = jmin(samplesToRead, maxSamplesToDraw);
+    const int samplesToDraw = jmin(samplesToRead - 1, maxSamplesToDraw);
     const int firstSamplesToDraw = readPosition; // bufferSize - samplesToDraw;
 
     const int pixelToDraw = samplesToDraw / samplesPerPixel;
@@ -95,6 +95,11 @@ public:
       if (i == samplesToDraw - 1) {
         lastFullyDrawnSampleValue = sample;
         lastFullyDrawnSampleOffsetX = x - width;
+        const auto lastSampleValue =
+          ringBuffer.getSample(channel, firstSamplesToDraw + samplesToDraw);
+        const auto lastSampleY = halfHeight + lastSampleValue * halfHeight;
+        const auto lastSampleX = x + pixelsPerSample;
+        path.lineTo(juce::Point<float>(lastSampleX, lastSampleY));
       }
     }
 
