@@ -45,9 +45,12 @@ public:
     const auto padding = rawPadding * size;
     auto bounds = getLocalBounds().reduced(padding);
 
-    const auto sliderWidth = 30 * size; // TODO: make this dynamic
+    const auto sliderWidth = 30 * size;
 
-    const auto leftSliderBounds = bounds.removeFromLeft(sliderWidth);
+    auto leftSliderBounds = bounds.removeFromLeft(sliderWidth);
+    const auto leftSliderOffsetX = 5.0f * size;
+    leftSliderBounds =
+      leftSliderBounds.withX(leftSliderBounds.getX() + leftSliderOffsetX);
     zoomSlider.setBounds(leftSliderBounds);
 
     oscilloscopeComponent.setBounds(bounds);

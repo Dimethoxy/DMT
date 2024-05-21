@@ -64,9 +64,6 @@ public:
     const auto bounds = getLocalBounds();
     const auto padding = rawPadding * size;
 
-    titleLabel.setBounds(bounds.reduced(padding));
-    infoLabel.setBounds(bounds.reduced(padding));
-
     slider.setAlwaysOnTop(true);
     switch (orientation) {
       case Orientation::Horizontal: {
@@ -77,9 +74,12 @@ public:
         return;
       }
       case Orientation::Vertical: {
-        auto sliderBounds = bounds.reduced(padding);
-        sliderBounds.removeFromTop(titleFontSize * size);
-        sliderBounds.removeFromBottom(infoFontSize * size);
+        titleLabel.setBounds(bounds.withTrimmedTop(padding));
+        infoLabel.setBounds(bounds.withTrimmedBottom(padding));
+
+        auto sliderBounds = bounds;
+        sliderBounds.removeFromTop(titleFontSize * size + padding);
+        sliderBounds.removeFromBottom(infoFontSize * size + padding);
         slider.setBounds(sliderBounds);
         return;
       }

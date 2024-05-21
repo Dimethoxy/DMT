@@ -16,7 +16,7 @@ struct InfoUnit
   {
     switch (type) {
       case dmt::InfoUnit::Type::OscilloscopeZoom:
-        return { juce::String(value) + juce::String("%") };
+        return { juce::String((int)value) + juce::String("%") };
         break;
       default:
         jassert(false);
