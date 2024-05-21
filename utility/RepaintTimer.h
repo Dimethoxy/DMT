@@ -8,28 +8,27 @@ namespace utility {
 class RepaintTimer : juce::Timer
 {
   const int& fps = Settings::fps;
+  ~RepaintTimer() override
+  {
+    stopRepaintTimer();
+    Timer::~Timer();
+  }
 
 public:
   //============================================================================
   void startRepaintTimer() noexcept
   {
+    if (this->isTimerRunning())
+      return;
+
     this->currentFps = fps;
     startTimerHz(fps);
   }
   //============================================================================
   void stopRepaintTimer() noexcept { stopTimer(); }
   //============================================================================
-  void repaintTimerCallback()
-  {
-    this->prepareToPaint();
-    const auto component = dynamic_cast<juce::Component*>(this);
-    if (component != nullptr)
-      component->repaint();
-  }
+  virtual void repaintTimerCallback() noexcept = 0;
   //============================================================================
-protected:
-  virtual void prepareToPaint() noexcept { return; }
-
 private:
   //===========================================================================
   void timerCallback() override

@@ -134,12 +134,13 @@ public:
     rightOscilloscope.repaint();
   }
   //==============================================================================
-  void prepareToPaint() noexcept override
+  void repaintTimerCallback() noexcept override
   {
     ringBuffer.write(fifoBuffer);
     ringBuffer.equalizeReadPositions();
     leftOscilloscope.prepareToPaint();
     rightOscilloscope.prepareToPaint();
+    this->repaint();
   }
   //==============================================================================
   void resized() override
