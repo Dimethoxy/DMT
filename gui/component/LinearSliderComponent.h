@@ -77,7 +77,10 @@ public:
         return;
       }
       case Orientation::Vertical: {
-        slider.setBounds(bounds.reduced(3.0f * padding));
+        auto sliderBounds = bounds.reduced(padding);
+        sliderBounds.removeFromTop(titleFontSize * size);
+        sliderBounds.removeFromBottom(infoFontSize * size);
+        slider.setBounds(sliderBounds);
         return;
       }
     }

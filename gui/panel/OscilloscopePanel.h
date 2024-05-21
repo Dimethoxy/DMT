@@ -34,16 +34,23 @@ public:
                  juce::String("OscilloscopeZoom"),
                  dmt::InfoUnit::Type::OscilloscopeZoom,
                  LinearSliderType::Positive,
-                 LinearSliderOrientation::Horizontal)
+                 LinearSliderOrientation::Vertical)
   {
     addAndMakeVisible(oscilloscopeComponent);
+    addAndMakeVisible(zoomSlider);
   }
 
   void extendResize() noexcept override
   {
-    const auto bounds = getLocalBounds();
     const auto padding = rawPadding * size;
-    oscilloscopeComponent.setBounds(getLocalBounds().reduced(rawPadding));
+    auto bounds = getLocalBounds().reduced(padding);
+
+    const auto sliderWidth = 30 * size; // TODO: make this dynamic
+
+    const auto leftSliderBounds = bounds.removeFromLeft(sliderWidth);
+    zoomSlider.setBounds(leftSliderBounds);
+
+    oscilloscopeComponent.setBounds(bounds);
   }
 
 private:

@@ -45,7 +45,7 @@ struct Settings
   struct Panel
   {
     // General
-    static inline float padding = 12.0f;
+    static inline float padding = 10.0f;
     static inline float cornerSize = 15.0f;
     // Border
     static inline bool drawBorder = true;
@@ -89,7 +89,7 @@ struct Settings
     // Thumb
     static inline juce::Colour thumbInnerColour = Colours::solid_dark;
     static inline juce::Colour thumOuterColour = Colours::font;
-    static inline float thumbSize = 18.0f;
+    static inline float thumbSize = 22.0f;
     static inline float thumbStrength = 3.0f;
     // Selections
     static inline juce::Colour selectionOuterColour = Colours::font;
