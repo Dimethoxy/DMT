@@ -5,7 +5,7 @@
 
 namespace dmt {
 namespace gui {
-namespace widgets {
+namespace widget {
 //==============================================================================
 class Label : public juce::Component
 {

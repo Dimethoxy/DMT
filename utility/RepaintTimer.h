@@ -8,11 +8,6 @@ namespace utility {
 class RepaintTimer : juce::Timer
 {
   const int& fps = Settings::fps;
-  ~RepaintTimer() override
-  {
-    stopRepaintTimer();
-    Timer::~Timer();
-  }
 
 public:
   //============================================================================

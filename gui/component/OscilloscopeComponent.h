@@ -20,6 +20,7 @@ class OscilloscopeComponent
   using Oscilloscope = dmt::gui::widget::Oscilloscope<SampleType>;
   using RingAudioBuffer = dmt::dsp::data::RingAudioBuffer<SampleType>;
   using FifoAudioBuffer = dmt::dsp::data::FifoAudioBuffer<SampleType>;
+  using Shadow = dmt::gui::widget::Shadow;
 
   // General
   using Settings = dmt::Settings;
@@ -45,6 +46,8 @@ class OscilloscopeComponent
 
 public:
   //==============================================================================
+
+  //==============================================================================
   OscilloscopeComponent(FifoAudioBuffer& fifoBuffer)
     : ringBuffer(2, 4096)
     , fifoBuffer(fifoBuffer)
@@ -57,7 +60,6 @@ public:
     addAndMakeVisible(rightOscilloscope);
     startRepaintTimer();
   }
-
   //==============================================================================
   void paint(juce::Graphics& g) override
   {
@@ -176,8 +178,8 @@ private:
   Oscilloscope leftOscilloscope;
   Oscilloscope rightOscilloscope;
   juce::Rectangle<int> backgroundBounds;
-  dmt::Shadow outerShadow;
-  dmt::Shadow innerShadow;
+  Shadow outerShadow;
+  Shadow innerShadow;
   //==============================================================================
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(OscilloscopeComponent)
 };

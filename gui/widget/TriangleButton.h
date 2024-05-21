@@ -1,15 +1,17 @@
+//==============================================================================
 #pragma once
-
+//==============================================================================
 #include "../../utility/Settings.h"
 #include <JuceHeader.h>
-
 //==============================================================================
 namespace dmt {
 namespace gui {
-namespace widgets {
+namespace widget {
 //==============================================================================
 class TriangleButton : public juce::Button
 {
+  using Shadow = dmt::gui::widget::Shadow;
+
   // Global
   using Settings = dmt::Settings;
   const float& size = Settings::Layout::size;
@@ -167,8 +169,8 @@ protected:
   //============================================================================
 private:
   Direction direction;
-  dmt::Shadow outerShadow;
-  dmt::Shadow innerShadow;
+  Shadow outerShadow;
+  Shadow innerShadow;
 
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(TriangleButton)
 };

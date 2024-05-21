@@ -1,10 +1,10 @@
 //==============================================================================
 #pragma once
 //==============================================================================
-#include "../../utility/Settings.h"
-#include "../widget/Label.h"
-#include "../widget/Shadow.h"
-#include "../widget/TriangleButton.h"
+#include "gui/widget/Label.h"
+#include "gui/widget/Shadow.h"
+#include "gui/widget/TriangleButton.h"
+#include "utility/Settings.h"
 #include <JuceHeader.h>
 //==============================================================================
 namespace dmt {
@@ -16,6 +16,10 @@ class AbstractPanel
 {
 public:
   using Grid = std::vector<std::vector<juce::Point<float>>>;
+  using TriangleButton = dmt::gui::widget::TriangleButton;
+  using Shadow = dmt::gui::widget::Shadow;
+  using Label = dmt::gui::widget::Label;
+
   // Settings
   using LibrarySettings = dmt::Settings;
   using Settings = LibrarySettings::Panel;
@@ -59,8 +63,8 @@ public:
     , titleLabel(name, Fonts::bold, fontSize, juce::Colours::white)
     , nextCallback([]() {})
     , prevCallback([]() {})
-    , nextButton(dmt::gui::widgets::TriangleButton::Right)
-    , prevButton(dmt::gui::widgets::TriangleButton::Left)
+    , nextButton(dmt::gui::widget::TriangleButton::Right)
+    , prevButton(dmt::gui::widget::TriangleButton::Left)
     , outerShadow(outerShadowColour, outerShadowRadius)
     , innerShadow(innerShadowColour, innerShadowRadius)
   {
@@ -74,7 +78,7 @@ public:
   {
     // Precalculation
     const auto bounds = this->getLocalBounds().toFloat();
-    const auto outerBounds = bounds.reduced(margin);
+    const auto outerBounds = bounds.reduced(margin * size);
     const auto innerBounds = outerBounds.reduced(borderStrength * size);
     const float outerCornerSize = cornerSize * size;
     const float innerCornerSize = std::clamp(
@@ -157,8 +161,11 @@ public:
     nextButton.setBounds(rightBounds.reduced(marginSize));
 
     titleLabel.setBounds(bounds.reduced(padding));
+
+    extendResize();
   }
 
+  virtual void extendResize() noexcept {}
   virtual inline const juce::String getName() noexcept { return "Panel"; }
 
   void setCallbacks(std::function<void()> next, std::function<void()> prev)
@@ -231,13 +238,13 @@ private:
   Grid grid;
   int rawGridOffsetY;
   const juce::String name;
-  dmt::gui::widgets::Label titleLabel;
+  Label titleLabel;
   std::function<void()> nextCallback;
   std::function<void()> prevCallback;
-  dmt::gui::widgets::TriangleButton nextButton;
-  dmt::gui::widgets::TriangleButton prevButton;
-  dmt::Shadow outerShadow;
-  dmt::Shadow innerShadow;
+  TriangleButton nextButton;
+  TriangleButton prevButton;
+  Shadow outerShadow;
+  Shadow innerShadow;
 
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(AbstractPanel)
 };

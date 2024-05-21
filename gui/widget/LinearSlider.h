@@ -6,7 +6,7 @@
 //==============================================================================
 namespace dmt {
 namespace gui {
-namespace widgets {
+namespace widget {
 //==============================================================================
 class LinearSlider : public juce::Slider
 {
