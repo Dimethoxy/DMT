@@ -26,6 +26,8 @@ public:
     , image(Image(PixelFormat::ARGB, 1, 1, true))
     , channel(channel)
     , rawSamplesPerPixel(1.0f)
+    , amplitude(1.0f)
+    , thickness(3.0f)
   {
   }
   //==============================================================================
@@ -85,7 +87,7 @@ public:
     currentX = currentX - (int)currentX + width - pixelToDraw;
     float pixelsPerSample = 1.0f / samplesPerPixel;
 
-    const float startY = halfHeight + currentSample * halfHeight;
+    const float startY = halfHeight + currentSample * halfHeight * amplitude;
     const auto startPoint = Point(currentX, startY);
 
     juce::Path path;
@@ -95,12 +97,12 @@ public:
       const int sampleIndex = firstSamplesToDraw + i;
       currentSample = ringBuffer.getSample(channel, sampleIndex);
       currentX += pixelsPerSample;
-      const float y = halfHeight + currentSample * halfHeight;
+      const float y = halfHeight + currentSample * halfHeight * amplitude;
       const auto point = juce::Point<float>(currentX, y);
       path.lineTo(point);
     }
 
-    PathStrokeType strokeType(3.0f * size,
+    PathStrokeType strokeType(thickness * size,
                               juce::PathStrokeType::JointStyle::curved,
                               juce::PathStrokeType::EndCapStyle::rounded);
 
@@ -113,6 +115,11 @@ public:
   {
     this->rawSamplesPerPixel = rawSamplesPerPixel;
   }
+  //==============================================================================
+  void setAmplitude(float amplitude) noexcept { this->amplitude = amplitude; }
+  //==============================================================================
+  void setThickness(float thickness) noexcept { this->thickness = thickness; }
+  //==============================================================================
 private:
   RingBuffer& ringBuffer;
   Image image;
@@ -121,6 +128,8 @@ private:
   const int channel;
   //==============================================================================
   float rawSamplesPerPixel;
+  float amplitude;
+  float thickness;
   //==============================================================================
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Oscilloscope)
 };

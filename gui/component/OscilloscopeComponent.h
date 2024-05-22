@@ -187,6 +187,19 @@ public:
     rightOscilloscope.setRawSamplesPerPixel(samplesPerPixel);
   }
   //==============================================================================
+  void setThickness(float thickness) noexcept
+  {
+    leftOscilloscope.setThickness(thickness);
+    rightOscilloscope.setThickness(thickness);
+  }
+  //==============================================================================
+  void setHeight(float height) noexcept
+  {
+    float amplitude = juce::Decibels::decibelsToGain(height);
+    leftOscilloscope.setAmplitude(amplitude);
+    rightOscilloscope.setAmplitude(amplitude);
+  }
+  //==============================================================================
 private:
   RingAudioBuffer ringBuffer;
   FifoAudioBuffer& fifoBuffer;

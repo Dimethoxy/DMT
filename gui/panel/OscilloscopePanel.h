@@ -40,11 +40,32 @@ public:
                  LinearSliderType::Positive,
                  LinearSliderOrientation::Vertical,
                  true)
+    , thicknessSlider(apvts,
+                      juce::String("Thickness"),
+                      juce::String("OscilloscopeThickness"),
+                      dmt::InfoUnit::Type::OscilloscopeThickness,
+                      LinearSliderType::Positive,
+                      LinearSliderOrientation::Vertical,
+                      true)
+    , heightSlider(apvts,
+                   juce::String("Gain"),
+                   juce::String("OscilloscopeGain"),
+                   dmt::InfoUnit::Type::OscilloscopeHeight,
+                   LinearSliderType::Positive,
+                   LinearSliderOrientation::Vertical,
+                   true)
   {
     addAndMakeVisible(oscilloscopeComponent);
     addAndMakeVisible(zoomSlider);
+    addAndMakeVisible(thicknessSlider);
+    addAndMakeVisible(heightSlider);
     zoomSlider.getSlider().addListener(this);
+    thicknessSlider.getSlider().addListener(this);
+    heightSlider.getSlider().addListener(this);
     sliderValueChanged(dynamic_cast<juce::Slider*>(&zoomSlider.getSlider()));
+    sliderValueChanged(
+      dynamic_cast<juce::Slider*>(&thicknessSlider.getSlider()));
+    sliderValueChanged(dynamic_cast<juce::Slider*>(&heightSlider.getSlider()));
   }
   //============================================================================
   void extendResize() noexcept override
@@ -52,13 +73,21 @@ public:
     const auto padding = rawPadding * size;
     auto bounds = getLocalBounds().reduced(padding);
 
-    const auto sliderWidth = 30 * size;
+    const auto sliderWidth = 31 * size;
 
     auto leftSliderBounds = bounds.removeFromLeft(sliderWidth);
-    const auto leftSliderOffsetX = 4.0f * size;
+    const auto sliderOffsetX = 4.0f * size;
     leftSliderBounds =
-      leftSliderBounds.withX(leftSliderBounds.getX() + leftSliderOffsetX);
+      leftSliderBounds.withX(leftSliderBounds.getX() + sliderOffsetX);
     zoomSlider.setBounds(leftSliderBounds);
+
+    auto rightSliderBounds = bounds.removeFromRight(sliderWidth);
+    rightSliderBounds =
+      rightSliderBounds.withX(rightSliderBounds.getX() - sliderOffsetX);
+
+    thicknessSlider.setBounds(
+      rightSliderBounds.removeFromTop(rightSliderBounds.getHeight() / 2));
+    heightSlider.setBounds(rightSliderBounds);
 
     oscilloscopeComponent.setBounds(bounds);
   }
@@ -67,12 +96,19 @@ public:
   {
     if (slider == &zoomSlider.getSlider()) {
       oscilloscopeComponent.setZoom(zoomSlider.getSlider().getValue());
+    } else if (slider == &thicknessSlider.getSlider()) {
+      oscilloscopeComponent.setThickness(
+        thicknessSlider.getSlider().getValue());
+    } else if (slider == &heightSlider.getSlider()) {
+      oscilloscopeComponent.setHeight(heightSlider.getSlider().getValue());
     }
   }
   //============================================================================
 private:
   OscilloscopeComponent oscilloscopeComponent;
   LinearSlider zoomSlider;
+  LinearSlider thicknessSlider;
+  LinearSlider heightSlider;
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(OscilloscopePanel)
 };
 

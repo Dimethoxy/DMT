@@ -56,6 +56,7 @@ public:
                 juce::Justification::centredBottom)
     , unitType(unitType)
     , svgTitle(svgTitle)
+    , svgPadding(dmt::icons::getPadding(param))
   {
     slider.addListener(this);
     updateLabel();
@@ -66,7 +67,7 @@ public:
       addAndMakeVisible(titleLabel);
 
     if (svgTitle) {
-      titleIcon = dmt::icons::getIcon(titleLabel.getText());
+      titleIcon = dmt::icons::getIcon(param);
     }
   }
   //==============================================================================
@@ -110,7 +111,8 @@ public:
       juce::Rectangle<float> iconArea =
         bounds.removeFromTop(slider.getY()).toFloat();
       iconArea = iconArea.withY(iconArea.getY() + 6.0f * size);
-      iconArea = iconArea.reduced(2.0f * size);
+      iconArea = iconArea.reduced(svgPadding * size);
+      iconArea = iconArea.withX(iconArea.getX() - 0.2f * size);
       titleIcon->drawWithin(
         g, iconArea, juce::RectanglePlacement::centred, 1.0f);
     }
@@ -165,6 +167,7 @@ private:
   Label infoLabel;
   const bool svgTitle;
   std::unique_ptr<juce::Drawable> titleIcon;
+  const float svgPadding;
   //============================================================================
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(LinearSliderComponent)
 };
