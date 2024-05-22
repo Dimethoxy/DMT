@@ -43,6 +43,7 @@ public:
     addAndMakeVisible(oscilloscopeComponent);
     addAndMakeVisible(zoomSlider);
     zoomSlider.getSlider().addListener(this);
+    sliderValueChanged(dynamic_cast<juce::Slider*>(&zoomSlider.getSlider()));
   }
   //============================================================================
   void extendResize() noexcept override

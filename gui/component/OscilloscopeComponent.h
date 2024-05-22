@@ -178,9 +178,10 @@ public:
   //==============================================================================
   void setZoom(float zoom) noexcept
   {
-    float zoomModifier = zoom / 100.0f;
-    float maxSamplesPerPixel = 1000.0f;
-    float exponentialModifier = pow(zoomModifier, 2.0f);
+    // Just random math with magic numbers to get a nice feeling zoom
+    float zoomModifier = (zoom + 5) / 105.0f;
+    float maxSamplesPerPixel = 900.0f;
+    float exponentialModifier = pow(zoomModifier, 4.0f);
     float samplesPerPixel = 1.0f + maxSamplesPerPixel * exponentialModifier;
     leftOscilloscope.setRawSamplesPerPixel(samplesPerPixel);
     rightOscilloscope.setRawSamplesPerPixel(samplesPerPixel);
