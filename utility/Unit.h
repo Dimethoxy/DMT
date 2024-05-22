@@ -23,7 +23,7 @@ struct InfoUnit
         return { juce::String((int)value) + juce::String("px") };
         break;
       case dmt::InfoUnit::Type::OscilloscopeHeight:
-        return { juce::String((int)value) + juce::String("px") };
+        return { juce::String((int)value) + juce::String("dB") };
         break;
       default:
         jassert(false);

@@ -51,7 +51,7 @@ public:
                    juce::String("Gain"),
                    juce::String("OscilloscopeGain"),
                    dmt::InfoUnit::Type::OscilloscopeHeight,
-                   LinearSliderType::Positive,
+                   LinearSliderType::Bipolar,
                    LinearSliderOrientation::Vertical,
                    true)
   {
@@ -73,7 +73,7 @@ public:
     const auto padding = rawPadding * size;
     auto bounds = getLocalBounds().reduced(padding);
 
-    const auto sliderWidth = 31 * size;
+    const auto sliderWidth = 38 * size;
 
     auto leftSliderBounds = bounds.removeFromLeft(sliderWidth);
     const auto sliderOffsetX = 4.0f * size;

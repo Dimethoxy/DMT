@@ -25,11 +25,11 @@ static inline float
 getPadding(const juce::String iconName)
 {
   if (iconName == "OscilloscopeZoom")
-    return 3.0f;
+    return 4.0f;
   if (iconName == "OscilloscopeThickness")
     return 5.0f;
   if (iconName == "OscilloscopeGain")
-    return 5.0f;
+    return 3.5f;
   return 0.0f;
 };
 //==============================================================================
