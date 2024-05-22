@@ -28,9 +28,9 @@ oscilloscopeParameterGroup(juce::String parentUid)
                                      "Zoom",
                                      NormalisableRange(1.0f,   // rangeStart
                                                        100.0f, // rangeEnd
-                                                       0.1f,   // intervalValue
+                                                       0.01f,  // intervalValue
                                                        1.0f),  // skewFactor
-                                     1.0f),                    // defaultValue
+                                     10.0f),                   // defaultValue
     std::make_unique<ParameterFloat>(uid + "Gain",
                                      "Gain",
                                      NormalisableRange(-96.0f, // rangeStart

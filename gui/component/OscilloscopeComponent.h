@@ -176,6 +176,16 @@ public:
       rightScopeBounds.removeFromBottom(rightScopeBounds.getHeight() * 0.95));
   }
   //==============================================================================
+  void setZoom(float zoom) noexcept
+  {
+    float zoomModifier = zoom / 100.0f;
+    float maxSamplesPerPixel = 1000.0f;
+    float exponentialModifier = pow(zoomModifier, 2.0f);
+    float samplesPerPixel = 1.0f + maxSamplesPerPixel * exponentialModifier;
+    leftOscilloscope.setRawSamplesPerPixel(samplesPerPixel);
+    rightOscilloscope.setRawSamplesPerPixel(samplesPerPixel);
+  }
+  //==============================================================================
 private:
   RingAudioBuffer ringBuffer;
   FifoAudioBuffer& fifoBuffer;

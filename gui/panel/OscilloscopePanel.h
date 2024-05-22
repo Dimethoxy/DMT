@@ -9,8 +9,11 @@
 namespace dmt {
 namespace gui {
 namespace panel {
+//==============================================================================
 template<typename SampleType>
-class OscilloscopePanel : public AbstractPanel
+class OscilloscopePanel
+  : public AbstractPanel
+  , public juce::Slider::Listener
 {
   using OscilloscopeComponent =
     dmt::gui::component::OscilloscopeComponent<SampleType>;
@@ -25,6 +28,7 @@ class OscilloscopePanel : public AbstractPanel
   const float& rawPadding = Settings::Panel::padding;
 
 public:
+  //============================================================================
   OscilloscopePanel(FifoAudioBuffer& fifoBuffer,
                     juce::AudioProcessorValueTreeState& apvts)
     : AbstractPanel("Oscilloscope", false)
@@ -38,8 +42,9 @@ public:
   {
     addAndMakeVisible(oscilloscopeComponent);
     addAndMakeVisible(zoomSlider);
+    zoomSlider.getSlider().addListener(this);
   }
-
+  //============================================================================
   void extendResize() noexcept override
   {
     const auto padding = rawPadding * size;
@@ -55,7 +60,14 @@ public:
 
     oscilloscopeComponent.setBounds(bounds);
   }
-
+  //============================================================================
+  void sliderValueChanged(juce::Slider* slider) override
+  {
+    if (slider == &zoomSlider.getSlider()) {
+      oscilloscopeComponent.setZoom(zoomSlider.getSlider().getValue());
+    }
+  }
+  //============================================================================
 private:
   OscilloscopeComponent oscilloscopeComponent;
   LinearSlider zoomSlider;

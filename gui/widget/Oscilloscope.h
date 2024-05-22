@@ -14,6 +14,9 @@ class Oscilloscope : public juce::Component
   using Image = juce::Image;
   using Point = juce::Point<float>;
 
+  using Settings = dmt::Settings;
+  const float& size = Settings::Layout::size;
+
 public:
   //==============================================================================
   Oscilloscope(RingBuffer& ringBuffer, int channel)
@@ -22,6 +25,7 @@ public:
     , currentX(0.0f)
     , image(Image(PixelFormat::ARGB, 1, 1, true))
     , channel(channel)
+    , rawSamplesPerPixel(1.0f)
   {
   }
   //==============================================================================
@@ -50,7 +54,7 @@ public:
     const int height = getHeight();
     const int halfHeight = height / 2;
     const float currentScale = 300.0f / (float)width;
-    float samplesPerPixel = 200.0f * currentScale;
+    float samplesPerPixel = rawSamplesPerPixel * size;
 
     const int bufferSize = ringBuffer.getNumSamples();
     const int readPosition = ringBuffer.getReadPosition(channel);
@@ -96,7 +100,7 @@ public:
       path.lineTo(point);
     }
 
-    PathStrokeType strokeType(3.0f,
+    PathStrokeType strokeType(3.0f * size,
                               juce::PathStrokeType::JointStyle::curved,
                               juce::PathStrokeType::EndCapStyle::rounded);
 
@@ -104,13 +108,19 @@ public:
     imageGraphics.setColour(juce::Colours::white);
     imageGraphics.strokePath(path, strokeType);
   }
-
+  //==============================================================================
+  void setRawSamplesPerPixel(float rawSamplesPerPixel) noexcept
+  {
+    this->rawSamplesPerPixel = rawSamplesPerPixel;
+  }
 private:
   RingBuffer& ringBuffer;
   Image image;
   SampleType currentSample;
   float currentX;
   const int channel;
+  //==============================================================================
+  float rawSamplesPerPixel;
   //==============================================================================
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Oscilloscope)
 };

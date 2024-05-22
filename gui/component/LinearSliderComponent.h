@@ -36,6 +36,7 @@ class LinearSliderComponent
   const float& infoFontSize = Slider::infoFontSize;
 
 public:
+  //==============================================================================
   LinearSliderComponent(juce::AudioProcessorValueTreeState& apvts,
                         const juce::String text,
                         const juce::String param,
@@ -59,6 +60,7 @@ public:
     addAndMakeVisible(titleLabel);
     addAndMakeVisible(infoLabel);
   }
+  //==============================================================================
   void resized()
   {
     const auto bounds = getLocalBounds();
@@ -85,6 +87,7 @@ public:
       }
     }
   }
+  //==============================================================================
   void paint(juce::Graphics& g)
   {
     const auto bounds = getLocalBounds();
@@ -94,8 +97,9 @@ public:
     if (Settings::debugBounds)
       g.drawRect(bounds, 1);
   }
+  //==============================================================================
   void sliderValueChanged(juce::Slider*) { updateLabel(); }
-
+  //==============================================================================
   void setBoundsByPoints(juce::Point<int> primaryPoint,
                          juce::Point<int> secondaryPoint)
   {
@@ -123,7 +127,9 @@ public:
       }
     }
   }
-
+  //==============================================================================
+  juce::Slider& getSlider() { return slider; }
+  //==============================================================================
 protected:
   void updateLabel()
   {
@@ -131,7 +137,7 @@ protected:
     infoLabel.setText(text);
     infoLabel.repaint();
   }
-
+  //==============================================================================
 private:
   LinearSlider::Orientation orientation;
   dmt::InfoUnit::Type unitType;
@@ -139,7 +145,7 @@ private:
   SliderAttachment sliderAttachment;
   Label titleLabel;
   Label infoLabel;
-
+  //============================================================================
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(LinearSliderComponent)
 };
 //==============================================================================
