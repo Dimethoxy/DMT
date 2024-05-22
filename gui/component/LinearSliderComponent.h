@@ -3,6 +3,7 @@
 //==============================================================================
 #include "gui/widget/Label.h"
 #include "gui/widget/LinearSlider.h"
+#include "utility/Icon.h"
 #include "utility/Settings.h"
 #include "utility/Unit.h"
 #include <JuceHeader.h>
@@ -42,7 +43,8 @@ public:
                         const juce::String param,
                         const dmt::InfoUnit::Type unitType,
                         const Type type = Type::Positive,
-                        const Orientation orientation = Orientation::Horizontal)
+                        const Orientation orientation = Orientation::Horizontal,
+                        const bool svgTitle = false)
     : orientation(orientation)
     , slider(type, orientation)
     , sliderAttachment(apvts, param, slider)
@@ -53,12 +55,19 @@ public:
                 infoFontColour,
                 juce::Justification::centredBottom)
     , unitType(unitType)
+    , svgTitle(svgTitle)
   {
     slider.addListener(this);
     updateLabel();
     addAndMakeVisible(slider);
-    addAndMakeVisible(titleLabel);
     addAndMakeVisible(infoLabel);
+
+    if (!svgTitle)
+      addAndMakeVisible(titleLabel);
+
+    if (svgTitle) {
+      titleIcon = dmt::icons::getIcon(titleLabel.getText());
+    }
   }
   //==============================================================================
   void resized()
@@ -90,12 +99,21 @@ public:
   //==============================================================================
   void paint(juce::Graphics& g)
   {
-    const auto bounds = getLocalBounds();
+    auto bounds = getLocalBounds();
 
     // Draw bounds debug
     g.setColour(juce::Colours::green);
     if (Settings::debugBounds)
       g.drawRect(bounds, 1);
+
+    if (svgTitle) {
+      juce::Rectangle<float> iconArea =
+        bounds.removeFromTop(slider.getY()).toFloat();
+      iconArea = iconArea.withY(iconArea.getY() + 6.0f * size);
+      iconArea = iconArea.reduced(2.0f * size);
+      titleIcon->drawWithin(
+        g, iconArea, juce::RectanglePlacement::centred, 1.0f);
+    }
   }
   //==============================================================================
   void sliderValueChanged(juce::Slider*) { updateLabel(); }
@@ -145,6 +163,8 @@ private:
   SliderAttachment sliderAttachment;
   Label titleLabel;
   Label infoLabel;
+  const bool svgTitle;
+  std::unique_ptr<juce::Drawable> titleIcon;
   //============================================================================
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(LinearSliderComponent)
 };

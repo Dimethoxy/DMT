@@ -5,20 +5,11 @@
 //==============================================================================
 namespace dmt {
 namespace icons {
-enum class Icon
+static inline std::unique_ptr<juce::Drawable>
+getIcon(juce::String iconName)
 {
-  Speed,
-  Height,
-  Thickness,
-};
-const auto
-getIcon(Icon icon)
-{
-  switch (icon) {
-    case Icon::Speed:
-
-  }      return juce::Drawable::createFromImageData(BinaryData::speed_svg,
-                                                 BinaryData::speed_svgSize);
+  return juce::Drawable::createFromImageData(
+    BinaryData::material_speed_svg, BinaryData::material_speed_svgSize);
 };
 // Returns the icon as an Image
 } // namespace icons

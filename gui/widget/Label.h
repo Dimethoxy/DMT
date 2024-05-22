@@ -50,6 +50,7 @@ public:
   }
 
   inline void setText(const juce::String& newText) { this->text = newText; }
+  inline juce::String getText() const { return this->text; }
 
 private:
   juce::String text;

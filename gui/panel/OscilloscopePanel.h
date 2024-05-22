@@ -38,7 +38,8 @@ public:
                  juce::String("OscilloscopeZoom"),
                  dmt::InfoUnit::Type::OscilloscopeZoom,
                  LinearSliderType::Positive,
-                 LinearSliderOrientation::Vertical)
+                 LinearSliderOrientation::Vertical,
+                 true)
   {
     addAndMakeVisible(oscilloscopeComponent);
     addAndMakeVisible(zoomSlider);
