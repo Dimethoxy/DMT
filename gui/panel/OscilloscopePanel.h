@@ -48,7 +48,7 @@ public:
     const auto sliderWidth = 30 * size;
 
     auto leftSliderBounds = bounds.removeFromLeft(sliderWidth);
-    const auto leftSliderOffsetX = 5.0f * size;
+    const auto leftSliderOffsetX = 4.0f * size;
     leftSliderBounds =
       leftSliderBounds.withX(leftSliderBounds.getX() + leftSliderOffsetX);
     zoomSlider.setBounds(leftSliderBounds);
