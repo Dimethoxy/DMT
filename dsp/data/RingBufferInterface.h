@@ -28,7 +28,6 @@ public:
   {
     const int numSamples = audioBuffer.getNumSamples();
     const int block1size = numSamples - writePosition;
-    const int block2size = numSamples - block1size;
     if (sample < block1size) {
       return audioBuffer.getSample(channel, writePosition + sample);
     }

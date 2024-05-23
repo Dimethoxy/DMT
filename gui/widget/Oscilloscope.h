@@ -55,7 +55,6 @@ public:
     const int width = getWidth();
     const int height = getHeight();
     const int halfHeight = height / 2;
-    const float currentScale = 300.0f / (float)width;
     float samplesPerPixel = rawSamplesPerPixel * size;
 
     const int bufferSize = ringBuffer.getNumSamples();
@@ -111,14 +110,16 @@ public:
     imageGraphics.strokePath(path, strokeType);
   }
   //==============================================================================
-  void setRawSamplesPerPixel(float rawSamplesPerPixel) noexcept
+  void setRawSamplesPerPixel(float newRawSamplesPerPixel) noexcept
   {
-    this->rawSamplesPerPixel = rawSamplesPerPixel;
+    this->rawSamplesPerPixel = newRawSamplesPerPixel;
   }
   //==============================================================================
-  void setAmplitude(float amplitude) noexcept { this->amplitude = amplitude; }
+  void setAmplitude(float newAmplitude) noexcept { this->amplitude = newAmplitude; }
   //==============================================================================
-  void setThickness(float thickness) noexcept { this->thickness = thickness; }
+  void setThickness(float newThickness) noexcept {
+    this->thickness = newThickness;
+  }
   //==============================================================================
 private:
   RingBuffer& ringBuffer;
