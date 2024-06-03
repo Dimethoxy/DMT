@@ -50,6 +50,7 @@ public:
     : juce::Slider()
     , type(type)
     , orientation(orientation)
+    , lastDistanceForFullScaleDrag(0)
   {
     switch (orientation) {
       case Orientation::Horizontal: {
@@ -85,23 +86,32 @@ public:
     float primaryPointY;
     float secondaryPointX;
     float secondaryPointY;
+    int distanceForFullScaleDrag;
     switch (orientation) {
       case Orientation::Horizontal:
         primaryPointX = (float)railBounds.getX();
         primaryPointY = (float)railBounds.getCentreY();
         secondaryPointX = (float)railBounds.getRight();
         secondaryPointY = (float)railBounds.getCentreY();
+        distanceForFullScaleDrag = primaryPointX - secondaryPointX;
         break;
       case Orientation::Vertical:
         primaryPointX = (float)railBounds.getCentreX();
         primaryPointY = (float)railBounds.getBottom();
         secondaryPointX = (float)railBounds.getCentreX();
         secondaryPointY = (float)railBounds.getY();
+        distanceForFullScaleDrag = primaryPointY - secondaryPointY;
         break;
       default:
         jassert(false);
         return;
     }
+
+    if (lastDistanceForFullScaleDrag != distanceForFullScaleDrag) {
+      lastDistanceForFullScaleDrag = distanceForFullScaleDrag;
+      setMouseDragSensitivity(distanceForFullScaleDrag);
+    }
+
     const juce::Point<float> primaryPoint(primaryPointX, primaryPointY);
     const juce::Point<float> secondaryPoint(secondaryPointX, secondaryPointY);
 
@@ -170,6 +180,7 @@ public:
 private:
   Type type;
   Orientation orientation;
+  int lastDistanceForFullScaleDrag;
 
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(LinearSlider)
 };

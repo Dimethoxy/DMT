@@ -90,6 +90,8 @@ public:
     const auto startPoint = Point(currentX, startY);
 
     juce::Path path;
+    path.preallocateSpace(3 * samplesToDraw + 2 * 3);
+
     path.startNewSubPath(startPoint);
 
     for (int i = 0; i < samplesToDraw; ++i) {
@@ -102,8 +104,8 @@ public:
     }
 
     PathStrokeType strokeType(thickness * size,
-                              juce::PathStrokeType::JointStyle::curved,
-                              juce::PathStrokeType::EndCapStyle::rounded);
+                              juce::PathStrokeType::JointStyle::mitered,
+                              juce::PathStrokeType::EndCapStyle::butt);
 
     juce::Graphics imageGraphics(image);
     imageGraphics.setColour(juce::Colours::white);
@@ -115,9 +117,13 @@ public:
     this->rawSamplesPerPixel = newRawSamplesPerPixel;
   }
   //==============================================================================
-  void setAmplitude(float newAmplitude) noexcept { this->amplitude = newAmplitude; }
+  void setAmplitude(float newAmplitude) noexcept
+  {
+    this->amplitude = newAmplitude;
+  }
   //==============================================================================
-  void setThickness(float newThickness) noexcept {
+  void setThickness(float newThickness) noexcept
+  {
     this->thickness = newThickness;
   }
   //==============================================================================

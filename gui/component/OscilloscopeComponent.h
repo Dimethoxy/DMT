@@ -109,7 +109,6 @@ public:
         2.0f * size);
     }
 
-    // Paint Oscilloscope Horizontal Lines
     float lineThicknessModifiers[7] = {
       1.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.5f
     };
