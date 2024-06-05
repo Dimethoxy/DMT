@@ -31,19 +31,7 @@ public:
   {
   }
   //==============================================================================
-  void resized() override
-  {
-    Image oldImage(image);
-    image =
-      Image(Image::ARGB, jmax(1, getWidth() + 10), jmax(1, getHeight()), true);
-    image.clear(image.getBounds(), Colours::transparentBlack);
-
-    // Draw a mid line on the image
-    juce::Graphics imageGraphics(image);
-    imageGraphics.setColour(juce::Colours::white);
-    imageGraphics.drawLine(
-      0, getHeight() / 2, getWidth() + 10, getHeight() / 2, 3.0f);
-  }
+  void resized() override { isResized = true; }
   //==============================================================================
   void paint(juce::Graphics& g) noexcept override
   {
@@ -51,11 +39,37 @@ public:
     g.drawImageAt(image, 0, 0);
   }
   //==============================================================================
-  void prepareToPaint()
+  void render()
   {
     TRACE_COMPONENT();
-    const int width = getWidth();
-    const int height = getHeight();
+
+    if (isResized) {
+      resizeImage();
+      isResized = false;
+    }
+
+    auto path = generatePath();
+
+    PathStrokeType strokeType(thickness * size,
+                              juce::PathStrokeType::JointStyle::mitered,
+                              juce::PathStrokeType::EndCapStyle::butt);
+
+    juce::Graphics imageGraphics(image);
+    imageGraphics.setColour(juce::Colours::white);
+    imageGraphics.strokePath(path, strokeType);
+  }
+  //==============================================================================
+  void resizeImage()
+  {
+    auto newImage = Image(PixelFormat::ARGB, getWidth(), getHeight(), true);
+    newImage.clear(newImage.getBounds(), juce::Colours::transparentBlack);
+    image = newImage;
+  }
+  //==============================================================================
+  juce::Path generatePath()
+  {
+    const int width = image.getWidth();
+    const int height = image.getHeight();
     const int halfHeight = height / 2;
     float samplesPerPixel = rawSamplesPerPixel * size;
 
@@ -105,13 +119,7 @@ public:
       path.lineTo(point);
     }
 
-    PathStrokeType strokeType(thickness * size,
-                              juce::PathStrokeType::JointStyle::mitered,
-                              juce::PathStrokeType::EndCapStyle::butt);
-
-    juce::Graphics imageGraphics(image);
-    imageGraphics.setColour(juce::Colours::white);
-    imageGraphics.strokePath(path, strokeType);
+    return path;
   }
   //==============================================================================
   void setRawSamplesPerPixel(float newRawSamplesPerPixel) noexcept
@@ -133,8 +141,10 @@ private:
   RingBuffer& ringBuffer;
   Image image;
   SampleType currentSample;
+  CriticalSection imageLock;
   float currentX;
   const int channel;
+  std::atomic<bool> isResized;
   //==============================================================================
   float rawSamplesPerPixel;
   float amplitude;

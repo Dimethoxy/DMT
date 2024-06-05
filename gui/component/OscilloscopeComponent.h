@@ -170,7 +170,7 @@ public:
     while (!leftExit) {
       leftCondition.wait(lock, [this] { return leftPaintFlag || leftExit; });
       if (leftPaintFlag) {
-        leftOscilloscope.prepareToPaint();
+        leftOscilloscope.render();
         leftPaintFlag = false;
       }
     }
@@ -181,7 +181,7 @@ public:
     while (!rightExit) {
       rightCondition.wait(lock, [this] { return rightPaintFlag || rightExit; });
       if (rightPaintFlag) {
-        rightOscilloscope.prepareToPaint();
+        rightOscilloscope.render();
         rightPaintFlag = false;
       }
     }
