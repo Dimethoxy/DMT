@@ -76,6 +76,8 @@ public:
 
   void paint(juce::Graphics& g) noexcept override
   {
+    TRACE_COMPONENT();
+
     // Precalculation
     const auto bounds = this->getLocalBounds().toFloat();
     const auto outerBounds = bounds.reduced(margin * size);

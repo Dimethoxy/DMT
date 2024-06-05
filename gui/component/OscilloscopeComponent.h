@@ -53,14 +53,28 @@ public:
     , rightOscilloscope(ringBuffer, 1)
     , outerShadow(outerShadowColour, outerShadowRadius)
     , innerShadow(innerShadowColour, innerShadowRadius)
+    , leftThread(&OscilloscopeComponent::leftWorker, this)
+    , rightThread(&OscilloscopeComponent::rightWorker, this)
   {
     addAndMakeVisible(leftOscilloscope);
     addAndMakeVisible(rightOscilloscope);
     startRepaintTimer();
+
+    leftThread.detach();
+    rightThread.detach();
+  }
+  ~OscilloscopeComponent() override
+  {
+    leftExit = true;
+    rightExit = true;
+    leftCondition.notify_one();
+    rightCondition.notify_one();
   }
   //==============================================================================
   void paint(juce::Graphics& g) override
   {
+    TRACE_COMPONENT();
+
     // Precalculation
     const auto bounds = this->getLocalBounds().toFloat();
     const float outerCornerSize = rawCornerSize * size;
@@ -134,19 +148,45 @@ public:
       innerShadowPath.addRoundedRectangle(innerBounds, innerCornerSize);
       innerShadow.drawInnerForPath(g, innerShadowPath);
     }
-
-    leftOscilloscope.repaint();
-    rightOscilloscope.repaint();
   }
   //==============================================================================
   void repaintTimerCallback() noexcept override
   {
+    TRACE_COMPONENT();
     ringBuffer.write(fifoBuffer);
     ringBuffer.equalizeReadPositions();
-    leftOscilloscope.prepareToPaint();
-    rightOscilloscope.prepareToPaint();
-    this->repaint();
+    if (!leftPaintFlag && !rightPaintFlag) {
+      rightOscilloscope.repaint();
+      leftOscilloscope.repaint();
+      leftPaintFlag = true;
+      rightPaintFlag = true;
+      leftCondition.notify_one();
+      rightCondition.notify_one();
+    }
   }
+  void leftWorker() noexcept
+  {
+    std::unique_lock<std::mutex> lock(leftMutex);
+    while (!leftExit) {
+      leftCondition.wait(lock, [this] { return leftPaintFlag || leftExit; });
+      if (leftPaintFlag) {
+        leftOscilloscope.prepareToPaint();
+        leftPaintFlag = false;
+      }
+    }
+  }
+  void rightWorker() noexcept
+  {
+    std::unique_lock<std::mutex> lock(rightMutex);
+    while (!rightExit) {
+      rightCondition.wait(lock, [this] { return rightPaintFlag || rightExit; });
+      if (rightPaintFlag) {
+        rightOscilloscope.prepareToPaint();
+        rightPaintFlag = false;
+      }
+    }
+  }
+
   //==============================================================================
   void resized() override
   {
@@ -204,11 +244,23 @@ private:
   FifoAudioBuffer& fifoBuffer;
   Oscilloscope leftOscilloscope;
   Oscilloscope rightOscilloscope;
+  //==============================================================================
   juce::Rectangle<int> backgroundBounds;
   Shadow outerShadow;
   Shadow innerShadow;
   juce::Rectangle<int> innerBounds;
   juce::Rectangle<int> outerBounds;
+  //==============================================================================
+  std::thread leftThread;
+  std::thread rightThread;
+  std::mutex leftMutex;
+  std::mutex rightMutex;
+  std::condition_variable leftCondition;
+  std::condition_variable rightCondition;
+  std::atomic<bool> leftPaintFlag = false;
+  std::atomic<bool> rightPaintFlag = false;
+  std::atomic<bool> leftExit = false;
+  std::atomic<bool> rightExit = false;
   //==============================================================================
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(OscilloscopeComponent)
 };

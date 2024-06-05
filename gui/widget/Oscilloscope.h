@@ -47,11 +47,13 @@ public:
   //==============================================================================
   void paint(juce::Graphics& g) noexcept override
   {
+    TRACE_COMPONENT();
     g.drawImageAt(image, 0, 0);
   }
   //==============================================================================
   void prepareToPaint()
   {
+    TRACE_COMPONENT();
     const int width = getWidth();
     const int height = getHeight();
     const int halfHeight = height / 2;

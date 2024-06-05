@@ -72,6 +72,9 @@ public:
 
   void paint(juce::Graphics& g) override
   {
+    TRACE_COMPONENT();
+
+    // Calculate bounds
     auto bounds = getLocalBounds();
 
     // Draw bounds debug

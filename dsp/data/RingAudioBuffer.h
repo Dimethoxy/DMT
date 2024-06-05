@@ -28,6 +28,7 @@ public:
   //============================================================================
   void write(const AudioBuffer& bufferToWrite) noexcept
   {
+    TRACE_COMPONENT();
     const int numChannels = getNumChannels();
     const int bufferSize = getNumSamples();
     const int channelsToWrite = bufferToWrite.getNumChannels();
@@ -63,6 +64,7 @@ public:
   //============================================================================
   void write(FifoAudioBuffer& bufferToWrite) noexcept
   {
+    TRACE_COMPONENT();
     const int numChannels = getNumChannels();
     const int bufferSize = getNumSamples();
     const int channelsToWrite = bufferToWrite.getNumChannels();

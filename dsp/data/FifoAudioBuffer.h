@@ -21,6 +21,7 @@ public:
   //============================================================================
   void addToFifo(const juce::AudioBuffer<SampleType>& target)
   {
+    TRACE_DSP();
     const int numSamples = target.getNumSamples();
     int firstBlockStart, firstBlockSize, secondBlockStart, secondBlockSize;
 
@@ -52,6 +53,7 @@ public:
   //============================================================================
   void readFromFifo(juce::AudioBuffer<SampleType>& target)
   {
+    TRACE_COMPONENT();
     const int numSamples = target.getNumSamples();
     int firstBlockStart, firstBlockSize, secondBlockStart, secondBlockSize;
 
