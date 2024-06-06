@@ -67,13 +67,15 @@ public:
   {
     exit = true;
 
-    std::lock_guard<std::mutex> lock(leftExitMutex);
+    std::lock_guard<std::mutex> leftLock(leftExitMutex);
     leftCondition.notify_one();
-    leftExitCondition.wait(lock, [this] { return leftThreadExited; });
+    leftExitCondition.wait(leftLock,
+                           [this] { return leftThreadExited == true; });
 
-    std::lock_guard<std::mutex> lock(rightExitMutex);
+    std::lock_guard<std::mutex> rightLock(rightExitMutex);
     rightCondition.notify_one();
-    rightExitCondition.wait(lock, [this] { return rightThreadExited; });
+    rightExitCondition.wait(rightLock,
+                            [this] { return rightThreadExited == true; });
   }
   //==============================================================================
   void leftWorker() noexcept
