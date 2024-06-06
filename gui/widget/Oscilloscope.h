@@ -33,7 +33,7 @@ public:
   //==============================================================================
   void resized() override { isResized = true; }
   //==============================================================================
-  void paint(juce::Graphics& g) noexcept override
+  void paint(juce::Graphics& g) override
   {
     TRACE_COMPONENT();
     g.drawImageAt(image, 0, 0);
@@ -48,25 +48,18 @@ public:
       isResized = false;
     }
 
-    auto path = generatePath();
-
-    PathStrokeType strokeType(thickness * size,
-                              juce::PathStrokeType::JointStyle::mitered,
-                              juce::PathStrokeType::EndCapStyle::butt);
-
-    juce::Graphics imageGraphics(image);
-    imageGraphics.setColour(juce::Colours::white);
-    imageGraphics.strokePath(path, strokeType);
+    renderNextFrame();
   }
   //==============================================================================
   void resizeImage()
   {
-    auto newImage = Image(PixelFormat::ARGB, getWidth(), getHeight(), true);
+    auto newImage =
+      Image(PixelFormat::ARGB, jmax(1, getWidth()), jmax(1, getHeight()), true);
     newImage.clear(newImage.getBounds(), juce::Colours::transparentBlack);
-    image = newImage;
+    // image = newImage;
   }
   //==============================================================================
-  juce::Path generatePath()
+  void renderNextFrame()
   {
     const int width = image.getWidth();
     const int height = image.getHeight();
@@ -85,18 +78,20 @@ public:
     ringBuffer.incrementReadPosition(channel, samplesToDraw);
 
     // Image move
+    auto newImage =
+      Image(PixelFormat::ARGB, jmax(1, getWidth()), jmax(1, getHeight()), true);
     const int destX = 0 - pixelToDraw;
-    image.moveImageSection(destX,      // destX
-                           0,          // destY
-                           0,          // srcX
-                           0,          // srcY
-                           width + 10, // width
-                           height);    // height
+    newImage.moveImageSection(destX,      // destX
+                              0,          // destY
+                              0,          // srcX
+                              0,          // srcY
+                              width + 10, // width
+                              height);    // height
 
     // Clear the new part of the image
     juce::Rectangle<int> clearRect(
       width - pixelToDraw + 10, 0, pixelToDraw, height);
-    image.clear(clearRect, juce::Colours::transparentBlack);
+    // newImage.clear(clearRect, juce::Colours::transparentBlack);
 
     // Generate path for new samples
     currentX = currentX - (int)currentX + width - pixelToDraw;
@@ -119,7 +114,14 @@ public:
       path.lineTo(point);
     }
 
-    return path;
+    PathStrokeType strokeType(thickness * size,
+                              juce::PathStrokeType::JointStyle::mitered,
+                              juce::PathStrokeType::EndCapStyle::butt);
+
+    juce::Graphics imageGraphics(newImage);
+    imageGraphics.setColour(juce::Colours::white);
+    imageGraphics.strokePath(path, strokeType);
+    // image = newImage;
   }
   //==============================================================================
   void setRawSamplesPerPixel(float newRawSamplesPerPixel) noexcept
@@ -149,6 +151,10 @@ private:
   float rawSamplesPerPixel;
   float amplitude;
   float thickness;
+  //==============================================================================
+  std::condition_variable imageCondition;
+  std::mutex imageMutex;
+  std::atomic<bool> imageReady;
   //==============================================================================
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Oscilloscope)
 };

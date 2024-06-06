@@ -65,10 +65,56 @@ public:
   }
   ~OscilloscopeComponent() override
   {
-    leftExit = true;
-    rightExit = true;
+    exit = true;
+
+    std::lock_guard<std::mutex> lock(leftExitMutex);
     leftCondition.notify_one();
+    leftExitCondition.wait(lock, [this] { return leftThreadExited; });
+
+    std::lock_guard<std::mutex> lock(rightExitMutex);
     rightCondition.notify_one();
+    rightExitCondition.wait(lock, [this] { return rightThreadExited; });
+  }
+  //==============================================================================
+  void leftWorker() noexcept
+  {
+    std::unique_lock<std::mutex> lock(leftMutex);
+    while (!exit) {
+      leftCondition.wait(lock, [this] { return leftPaintFlag || exit; });
+      if (leftPaintFlag) {
+        leftOscilloscope.render();
+        leftPaintFlag = false;
+      }
+    }
+    leftThreadExited = true;
+    leftExitCondition.notify_one();
+  }
+  void rightWorker() noexcept
+  {
+    std::unique_lock<std::mutex> lock(rightMutex);
+    while (!exit) {
+      rightCondition.wait(lock, [this] { return rightPaintFlag || exit; });
+      if (rightPaintFlag) {
+        rightOscilloscope.render();
+        rightPaintFlag = false;
+      }
+    }
+    rightThreadExited = true;
+    rightExitCondition.notify_one();
+  }
+  void repaintTimerCallback() noexcept override
+  {
+    TRACE_COMPONENT();
+    ringBuffer.write(fifoBuffer);
+    ringBuffer.equalizeReadPositions();
+    if (!leftPaintFlag && !rightPaintFlag) {
+      rightOscilloscope.repaint();
+      leftOscilloscope.repaint();
+      leftPaintFlag = true;
+      rightPaintFlag = true;
+      leftCondition.notify_one();
+      rightCondition.notify_one();
+    }
   }
   //==============================================================================
   void paint(juce::Graphics& g) override
@@ -150,44 +196,6 @@ public:
     }
   }
   //==============================================================================
-  void repaintTimerCallback() noexcept override
-  {
-    TRACE_COMPONENT();
-    ringBuffer.write(fifoBuffer);
-    ringBuffer.equalizeReadPositions();
-    if (!leftPaintFlag && !rightPaintFlag) {
-      rightOscilloscope.repaint();
-      leftOscilloscope.repaint();
-      leftPaintFlag = true;
-      rightPaintFlag = true;
-      leftCondition.notify_one();
-      rightCondition.notify_one();
-    }
-  }
-  void leftWorker() noexcept
-  {
-    std::unique_lock<std::mutex> lock(leftMutex);
-    while (!leftExit) {
-      leftCondition.wait(lock, [this] { return leftPaintFlag || leftExit; });
-      if (leftPaintFlag) {
-        leftOscilloscope.render();
-        leftPaintFlag = false;
-      }
-    }
-  }
-  void rightWorker() noexcept
-  {
-    std::unique_lock<std::mutex> lock(rightMutex);
-    while (!rightExit) {
-      rightCondition.wait(lock, [this] { return rightPaintFlag || rightExit; });
-      if (rightPaintFlag) {
-        rightOscilloscope.render();
-        rightPaintFlag = false;
-      }
-    }
-  }
-
-  //==============================================================================
   void resized() override
   {
     auto bounds = getLocalBounds();
@@ -259,9 +267,16 @@ private:
   std::condition_variable rightCondition;
   std::atomic<bool> leftPaintFlag = false;
   std::atomic<bool> rightPaintFlag = false;
-  std::atomic<bool> leftExit = false;
-  std::atomic<bool> rightExit = false;
   //==============================================================================
+  std::atomic<bool> exit = false;
+  std::mutex leftExitMutex;
+  std::mutex rightExitMutex;
+  std::condition_variable leftExitCondition;
+  std::condition_variable rightExitCondition;
+  std::atomic<bool> leftThreadExited = false;
+  std::atomic<bool> rightThreadExited = false;
+  //==============================================================================
+
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(OscilloscopeComponent)
 };
 } // namespace component
