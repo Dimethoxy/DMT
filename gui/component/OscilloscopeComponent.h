@@ -17,7 +17,7 @@ class OscilloscopeComponent
   : public juce::Component
   , public dmt::utility::RepaintTimer
 {
-  using Oscilloscope = dmt::gui::widget::Oscilloscope<SampleType>;
+  using Oscilloscope = dmt::gui::widget::Oscilloscope;
   using RingAudioBuffer = dmt::dsp::data::RingAudioBuffer<SampleType>;
   using FifoAudioBuffer = dmt::dsp::data::FifoAudioBuffer<SampleType>;
   using Shadow = dmt::gui::widget::Shadow;
@@ -49,33 +49,32 @@ public:
   OscilloscopeComponent(FifoAudioBuffer& fifoBuffer)
     : ringBuffer(2, 4096)
     , fifoBuffer(fifoBuffer)
-    , leftOscilloscope(ringBuffer, 0)
-    , rightOscilloscope(ringBuffer, 1)
+    , leftOscilloscope(0)
+    , rightOscilloscope(1)
     , outerShadow(outerShadowColour, outerShadowRadius)
     , innerShadow(innerShadowColour, innerShadowRadius)
   {
     startRepaintTimer();
+    leftOscilloscope.startThread();
+    rightOscilloscope.startThread();
+  }
+  ~OscilloscopeComponent() override
+  {
+    stopRepaintTimer();
+    leftOscilloscope.stopThread(3000);
+    rightOscilloscope.stopThread(3000);
   }
   //==============================================================================
   void repaintTimerCallback() noexcept override
   {
-    TRACE_COMPONENT();
     ringBuffer.write(fifoBuffer);
     ringBuffer.equalizeReadPositions();
-    auto& leftPaintFlag = leftOscilloscope.paintFlag;
-    auto& rightPaintFlag = rightOscilloscope.paintFlag;
-    if (!leftPaintFlag && !rightPaintFlag) {
-      leftPaintFlag = true;
-      rightPaintFlag = true;
-      leftOscilloscope.runCondition.notify_one();
-      rightOscilloscope.runCondition.notify_one();
-    }
+    leftOscilloscope.notify();
+    rightOscilloscope.notify();
   }
   //==============================================================================
   void paint(juce::Graphics& g) override
   {
-    TRACE_COMPONENT();
-
     // Precalculation
     const auto bounds = this->getLocalBounds().toFloat();
     const float outerCornerSize = rawCornerSize * size;
@@ -180,21 +179,21 @@ public:
     float maxSamplesPerPixel = 900.0f;
     float exponentialModifier = pow(zoomModifier, 4.0f);
     float samplesPerPixel = 1.0f + maxSamplesPerPixel * exponentialModifier;
-    leftOscilloscope.setRawSamplesPerPixel(samplesPerPixel);
-    rightOscilloscope.setRawSamplesPerPixel(samplesPerPixel);
+    // leftOscilloscope.setRawSamplesPerPixel(samplesPerPixel);
+    // rightOscilloscope.setRawSamplesPerPixel(samplesPerPixel);
   }
   //==============================================================================
   void setThickness(float thickness) noexcept
   {
-    leftOscilloscope.setThickness(thickness);
-    rightOscilloscope.setThickness(thickness);
+    // leftOscilloscope.setThickness(thickness);
+    // rightOscilloscope.setThickness(thickness);
   }
   //==============================================================================
   void setHeight(float height) noexcept
   {
     float amplitude = juce::Decibels::decibelsToGain(height);
-    leftOscilloscope.setAmplitude(amplitude);
-    rightOscilloscope.setAmplitude(amplitude);
+    // leftOscilloscope.setAmplitude(amplitude);
+    // rightOscilloscope.setAmplitude(amplitude);
   }
   //==============================================================================
 private:
