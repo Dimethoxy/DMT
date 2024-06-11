@@ -7,7 +7,7 @@ namespace gui {
 namespace widget {
 //==============================================================================
 template<typename SampleType>
-class Oscilloscope : public juce::Component
+class Oscilloscope
 {
   using RingBuffer = dmt::dsp::data::RingAudioBuffer<SampleType>;
   using PixelFormat = juce::Image::PixelFormat;
@@ -20,7 +20,8 @@ class Oscilloscope : public juce::Component
 public:
   //==============================================================================
   Oscilloscope(RingBuffer& ringBuffer, int channel)
-    : ringBuffer(ringBuffer)
+    : thread(&Oscilloscope::runThread, this)
+    , ringBuffer(ringBuffer)
     , currentSample(0.0f)
     , currentX(0.0f)
     , image(Image(PixelFormat::ARGB, 1, 1, true))
@@ -31,12 +32,26 @@ public:
   {
   }
   //==============================================================================
-  void resized() override { isResized = true; }
-  //==============================================================================
-  void paint(juce::Graphics& g) override
+  ~Oscilloscope()
   {
-    TRACE_COMPONENT();
-    g.drawImageAt(image, 0, 0);
+    exitFlag = true;
+    std::unique_lock<std::mutex> lock(exitMutex);
+    runCondition.notify_one();
+    exitCondition.wait(lock, [this] { return threadExited == true; });
+  }
+  //==============================================================================
+  void runThread() noexcept
+  {
+    std::unique_lock<std::mutex> lock(runMutex);
+    while (!exitFlag) {
+      runCondition.wait(lock, [this] { return paintFlag || exitFlag; });
+      if (paintFlag) {
+        render();
+        paintFlag = false;
+      }
+    }
+    threadExited = true;
+    exitCondition.notify_one();
   }
   //==============================================================================
   void render()
@@ -53,16 +68,17 @@ public:
   //==============================================================================
   void resizeImage()
   {
-    auto newImage =
-      Image(PixelFormat::ARGB, jmax(1, getWidth()), jmax(1, getHeight()), true);
-    newImage.clear(newImage.getBounds(), juce::Colours::transparentBlack);
-    // image = newImage;
+    // auto newImage =
+    //   Image(PixelFormat::ARGB, jmax(1, getWidth()), jmax(1, getHeight()),
+    //   true);
+    // newImage.clear(newImage.getBounds(), juce::Colours::transparentBlack);
+    //  image = newImage;
   }
   //==============================================================================
   void renderNextFrame()
   {
-    const int width = image.getWidth();
-    const int height = image.getHeight();
+    const int width = 100;  // image.getWidth();
+    const int height = 100; // image.getHeight();
     const int halfHeight = height / 2;
     float samplesPerPixel = rawSamplesPerPixel * size;
 
@@ -78,8 +94,7 @@ public:
     ringBuffer.incrementReadPosition(channel, samplesToDraw);
 
     // Image move
-    auto newImage =
-      Image(PixelFormat::ARGB, jmax(1, getWidth()), jmax(1, getHeight()), true);
+    auto newImage = Image(PixelFormat::ARGB, jmax(1, 100), jmax(1, 100), true);
     const int destX = 0 - pixelToDraw;
     newImage.moveImageSection(destX,      // destX
                               0,          // destY
@@ -126,24 +141,32 @@ public:
   //==============================================================================
   void setRawSamplesPerPixel(float newRawSamplesPerPixel) noexcept
   {
-    this->rawSamplesPerPixel = newRawSamplesPerPixel;
+    // this->rawSamplesPerPixel = newRawSamplesPerPixel;
   }
   //==============================================================================
   void setAmplitude(float newAmplitude) noexcept
   {
-    this->amplitude = newAmplitude;
+    // this->amplitude = newAmplitude;
   }
   //==============================================================================
   void setThickness(float newThickness) noexcept
   {
-    this->thickness = newThickness;
+    // this->thickness = newThickness;
   }
+  //==============================================================================
+  std::atomic<bool> exitFlag = false;
+  std::atomic<bool> paintFlag = false;
+  std::atomic<bool> threadExited = false;
+  std::mutex runMutex;
+  std::mutex exitMutex;
+  std::condition_variable runCondition;
+  std::condition_variable exitCondition;
+  std::thread thread;
   //==============================================================================
 private:
   RingBuffer& ringBuffer;
   Image image;
   SampleType currentSample;
-  CriticalSection imageLock;
   float currentX;
   const int channel;
   std::atomic<bool> isResized;
@@ -151,10 +174,6 @@ private:
   float rawSamplesPerPixel;
   float amplitude;
   float thickness;
-  //==============================================================================
-  std::condition_variable imageCondition;
-  std::mutex imageMutex;
-  std::atomic<bool> imageReady;
   //==============================================================================
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Oscilloscope)
 };

@@ -53,69 +53,22 @@ public:
     , rightOscilloscope(ringBuffer, 1)
     , outerShadow(outerShadowColour, outerShadowRadius)
     , innerShadow(innerShadowColour, innerShadowRadius)
-    , leftThread(&OscilloscopeComponent::leftWorker, this)
-    , rightThread(&OscilloscopeComponent::rightWorker, this)
   {
-    addAndMakeVisible(leftOscilloscope);
-    addAndMakeVisible(rightOscilloscope);
     startRepaintTimer();
-
-    leftThread.detach();
-    rightThread.detach();
-  }
-  ~OscilloscopeComponent() override
-  {
-    exit = true;
-
-    std::unique_lock<std::mutex> leftLock(leftExitMutex);
-    leftCondition.notify_one();
-    leftExitCondition.wait(leftLock,
-                           [this] { return leftThreadExited == true; });
-
-    std::unique_lock<std::mutex> rightLock(rightExitMutex);
-    rightCondition.notify_one();
-    rightExitCondition.wait(rightLock,
-                            [this] { return rightThreadExited == true; });
   }
   //==============================================================================
-  void leftWorker() noexcept
-  {
-    std::unique_lock<std::mutex> lock(leftMutex);
-    while (!exit) {
-      leftCondition.wait(lock, [this] { return leftPaintFlag || exit; });
-      if (leftPaintFlag) {
-        leftOscilloscope.render();
-        leftPaintFlag = false;
-      }
-    }
-    leftThreadExited = true;
-    leftExitCondition.notify_one();
-  }
-  void rightWorker() noexcept
-  {
-    std::unique_lock<std::mutex> lock(rightMutex);
-    while (!exit) {
-      rightCondition.wait(lock, [this] { return rightPaintFlag || exit; });
-      if (rightPaintFlag) {
-        rightOscilloscope.render();
-        rightPaintFlag = false;
-      }
-    }
-    rightThreadExited = true;
-    rightExitCondition.notify_one();
-  }
   void repaintTimerCallback() noexcept override
   {
     TRACE_COMPONENT();
     ringBuffer.write(fifoBuffer);
     ringBuffer.equalizeReadPositions();
+    auto& leftPaintFlag = leftOscilloscope.paintFlag;
+    auto& rightPaintFlag = rightOscilloscope.paintFlag;
     if (!leftPaintFlag && !rightPaintFlag) {
-      rightOscilloscope.repaint();
-      leftOscilloscope.repaint();
       leftPaintFlag = true;
       rightPaintFlag = true;
-      leftCondition.notify_one();
-      rightCondition.notify_one();
+      leftOscilloscope.runCondition.notify_one();
+      rightOscilloscope.runCondition.notify_one();
     }
   }
   //==============================================================================
@@ -151,44 +104,44 @@ public:
     }
 
     // Paint Oscilloscope Vertical Lines
-    const int scopeX = leftOscilloscope.getX();
-    const float scopeWidth = leftOscilloscope.getWidth();
-    const float leftScopeY = leftOscilloscope.getY();
-    const float leftScopeHeight = leftOscilloscope.getHeight();
-    const float rightScopeY = rightOscilloscope.getY();
-    const float rightScopeHeight = rightOscilloscope.getHeight();
+    // const int scopeX = leftOscilloscope.getX();
+    // const float scopeWidth = leftOscilloscope.getWidth();
+    // const float leftScopeY = leftOscilloscope.getY();
+    // const float leftScopeHeight = leftOscilloscope.getHeight();
+    // const float rightScopeY = rightOscilloscope.getY();
+    // const float rightScopeHeight = rightOscilloscope.getHeight();
 
-    g.setColour(Settings::Colours::background.brighter(0.05));
-    const int numLines = getWidth() / (getHeight() / 4.0f);
-    const float lineSpacing = scopeWidth / numLines;
-    for (int i = 0; i < numLines; ++i) {
-      const float x = scopeX + lineSpacing * i;
-      g.drawLine(
-        juce::Line<float>(x, leftScopeY, x, leftScopeY + leftScopeHeight),
-        2.0f * size);
-      g.drawLine(
-        juce::Line<float>(x, rightScopeY, x, rightScopeY + rightScopeHeight),
-        2.0f * size);
-    }
+    // g.setColour(Settings::Colours::background.brighter(0.05));
+    // const int numLines = getWidth() / (getHeight() / 4.0f);
+    // const float lineSpacing = scopeWidth / numLines;
+    // for (int i = 0; i < numLines; ++i) {
+    //   const float x = scopeX + lineSpacing * i;
+    //   g.drawLine(
+    //     juce::Line<float>(x, leftScopeY, x, leftScopeY + leftScopeHeight),
+    //     2.0f * size);
+    //   g.drawLine(
+    //     juce::Line<float>(x, rightScopeY, x, rightScopeY + rightScopeHeight),
+    //     2.0f * size);
+    // }
 
-    float lineThicknessModifiers[7] = {
-      1.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.5f
-    };
-    float brightnessValues[7] = { 0.15f, 0.05f, 0.05f, 0.05f,
-                                  0.05f, 0.05f, 0.15f };
-    for (int i = 0; i < 7; ++i) {
-      const float y = leftScopeY + (leftScopeHeight / 6) * i;
-      g.setColour(Settings::Colours::background.brighter(brightnessValues[i]));
-      g.drawLine(juce::Line<float>(scopeX, y, scopeX + scopeWidth, y),
-                 3.0f * lineThicknessModifiers[i] * size);
-    }
+    // float lineThicknessModifiers[7] = {
+    //   1.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.5f
+    // };
+    // float brightnessValues[7] = { 0.15f, 0.05f, 0.05f, 0.05f,
+    //                               0.05f, 0.05f, 0.15f };
+    // for (int i = 0; i < 7; ++i) {
+    //   const float y = leftScopeY + (leftScopeHeight / 6) * i;
+    //   g.setColour(Settings::Colours::background.brighter(brightnessValues[i]));
+    //   g.drawLine(juce::Line<float>(scopeX, y, scopeX + scopeWidth, y),
+    //              3.0f * lineThicknessModifiers[i] * size);
+    // }
 
-    for (int i = 0; i < 7; ++i) {
-      const float y = rightScopeY + (rightScopeHeight / 6) * i;
-      g.setColour(Settings::Colours::background.brighter(brightnessValues[i]));
-      g.drawLine(juce::Line<float>(scopeX, y, scopeX + scopeWidth, y),
-                 3.0f * lineThicknessModifiers[i] * size);
-    }
+    // for (int i = 0; i < 7; ++i) {
+    //   const float y = rightScopeY + (rightScopeHeight / 6) * i;
+    //   g.setColour(Settings::Colours::background.brighter(brightnessValues[i]));
+    //   g.drawLine(juce::Line<float>(scopeX, y, scopeX + scopeWidth, y),
+    //              3.0f * lineThicknessModifiers[i] * size);
+    // }
 
     // Draw the inner shadow
     if (drawInnerShadow) {
@@ -218,11 +171,6 @@ public:
     auto leftScopeBounds =
       scopeBounds.removeFromTop(scopeBounds.getHeight() * 0.5f);
     auto rightScopeBounds = scopeBounds;
-
-    leftOscilloscope.setBounds(
-      leftScopeBounds.removeFromTop(leftScopeBounds.getHeight() * 0.95));
-    rightOscilloscope.setBounds(
-      rightScopeBounds.removeFromBottom(rightScopeBounds.getHeight() * 0.95));
   }
   //==============================================================================
   void setZoom(float zoom) noexcept
@@ -260,23 +208,6 @@ private:
   Shadow innerShadow;
   juce::Rectangle<int> innerBounds;
   juce::Rectangle<int> outerBounds;
-  //==============================================================================
-  std::thread leftThread;
-  std::thread rightThread;
-  std::mutex leftMutex;
-  std::mutex rightMutex;
-  std::condition_variable leftCondition;
-  std::condition_variable rightCondition;
-  std::atomic<bool> leftPaintFlag = false;
-  std::atomic<bool> rightPaintFlag = false;
-  //==============================================================================
-  std::atomic<bool> exit = false;
-  std::mutex leftExitMutex;
-  std::mutex rightExitMutex;
-  std::condition_variable leftExitCondition;
-  std::condition_variable rightExitCondition;
-  std::atomic<bool> leftThreadExited = false;
-  std::atomic<bool> rightThreadExited = false;
   //==============================================================================
 
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(OscilloscopeComponent)
