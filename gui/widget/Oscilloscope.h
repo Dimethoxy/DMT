@@ -67,15 +67,14 @@ protected:
   {
     while (!threadShouldExit()) {
       wait(10000);
-      TRACE_COMPONENT();
       const ScopedWriteLock writeLock(imageLock);
-      render();
+      juce::Graphics imageGraphics(image);
+      imageGraphics.fillAll(juce::Colours::pink);
     }
   }
   //============================================================================
   void resizeImage(const int width, const int height)
   {
-    TRACE_COMPONENT();
     const ScopedWriteLock writeLock(imageLock);
     image = Image(PixelFormat::ARGB, width, height, true);
     notify();

@@ -59,7 +59,6 @@ public:
   //==============================================================================
   void repaintTimerCallback() noexcept override
   {
-    TRACE_COMPONENT();
     repaint();
     ringBuffer.write(fifoBuffer);
     ringBuffer.equalizeReadPositions();
@@ -69,7 +68,6 @@ public:
   //==============================================================================
   void paint(juce::Graphics& g) override
   {
-    TRACE_COMPONENT();
     // Precalculation
     const auto bounds = this->getLocalBounds().toFloat();
     const float outerCornerSize = rawCornerSize * size;
