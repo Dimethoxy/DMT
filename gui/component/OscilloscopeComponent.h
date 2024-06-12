@@ -55,14 +55,6 @@ public:
     , innerShadow(innerShadowColour, innerShadowRadius)
   {
     startRepaintTimer();
-    leftOscilloscope.startThread();
-    rightOscilloscope.startThread();
-  }
-  ~OscilloscopeComponent() override
-  {
-    stopRepaintTimer();
-    leftOscilloscope.stopThread(3000);
-    rightOscilloscope.stopThread(3000);
   }
   //==============================================================================
   void repaintTimerCallback() noexcept override
