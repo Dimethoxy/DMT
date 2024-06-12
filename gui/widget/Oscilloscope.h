@@ -34,7 +34,7 @@ public:
   //============================================================================
   void setBounds(juce::Rectangle<int> newBounds)
   {
-    resizeImage(bounds.getWidth(), bounds.getHeight());
+    resizeImage(newBounds.getWidth(), newBounds.getHeight());
     bounds = newBounds;
   }
   //============================================================================
@@ -58,6 +58,7 @@ protected:
     TRACE_COMPONENT();
     const ScopedWriteLock writeLock(imageLock);
     image = Image(PixelFormat::ARGB, width, height, true);
+    notify();
   }
 
 private:

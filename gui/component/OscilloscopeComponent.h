@@ -60,11 +60,11 @@ public:
   void repaintTimerCallback() noexcept override
   {
     TRACE_COMPONENT();
+    repaint();
     ringBuffer.write(fifoBuffer);
     ringBuffer.equalizeReadPositions();
     leftOscilloscope.notify();
     rightOscilloscope.notify();
-    repaint();
   }
   //==============================================================================
   void paint(juce::Graphics& g) override
