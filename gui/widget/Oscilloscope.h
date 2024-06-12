@@ -24,11 +24,7 @@ public:
     startThread();
   }
   //============================================================================
-  ~Oscilloscope() override
-  {
-    stopThread(1000);
-    notify();
-  }
+  ~Oscilloscope() override { stopThread(1000); }
   //============================================================================
   void run() override
   {
@@ -37,7 +33,7 @@ public:
       wait(1000);
       const ScopedWriteLock writeLock(imageLock);
       g.setColour(Colours::white);
-      g.fillRect(0, 0, 100, 100);
+      g.fillRect(0, 0, image.getHeight(), image.getWidth());
     }
   }
   //============================================================================
@@ -47,11 +43,14 @@ public:
     return image;
   }
   //============================================================================
+  void setSize(const int width, const int height)
+  {
+    const ScopedWriteLock writeLock(imageLock);
+    image = Image(PixelFormat::ARGB, width, height, true);
+  }
+  //============================================================================
 private:
   const int channel;
-  juce::Atomic<int> width = 1;
-  juce::Atomic<int> height = 1;
-  //============================================================================
   Image image = Image(PixelFormat::ARGB, 100, 100, true);
   ReadWriteLock imageLock;
   //============================================================================
