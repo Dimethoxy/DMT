@@ -26,6 +26,22 @@ public:
   //============================================================================
   ~Oscilloscope() override { stopThread(1000); }
   //============================================================================
+  juce::Image getImage() const
+  {
+    const ScopedReadLock readLock(imageLock);
+    return image.createCopy();
+  }
+  //============================================================================
+  void setBounds(juce::Rectangle<int> newBounds)
+  {
+    resizeImage(bounds.getWidth(), bounds.getHeight());
+    bounds = newBounds;
+  }
+  //============================================================================
+  juce::Rectangle<int> getBounds() const { return bounds; }
+
+protected:
+  //============================================================================
   void run() override
   {
     Graphics g(image);
@@ -33,24 +49,20 @@ public:
       wait(1000);
       const ScopedWriteLock writeLock(imageLock);
       g.setColour(Colours::white);
-      g.fillRect(0, 0, image.getHeight(), image.getWidth());
+      g.fillAll(juce::Colours::coral);
     }
   }
   //============================================================================
-  juce::Image getImage() const
-  {
-    const ScopedReadLock readLock(imageLock);
-    return image;
-  }
-  //============================================================================
-  void setSize(const int width, const int height)
+  void resizeImage(const int width, const int height)
   {
     const ScopedWriteLock writeLock(imageLock);
     image = Image(PixelFormat::ARGB, width, height, true);
   }
-  //============================================================================
+
 private:
+  //============================================================================
   const int channel;
+  juce::Rectangle<int> bounds = juce::Rectangle<int>(0, 0, 1, 1);
   Image image = Image(PixelFormat::ARGB, 100, 100, true);
   ReadWriteLock imageLock;
   //============================================================================

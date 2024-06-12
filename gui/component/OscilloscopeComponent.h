@@ -134,6 +134,9 @@ public:
     //              3.0f * lineThicknessModifiers[i] * size);
     // }
 
+    auto img = leftOscilloscope.getImage();
+    g.drawImageAt(img, getX(), getY());
+
     // Draw the inner shadow
     if (drawInnerShadow) {
       juce::Path innerShadowPath;
@@ -162,6 +165,9 @@ public:
     auto leftScopeBounds =
       scopeBounds.removeFromTop(scopeBounds.getHeight() * 0.5f);
     auto rightScopeBounds = scopeBounds;
+
+    leftOscilloscope.setBounds(leftScopeBounds);
+    rightOscilloscope.setBounds(rightScopeBounds);
   }
   //==============================================================================
   void setZoom(float zoom) noexcept
