@@ -13,6 +13,7 @@ class Oscilloscope : public juce::Thread
   using String = juce::String;
   using Thread = juce::Thread;
   using PixelFormat = juce::Image::PixelFormat;
+  using ReadWriteLock = juce::ReadWriteLock;
 
 public:
   //============================================================================
@@ -34,9 +35,16 @@ public:
     Graphics g(image);
     while (!threadShouldExit()) {
       wait(1000);
+      const ScopedWriteLock writeLock(imageLock);
       g.setColour(Colours::white);
       g.fillRect(0, 0, 100, 100);
     }
+  }
+  //============================================================================
+  juce::Image getImage() const
+  {
+    const ScopedReadLock readLock(imageLock);
+    return image;
   }
   //============================================================================
 private:
@@ -45,6 +53,7 @@ private:
   juce::Atomic<int> height = 1;
   //============================================================================
   Image image = Image(PixelFormat::ARGB, 100, 100, true);
+  ReadWriteLock imageLock;
   //============================================================================
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Oscilloscope)
 };
