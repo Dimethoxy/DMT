@@ -44,9 +44,9 @@ protected:
   //============================================================================
   void run() override
   {
-    TRACE_COMPONENT();
     while (!threadShouldExit()) {
       wait(10000);
+      TRACE_COMPONENT();
       const ScopedWriteLock writeLock(imageLock);
       const Graphics g(image);
       g.fillAll(juce::Colours::coral);

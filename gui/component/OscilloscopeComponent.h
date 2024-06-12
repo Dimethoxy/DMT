@@ -64,6 +64,7 @@ public:
     ringBuffer.equalizeReadPositions();
     leftOscilloscope.notify();
     rightOscilloscope.notify();
+    repaint();
   }
   //==============================================================================
   void paint(juce::Graphics& g) override
