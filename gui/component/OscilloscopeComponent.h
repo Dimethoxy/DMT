@@ -59,6 +59,7 @@ public:
   //==============================================================================
   void repaintTimerCallback() noexcept override
   {
+    TRACE_COMPONENT();
     ringBuffer.write(fifoBuffer);
     ringBuffer.equalizeReadPositions();
     leftOscilloscope.notify();
@@ -67,6 +68,7 @@ public:
   //==============================================================================
   void paint(juce::Graphics& g) override
   {
+    TRACE_COMPONENT();
     // Precalculation
     const auto bounds = this->getLocalBounds().toFloat();
     const float outerCornerSize = rawCornerSize * size;
@@ -134,8 +136,12 @@ public:
     //              3.0f * lineThicknessModifiers[i] * size);
     // }
 
-    auto img = leftOscilloscope.getImage();
-    g.drawImageAt(img, getX(), getY());
+    g.drawImageAt(leftOscilloscope.getImage(),
+                  leftOscilloscope.getBounds().getX(),
+                  leftOscilloscope.getBounds().getY());
+    g.drawImageAt(rightOscilloscope.getImage(),
+                  rightOscilloscope.getBounds().getX(),
+                  rightOscilloscope.getBounds().getY());
 
     // Draw the inner shadow
     if (drawInnerShadow) {

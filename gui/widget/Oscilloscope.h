@@ -44,17 +44,18 @@ protected:
   //============================================================================
   void run() override
   {
-    Graphics g(image);
+    TRACE_COMPONENT();
     while (!threadShouldExit()) {
-      wait(1000);
+      wait(10000);
       const ScopedWriteLock writeLock(imageLock);
-      g.setColour(Colours::white);
+      const Graphics g(image);
       g.fillAll(juce::Colours::coral);
     }
   }
   //============================================================================
   void resizeImage(const int width, const int height)
   {
+    TRACE_COMPONENT();
     const ScopedWriteLock writeLock(imageLock);
     image = Image(PixelFormat::ARGB, width, height, true);
   }
@@ -63,7 +64,7 @@ private:
   //============================================================================
   const int channel;
   juce::Rectangle<int> bounds = juce::Rectangle<int>(0, 0, 1, 1);
-  Image image = Image(PixelFormat::ARGB, 100, 100, true);
+  Image image = Image(PixelFormat::ARGB, 1, 1, true);
   ReadWriteLock imageLock;
   //============================================================================
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Oscilloscope)
