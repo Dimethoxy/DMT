@@ -17,7 +17,7 @@ class OscilloscopeComponent
   : public juce::Component
   , public dmt::utility::RepaintTimer
 {
-  using Oscilloscope = dmt::gui::widget::Oscilloscope;
+  using Oscilloscope = dmt::gui::widget::Oscilloscope<SampleType>;
   using RingAudioBuffer = dmt::dsp::data::RingAudioBuffer<SampleType>;
   using FifoAudioBuffer = dmt::dsp::data::FifoAudioBuffer<SampleType>;
   using Shadow = dmt::gui::widget::Shadow;
@@ -49,8 +49,8 @@ public:
   OscilloscopeComponent(FifoAudioBuffer& fifoBuffer)
     : ringBuffer(2, 4096)
     , fifoBuffer(fifoBuffer)
-    , leftOscilloscope(0)
-    , rightOscilloscope(1)
+    , leftOscilloscope(ringBuffer, 0)
+    , rightOscilloscope(ringBuffer, 1)
     , outerShadow(outerShadowColour, outerShadowRadius)
     , innerShadow(innerShadowColour, innerShadowRadius)
   {
