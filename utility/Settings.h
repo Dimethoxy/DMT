@@ -153,56 +153,5 @@ struct Settings
     static inline float buttonWidth = 60.0f;
     static inline float buttonHeight = 180.0f;
   };
-  struct Fonts
-  {
-    using Typeface = juce::Typeface;
-    using Font = juce::Font;
-
-    static inline Typeface::Ptr thinTypeface =
-      Typeface::createSystemTypefaceFor(BinaryData::PoppinsThin_ttf,
-                                        BinaryData::PoppinsThin_ttfSize);
-
-    static inline Font thin = Font(FontOptions(thinTypeface));
-
-    static inline Typeface::Ptr extraLightTypeface =
-      Typeface::createSystemTypefaceFor(BinaryData::PoppinsExtraLight_ttf,
-                                        BinaryData::PoppinsExtraLight_ttfSize);
-    static inline Font extraLight = Font(FontOptions(extraLightTypeface));
-
-    static inline Typeface::Ptr lightTypeface =
-      Typeface::createSystemTypefaceFor(BinaryData::PoppinsLight_ttf,
-                                        BinaryData::PoppinsLight_ttfSize);
-    static inline Font light = Font(FontOptions(lightTypeface));
-
-    static inline Typeface::Ptr regularTypeface =
-      Typeface::createSystemTypefaceFor(BinaryData::PoppinsRegular_ttf,
-                                        BinaryData::PoppinsRegular_ttfSize);
-    static inline Font regular = Font(FontOptions(regularTypeface));
-
-    static inline Typeface::Ptr mediumTypeface =
-      Typeface::createSystemTypefaceFor(BinaryData::PoppinsMedium_ttf,
-                                        BinaryData::PoppinsMedium_ttfSize);
-    static inline Font medium = Font(FontOptions(mediumTypeface));
-
-    static inline Typeface::Ptr semiBoldTypeface =
-      Typeface::createSystemTypefaceFor(BinaryData::PoppinsSemiBold_ttf,
-                                        BinaryData::PoppinsSemiBold_ttfSize);
-    static inline Font semiBold = Font(FontOptions(semiBoldTypeface));
-
-    static inline Typeface::Ptr boldTypeface =
-      Typeface::createSystemTypefaceFor(BinaryData::PoppinsBold_ttf,
-                                        BinaryData::PoppinsBold_ttfSize);
-    static inline Font bold = Font(FontOptions(boldTypeface));
-
-    static inline Typeface::Ptr extraBoldTypeface =
-      Typeface::createSystemTypefaceFor(BinaryData::PoppinsExtraBold_ttf,
-                                        BinaryData::PoppinsExtraBold_ttfSize);
-    static inline Font extraBold = Font(FontOptions(extraBoldTypeface));
-
-    static inline Typeface::Ptr blackTypeface =
-      Typeface::createSystemTypefaceFor(BinaryData::PoppinsBlack_ttf,
-                                        BinaryData::PoppinsBlack_ttfSize);
-    static inline Font black = Font(FontOptions(blackTypeface));
-  };
 };
 } // namespace dmt

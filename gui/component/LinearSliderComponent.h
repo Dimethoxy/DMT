@@ -3,6 +3,7 @@
 //==============================================================================
 #include "gui/widget/Label.h"
 #include "gui/widget/LinearSlider.h"
+#include "utility/Fonts.h"
 #include "utility/Icon.h"
 #include "utility/Settings.h"
 #include "utility/Unit.h"
@@ -18,7 +19,6 @@ class LinearSliderComponent
 {
   using Settings = dmt::Settings;
   using Layout = Settings::Layout;
-  using Fonts = Settings::Fonts;
   using Slider = Settings::Slider;
   using LinearSlider = dmt::gui::widget::LinearSlider;
   using Type = LinearSlider::Type;
@@ -48,9 +48,9 @@ public:
     : orientation(orientation)
     , slider(type, orientation)
     , sliderAttachment(apvts, param, slider)
-    , titleLabel(text, Fonts::medium, titleFontSize, titleFontColour)
+    , titleLabel(text, fonts.medium, titleFontSize, titleFontColour)
     , infoLabel(juce::String("Info Label"),
-                Fonts::light,
+                fonts.light,
                 infoFontSize,
                 infoFontColour,
                 juce::Justification::centredBottom)
@@ -159,6 +159,7 @@ protected:
   }
   //==============================================================================
 private:
+  Fonts fonts;
   LinearSlider::Orientation orientation;
   dmt::InfoUnit::Type unitType;
   LinearSlider slider;

@@ -4,6 +4,7 @@
 #include "gui/widget/Label.h"
 #include "gui/widget/Shadow.h"
 #include "gui/widget/TriangleButton.h"
+#include "utility/Fonts.h"
 #include "utility/Settings.h"
 #include <JuceHeader.h>
 //==============================================================================
@@ -23,7 +24,6 @@ public:
   // Settings
   using LibrarySettings = dmt::Settings;
   using Settings = LibrarySettings::Panel;
-  using Fonts = LibrarySettings::Fonts;
   using Carousel = LibrarySettings::Carousel;
   // Layout
   const float& size = LibrarySettings::Layout::size;
@@ -60,7 +60,7 @@ public:
     : layout({ 1, 1 })
     , rawGridOffsetY(40 * static_cast<int>(displayName))
     , name(name)
-    , titleLabel(name, Fonts::bold, fontSize, juce::Colours::white)
+    , titleLabel(name, fonts.bold, fontSize, juce::Colours::white)
     , nextCallback([]() {})
     , prevCallback([]() {})
     , nextButton(dmt::gui::widget::TriangleButton::Right)
@@ -234,6 +234,7 @@ protected:
   const inline int getRawGridOffset() const noexcept { return rawGridOffsetY; }
 
 private:
+  Fonts fonts;
   Layout layout;
   Grid grid;
   int rawGridOffsetY;
