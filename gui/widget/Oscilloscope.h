@@ -69,7 +69,7 @@ protected:
       wait(10000);
       const ScopedWriteLock writeLock(imageLock);
       juce::Graphics imageGraphics(image);
-      imageGraphics.fillAll(juce::Colours::pink);
+      render();
     }
   }
   //============================================================================
@@ -77,7 +77,6 @@ protected:
   {
     const ScopedWriteLock writeLock(imageLock);
     image = Image(PixelFormat::ARGB, width, height, true);
-    notify();
   }
   //==============================================================================
   void render()
