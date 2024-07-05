@@ -95,13 +95,15 @@ public:
       g.fillRoundedRectangle(innerBounds.toFloat(), innerCornerSize);
     }
 
-    Paint Oscilloscope Vertical Lines const int scopeX =
-      leftOscilloscope.getX();
-    const float scopeWidth = leftOscilloscope.getWidth();
-    const float leftScopeY = leftOscilloscope.getY();
-    const float leftScopeHeight = leftOscilloscope.getHeight();
-    const float rightScopeY = rightOscilloscope.getY();
-    const float rightScopeHeight = rightOscilloscope.getHeight();
+    // Paint Oscilloscope Vertical Lines
+    const auto leftScopeBounds = leftOscilloscope.getBounds().toFloat();
+    const auto rightScopeBounds = rightOscilloscope.getBounds().toFloat();
+    const int scopeX = leftScopeBounds.getX();
+    const float scopeWidth = leftScopeBounds.getWidth();
+    const float leftScopeY = leftScopeBounds.getY();
+    const float leftScopeHeight = leftScopeBounds.getHeight();
+    const float rightScopeY = rightScopeBounds.getY();
+    const float rightScopeHeight = rightScopeBounds.getHeight();
     g.setColour(Settings::Colours::background.brighter(0.05));
     const int numLines = getWidth() / (getHeight() / 4.0f);
     const float lineSpacing = scopeWidth / numLines;
@@ -179,21 +181,21 @@ public:
     float maxSamplesPerPixel = 900.0f;
     float exponentialModifier = pow(zoomModifier, 4.0f);
     float samplesPerPixel = 1.0f + maxSamplesPerPixel * exponentialModifier;
-    // leftOscilloscope.setRawSamplesPerPixel(samplesPerPixel);
-    // rightOscilloscope.setRawSamplesPerPixel(samplesPerPixel);
+    leftOscilloscope.setRawSamplesPerPixel(samplesPerPixel);
+    rightOscilloscope.setRawSamplesPerPixel(samplesPerPixel);
   }
   //==============================================================================
   void setThickness(float thickness) noexcept
   {
-    // leftOscilloscope.setThickness(thickness);
-    // rightOscilloscope.setThickness(thickness);
+    leftOscilloscope.setThickness(thickness);
+    rightOscilloscope.setThickness(thickness);
   }
   //==============================================================================
   void setHeight(float height) noexcept
   {
     float amplitude = juce::Decibels::decibelsToGain(height);
-    // leftOscilloscope.setAmplitude(amplitude);
-    // rightOscilloscope.setAmplitude(amplitude);
+    leftOscilloscope.setAmplitude(amplitude);
+    rightOscilloscope.setAmplitude(amplitude);
   }
   //==============================================================================
 private:
