@@ -75,8 +75,14 @@ protected:
   //============================================================================
   void resizeImage(const int width, const int height)
   {
+    // Resize the image
     const ScopedWriteLock writeLock(imageLock);
     image = Image(PixelFormat::ARGB, width + 10, height, true);
+
+    // Draw a mid line on the image
+    juce::Graphics imageGraphics(image);
+    imageGraphics.setColour(juce::Colours::white);
+    imageGraphics.drawLine(0, height / 2, width + 10, height / 2, 3.0f);
   }
   //==============================================================================
   void render()
