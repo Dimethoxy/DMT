@@ -76,7 +76,7 @@ protected:
   void resizeImage(const int width, const int height)
   {
     const ScopedWriteLock writeLock(imageLock);
-    image = Image(PixelFormat::ARGB, width, height, true);
+    image = Image(PixelFormat::ARGB, width + 10, height, true);
   }
   //==============================================================================
   void render()
@@ -84,6 +84,7 @@ protected:
     const int width = bounds.getWidth();
     const int height = bounds.getHeight();
     const int halfHeight = height / 2;
+    const float currentScale = 300.0f / (float)width;
     float samplesPerPixel = rawSamplesPerPixel * size;
 
     const int bufferSize = ringBuffer.getNumSamples();
@@ -119,8 +120,6 @@ protected:
     const auto startPoint = Point(currentX, startY);
 
     juce::Path path;
-    path.preallocateSpace(3 * samplesToDraw + 2 * 3);
-
     path.startNewSubPath(startPoint);
 
     for (int i = 0; i < samplesToDraw; ++i) {
@@ -133,8 +132,8 @@ protected:
     }
 
     PathStrokeType strokeType(thickness * size,
-                              juce::PathStrokeType::JointStyle::mitered,
-                              juce::PathStrokeType::EndCapStyle::butt);
+                              juce::PathStrokeType::JointStyle::curved,
+                              juce::PathStrokeType::EndCapStyle::rounded);
 
     juce::Graphics imageGraphics(image);
     imageGraphics.setColour(juce::Colours::white);
