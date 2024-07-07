@@ -72,6 +72,8 @@ public:
       addAndMakeVisible(titleLabel);
     }
     setLayout(layout);
+    addAndMakeVisible(outerShadow);
+    addAndMakeVisible(innerShadow);
   }
 
   void paint(juce::Graphics& g) noexcept override
@@ -138,11 +140,13 @@ public:
     juce::Path outerShadowPath;
     outerShadowPath.addRoundedRectangle(outerBounds, outerCornerSize);
     outerShadow.setPath(outerShadowPath);
+    outerShadow.setBoundsRelative(0.0f, 0.0f, 1.0f, 1.0f);
     outerShadow.toBack();
 
     juce::Path innerShadowPath;
     innerShadowPath.addRoundedRectangle(innerBounds, innerCornerSize);
     innerShadow.setPath(innerShadowPath);
+    innerShadow.setBoundsRelative(0.0f, 0.0f, 1.0f, 1.0f);
     innerShadow.toBack();
 
     const int buttonWidth = (int)(Carousel::buttonWidth * size);

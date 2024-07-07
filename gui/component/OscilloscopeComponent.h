@@ -51,8 +51,8 @@ public:
     , fifoBuffer(fifoBuffer)
     , leftOscilloscope(ringBuffer, 0)
     , rightOscilloscope(ringBuffer, 1)
-    , outerShadow(outerShadowColour, outerShadowRadius)
-    , innerShadow(innerShadowColour, innerShadowRadius)
+    , outerShadow(outerShadowColour, outerShadowRadius, false)
+    , innerShadow(innerShadowColour, innerShadowRadius, true)
   {
     startRepaintTimer();
   }
@@ -74,13 +74,6 @@ public:
     const float outerCornerSize = rawCornerSize * size;
     const float innerCornerSize = std::clamp(
       outerCornerSize - (borderStrength * size * 0.5f), 0.0f, outerCornerSize);
-
-    // Draw outer shadow
-    if (drawOuterShadow) {
-      juce::Path outerShadowPath;
-      outerShadowPath.addRoundedRectangle(outerBounds, outerCornerSize);
-      outerShadow.drawOuterForPath(g, outerShadowPath);
-    }
 
     // Draw background if border is disabled
     if (!drawBorder) {
@@ -141,13 +134,6 @@ public:
     g.drawImageAt(rightOscilloscope.getImage(),
                   rightOscilloscope.getBounds().getX(),
                   rightOscilloscope.getBounds().getY());
-
-    // Draw the inner shadow
-    if (drawInnerShadow) {
-      juce::Path innerShadowPath;
-      innerShadowPath.addRoundedRectangle(innerBounds, innerCornerSize);
-      innerShadow.drawInnerForPath(g, innerShadowPath);
-    }
   }
   //==============================================================================
   void resized() override
@@ -158,6 +144,16 @@ public:
     const float outerCornerSize = rawCornerSize * size;
     const float innerCornerSize = std::clamp(
       outerCornerSize - (borderStrength * size * 0.5f), 0.0f, outerCornerSize);
+
+    juce::Path outerShadowPath;
+    outerShadowPath.addRoundedRectangle(outerBounds, outerCornerSize);
+    outerShadow.setPath(outerShadowPath);
+    outerShadow.toBack();
+
+    juce::Path innerShadowPath;
+    innerShadowPath.addRoundedRectangle(innerBounds, innerCornerSize);
+    innerShadow.setPath(innerShadowPath);
+    innerShadow.toBack();
 
     auto rawScopeBounds = outerBounds;
     if (drawBorder) {

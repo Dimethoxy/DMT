@@ -39,7 +39,7 @@ struct Settings
   struct Layout
   {
     static inline float size = 1.0f;
-    static inline float margin = 5.0f;
+    static inline float margin = 10.0f;
   };
 
   struct Panel

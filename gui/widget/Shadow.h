@@ -15,10 +15,7 @@ class Shadow : public juce::Component
   using PixelFormat = juce::Image::PixelFormat;
 
 public:
-  Shadow(const juce::String name,
-         const juce::Colour& colour,
-         const float& radius,
-         const bool inner)
+  Shadow(const juce::Colour& colour, const float& radius, const bool inner)
     : colour(colour)
     , radius(radius)
     , inner(inner)
@@ -28,19 +25,30 @@ public:
   void paint(juce::Graphics& g)
   {
     TRACER("Shadow::paint");
+
+    if (!needsRepaint) {
+      g.drawImageAt(image, 0, 0);
+      return;
+    }
+
+    juce::Graphics imageGraphics(image);
+    imageGraphics.setColour(colour);
+    if (inner)
+      drawInnerForPath(imageGraphics, path);
+    else
+      drawOuterForPath(imageGraphics, path);
+
+    needsRepaint = false;
     g.drawImageAt(image, 0, 0);
   }
   //============================================================================
   void resized() override
   {
     TRACER("Shadow::resized");
+    if (getWidth() == 0 || getHeight() == 0)
+      return;
     image = Image(PixelFormat::ARGB, getWidth(), getHeight(), true);
-    juce::Graphics g(image);
-    g.setColour(colour);
-    if (inner)
-      drawInnerForPath(g, path);
-    else
-      drawOuterForPath(g, path);
+    needsRepaint = true;
   }
   //============================================================================
   void setPath(juce::Path newPath)
@@ -83,6 +91,7 @@ private:
   const float& radius;
   const bool inner;
   juce::Path path;
+  bool needsRepaint = true;
   //==============================================================================
   Image image = Image(PixelFormat::ARGB, 1, 1, true);
   //==============================================================================

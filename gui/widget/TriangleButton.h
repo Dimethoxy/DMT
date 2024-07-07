@@ -48,8 +48,8 @@ public:
   TriangleButton(Direction d)
     : direction(d)
     , juce::Button("TriangleButton")
-    , outerShadow(outerShadowColour, outerShadowRadius)
-    , innerShadow(innerShadowColour, innerShadowRadius)
+    , outerShadow(outerShadowColour, outerShadowRadius, false)
+    , innerShadow(innerShadowColour, innerShadowRadius, true)
 
   {
   }
@@ -140,11 +140,6 @@ protected:
       innerTrianglePath = getTnnerTrianglePath(smallBounds);
     }
 
-    // Draw outer shadow
-    if (drawOuterShadow) {
-      outerShadow.drawOuterForPath(g, outerTrianglePath);
-    }
-
     // Draw Border
     if (drawBorder) {
       g.setColour(borderColour);
@@ -160,11 +155,6 @@ protected:
 
     // Fill triangle
     g.fillPath(trianglePath);
-
-    // Draw inner shadow
-    if (drawInnerShadow) {
-      innerShadow.drawInnerForPath(g, outerTrianglePath);
-    }
   }
   //============================================================================
 private:
