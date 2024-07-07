@@ -48,10 +48,12 @@ public:
   TriangleButton(Direction d)
     : direction(d)
     , juce::Button("TriangleButton")
-    , outerShadow(outerShadowColour, outerShadowRadius, false)
-    , innerShadow(innerShadowColour, innerShadowRadius, true)
+    , outerShadow(drawOuterShadow, outerShadowColour, outerShadowRadius, false)
+    , innerShadow(drawInnerShadow, innerShadowColour, innerShadowRadius, true)
 
   {
+    addAndMakeVisible(outerShadow);
+    addAndMakeVisible(innerShadow);
   }
 
 protected:

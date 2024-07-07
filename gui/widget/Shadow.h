@@ -15,8 +15,12 @@ class Shadow : public juce::Component
   using PixelFormat = juce::Image::PixelFormat;
 
 public:
-  Shadow(const juce::Colour& colour, const float& radius, const bool inner)
-    : colour(colour)
+  Shadow(const bool& visibility,
+         const juce::Colour& colour,
+         const float& radius,
+         const bool inner)
+    : visibility(visibility)
+    , colour(colour)
     , radius(radius)
     , inner(inner)
   {
@@ -25,6 +29,9 @@ public:
   void paint(juce::Graphics& g)
   {
     TRACER("Shadow::paint");
+
+    if (!visibility)
+      return;
 
     if (!needsRepaint) {
       g.drawImageAt(image, 0, 0);
@@ -86,6 +93,7 @@ protected:
 
 private:
   //============================================================================
+  const bool& visibility;
   const juce::Colour& colour;
   juce::Point<int> offset = { 0, 0 };
   const float& radius;

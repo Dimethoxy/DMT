@@ -51,10 +51,12 @@ public:
     , fifoBuffer(fifoBuffer)
     , leftOscilloscope(ringBuffer, 0)
     , rightOscilloscope(ringBuffer, 1)
-    , outerShadow(outerShadowColour, outerShadowRadius, false)
-    , innerShadow(innerShadowColour, innerShadowRadius, true)
+    , outerShadow(drawOuterShadow, outerShadowColour, outerShadowRadius, false)
+    , innerShadow(drawInnerShadow, innerShadowColour, innerShadowRadius, true)
   {
     startRepaintTimer();
+    addAndMakeVisible(outerShadow);
+    addAndMakeVisible(innerShadow);
   }
   //==============================================================================
   void repaintTimerCallback() noexcept override
