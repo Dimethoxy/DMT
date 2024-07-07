@@ -66,7 +66,7 @@ public:
     , nextButton(dmt::gui::widget::TriangleButton::Right)
     , prevButton(dmt::gui::widget::TriangleButton::Left)
     , outerShadow(outerShadowColour, outerShadowRadius, false)
-    , innerShadow(outerShadowColour, outerShadowRadius, false)
+    , innerShadow(outerShadowColour, outerShadowRadius, true)
   {
     if (displayName) {
       addAndMakeVisible(titleLabel);
