@@ -130,6 +130,7 @@ public:
 
   void resized() noexcept override
   {
+    TRACER("AbstractPanel:resized");
     const auto bounds = getLocalBounds();
     const auto outerBounds = bounds.reduced(margin * size);
     const auto innerBounds = outerBounds.reduced(borderStrength * size);
@@ -200,6 +201,7 @@ protected:
   inline const Layout getLayout() noexcept { return layout; }
   void setLayout(const Layout layoutToUse) noexcept
   {
+    TRACER("AbstractPanel:setLayout");
     const int cols = layoutToUse.cols;
     const int rows = layoutToUse.rows;
     const float colSpacing = 1.0f / (float)(cols + 1);
@@ -221,6 +223,7 @@ protected:
                                              const int col,
                                              const int row) noexcept
   {
+    TRACER("AbstractPanel:getGridPoint");
     // assert if col and row are out of bounds
     jassert(col >= 0 && col < grid.size());
     jassert(row >= 0 && row < grid[col].size());

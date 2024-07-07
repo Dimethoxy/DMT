@@ -61,6 +61,7 @@ public:
   //==============================================================================
   void repaintTimerCallback() noexcept override
   {
+    TRACER("OscilloscopeComponent::repaintTimerCallback");
     repaint();
     ringBuffer.write(fifoBuffer);
     ringBuffer.equalizeReadPositions();
@@ -140,6 +141,7 @@ public:
   //==============================================================================
   void resized() override
   {
+    TRACER("OscilloscopeComponent::resized");
     auto bounds = getLocalBounds();
     outerBounds = bounds.reduced(rawPadding * size);
     innerBounds = outerBounds.reduced(borderStrength * size);
@@ -177,6 +179,7 @@ public:
   //==============================================================================
   void setZoom(float zoom) noexcept
   {
+    TRACER("OscilloscopeComponent::setZoom");
     // Just random math with magic numbers to get a nice feeling zoom
     float zoomModifier = (zoom + 5) / 105.0f;
     float maxSamplesPerPixel = 900.0f;
@@ -188,12 +191,14 @@ public:
   //==============================================================================
   void setThickness(float thickness) noexcept
   {
+    TRACER("OscilloscopeComponent::setThickness");
     leftOscilloscope.setThickness(thickness);
     rightOscilloscope.setThickness(thickness);
   }
   //==============================================================================
   void setHeight(float height) noexcept
   {
+    TRACER("OscilloscopeComponent::setHeight");
     float amplitude = juce::Decibels::decibelsToGain(height);
     leftOscilloscope.setAmplitude(amplitude);
     rightOscilloscope.setAmplitude(amplitude);
