@@ -87,6 +87,7 @@ protected:
   //==============================================================================
   void render()
   {
+    TRACER("Oscilloscope::render");
     const int width = bounds.getWidth();
     const int height = bounds.getHeight();
     const int halfHeight = height / 2;
