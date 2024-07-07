@@ -2,82 +2,55 @@
 #pragma once
 //==============================================================================
 #include <JuceHeader.h>
-#include <melatonin_perfetto/melatonin_perfetto.h>
 //==============================================================================
 namespace dmt {
 namespace gui {
 namespace widget {
 //==============================================================================
-class Shadow : public juce::Thread
+class Shadow : public juce::Component
 {
-  using Thread = juce::Thread;
+  using Image = juce::Image;
+  using Graphics = juce::Graphics;
+  using String = juce::String;
   using PixelFormat = juce::Image::PixelFormat;
-  using ReadWriteLock = juce::ReadWriteLock;
 
 public:
   Shadow(const juce::String name,
          const juce::Colour& colour,
          const float& radius,
          const bool inner)
-    : Thread(name + "Thread")
-    , colour(colour)
+    : colour(colour)
     , radius(radius)
     , inner(inner)
   {
-    startThread();
   }
   //============================================================================
-  void paint(juce::Graphics& g) {}
-  //============================================================================
-  juce::Image getImage() const
+  void paint(juce::Graphics& g)
   {
-    const ScopedReadLock readLock(imageLock);
-    return image.createCopy();
+    TRACER("Shadow::paint");
+    g.drawImageAt(image, 0, 0);
   }
   //============================================================================
-  void setBounds(juce::Rectangle<int> newBounds)
+  void resized() override
   {
-    resizeImage(newBounds.getWidth(), newBounds.getHeight());
-    bounds = newBounds;
+    TRACER("Shadow::resized");
+    image = Image(PixelFormat::ARGB, getWidth(), getHeight(), true);
+    juce::Graphics g(image);
+    g.setColour(colour);
+    if (inner)
+      drawInnerForPath(g, path);
+    else
+      drawOuterForPath(g, path);
   }
   //============================================================================
-  juce::Rectangle<int> getBounds() const { return bounds; }
+  void setPath(juce::Path newPath)
+  {
+    TRACER("Shadow::setPath");
+    path = newPath;
+    resized();
+  }
 
 protected:
-  //============================================================================
-  void run() override
-  {
-    while (!threadShouldExit()) {
-      wait(10000);
-      const ScopedWriteLock writeLock(imageLock);
-      render();
-    }
-  }
-  //==============================================================================
-  void render()
-  {
-    TRACER("Shadow::render");
-
-    if (path.isEmpty())
-      return;
-
-    juce::Graphics imageGraphics(image);
-    imageGraphics.setColour(colour);
-
-    if (inner) {
-      drawInnerForPath(imageGraphics, path);
-    } else {
-      drawOuterForPath(imageGraphics, path);
-    }
-  }
-  //==============================================================================
-  void resizeImage(const int width, const int height)
-  {
-    TRACER("Shadow::resizeImage");
-    // Resize the image
-    const ScopedWriteLock writeLock(imageLock);
-    image = Image(PixelFormat::ARGB, width + 10, height, true);
-  }
   //============================================================================
   void drawInnerForPath(juce::Graphics& g, juce::Path target)
   {
@@ -111,9 +84,7 @@ private:
   const bool inner;
   juce::Path path;
   //==============================================================================
-  juce::Rectangle<int> bounds = juce::Rectangle<int>(0, 0, 1, 1);
   Image image = Image(PixelFormat::ARGB, 1, 1, true);
-  ReadWriteLock imageLock;
   //==============================================================================
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Shadow)
 };

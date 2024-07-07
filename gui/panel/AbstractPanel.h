@@ -65,8 +65,8 @@ public:
     , prevCallback([]() {})
     , nextButton(dmt::gui::widget::TriangleButton::Right)
     , prevButton(dmt::gui::widget::TriangleButton::Left)
-    , outerShadow(outerShadowColour, outerShadowRadius)
-    , innerShadow(innerShadowColour, innerShadowRadius)
+    , outerShadow(outerShadowColour, outerShadowRadius, false)
+    , innerShadow(outerShadowColour, outerShadowRadius, false)
   {
     if (displayName) {
       addAndMakeVisible(titleLabel);
@@ -76,9 +76,7 @@ public:
 
   void paint(juce::Graphics& g) noexcept override
   {
-    std::string id =
-      juce::String(this->getName() + "Panel::paint" + ")").toStdString();
-    TRACER("AbstractPanel:paint::");
+    TRACER("AbstractPanel:paint");
     // Precalculation
     const auto bounds = this->getLocalBounds().toFloat();
     const auto outerBounds = bounds.reduced(margin * size);
@@ -92,13 +90,6 @@ public:
     if (debugBounds)
       g.drawRect(bounds, 1.0f);
 
-    // Draw outer shadow
-    if (drawOuterShadow) {
-      juce::Path outerShadowPath;
-      outerShadowPath.addRoundedRectangle(outerBounds, outerCornerSize);
-      outerShadow.drawOuterForPath(g, outerShadowPath);
-    }
-
     // Draw background if border is disabled
     if (!drawBorder) {
       g.setColour(backgroundColour);
@@ -111,13 +102,6 @@ public:
       g.fillRoundedRectangle(outerBounds, outerCornerSize);
       g.setColour(backgroundColour);
       g.fillRoundedRectangle(innerBounds, innerCornerSize);
-    }
-
-    // Draw the inner shadow
-    if (drawInnerShadow) {
-      juce::Path innerShadowPath;
-      innerShadowPath.addRoundedRectangle(innerBounds, innerCornerSize);
-      innerShadow.drawInnerForPath(g, innerShadowPath);
     }
 
     // draw debug line grid
@@ -145,6 +129,22 @@ public:
   void resized() noexcept override
   {
     const auto bounds = getLocalBounds();
+    const auto outerBounds = bounds.reduced(margin * size);
+    const auto innerBounds = outerBounds.reduced(borderStrength * size);
+    const float outerCornerSize = cornerSize * size;
+    const float innerCornerSize = std::clamp(
+      outerCornerSize - (borderStrength * size * 0.5f), 0.0f, outerCornerSize);
+
+    juce::Path outerShadowPath;
+    outerShadowPath.addRoundedRectangle(outerBounds, outerCornerSize);
+    outerShadow.setPath(outerShadowPath);
+    outerShadow.toBack();
+
+    juce::Path innerShadowPath;
+    innerShadowPath.addRoundedRectangle(innerBounds, innerCornerSize);
+    innerShadow.setPath(innerShadowPath);
+    innerShadow.toBack();
+
     const int buttonWidth = (int)(Carousel::buttonWidth * size);
     const int buttonHeight = (int)(Carousel::buttonHeight * size);
     const int marginSize = (int)(size * margin);
