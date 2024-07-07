@@ -68,7 +68,6 @@ protected:
     while (!threadShouldExit()) {
       wait(10000);
       const ScopedWriteLock writeLock(imageLock);
-      juce::Graphics imageGraphics(image);
       render();
     }
   }
