@@ -68,6 +68,7 @@ public:
   //==============================================================================
   void paint(juce::Graphics& g) override
   {
+    TRACER("OscilloscopeComponent::paint");
     // Precalculation
     const auto bounds = this->getLocalBounds().toFloat();
     const float outerCornerSize = rawCornerSize * size;

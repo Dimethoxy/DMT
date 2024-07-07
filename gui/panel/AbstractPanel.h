@@ -76,6 +76,9 @@ public:
 
   void paint(juce::Graphics& g) noexcept override
   {
+    std::string id =
+      juce::String(this->getName() + "Panel::paint" + ")").toStdString();
+    TRACER("AbstractPanel:paint::");
     // Precalculation
     const auto bounds = this->getLocalBounds().toFloat();
     const auto outerBounds = bounds.reduced(margin * size);

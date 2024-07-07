@@ -75,6 +75,7 @@ protected:
   //============================================================================
   void resizeImage(const int width, const int height)
   {
+    TRACER("Oscilloscope::resizeImage");
     // Resize the image
     const ScopedWriteLock writeLock(imageLock);
     image = Image(PixelFormat::ARGB, width + 10, height, true);

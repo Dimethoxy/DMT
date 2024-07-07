@@ -16,6 +16,7 @@ struct Shadow
   }
   void drawInnerForPath(juce::Graphics& g, juce::Path target)
   {
+    TRACER("Shadow::drawInnerForPath");
     juce::Graphics::ScopedSaveState saveState(g);
     juce::Path shadowPath(target);
     shadowPath.addRectangle(target.getBounds().expanded(10));
@@ -26,6 +27,7 @@ struct Shadow
   }
   void drawOuterForPath(juce::Graphics& g, juce::Path target)
   {
+    TRACER("Shadow::drawOuterForPath");
     juce::Graphics::ScopedSaveState saveState(g);
     juce::Path shadowPath(target);
     shadowPath.addRectangle(target.getBounds().expanded(10));

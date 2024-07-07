@@ -72,7 +72,7 @@ public:
 
   void paint(juce::Graphics& g) override
   {
-    TRACE_COMPONENT();
+    TRACER("LinearSlider::paint");
 
     // Calculate bounds
     auto bounds = getLocalBounds();

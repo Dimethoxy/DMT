@@ -30,6 +30,7 @@ public:
   }
   void paint(juce::Graphics& g)
   {
+    TRACER("Label::paint");
     auto bounds = getLocalBounds();
 
     // Draw bounds debug

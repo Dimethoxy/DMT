@@ -78,7 +78,7 @@ protected:
   void drawSlider(juce::Graphics& g,
                   const juce::Rectangle<float>& bounds) const noexcept
   {
-
+    TRACER("RotarySlider::drawSlider");
     // Draw bounds debug
     g.setColour(juce::Colours::aqua);
     if (Settings::debugBounds)
