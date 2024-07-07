@@ -103,7 +103,7 @@ public:
     g.setColour(Settings::Colours::background.brighter(0.05));
     const int numLines = getWidth() / (getHeight() / 4.0f);
     const float lineSpacing = scopeWidth / numLines;
-    for (int i = 0; i < numLines; ++i) {
+    for (int i = 1; i < numLines; ++i) {
       const float x = scopeX + lineSpacing * i;
       g.drawLine(
         juce::Line<float>(x, leftScopeY, x, leftScopeY + leftScopeHeight),
@@ -150,11 +150,13 @@ public:
     juce::Path outerShadowPath;
     outerShadowPath.addRoundedRectangle(outerBounds, outerCornerSize);
     outerShadow.setPath(outerShadowPath);
+    outerShadow.setBoundsRelative(0.0f, 0.0f, 1.0f, 1.0f);
     outerShadow.toBack();
 
     juce::Path innerShadowPath;
     innerShadowPath.addRoundedRectangle(innerBounds, innerCornerSize);
     innerShadow.setPath(innerShadowPath);
+    innerShadow.setBoundsRelative(0.0f, 0.0f, 1.0f, 1.0f);
     innerShadow.toBack();
 
     auto rawScopeBounds = outerBounds;
