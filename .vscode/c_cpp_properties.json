@@ -4,6 +4,7 @@
             "name": "Win32",
             "includePath": [
                 "${workspaceFolder}/external/juce/modules",
+                "${workspaceFolder}/external/dmt",
                 "${workspaceFolder}/build/src/Neutrino_artefacts/JuceLibraryCode",
                 "${workspaceFolder}/build/src/juce_binarydata_FontBinaryData/JuceLibraryCode",
                 "${workspaceFolder}/build/src/Neutrino_artefacts/JuceLibraryCode"
