@@ -3,7 +3,6 @@
 #include "./AnalogGainPanel.h"
 #include "./AnalogOscillatorPanel.h"
 #include "./AnalogPitchPanel.h"
-#include "./Carousel.h"
 #include "./GainPanel.h"
 #include "./HeaderPanel"
 #include "./ModernGainPanel.h"

@@ -2,8 +2,8 @@
 
 #pragma once
 
-#include "../components/LinearSliderComponent.h"
 #include "Panel.h"
+#include "gui/component/LinearSliderComponent.h"
 #include <JuceHeader.h>
 
 //==============================================================================

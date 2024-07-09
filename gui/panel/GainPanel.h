@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "../Widgets/Carousel.h"
+#include "gui/widget/Carousel.h"
 #include "AnalogGainPanel.h"
 #include "ModernGainPanel.h"
 #include "Panel.h"
