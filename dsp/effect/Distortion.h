@@ -23,7 +23,7 @@ struct Distortion
     Bitcrush,
   };
 
-  static inline const juce::String getString(const dmt::Distortion::Type type)
+  static inline const juce::String getString(const Type type)
   {
     switch (type) {
       case Distortion::Type::Hardclip:
@@ -70,9 +70,7 @@ struct Distortion
     }
   }
 
-  static inline void distortSample(float& data,
-                                   dmt::Distortion::Type type,
-                                   float drive)
+  static inline void distortSample(float& data, const Type type, float drive)
   {
     switch (type) {
       case Type::Hardclip: {
@@ -106,7 +104,7 @@ struct Distortion
         break;
       }
       case Type::Atan: {
-        if (data != 0.0f) {
+        if (std::abs(data) <= 1.0e-05) {
           if (data > 0.0f) {
             data = pow(data, 1.0f / drive);
             data = 1.27f * atan(data);
@@ -123,7 +121,7 @@ struct Distortion
           data = pow(data, 1.0f / drive);
           data = 1.27 * atan(data);
         } else {
-          data = std::clamp(sin(drive * data), -1.0f, 1.0f);
+          data = std::clamp((float)sin(drive * data), -1.0f, 1.0f);
           data = std::clamp(drive * data, -1.0f, 1.0f);
         };
         break;
@@ -141,11 +139,11 @@ struct Distortion
         auto normalizedDrive = (drive - 1) / 10.0f;
 
         if (data > 0.0) {
-          data =
-            std::clamp(pow(data, 1.0f / ((drive / 4.0f) + 0.75f)), -1.0f, 1.0f);
+          data = std::clamp(
+            (float)pow(data, 1.0f / ((drive / 4.0f) + 0.75f)), -1.0f, 1.0f);
         } else {
           data = -std::clamp(
-            pow(-data, 1.0f / ((drive / 4.0f) + 0.75f)), -1.0f, 1.0f);
+            (float)pow(-data, 1.0f / ((drive / 4.0f) + 0.75f)), -1.0f, 1.0f);
         }
 
         if (data <= -0.5) {
@@ -163,11 +161,11 @@ struct Distortion
         break;
       }
       case Type::Sine: {
-        data = std::clamp(sin(drive * data), -1.0f, 1.0f);
+        data = std::clamp((float)sin(drive * data), -1.0f, 1.0f);
         break;
       }
       case Type::Cosine: {
-        data = std::clamp(cos(drive * data), -1.0f, 1.0f);
+        data = std::clamp((float)cos(drive * data), -1.0f, 1.0f);
         break;
       }
       case Type::Harmonize: {
@@ -232,7 +230,7 @@ struct Distortion
   }
 
   static inline void processBuffer(juce::AudioBuffer<float>& buffer,
-                                   dmt::Distortion::Type type,
+                                   Type type,
                                    float symmetry,
                                    float girth,
                                    float drive)
@@ -246,16 +244,15 @@ struct Distortion
       for (int sample = 0; sample < buffer.getNumSamples(); sample++) {
         // Girth
         if (girth < 0)
-          dmt::Distortion::girthSample(
-            channelData[sample], std::abs(girth), girthSeeds[sample]);
+          girthSample(channelData[sample], std::abs(girth), girthSeeds[sample]);
         else
-          dmt::Distortion::girthSample(channelData[sample], girth);
+          girthSample(channelData[sample], girth);
 
         // Distortion
-        dmt::Distortion::distortSample(channelData[sample], type, drive);
+        distortSample(channelData[sample], type, drive);
 
         // Symmetry
-        dmt::Distortion::symmetrySample(channelData[sample], symmetry);
+        symmetrySample(channelData[sample], symmetry);
       }
     }
   }
