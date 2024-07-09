@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "Panel.h"
+#include "gui/panel/AbstractPanel.h"
 #include "gui/component/LinearSliderComponent.h"
 #include <JuceHeader.h>
 

@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "Panel.h"
+#include "gui/panel/AbstractPanel.h"
 #include <JuceHeader.h>
 
 //==============================================================================
@@ -13,6 +13,7 @@ namespace panels {
 class ModernOscillatorPanel : dmt::gui::panel::AbstractPanel;
 {
   using AbstractPanel = dmt::gui::panel::AbstractPanel;
+
 public:
   ModernOscillatorPanel(/*juce::AudioProcessorValueTreeState& apvts*/)
     : Panel("Modern Oscillator")

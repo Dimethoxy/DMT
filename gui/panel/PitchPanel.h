@@ -2,10 +2,10 @@
 
 #pragma once
 
-#include "../widgets/Carousel.h"
-#include "AnalogPitchPanel.h"
-#include "ModernPitchPanel.h"
-#include "Panel.h"
+#include "gui/panel/AbstractPanel.h"
+#include "gui/panel/AnalogPitchPanel.h"
+#include "gui/panel/Carousel.h"
+#include "gui/panel/ModernPitchPanel.h"
 #include <JuceHeader.h>
 
 //==============================================================================

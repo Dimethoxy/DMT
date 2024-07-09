@@ -1,10 +1,10 @@
 //==============================================================================
 #pragma once
 //==============================================================================
-#include "../../utility/Unit.h"
-#include "../components/LinearSliderComponent.h"
-#include "../components/RotarySliderComponent.h"
-#include "Panel.h"
+#include "gui/component/LinearSliderComponent.h"
+#include "gui/component/RotarySliderComponent.h"
+#include "gui/panel/AbstractPanel.h"
+#include "utility/Unit.h"
 #include <JuceHeader.h>
 //==============================================================================
 namespace dmt {

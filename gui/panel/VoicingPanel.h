@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "Panel.h"
+#include "gui/panel/AbstractPanel.h"
 #include <JuceHeader.h>
 
 //==============================================================================
@@ -13,14 +13,14 @@ namespace panels {
 class VoicingPanel dmt::gui::panel::AbstractPanel;
 {
   using AbstractPanel = dmt::gui::panel::AbstractPanel;
-  
+
   using RotarySliderComponent = dmt::gui::components::RotarySliderComponent;
   using LinearSliderComponent = dmt::gui::components::LinearSliderComponent;
   using RotarySliderType = dmt::gui::widgets::RotarySlider::Type;
   using LinearSliderType = dmt::gui::widgets::LinearSlider::Type;
 
 public:
-  VoicingPanel(juce::AudioProcessorValueTreeState& apvts)
+  VoicingPanel(juce::AudioProcessorValueTreeState & apvts)
     : Panel("Voices")
     , osctaveSlider(apvts,
                     juce::String("Octave"),
