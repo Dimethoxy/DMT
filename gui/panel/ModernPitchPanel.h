@@ -10,8 +10,9 @@ namespace dmt {
 namespace gui {
 namespace panels {
 //==============================================================================
-class ModernPitchPanel : public dmt::gui::Panel
+class ModernPitchPanel : dmt::gui::panel::AbstractPanel;
 {
+  using AbstractPanel = dmt::gui::panel::AbstractPanel;
 public:
   ModernPitchPanel(/*juce::AudioProcessorValueTreeState& apvts*/)
     : Panel("Modern Pitch Envelope")

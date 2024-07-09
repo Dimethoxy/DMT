@@ -10,11 +10,12 @@ namespace dmt {
 namespace gui {
 namespace panels {
 //==============================================================================
-class AnalogOscillatorPanel : public dmt::gui::Panel
+class AnalogOscillatorPanel : public dmt::gui::panel::AbstractPanel
 {
+  using AbstractPanel = dmt::gui::panel::AbstractPanel;
 public:
   AnalogOscillatorPanel(/*juce::AudioProcessorValueTreeState& apvts*/)
-    : Panel("Classic Oscillator")
+    : AbstractPanel("Classic Oscillator")
   { //
   }
 

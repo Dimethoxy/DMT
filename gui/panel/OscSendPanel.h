@@ -11,13 +11,15 @@ namespace dmt {
 namespace gui {
 namespace panels {
 //==============================================================================
-class OscSendPanel : public dmt::gui::Panel
+class OscSendPanel dmt::gui::panel::AbstractPanel;
 {
+  using AbstractPanel = dmt::gui::panel::AbstractPanel;
+
   using RotarySliderType = dmt::gui::widgets::RotarySlider::Type;
   using LinearSliderType = dmt::gui::widgets::LinearSlider::Type;
 
 public:
-  OscSendPanel(juce::AudioProcessorValueTreeState& apvts,
+  OscSendPanel(juce::AudioProcessorValueTreeState & apvts,
                const juce::String channel)
     : Panel(juce::String("Channel " + channel))
     , channel(channel)

@@ -12,9 +12,11 @@ namespace panel {
 //==============================================================================
 template<typename SampleType>
 class OscilloscopePanel
-  : public AbstractPanel
+  : public dmt::gui::panel::AbstractPanel
   , public juce::Slider::Listener
 {
+  using AbstractPanel = dmt::gui::panel::AbstractPanel;
+
   using OscilloscopeComponent =
     dmt::gui::component::OscilloscopeComponent<SampleType>;
   using FifoAudioBuffer = dmt::dsp::data::FifoAudioBuffer<SampleType>;

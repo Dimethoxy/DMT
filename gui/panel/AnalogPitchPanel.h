@@ -11,13 +11,15 @@ namespace dmt {
 namespace gui {
 namespace panels {
 //==============================================================================
-class AnalogPitchPanel : public dmt::gui::Panel
+class AnalogPitchPanel : dmt::gui::panel::AbstractPanel;
 {
+  using AbstractPanel = dmt::gui::panel::AbstractPanel;
+
   using LinearSliderType = dmt::gui::widgets::LinearSlider::Type;
   using LinearSliderOrientation = dmt::gui::widgets::LinearSlider::Orientation;
 
 public:
-  AnalogPitchPanel(juce::AudioProcessorValueTreeState& apvts)
+  AnalogPitchPanel(juce::AudioProcessorValueTreeState & apvts)
     : Panel("Analog Pitch Envelope")
     , attackSlider(apvts,
                    juce::String("Attack"),

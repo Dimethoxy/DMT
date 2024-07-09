@@ -10,8 +10,10 @@ namespace dmt {
 namespace gui {
 namespace panels {
 //==============================================================================
-class ModernGainPanel : public dmt::gui::Panel
+class ModernGainPanel : dmt::gui::panel::AbstractPanel;
 {
+  using AbstractPanel = dmt::gui::panel::AbstractPanel;
+
 public:
   ModernGainPanel(/*juce::AudioProcessorValueTreeState& apvts*/)
     : Panel("Modern Gain Envelope")

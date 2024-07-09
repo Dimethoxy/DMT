@@ -10,8 +10,10 @@ namespace dmt {
 namespace gui {
 namespace panels {
 //==============================================================================
-class VoicingPanel : public dmt::gui::Panel
+class VoicingPanel dmt::gui::panel::AbstractPanel;
 {
+  using AbstractPanel = dmt::gui::panel::AbstractPanel;
+  
   using RotarySliderComponent = dmt::gui::components::RotarySliderComponent;
   using LinearSliderComponent = dmt::gui::components::LinearSliderComponent;
   using RotarySliderType = dmt::gui::widgets::RotarySlider::Type;

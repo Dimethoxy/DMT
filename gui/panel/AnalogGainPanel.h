@@ -11,14 +11,16 @@ namespace dmt {
 namespace gui {
 namespace panels {
 //==============================================================================
-class AnalogGainPanel : public dmt::gui::Panel
+class AnalogGainPanel : public dmt::gui::panel::AbstractPanel
 {
+  using AbstractPanel = dmt::gui::panel::AbstractPanel;
+
   using LinearSliderType = dmt::gui::widgets::LinearSlider::Type;
   using LinearSliderOrientation = dmt::gui::widgets::LinearSlider::Orientation;
 
 public:
   AnalogGainPanel(juce::AudioProcessorValueTreeState& apvts)
-    : Panel("Analog Gain Envelope")
+    : AbstractPanel("Analog Gain Envelope")
     , attackSlider(apvts,
                    juce::String("Attack"),
                    juce::String("osc1GainEnvAttack"),

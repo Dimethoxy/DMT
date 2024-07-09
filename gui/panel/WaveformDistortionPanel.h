@@ -11,13 +11,15 @@ namespace dmt {
 namespace gui {
 namespace panels {
 //==============================================================================
-class WaveformDistortionPanel : public dmt::gui::Panel
+class WaveformDistortionPaneldmt::gui::panel::AbstractPanel;
 {
+  using AbstractPanel = dmt::gui::panel::AbstractPanel;
+
   using RotarySliderType = dmt::gui::widgets::RotarySlider::Type;
   using LinearSliderType = dmt::gui::widgets::LinearSlider::Type;
 
 public:
-  WaveformDistortionPanel(juce::AudioProcessorValueTreeState& apvts)
+  WaveformDistortionPanel(juce::AudioProcessorValueTreeState & apvts)
     : Panel("Waveform Distortion")
     , typeSlider(apvts,
                  juce::String("Type"),
