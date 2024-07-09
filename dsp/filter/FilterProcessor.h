@@ -2,8 +2,8 @@
 
 #pragma once
 
-#include "../../model/ChainSettings.h"
 #include "IIRFilter.h"
+#include "model/ChainSettings.h"
 #include <JuceHeader.h>
 
 //==============================================================================

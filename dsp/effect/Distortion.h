@@ -3,6 +3,8 @@
 #include <JuceHeader.h>
 
 namespace dmt {
+namespace dsp {
+namespace effect {
 struct Distortion
 {
   enum class Type
@@ -258,4 +260,6 @@ struct Distortion
     }
   }
 };
+} // namespace effect
+} // namespace dsp
 } // namespace dmt

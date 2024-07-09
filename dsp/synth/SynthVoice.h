@@ -2,9 +2,9 @@
 
 #pragma once
 
-#include "../../model/ChainSettings.h"
-#include "../envelope/AdhEnvelope.h"
-#include "../synth/AnalogOscillator.h"
+#include "envelope/AdhEnvelope.h"
+#include "model/ChainSettings.h"
+#include "synth/AnalogOscillator.h"
 #include <JuceHeader.h>
 
 //==============================================================================
