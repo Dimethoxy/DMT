@@ -1,70 +1,46 @@
 #==============================================================================
-# Main CMakeLists.txt file for the Neutrino project
+# Main CMakeLists.txt file for the Oscilloscope project
 #==============================================================================
 
-# Set the minimum version of CMake required to build the project
-cmake_minimum_required(VERSION 3.22)
-
-# Set version number
-set(PROJECT_VERSION "0.0.0")
-
-# Print the version for verification
-message("Project version: ${PROJECT_VERSION}")
-
-#==============================================================================
-
-# Set the project name
-project(Neutrino LANGUAGES CXX VERSION ${PROJECT_VERSION})
-
-# Set the C++ standard
-set(CMAKE_CXX_STANDARD 17)
-
-# Set the directory for external libraries
+cmake_minimum_required(VERSION 3.30)
+project(Neutrino VERSION 0.1.0)
+set(CMAKE_CXX_STANDARD 23)
 set(EXT_DIR ${CMAKE_CURRENT_SOURCE_DIR}/external)
-
-# Load the CPM.cmake module for downloading external libraries
 include(cmake/get_cpm.cmake)
 
-#==============================================================================
-
-# Add the JUCE library
+# Add external dependencies
 CPMAddPackage(
     NAME JUCE
     GITHUB_REPOSITORY juce-framework/JUCE
-    GIT_TAG 7.0.9
-    VERSION 7.0.9
+    GIT_TAG develop
     SOURCE_DIR ${EXT_DIR}/juce
 )
-# Add the GoogleTest library
+CPMAddPackage(
+    NAME DMT
+    GITHUB_REPOSITORY Dimethoxy/DMT
+    GIT_TAG main
+    SOURCE_DIR ${EXT_DIR}/dmt
+)
+CPMAddPackage(
+    NAME CLAP_JUCE
+    GITHUB_REPOSITORY free-audio/clap-juce-extensions
+    GIT_TAG main
+    SOURCE_DIR ${EXT_DIR}/clap
+)
+CPMAddPackage(
+    NAME MELATONIN_PERFETTO
+    GITHUB_REPOSITORY Lunix-420/melatonin_perfetto
+    GIT_TAG main
+    SOURCE_DIR ${EXT_DIR}/perfetto
+)
 
-#CPMAddPackage(
-#    NAME GOOGLETEST
-#    GITHUB_REPOSITORY google/googletest
-#    GIT_TAG v1.14.0
-#    VERSION 1.14.0
-#    SOURCE_DIR ${EXT_DIR}/googletest
-#    OPTIONS
-#        "INSTALL_GTEST OFF"
-#        "gtest_force_shared_crt ON"
-#)
-
-#==============================================================================
-
-# Add the subdirectories
-#add_subdirectory(Fonts)
-add_subdirectory(src)
-#add_subdirectory(Tests)
-
-#==============================================================================
-# Setup compiler settings
+# Set C++ compiler flags
 if(MSVC)
-    # Set the warning level to 4 and treat warnings as errors
     add_compile_options(/Qspectre )#/Wall /WX)
 else()
-    # Set the warning level to 4 and treat warnings as errors
     add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
 
-# Enable testing
-#enable_testing()
-
+# Silence some warnings
+add_definitions(-D_SILENCE_CXX23_ALIGNED_STORAGE_DEPRECATION_WARNING)
+add_subdirectory(src)
