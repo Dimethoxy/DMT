@@ -11,26 +11,27 @@ namespace dmt {
 namespace gui {
 namespace panel {
 //==============================================================================
-class OscSendPanel : dmt::gui::panel::AbstractPanel
+class OscSendPanel : public dmt::gui::panel::AbstractPanel
 {
   using RotarySliderComponent = dmt::gui::component::RotarySliderComponent;
   using LinearSliderComponent = dmt::gui::component::LinearSliderComponent;
-  using RotarySliderType = dmt::gui::widgets::RotarySlider::Type;
-  using LinearSliderType = dmt::gui::widgets::LinearSlider::Type;
+  using RotarySliderType = dmt::gui::widget::RotarySlider::Type;
+  using LinearSliderType = dmt::gui::widget::LinearSlider::Type;
+  using Unit = dmt::utility::Unit;
 
 public:
-  OscSendPanel(juce::AudioProcessorValueTreeState & apvts,
+  OscSendPanel(juce::AudioProcessorValueTreeState& apvts,
                const juce::String channel)
-    : Panel(juce::String("Channel " + channel))
+    : AbstractPanel(juce::String("Channel " + channel))
     , channel(channel)
     , gainSlider(apvts,
                  juce::String("Gain"),
                  juce::String("osc1Send" + channel + "Gain"),
-                 dmt::InfoUnit::Type::Gain)
+                 Unit::Type::Gain)
     , panSlider(apvts,
                 juce::String("Pan"),
                 juce::String("osc1Send" + channel + "Pan"),
-                dmt::InfoUnit::Type::Gain,
+                Unit::Type::Pan,
                 LinearSliderType::Bipolar)
   {
     setLayout({ 3, 32 });
@@ -38,9 +39,8 @@ public:
     addAndMakeVisible(panSlider);
   }
 
-  void resized() noexcept override
+  void extendResize() noexcept override
   {
-    dmt::gui::Panel::resized();
     auto bounds = getLocalBounds();
     auto gainSliderPoint = this->getGridPoint(bounds, 2, 10);
     gainSlider.setSizeAndCentre(gainSliderPoint);

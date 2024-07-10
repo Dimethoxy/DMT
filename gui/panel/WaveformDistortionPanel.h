@@ -11,7 +11,7 @@ namespace dmt {
 namespace gui {
 namespace panel {
 //==============================================================================
-class WaveformDistortionPanel : dmt::gui::panel::AbstractPanel
+class WaveformDistortionPanel : public dmt::gui::panel::AbstractPanel
 {
   using RotarySliderComponent = dmt::gui::component::RotarySliderComponent;
   using LinearSliderComponent = dmt::gui::component::LinearSliderComponent;
@@ -22,6 +22,11 @@ class WaveformDistortionPanel : dmt::gui::panel::AbstractPanel
 public:
   WaveformDistortionPanel(juce::AudioProcessorValueTreeState& apvts)
     : AbstractPanel("Waveform Distortion")
+    , typeSlider(apvts,
+                 juce::String("Type"),
+                 juce::String("osc1DistortionType"),
+                 Unit::Type::DistortionType,
+                 RotarySliderType::Selector)
     , gainSlider(apvts,
                  juce::String("Pregain"),
                  juce::String("osc1DistortionPreGain"),

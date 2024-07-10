@@ -12,69 +12,70 @@ namespace dmt {
 namespace gui {
 namespace panel {
 //==============================================================================
-class VoicingPanel : dmt::gui::panel::AbstractPanel
+class VoicingPanel : public dmt::gui::panel::AbstractPanel
 {
 
   using RotarySliderComponent = dmt::gui::component::RotarySliderComponent;
   using LinearSliderComponent = dmt::gui::component::LinearSliderComponent;
-  using RotarySliderType = dmt::gui::widgets::RotarySlider::Type;
-  using LinearSliderType = dmt::gui::widgets::LinearSlider::Type;
+  using RotarySliderType = dmt::gui::widget::RotarySlider::Type;
+  using LinearSliderType = dmt::gui::widget::LinearSlider::Type;
+  using Unit = dmt::utility::Unit;
 
 public:
   VoicingPanel(juce::AudioProcessorValueTreeState& apvts)
-    : Panel("Voices")
+    : AbstractPanel("Voices")
     , osctaveSlider(apvts,
                     juce::String("Octave"),
                     juce::String("osc1VoiceOctave"),
-                    dmt::InfoUnit::Type::Octave,
+                    Unit::Type::Octave,
                     RotarySliderType::Selector)
     , semitonesSlider(apvts,
                       juce::String("Semitone"),
                       juce::String("osc1VoiceSemitone"),
-                      dmt::InfoUnit::Type::Semitone,
+                      Unit::Type::Semitone,
                       RotarySliderType::Selector)
     , fineSlider(apvts,
                  juce::String("Fine"),
                  juce::String("osc1VoiceFine"),
-                 dmt::InfoUnit::Type::Fine,
+                 Unit::Type::Cents,
                  LinearSliderType::Bipolar)
     , densitySlider(apvts,
                     juce::String("Density"),
                     juce::String("osc1VoiceDensity"),
-                    dmt::InfoUnit::Type::Density,
+                    Unit::Type::VoiceDensity,
                     RotarySliderType::Selector)
     , detuneSlider(apvts,
                    juce::String("Detune"),
                    juce::String("osc1VoiceDetune"),
-                   dmt::InfoUnit::Type::Detune)
+                   Unit::Type::Cents)
     , distributionSlider(apvts,
                          juce::String("Distibution"),
                          juce::String("osc1VoiceDistribution"),
-                         dmt::InfoUnit::Type::Distribution)
+                         Unit::Type::VoiceDistribution)
     , widthSlider(apvts,
                   juce::String("Width"),
                   juce::String("osc1VoiceWidth"),
-                  dmt::InfoUnit::Type::Percent,
+                  Unit::Type::Percent,
                   LinearSliderType::Positive)
     , blendSlider(apvts,
                   juce::String("Bend"),
                   juce::String("osc1VoiceBlend"),
-                  dmt::InfoUnit::Type::Percent,
+                  Unit::Type::Percent,
                   LinearSliderType::Positive)
     , seedSlider(apvts,
                  juce::String("Seed"),
                  juce::String("osc1VoiceSeed"),
-                 dmt::InfoUnit::Type::Seed,
+                 Unit::Type::Seed,
                  RotarySliderType::Selector)
     , randomlider(apvts,
                   juce::String("Random"),
                   juce::String("osc1VoiceRandom"),
-                  dmt::InfoUnit::Type::Percent)
+                  Unit::Type::Percent)
 
     , phaseSlider(apvts,
                   juce::String("Phase"),
                   juce::String("osc1VoicePhase"),
-                  dmt::InfoUnit::Type::Phase,
+                  Unit::Type::Degree,
                   LinearSliderType::Positive)
   {
     setLayout({ 31, 32 });
@@ -93,9 +94,8 @@ public:
     addAndMakeVisible(randomlider);
     addAndMakeVisible(phaseSlider);
   }
-  void resized() noexcept override
+  void extendResize() noexcept override
   {
-    dmt::gui::Panel::resized();
     const auto bounds = getLocalBounds();
     const int rotarySliderRow = 10;
     const int linearSliderRow = 26;

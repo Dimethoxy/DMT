@@ -9,12 +9,21 @@ struct Unit
 {
   enum class Type
   {
+    Degree,
+    Percent,
+    Seed,
     Gain,
+    Pan,
     Drive,
     DistortionType,
+    Cents,
+    Octave,
+    Semitone,
     Frequency,
     Symmetry,
     Bitdepth,
+    VoiceDensity,
+    VoiceDistribution,
     EnvelopeSkew,
     Milliseconds,
     OscilloscopeZoom,
@@ -35,7 +44,6 @@ struct Unit
         return { juce::String((int)value) + juce::String("dB") };
         break;
       default:
-        jassert(false);
         return { juce::String("ERROR") };
         break;
     }

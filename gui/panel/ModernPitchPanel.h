@@ -10,7 +10,7 @@ namespace dmt {
 namespace gui {
 namespace panel {
 //==============================================================================
-class ModernPitchPanel : dmt::gui::panel::AbstractPanel
+class ModernPitchPanel : public dmt::gui::panel::AbstractPanel
 {
 
 public:

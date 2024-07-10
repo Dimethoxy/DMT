@@ -10,7 +10,7 @@ namespace dmt {
 namespace gui {
 namespace panel {
 //==============================================================================
-class ModernGainPanel : dmt::gui::panel::AbstractPanel
+class ModernGainPanel : public dmt::gui::panel::AbstractPanel
 {
 
 public:

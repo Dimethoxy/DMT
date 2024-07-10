@@ -10,7 +10,7 @@ namespace dmt {
 namespace gui {
 namespace panel {
 //==============================================================================
-class ModernOscillatorPanel : dmt::gui::panel::AbstractPanel
+class ModernOscillatorPanel : public dmt::gui::panel::AbstractPanel
 {
 
 public:

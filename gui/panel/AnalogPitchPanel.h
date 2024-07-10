@@ -11,7 +11,7 @@ namespace dmt {
 namespace gui {
 namespace panel {
 //==============================================================================
-class AnalogPitchPanel : dmt::gui::panel::AbstractPanel
+class AnalogPitchPanel : public dmt::gui::panel::AbstractPanel
 {
   using LinearSliderComponent = dmt::gui::component::LinearSliderComponent;
   using LinearSliderType = dmt::gui::widget::LinearSlider::Type;
