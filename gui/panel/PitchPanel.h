@@ -11,7 +11,7 @@
 //==============================================================================
 namespace dmt {
 namespace gui {
-namespace panels {
+namespace panel {
 //==============================================================================
 class PitchPanel : public dmt::gui::panels::Carousel
 {

@@ -2,18 +2,18 @@
 
 #pragma once
 
-#include "gui/panel/AnalogGainPanel.h"
-#include "gui/panel/ModernGainPanel.h"
 #include "gui/panel/AbstractPanel.h"
+#include "gui/panel/AnalogGainPanel.h"
 #include "gui/panel/Carousel.h"
+#include "gui/panel/ModernGainPanel.h"
 #include <JuceHeader.h>
 
 //==============================================================================
 namespace dmt {
 namespace gui {
-namespace panels {
+namespace panel {
 //==============================================================================
-class GainPanel : public dmt::gui::panels::Carousel
+class GainPanel : public dmt::gui::panel::Carousel
 {
 public:
   GainPanel(juce::AudioProcessorValueTreeState& apvts)

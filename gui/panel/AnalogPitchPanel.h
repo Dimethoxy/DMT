@@ -2,16 +2,16 @@
 
 #pragma once
 
-#include "gui/panel/AbstractPanel.h"
 #include "gui/component/LinearSliderComponent.h"
+#include "gui/panel/AbstractPanel.h"
 #include <JuceHeader.h>
 
 //==============================================================================
 namespace dmt {
 namespace gui {
-namespace panels {
+namespace panel {
 //==============================================================================
-class AnalogPitchPanel : dmt::gui::panel::AbstractPanel;
+class AnalogPitchPanel : dmt::gui::panel::AbstractPanel
 {
   using AbstractPanel = dmt::gui::panel::AbstractPanel;
 
@@ -19,7 +19,7 @@ class AnalogPitchPanel : dmt::gui::panel::AbstractPanel;
   using LinearSliderOrientation = dmt::gui::widgets::LinearSlider::Orientation;
 
 public:
-  AnalogPitchPanel(juce::AudioProcessorValueTreeState & apvts)
+  AnalogPitchPanel(juce::AudioProcessorValueTreeState& apvts)
     : Panel("Analog Pitch Envelope")
     , attackSlider(apvts,
                    juce::String("Attack"),
@@ -96,10 +96,10 @@ public:
   }
 
 private:
-  dmt::gui::components::LinearSliderComponent attackSlider;
-  dmt::gui::components::LinearSliderComponent depthSlider;
-  dmt::gui::components::LinearSliderComponent decaySlider;
-  dmt::gui::components::LinearSliderComponent skewSlider;
+  LinearSliderComponent attackSlider;
+  LinearSliderComponent depthSlider;
+  LinearSliderComponent decaySlider;
+  LinearSliderComponent skewSlider;
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(AnalogPitchPanel)
 };
 //==============================================================================

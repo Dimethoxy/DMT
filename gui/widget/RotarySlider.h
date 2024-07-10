@@ -1,7 +1,7 @@
 #pragma once
 //==============================================================================
-#include "../../utility/Math.h"
-#include "../../utility/Settings.h"
+#include "utility/Math.h"
+#include "utility/Settings.h"
 #include <JuceHeader.h>
 //==============================================================================
 namespace dmt {

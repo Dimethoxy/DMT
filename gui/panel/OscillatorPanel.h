@@ -11,9 +11,9 @@
 //==============================================================================
 namespace dmt {
 namespace gui {
-namespace panels {
+namespace panel {
 //==============================================================================
-class OscillatorPanel : public dmt::gui::panels::Carousel
+class OscillatorPanel : public dmt::gui::panel::Carousel
 {
 public:
   OscillatorPanel()

@@ -91,10 +91,10 @@ private:
   {
     switch (state) {
       case State::Attack: {
-        return dmt::Math::linearToExponent(params.attackScew);
+        return dmt::math::linearToExponent(params.attackScew);
       }
       case State::Decay: {
-        return dmt::Math::linearToExponent(-params.decayScew);
+        return dmt::math::linearToExponent(-params.decayScew);
       }
       default: {
         return 1.0f;

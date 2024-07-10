@@ -8,9 +8,9 @@
 //==============================================================================
 namespace dmt {
 namespace gui {
-namespace panels {
+namespace panel {
 //==============================================================================
-class VoicingPanel dmt::gui::panel::AbstractPanel;
+class VoicingPanel dmt::gui::panel::AbstractPanel
 {
   using AbstractPanel = dmt::gui::panel::AbstractPanel;
 

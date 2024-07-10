@@ -10,6 +10,7 @@
 //==============================================================================
 namespace dmt {
 namespace gui {
+namespace panel {
 //==============================================================================
 class AbstractPanel
   : public juce::Component
@@ -256,10 +257,9 @@ private:
   TriangleButton prevButton;
   Shadow outerShadow;
   Shadow innerShadow;
-
+  //============================================================================
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(AbstractPanel)
 };
-
-//==============================================================================
+} // namespace panel
 } // namespace gui
 } // namespace dmt

@@ -9,12 +9,14 @@
 //==============================================================================
 namespace dmt {
 namespace gui {
-namespace panels {
+namespace panel {
 //==============================================================================
-class WaveformDistortionPaneldmt::gui::panel::AbstractPanel;
+class WaveformDistortionPanel : dmt::gui::panel::AbstractPanel
 {
   using AbstractPanel = dmt::gui::panel::AbstractPanel;
 
+  using RotarySliderComponent = dmt::gui::component::RotarySliderComponent;
+  using LinearSliderComponent = dmt::gui::component::LinearSliderComponent;
   using RotarySliderType = dmt::gui::widgets::RotarySlider::Type;
   using LinearSliderType = dmt::gui::widgets::LinearSlider::Type;
 
@@ -95,11 +97,11 @@ public:
   }
 
 private:
-  dmt::gui::components::RotarySliderComponent typeSlider;
-  dmt::gui::components::RotarySliderComponent gainSlider;
-  dmt::gui::components::RotarySliderComponent driveSlider;
-  dmt::gui::components::LinearSliderComponent biasSlider;
-  dmt::gui::components::LinearSliderComponent crushSlider;
+  RotarySliderComponent typeSlider;
+  RotarySliderComponent gainSlider;
+  RotarySliderComponent driveSlider;
+  LinearSliderComponent biasSlider;
+  LinearSliderComponent crushSlider;
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(WaveformDistortionPanel)
 };
 //==============================================================================

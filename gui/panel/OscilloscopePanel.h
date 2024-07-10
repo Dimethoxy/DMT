@@ -15,7 +15,7 @@ class OscilloscopePanel
   : public dmt::gui::panel::AbstractPanel
   , public juce::Slider::Listener
 {
-  using AbstractPanel = dmt::gui::panel::AbstractPanel;
+  using AbstractPanel = dmt::gui::panel::AbstractPanel
 
   using OscilloscopeComponent =
     dmt::gui::component::OscilloscopeComponent<SampleType>;

@@ -9,12 +9,14 @@
 //==============================================================================
 namespace dmt {
 namespace gui {
-namespace panels {
+namespace panel {
 //==============================================================================
-class OscSendPanel dmt::gui::panel::AbstractPanel;
+class OscSendPanel dmt::gui::panel::AbstractPanel
 {
   using AbstractPanel = dmt::gui::panel::AbstractPanel;
 
+  using RotarySliderComponent = dmt::gui::component::RotarySliderComponent;
+  using LinearSliderComponent = dmt::gui::component::LinearSliderComponent;
   using RotarySliderType = dmt::gui::widgets::RotarySlider::Type;
   using LinearSliderType = dmt::gui::widgets::LinearSlider::Type;
 
@@ -51,8 +53,8 @@ public:
 
 private:
   const juce::String channel;
-  dmt::gui::components::RotarySliderComponent gainSlider;
-  dmt::gui::components::LinearSliderComponent panSlider;
+  RotarySliderComponent gainSlider;
+  LinearSliderComponent panSlider;
 
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(OscSendPanel)
 };

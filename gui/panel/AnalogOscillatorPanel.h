@@ -8,7 +8,7 @@
 //==============================================================================
 namespace dmt {
 namespace gui {
-namespace panels {
+namespace panel {
 //==============================================================================
 class AnalogOscillatorPanel : public dmt::gui::panel::AbstractPanel
 {

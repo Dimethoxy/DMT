@@ -2,21 +2,22 @@
 
 #pragma once
 
-#include "gui/panel/AbstractPanel.h"
 #include "gui/component/LinearSliderComponent.h"
+#include "gui/panel/AbstractPanel.h"
 #include <JuceHeader.h>
 
 //==============================================================================
 namespace dmt {
 namespace gui {
-namespace panels {
+namespace panel {
 //==============================================================================
 class AnalogGainPanel : public dmt::gui::panel::AbstractPanel
 {
   using AbstractPanel = dmt::gui::panel::AbstractPanel;
 
-  using LinearSliderType = dmt::gui::widgets::LinearSlider::Type;
-  using LinearSliderOrientation = dmt::gui::widgets::LinearSlider::Orientation;
+  using LinearSliderComponent = dmt::gui::component::LinearSliderComponent;
+  using LinearSliderType = dmt::gui::widget::LinearSlider::Type;
+  using LinearSliderOrientation = dmt::gui::widget::LinearSlider::Orientation;
 
 public:
   AnalogGainPanel(juce::AudioProcessorValueTreeState& apvts)
@@ -53,9 +54,8 @@ public:
     addAndMakeVisible(skewSlider);
   }
 
-  void resized() noexcept override
+  void extendResized() noexcept override
   {
-    dmt::gui::Panel::resized();
     const auto bounds = getLocalBounds();
 
     const int primaryRow = 3;
@@ -96,10 +96,10 @@ public:
   }
 
 private:
-  dmt::gui::components::LinearSliderComponent attackSlider;
-  dmt::gui::components::LinearSliderComponent holdSlider;
-  dmt::gui::components::LinearSliderComponent decaySlider;
-  dmt::gui::components::LinearSliderComponent skewSlider;
+  LinearSliderComponent attackSlider;
+  LinearSliderComponent holdSlider;
+  LinearSliderComponent decaySlider;
+  LinearSliderComponent skewSlider;
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(AnalogGainPanel)
 };
 //==============================================================================

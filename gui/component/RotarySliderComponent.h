@@ -2,7 +2,7 @@
 #pragma once
 //==============================================================================
 #include "gui/widget/Label.h"
-#include "gui/widget/LinearSlider.h"
+#include "gui/widget/RotarySlider.h"
 #include "utility/Fonts.h"
 #include "utility/Icon.h"
 #include "utility/Settings.h"
@@ -17,11 +17,15 @@ class RotarySliderComponent
   : public juce::Component
   , public juce::Slider::Listener
 {
-  using Settings = dmt::AppSettings;
-  using Layout = dmt::AppSettings::Layout;
+  using RotarySLider = dmt::gui::widget::RotarySlider;
+  using InfoUnit = dmt::utility::InfoUnit;
+  using Label = dmt::gui::widget::Label;
+
+  using Settings = dmt::Settings;
+  using Layout = dmt::Settings::Layout;
   using Fonts = Settings::Fonts;
   using Slider = Settings::Slider;
-  using RotarySLider = dmt::gui::widgets::RotarySlider;
+
   using Type = RotarySLider::Type;
   const float& size = Layout::size;
   const float& baseWidth = Slider::baseWidth;
@@ -99,11 +103,11 @@ protected:
   }
 
 private:
-  dmt::gui::widgets::RotarySlider slider;
+  RotarySlider slider;
   juce::AudioProcessorValueTreeState::SliderAttachment sliderAttachment;
-  dmt::gui::widgets::Label titleLabel;
-  dmt::gui::widgets::Label infoLabel;
-  dmt::InfoUnit::Type unitType;
+  Label titleLabel;
+  Label infoLabel;
+  InfoUnit::Type unitType;
 
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(RotarySliderComponent)
 };
