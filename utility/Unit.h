@@ -4,25 +4,27 @@
 #include <JuceHeader.h>
 
 namespace dmt {
-struct InfoUnit
+namespace utility {
+struct Unit
 {
   enum class Type
   {
+    Milliseconds,
     OscilloscopeZoom,
     OscilloscopeThickness,
     OscilloscopeHeight
   };
 
-  static inline juce::String getString(dmt::InfoUnit::Type type, float value)
+  static inline juce::String getString(Type type, float value)
   {
     switch (type) {
-      case dmt::InfoUnit::Type::OscilloscopeZoom:
+      case Type::OscilloscopeZoom:
         return { juce::String((int)value) + juce::String("%") };
         break;
-      case dmt::InfoUnit::Type::OscilloscopeThickness:
+      case Type::OscilloscopeThickness:
         return { juce::String((int)value) + juce::String("px") };
         break;
-      case dmt::InfoUnit::Type::OscilloscopeHeight:
+      case Type::OscilloscopeHeight:
         return { juce::String((int)value) + juce::String("dB") };
         break;
       default:
@@ -32,4 +34,5 @@ struct InfoUnit
     }
   }
 };
+} // namespace utility
 } // namespace dmt

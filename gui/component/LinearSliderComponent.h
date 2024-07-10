@@ -17,6 +17,8 @@ class LinearSliderComponent
   : public juce::Component
   , public juce::Slider::Listener
 {
+  using Unit = dmt::utility::Unit;
+
   using Settings = dmt::Settings;
   using Layout = Settings::Layout;
   using Slider = Settings::Slider;
@@ -41,7 +43,7 @@ public:
   LinearSliderComponent(juce::AudioProcessorValueTreeState& apvts,
                         const juce::String text,
                         const juce::String param,
-                        const dmt::InfoUnit::Type unitType,
+                        const Unit::Type unitType,
                         const Type type = Type::Positive,
                         const Orientation orientation = Orientation::Horizontal,
                         const bool svgTitle = false)
@@ -153,7 +155,7 @@ public:
 protected:
   void updateLabel()
   {
-    auto text = dmt::InfoUnit::getString(unitType, (float)slider.getValue());
+    auto text = Unit::getString(unitType, (float)slider.getValue());
     infoLabel.setText(text);
     infoLabel.repaint();
   }
@@ -161,7 +163,7 @@ protected:
 private:
   Fonts fonts;
   LinearSlider::Orientation orientation;
-  dmt::InfoUnit::Type unitType;
+  Unit::Type unitType;
   LinearSlider slider;
   SliderAttachment sliderAttachment;
   Label titleLabel;

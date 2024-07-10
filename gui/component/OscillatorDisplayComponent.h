@@ -2,9 +2,9 @@
 
 #pragma once
 
-#include "dsp/Synth/AnalogOscillator.h"
-#include "gui/widgets/Shadow.h"
-#include "utility/AppSettings.h"
+#include "dsp/synth/AnalogOscillator.h"
+#include "gui/widget/Shadow.h"
+#include "utility/Settings.h"
 #include <JuceHeader.h>
 
 //==============================================================================
@@ -16,9 +16,12 @@ class OscillatorDisplayComponent
   : public juce::Component
   , public juce::Timer
 {
+  using Shadow = dmt::gui::widget::Shadow;
+  using AnalogOscillator = dmt::dsp::synth::AnalogOscillator;
+
   // General
-  using Settings = dmt::AppSettings::OscillatorDisplay;
-  const int& fps = dmt::AppSettings::fps;
+  const int& fps = dmt::Settings::fps;
+  using Settings = dmt::Settings::OscillatorDisplay;
   const int& resolution = Settings::resolution;
   // Shadows
   const bool& drawOuterShadow = Settings::drawOuterShadow;
@@ -32,8 +35,6 @@ public:
   //============================================================================
   OscillatorDisplayComponent(juce::AudioProcessorValueTreeState& apvts)
     : apvts(apvts)
-    , outerShadow(outerShadowColour, outerShadowRadius)
-    , innerShadow(innerShadowColour, innerShadowRadius)
   {
     osc.setSampleRate((float)resolution + 1.0f);
     osc.setFrequency(1.0f);
@@ -58,7 +59,7 @@ protected:
   void buildTable()
   {
     osc.setPhase(0.0f);
-    table.initialise([&](size_t index) { return (float)osc.getNextSample(); },
+    table.initialise([&](int index) { return osc.getNextSample(); },
                      resolution);
   }
 
@@ -99,10 +100,12 @@ protected:
   }
   //============================================================================
 private:
-  dmt::Shadow outerShadow;
-  dmt::Shadow innerShadow;
+  Shadow outerShadow =
+    Shadow(drawOuterShadow, outerShadowColour, outerShadowRadius, false);
+  Shadow innerShadow =
+    Shadow(drawInnerShadow, innerShadowColour, innerShadowRadius, true);
 
-  dmt::dsp::synth::AnalogOscillator osc;
+  AnalogOscillator osc;
   juce::dsp::LookupTable<float> table;
   juce::AudioProcessorValueTreeState& apvts;
 };

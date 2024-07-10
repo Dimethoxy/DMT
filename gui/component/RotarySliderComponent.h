@@ -18,12 +18,12 @@ class RotarySliderComponent
   , public juce::Slider::Listener
 {
   using RotarySLider = dmt::gui::widget::RotarySlider;
-  using InfoUnit = dmt::utility::InfoUnit;
+  using Unit = dmt::utility::Unit;
   using Label = dmt::gui::widget::Label;
 
   using Settings = dmt::Settings;
   using Layout = dmt::Settings::Layout;
-  using Fonts = Settings::Fonts;
+  using Fonts = dmt::Fonts;
   using Slider = Settings::Slider;
 
   using Type = RotarySLider::Type;
@@ -42,7 +42,7 @@ public:
   RotarySliderComponent(juce::AudioProcessorValueTreeState& apvts,
                         const juce::String text,
                         const juce::String param,
-                        const dmt::InfoUnit::Type unitType,
+                        const Unit::Type unitType,
                         const Type type = Type::Positive)
     : slider(type)
     , sliderAttachment(apvts, param, slider)
@@ -108,7 +108,7 @@ private:
   Label titleLabel;
   Label infoLabel;
   InfoUnit::Type unitType;
-
+  Fonts fonts;
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(RotarySliderComponent)
 };
 //==============================================================================

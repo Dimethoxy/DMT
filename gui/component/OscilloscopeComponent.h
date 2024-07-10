@@ -51,8 +51,6 @@ public:
     , fifoBuffer(fifoBuffer)
     , leftOscilloscope(ringBuffer, 0)
     , rightOscilloscope(ringBuffer, 1)
-    , outerShadow(drawOuterShadow, outerShadowColour, outerShadowRadius, false)
-    , innerShadow(drawInnerShadow, innerShadowColour, innerShadowRadius, true)
   {
     startRepaintTimer();
     addAndMakeVisible(outerShadow);
@@ -211,8 +209,10 @@ private:
   Oscilloscope rightOscilloscope;
   //==============================================================================
   juce::Rectangle<int> backgroundBounds;
-  Shadow outerShadow;
-  Shadow innerShadow;
+  Shadow outerShadow =
+    Shadow(drawOuterShadow, outerShadowColour, outerShadowRadius, false);
+  Shadow innerShadow =
+    Shadow(drawInnerShadow, innerShadowColour, innerShadowRadius, true);
   juce::Rectangle<int> innerBounds;
   juce::Rectangle<int> outerBounds;
   //==============================================================================
