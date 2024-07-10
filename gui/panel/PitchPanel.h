@@ -13,7 +13,7 @@ namespace dmt {
 namespace gui {
 namespace panel {
 //==============================================================================
-class PitchPanel : public dmt::gui::panels::Carousel
+class PitchPanel : public dmt::gui::panel::Carousel
 {
 public:
   PitchPanel(juce::AudioProcessorValueTreeState& apvts)

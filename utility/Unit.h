@@ -9,7 +9,12 @@ struct Unit
 {
   enum class Type
   {
+    Gain,
+    Drive,
+    DistortionType,
     Frequency,
+    Symmetry,
+    Bitdepth,
     EnvelopeSkew,
     Milliseconds,
     OscilloscopeZoom,

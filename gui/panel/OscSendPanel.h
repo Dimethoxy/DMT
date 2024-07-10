@@ -11,10 +11,8 @@ namespace dmt {
 namespace gui {
 namespace panel {
 //==============================================================================
-class OscSendPanel dmt::gui::panel::AbstractPanel
+class OscSendPanel : dmt::gui::panel::AbstractPanel
 {
-  using AbstractPanel = dmt::gui::panel::AbstractPanel;
-
   using RotarySliderComponent = dmt::gui::component::RotarySliderComponent;
   using LinearSliderComponent = dmt::gui::component::LinearSliderComponent;
   using RotarySliderType = dmt::gui::widgets::RotarySlider::Type;

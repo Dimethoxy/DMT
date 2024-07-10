@@ -2,6 +2,8 @@
 
 #pragma once
 
+#include "gui/component/LinearSliderComponent.h"
+#include "gui/component/RotarySliderComponent.h"
 #include "gui/panel/AbstractPanel.h"
 #include <JuceHeader.h>
 
@@ -10,17 +12,16 @@ namespace dmt {
 namespace gui {
 namespace panel {
 //==============================================================================
-class VoicingPanel dmt::gui::panel::AbstractPanel
+class VoicingPanel : dmt::gui::panel::AbstractPanel
 {
-  using AbstractPanel = dmt::gui::panel::AbstractPanel;
 
-  using RotarySliderComponent = dmt::gui::components::RotarySliderComponent;
-  using LinearSliderComponent = dmt::gui::components::LinearSliderComponent;
+  using RotarySliderComponent = dmt::gui::component::RotarySliderComponent;
+  using LinearSliderComponent = dmt::gui::component::LinearSliderComponent;
   using RotarySliderType = dmt::gui::widgets::RotarySlider::Type;
   using LinearSliderType = dmt::gui::widgets::LinearSlider::Type;
 
 public:
-  VoicingPanel(juce::AudioProcessorValueTreeState & apvts)
+  VoicingPanel(juce::AudioProcessorValueTreeState& apvts)
     : Panel("Voices")
     , osctaveSlider(apvts,
                     juce::String("Octave"),

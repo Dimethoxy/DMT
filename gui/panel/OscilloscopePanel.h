@@ -15,14 +15,14 @@ class OscilloscopePanel
   : public dmt::gui::panel::AbstractPanel
   , public juce::Slider::Listener
 {
+  using FifoAudioBuffer = dmt::dsp::data::FifoAudioBuffer<SampleType>;
   using OscilloscopeComponent =
     dmt::gui::component::OscilloscopeComponent<SampleType>;
-  using Unit = dmt::utility::Unit;
-  using FifoAudioBuffer = dmt::dsp::data::FifoAudioBuffer<SampleType>;
 
   using LinearSlider = dmt::gui::component::LinearSliderComponent;
   using LinearSliderType = dmt::gui::widget::LinearSlider::Type;
   using LinearSliderOrientation = dmt::gui::widget::LinearSlider::Orientation;
+  using Unit = dmt::utility::Unit;
 
   using Settings = dmt::Settings;
   const float& size = Settings::Layout::size;

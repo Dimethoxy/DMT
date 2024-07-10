@@ -17,32 +17,28 @@ class WaveformDistortionPanel : dmt::gui::panel::AbstractPanel
   using LinearSliderComponent = dmt::gui::component::LinearSliderComponent;
   using RotarySliderType = dmt::gui::widget::RotarySlider::Type;
   using LinearSliderType = dmt::gui::widget::LinearSlider::Type;
+  using Unit = dmt::utility::Unit;
 
 public:
   WaveformDistortionPanel(juce::AudioProcessorValueTreeState& apvts)
-    : Panel("Waveform Distortion")
-    , typeSlider(apvts,
-                 juce::String("Type"),
-                 juce::String("osc1DistortionType"),
-                 dmt::InfoUnit::Type::DistortionType,
-                 RotarySliderType::Selector)
+    : AbstractPanel("Waveform Distortion")
     , gainSlider(apvts,
                  juce::String("Pregain"),
                  juce::String("osc1DistortionPreGain"),
-                 dmt::InfoUnit::Type::Gain)
+                 Unit::Type::Gain)
     , driveSlider(apvts,
                   juce::String("Drive"),
                   juce::String("osc1DistortionDrive"),
-                  dmt::InfoUnit::Type::Drive)
+                  Unit::Type::Drive)
     , biasSlider(apvts,
                  juce::String("Symmetry"),
                  juce::String("osc1DistortionSymmetry"),
-                 dmt::InfoUnit::Type::Symmetry,
+                 Unit::Type::Symmetry,
                  LinearSliderType::Bipolar)
     , crushSlider(apvts,
                   juce::String("Bitcrush"),
                   juce::String("osc1DistortionCrush"),
-                  dmt::InfoUnit::Type::Bitcrush)
+                  Unit::Type::Bitdepth)
   {
     setLayout({ 17, 32 });
     addAndMakeVisible(typeSlider);
@@ -51,9 +47,8 @@ public:
     addAndMakeVisible(biasSlider);
     addAndMakeVisible(crushSlider);
   }
-  void resized() noexcept override
+  void extendResize() noexcept override
   {
-    dmt::gui::Panel::resized();
     const auto bounds = getLocalBounds();
     const int rotarySliderRow = 10;
     const int linearSliderRow = 26;
@@ -94,7 +89,6 @@ public:
                                   crushSliderSecondaryPoint);
   }
 
-private:
   RotarySliderComponent typeSlider;
   RotarySliderComponent gainSlider;
   RotarySliderComponent driveSlider;
@@ -103,6 +97,6 @@ private:
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(WaveformDistortionPanel)
 };
 //==============================================================================
-} // namespace panels
+} // namespace panel
 } // namespace gui
 } // namespace dmt
