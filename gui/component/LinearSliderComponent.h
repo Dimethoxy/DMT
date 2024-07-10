@@ -17,16 +17,18 @@ class LinearSliderComponent
   : public juce::Component
   , public juce::Slider::Listener
 {
+  using LinearSlider = dmt::gui::widget::LinearSlider;
+  using Type = LinearSlider::Type;
+  using Orientation = LinearSlider::Orientation;
+  using SliderAttachment = juce::AudioProcessorValueTreeState::SliderAttachment;
   using Unit = dmt::utility::Unit;
+  using Label = dmt::gui::widget::Label;
+  using Fonts = dmt::utility::Fonts;
 
   using Settings = dmt::Settings;
   using Layout = Settings::Layout;
   using Slider = Settings::Slider;
-  using LinearSlider = dmt::gui::widget::LinearSlider;
-  using Type = LinearSlider::Type;
-  using Orientation = LinearSlider::Orientation;
-  using Label = dmt::gui::widget::Label;
-  using SliderAttachment = juce::AudioProcessorValueTreeState::SliderAttachment;
+
   const float& size = Layout::size;
   const float& baseWidth = Slider::baseWidth;
   const float& baseHeight = Slider::baseHeight;
@@ -162,7 +164,7 @@ protected:
   //==============================================================================
 private:
   Fonts fonts;
-  LinearSlider::Orientation orientation;
+  Orientation orientation;
   Unit::Type unitType;
   LinearSlider slider;
   SliderAttachment sliderAttachment;

@@ -10,7 +10,7 @@
 //==============================================================================
 namespace dmt {
 namespace gui {
-namespace components {
+namespace component {
 //==============================================================================
 class OscillatorDisplayComponent
   : public juce::Component
@@ -59,8 +59,9 @@ protected:
   void buildTable()
   {
     osc.setPhase(0.0f);
-    table.initialise([&](int index) { return osc.getNextSample(); },
-                     resolution);
+    table.initialise(
+      [&](std::size_t index) { return (float)osc.getNextSample(); },
+      resolution);
   }
 
   bool isParametersChanged() {}

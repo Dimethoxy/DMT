@@ -13,7 +13,7 @@ namespace panel {
 //==============================================================================
 class AnalogGainPanel : public dmt::gui::panel::AbstractPanel
 {
-  using AbstractPanel = dmt::gui::panel::AbstractPanel;
+  using Unit = dmt::utility::Unit;
 
   using LinearSliderComponent = dmt::gui::component::LinearSliderComponent;
   using LinearSliderType = dmt::gui::widget::LinearSlider::Type;
@@ -25,25 +25,25 @@ public:
     , attackSlider(apvts,
                    juce::String("Attack"),
                    juce::String("osc1GainEnvAttack"),
-                   dmt::InfoUnit::Type::Milliseconds,
+                   Unit::Type::Milliseconds,
                    LinearSliderType::Positive,
                    LinearSliderOrientation::Vertical)
     , holdSlider(apvts,
                  juce::String("Hold"),
                  juce::String("osc1GainEnvHold"),
-                 dmt::InfoUnit::Type::Milliseconds,
+                 Unit::Type::Milliseconds,
                  LinearSliderType::Positive,
                  LinearSliderOrientation::Vertical)
     , decaySlider(apvts,
                   juce::String("Decay"),
                   juce::String("osc1GainEnvDecay"),
-                  dmt::InfoUnit::Type::Milliseconds,
+                  Unit::Type::Milliseconds,
                   LinearSliderType::Positive,
                   LinearSliderOrientation::Vertical)
     , skewSlider(apvts,
                  juce::String("Skew"),
                  juce::String("osc1GainEnvSkew"),
-                 dmt::InfoUnit::Type::Skew,
+                 Unit::Type::EnvelopeSkew,
                  LinearSliderType::Positive,
                  LinearSliderOrientation::Vertical)
   {
@@ -54,7 +54,7 @@ public:
     addAndMakeVisible(skewSlider);
   }
 
-  void extendResized() noexcept override
+  void extendResize() noexcept override
   {
     const auto bounds = getLocalBounds();
 

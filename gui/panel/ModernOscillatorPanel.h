@@ -12,11 +12,10 @@ namespace panel {
 //==============================================================================
 class ModernOscillatorPanel : dmt::gui::panel::AbstractPanel
 {
-  using AbstractPanel = dmt::gui::panel::AbstractPanel;
 
 public:
   ModernOscillatorPanel(/*juce::AudioProcessorValueTreeState& apvts*/)
-    : Panel("Modern Oscillator")
+    : AbstractPanel("Modern Oscillator")
   { //
   }
 

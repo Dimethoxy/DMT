@@ -11,22 +11,22 @@
 //==============================================================================
 namespace dmt {
 namespace gui {
-namespace components {
+namespace component {
 //==============================================================================
 class RotarySliderComponent
   : public juce::Component
   , public juce::Slider::Listener
 {
-  using RotarySLider = dmt::gui::widget::RotarySlider;
+  using RotarySlider = dmt::gui::widget::RotarySlider;
+  using Type = RotarySlider::Type;
+  using SliderAttachment = juce::AudioProcessorValueTreeState::SliderAttachment;
   using Unit = dmt::utility::Unit;
   using Label = dmt::gui::widget::Label;
-
+  using Fonts = dmt::utility::Fonts;
+  //==============================================================================
   using Settings = dmt::Settings;
   using Layout = dmt::Settings::Layout;
-  using Fonts = dmt::Fonts;
   using Slider = Settings::Slider;
-
-  using Type = RotarySLider::Type;
   const float& size = Layout::size;
   const float& baseWidth = Slider::baseWidth;
   const float& baseHeight = Slider::baseHeight;
@@ -46,9 +46,9 @@ public:
                         const Type type = Type::Positive)
     : slider(type)
     , sliderAttachment(apvts, param, slider)
-    , titleLabel(text, Fonts::medium, titleFontSize, titleFontColour)
+    , titleLabel(text, fonts.medium, titleFontSize, titleFontColour)
     , infoLabel(juce::String("Info Label"),
-                Fonts::light,
+                fonts.light,
                 infoFontSize,
                 infoFontColour,
                 juce::Justification::centredBottom)
@@ -97,17 +97,17 @@ public:
 protected:
   void updateLabel()
   {
-    auto text = dmt::InfoUnit::getString(unitType, (float)slider.getValue());
+    auto text = Unit::getString(unitType, (float)slider.getValue());
     infoLabel.setText(text);
     infoLabel.repaint();
   }
 
 private:
   RotarySlider slider;
-  juce::AudioProcessorValueTreeState::SliderAttachment sliderAttachment;
+  SliderAttachment sliderAttachment;
   Label titleLabel;
   Label infoLabel;
-  InfoUnit::Type unitType;
+  Unit::Type unitType;
   Fonts fonts;
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(RotarySliderComponent)
 };

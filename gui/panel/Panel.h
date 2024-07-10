@@ -5,7 +5,6 @@
 #include "./AnalogPitchPanel.h"
 #include "./Carousel.h"
 #include "./GainPanel.h"
-#include "./HeaderPanel.h"
 #include "./ModernGainPanel.h"
 #include "./ModernOscillatorPanel.h"
 #include "./ModernPitchPanel.h"

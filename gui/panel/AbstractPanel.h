@@ -21,6 +21,7 @@ public:
   using TriangleButton = dmt::gui::widget::TriangleButton;
   using Shadow = dmt::gui::widget::Shadow;
   using Label = dmt::gui::widget::Label;
+  using Fonts = dmt::utility::Fonts;
 
   // Settings
   using LibrarySettings = dmt::Settings;

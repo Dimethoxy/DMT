@@ -15,10 +15,9 @@ class OscilloscopePanel
   : public dmt::gui::panel::AbstractPanel
   , public juce::Slider::Listener
 {
-  using AbstractPanel = dmt::gui::panel::AbstractPanel;
-
   using OscilloscopeComponent =
     dmt::gui::component::OscilloscopeComponent<SampleType>;
+  using Unit = dmt::utility::Unit;
   using FifoAudioBuffer = dmt::dsp::data::FifoAudioBuffer<SampleType>;
 
   using LinearSlider = dmt::gui::component::LinearSliderComponent;
@@ -38,21 +37,21 @@ public:
     , zoomSlider(apvts,
                  juce::String("Zoom"),
                  juce::String("OscilloscopeZoom"),
-                 dmt::InfoUnit::Type::OscilloscopeZoom,
+                 Unit::Type::OscilloscopeZoom,
                  LinearSliderType::Positive,
                  LinearSliderOrientation::Vertical,
                  true)
     , thicknessSlider(apvts,
                       juce::String("Thickness"),
                       juce::String("OscilloscopeThickness"),
-                      dmt::InfoUnit::Type::OscilloscopeThickness,
+                      Unit::Type::OscilloscopeThickness,
                       LinearSliderType::Positive,
                       LinearSliderOrientation::Vertical,
                       true)
     , heightSlider(apvts,
                    juce::String("Gain"),
                    juce::String("OscilloscopeGain"),
-                   dmt::InfoUnit::Type::OscilloscopeHeight,
+                   Unit::Type::OscilloscopeHeight,
                    LinearSliderType::Bipolar,
                    LinearSliderOrientation::Vertical,
                    true)

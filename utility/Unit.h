@@ -9,10 +9,12 @@ struct Unit
 {
   enum class Type
   {
+    Frequency,
+    EnvelopeSkew,
     Milliseconds,
     OscilloscopeZoom,
     OscilloscopeThickness,
-    OscilloscopeHeight
+    OscilloscopeHeight,
   };
 
   static inline juce::String getString(Type type, float value)

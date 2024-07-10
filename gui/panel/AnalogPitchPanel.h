@@ -13,36 +13,36 @@ namespace panel {
 //==============================================================================
 class AnalogPitchPanel : dmt::gui::panel::AbstractPanel
 {
-  using AbstractPanel = dmt::gui::panel::AbstractPanel;
-
-  using LinearSliderType = dmt::gui::widgets::LinearSlider::Type;
-  using LinearSliderOrientation = dmt::gui::widgets::LinearSlider::Orientation;
+  using LinearSliderComponent = dmt::gui::component::LinearSliderComponent;
+  using LinearSliderType = dmt::gui::widget::LinearSlider::Type;
+  using LinearSliderOrientation = dmt::gui::widget::LinearSlider::Orientation;
+  using Unit = dmt::utility::Unit;
 
 public:
   AnalogPitchPanel(juce::AudioProcessorValueTreeState& apvts)
-    : Panel("Analog Pitch Envelope")
+    : AbstractPanel("Analog Pitch Envelope")
     , attackSlider(apvts,
                    juce::String("Attack"),
                    juce::String("osc1PitchEnvAttack"),
-                   dmt::InfoUnit::Type::Milliseconds,
+                   Unit::Type::Milliseconds,
                    LinearSliderType::Positive,
                    LinearSliderOrientation::Vertical)
     , decaySlider(apvts,
                   juce::String("Decay"),
                   juce::String("osc1PitchEnvDecay"),
-                  dmt::InfoUnit::Type::Milliseconds,
+                  Unit::Type::Milliseconds,
                   LinearSliderType::Positive,
                   LinearSliderOrientation::Vertical)
     , skewSlider(apvts,
                  juce::String("Skew"),
                  juce::String("osc1PitchEnvSkew"),
-                 dmt::InfoUnit::Type::Skew,
+                 Unit::Type::EnvelopeSkew,
                  LinearSliderType::Positive,
                  LinearSliderOrientation::Vertical)
     , depthSlider(apvts,
                   juce::String("Depth"),
                   juce::String("osc1PitchEnvDepth"),
-                  dmt::InfoUnit::Type::ModDepth,
+                  Unit::Type::Frequency,
                   LinearSliderType::Positive,
                   LinearSliderOrientation::Vertical)
   {
@@ -53,9 +53,8 @@ public:
     addAndMakeVisible(skewSlider);
   }
 
-  void resized() noexcept override
+  void extendResize() noexcept override
   {
-    dmt::gui::Panel::resized();
     const auto bounds = getLocalBounds();
 
     const int primaryRow = 3;
