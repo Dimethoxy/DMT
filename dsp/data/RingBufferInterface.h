@@ -11,7 +11,6 @@ template<typename SampleType>
 class RingBufferInterface
 {
   using AudioBuffer = juce::AudioBuffer<SampleType>;
-  using Spans = std::vector<std::span<SampleType>>;
 
 public:
   //============================================================================
