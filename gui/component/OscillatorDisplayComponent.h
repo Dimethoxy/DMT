@@ -20,7 +20,7 @@ class OscillatorDisplayComponent
   using AnalogOscillator = dmt::dsp::synth::AnalogOscillator;
 
   // General
-  const int& fps = dmt::Settings::fps;
+  const int& fps = dmt::Settings::framerate;
   using Settings = dmt::Settings::OscillatorDisplay;
   const int& resolution = Settings::resolution;
   // Shadows

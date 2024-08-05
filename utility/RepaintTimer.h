@@ -7,7 +7,7 @@ namespace dmt {
 namespace utility {
 class RepaintTimer : juce::Timer
 {
-  const int& fps = Settings::fps;
+  const int& fps = Settings::framerate;
 
 public:
   //============================================================================

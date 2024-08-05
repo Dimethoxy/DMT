@@ -2,20 +2,28 @@
 //==============================================================================
 #include <JuceHeader.h>
 #include <configuration/Options.h>
+#include <configuration/Parameters.h>
 //==============================================================================
 namespace dmt {
 namespace configuration {
 //==============================================================================
-std::unique_ptr<juce::PropertiesFile> properties;
-//==============================================================================
-void
-loadDefaultProperties(juce::String applicationName)
+class Properties
 {
-  auto options = getOptions(applicationName);
-  if (properties == nullptr) {
-    properties = std::make_unique<juce::PropertiesFile>(options);
+public:
+  static void initialize(juce::String applicationName)
+  {
+    auto options = getOptions(applicationName);
+    fileLock.enterWrite();
+    if (file == nullptr) {
+      file = new juce::PropertiesFile(options);
+    }
+    dmt::configuration::addParameters(file);
   }
-}
+  //==============================================================================
+private:
+  static juce::PropertiesFile* file;
+  static juce::ReadWriteLock fileLock;
+};
 //==============================================================================
 } // namespace configuration
 } // namespace dmt

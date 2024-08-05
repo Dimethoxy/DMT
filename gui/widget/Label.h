@@ -12,7 +12,7 @@ class Label : public juce::Component
   using Settings = dmt::Settings;
   using Justification = juce::Justification;
   const float& size = Settings::Layout::size;
-  const float& unixScale = Settings::macFontScale;
+  const float& unixScale = Settings::unixFontScalingFactor;
 
 public:
   Label(juce::String text,

@@ -19,10 +19,11 @@ namespace dmt {
 struct Settings
 {
   using Colour = juce::Colour;
+
+  static inline int framerate = 30;
+  static inline const float unixFontScalingFactor = 0.9f;
   static inline const bool debugBounds = false;
   static inline const bool debugGrid = false;
-  static inline const float macFontScale = 0.9f;
-  static inline int fps = 30;
 
   struct Colours
   {
