@@ -156,6 +156,8 @@ public:
   {
     ringBuffer.clear();
     writePosition = 0;
+
+    float_32_t test;
   }
   //============================================================================
   inline AudioBuffer& getBuffer() noexcept { return ringBuffer; }
