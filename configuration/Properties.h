@@ -13,15 +13,17 @@ public:
   static void initialize(juce::String applicationName)
   {
     auto options = getOptions(applicationName);
+
     fileLock.enterWrite();
     if (file == nullptr) {
-      file = new juce::PropertiesFile(options);
+      file = new juce::ApplicationProperties();
+      file->setStorageParameters(options);
     }
-    dmt::configuration::addParameters(file);
+    dmt::configuration::addParameters(file->getUserSettings());
   }
   //==============================================================================
 private:
-  static juce::PropertiesFile* file;
+  static juce::ApplicationProperties* file;
   static juce::ReadWriteLock fileLock;
 };
 //==============================================================================
