@@ -2,7 +2,9 @@
 
 #include <JuceHeader.h>
 
-const inline juce::PropertiesFile::Options
+namespace dmt {
+namespace configuration {
+static inline auto
 getOptions(juce::String applicationName)
 {
   auto options = juce::PropertiesFile::Options();
@@ -14,6 +16,8 @@ getOptions(juce::String applicationName)
   options.commonToAllUsers = false;
   options.ignoreCaseOfKeyNames = true;
   options.doNotSave = false;
-  options.millisecondsBeforeSaving = -1; // Only when explicitly calling save()
+  options.millisecondsBeforeSaving = -1; // Only when explicitly calling
   return options;
 }
+} // namespace configuration
+} // namespace dmt

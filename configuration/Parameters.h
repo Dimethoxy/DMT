@@ -6,12 +6,14 @@
 namespace dmt {
 namespace configuration {
 //==============================================================================
-void
-addParameters(juce::PropertiesFile* file)
+static inline auto
+getPropertySet()
 {
-  file->setValue("Framerate", 30);
-  file->setValue("UnixFontScalingFactor", 0.9);
-  file->setValue("ShowDebugGrid", false);
+  juce::PropertySet set;
+  set.setValue("Framerate", 30);
+  set.setValue("UnixFontScalingFactor", 0.9);
+  set.setValue("ShowDebugGrid", false);
+  return set;
 }
 //==============================================================================
 } // namespace configuration

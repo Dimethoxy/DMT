@@ -10,21 +10,40 @@ namespace configuration {
 class Properties
 {
 public:
-  static void initialize(juce::String applicationName)
+  //==============================================================================
+  Properties() = delete;
+  //==============================================================================
+  Properties(const Properties& obj) = delete;
+  //==============================================================================
+  ~Properties()
   {
-    auto options = getOptions(applicationName);
-
-    fileLock.enterWrite();
-    if (file == nullptr) {
-      file = new juce::ApplicationProperties();
-      file->setStorageParameters(options);
+    file.saveIfNeeded();
+    file.closeFiles();
+  }
+  //==============================================================================
+  static std::shared_ptr<Properties> getInstance()
+  {
+    if (instance == nullptr) {
+      instance = std::make_shared<Properties>();
     }
-    dmt::configuration::addParameters(file->getUserSettings());
+    return instance;
+  }
+  //==============================================================================
+  void initialize(juce::String applicationName)
+  {
+    auto options = dmt::configuration::getOptions(applicationName);
+    file.setStorageParameters(options);
+
+    auto settings = file.getUserSettings();
+    fallbackPropertySet = dmt::configuration::getPropertySet();
+    settings->setFallbackPropertySet(&fallbackPropertySet);
   }
   //==============================================================================
 private:
-  static juce::ApplicationProperties* file;
-  static juce::ReadWriteLock fileLock;
+  static std::shared_ptr<Properties> instance;
+  juce::ApplicationProperties file;
+  juce::PropertySet fallbackPropertySet;
+  JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Properties)
 };
 //==============================================================================
 } // namespace configuration
