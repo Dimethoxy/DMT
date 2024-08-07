@@ -29,9 +29,9 @@ public:
     return instance;
   }
   //============================================================================
-  void initialize(juce::String applicationName)
+  void initialize()
   {
-    auto options = dmt::configuration::getOptions(applicationName);
+    auto options = dmt::configuration::getOptions();
     file.setStorageParameters(options);
 
     auto settings = file.getUserSettings();

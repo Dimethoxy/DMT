@@ -20,6 +20,10 @@ struct Settings
 {
   using Colour = juce::Colour;
 
+  Settings() = delete;
+  Settings(const Settings& obj) = delete;
+  ~Settings() = delete;
+
   static inline int framerate = 30;
   static inline const float unixFontScalingFactor = 0.9f;
   static inline const bool debugBounds = false;

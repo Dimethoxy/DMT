@@ -6,10 +6,10 @@
 namespace dmt {
 namespace configuration {
 static inline auto
-getOptions(juce::String applicationName)
+getOptions()
 {
   auto options = juce::PropertiesFile::Options();
-  options.applicationName = applicationName;
+  options.applicationName = ProjectInfo::projectName;
   options.filenameSuffix = ".config";
   options.osxLibrarySubFolder = "Application Support";
   options.storageFormat = juce::PropertiesFile::storeAsXML;
@@ -19,13 +19,13 @@ getOptions(juce::String applicationName)
   options.millisecondsBeforeSaving = -1; // Only when explicitly calling
 
   if (OS_IS_WINDOWS) {
-    options.folderName = "Dimethoxy/" + applicationName;
+    options.folderName = "Dimethoxy/" + ProjectInfo::projectName;
   } else if (OS_IS_DARWIN) {
-    options.folderName = "Dimethoxy/" + applicationName;
+    options.folderName = "Dimethoxy/" + ProjectInfo::projectName;
   } else if (OS_IS_LINUX) {
-    options.folderName = ".config/Dimethoxy/" + applicationName;
+    options.folderName = ".config/Dimethoxy/" + ProjectInfo::projectName;
   }
-  
+
   return options;
 }
 } // namespace configuration
