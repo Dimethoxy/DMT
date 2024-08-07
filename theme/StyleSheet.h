@@ -7,11 +7,11 @@ namespace dmt {
 namespace theme {
 using StyleNode = juce::HashMap<juce::String, juce::String>;
 using StyleTree = juce::HashMap<juce::String, StyleNode>;
-class Stylesheet
+class StyleSheet
 {
 public:
   //============================================================================
-  Stylesheet(const juce::String& path)
+  StyleSheet(const juce::String& path)
   {
     toml::table file;
     try {
@@ -36,56 +36,66 @@ public:
     }
   }
   //============================================================================
-  juce::Colour getColour(const juce::String& nodeName, const juce::String& key)
+  void applyColour(juce::Colour& target,
+                   const juce::String& nodeName,
+                   const juce::String& key)
   {
     if (tree.contains(nodeName)) {
       auto node = tree[nodeName];
       if (node.contains(key)) {
-        return juce::Colour::fromString(node[key]);
+        target = juce::Colour::fromString(node[key]);
       }
     }
   }
   //============================================================================
-  juce::String getString(const juce::String& nodeName, const juce::String& key)
+  void applyString(juce::String& target,
+                   const juce::String& nodeName,
+                   const juce::String& key)
   {
     if (tree.contains(nodeName)) {
       auto node = tree[nodeName];
       if (node.contains(key)) {
-        return node[key];
+        target = node[key];
       }
     }
   }
   //============================================================================
-  bool getBool(const juce::String& nodeName, const juce::String& key)
+  void applyBool(bool& target,
+                 const juce::String& nodeName,
+                 const juce::String& key)
   {
     if (tree.contains(nodeName)) {
       auto node = tree[nodeName];
       if (node.contains(key)) {
-        return node[key] == "true";
+        target = node[key] == "true";
       }
     }
   }
   //============================================================================
-  int getInt(const juce::String& nodeName, const juce::String& key)
+  void applyInt(int& target,
+                const juce::String& nodeName,
+                const juce::String& key)
   {
     if (tree.contains(nodeName)) {
       auto node = tree[nodeName];
       if (node.contains(key)) {
-        return node[key].getIntValue();
+        target = node[key].getIntValue();
       }
     }
   }
   //============================================================================
-  float getFloat(const juce::String& nodeName, const juce::String& key)
+  void applyFloat(float& target,
+                  const juce::String& nodeName,
+                  const juce::String& key)
   {
     if (tree.contains(nodeName)) {
       auto node = tree[nodeName];
       if (node.contains(key)) {
-        return node[key].getFloatValue();
+        target = node[key].getFloatValue();
       }
     }
   }
-  //============================================================================
+
 private:
   StyleTree tree;
 };

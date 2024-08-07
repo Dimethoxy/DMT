@@ -22,4 +22,5 @@
 #include "./gui/Gui.h"
 #include "./model/Model.h"
 #include "./utility/Utility.h"
+#include "./theme/Theme.h"
 //==============================================================================
