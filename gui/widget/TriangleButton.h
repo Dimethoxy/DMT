@@ -14,8 +14,8 @@ class TriangleButton : public juce::Button
 
   // Global
   using Settings = dmt::Settings;
-  const float& size = Settings::Layout::size;
-  const float& margin = Settings::Layout::margin;
+  const float& size = Settings::Window::size;
+  const float& margin = Settings::Window::margin;
   // General
   const juce::Colour& standbyColour = Settings::TriangleButton::standbyColour;
   const juce::Colour& hoverColour = Settings::TriangleButton::hoverColour;

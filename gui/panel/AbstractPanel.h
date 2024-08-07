@@ -28,8 +28,8 @@ public:
   using Settings = LibrarySettings::Panel;
   using Carousel = LibrarySettings::Carousel;
   // Layout
-  const float& size = LibrarySettings::Layout::size;
-  const float& margin = LibrarySettings::Layout::margin;
+  const float& size = LibrarySettings::Window::size;
+  const float& margin = LibrarySettings::Window::margin;
   // General
   const juce::Colour& backgroundColour = Settings::backgroundColour;
   const float& cornerSize = Settings::cornerSize;

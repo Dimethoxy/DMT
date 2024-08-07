@@ -13,7 +13,7 @@ class RotarySlider : public juce::Slider
   using Settings = dmt::Settings;
   using Colour = Settings::Colour;
   using StrokeType = juce::PathStrokeType;
-  const float& size = Settings::Layout::size;
+  const float& size = Settings::Window::size;
   // General
   const float& rawPadding = Settings::Settings::Slider::padding;
   // Shaft

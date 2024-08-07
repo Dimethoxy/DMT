@@ -37,7 +37,7 @@ struct Settings
     static inline float opacityStep = 0.05f;
   };
 
-  struct Layout
+  struct Window
   {
     static inline float size = 1.0f;
     static inline float margin = 5.0f;

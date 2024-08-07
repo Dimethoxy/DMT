@@ -25,7 +25,7 @@ class RotarySliderComponent
   using Fonts = dmt::utility::Fonts;
   //==============================================================================
   using Settings = dmt::Settings;
-  using Layout = dmt::Settings::Layout;
+  using Layout = dmt::Settings::Window;
   using Slider = Settings::Slider;
   const float& size = Layout::size;
   const float& baseWidth = Slider::baseWidth;

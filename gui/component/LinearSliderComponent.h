@@ -26,7 +26,7 @@ class LinearSliderComponent
   using Fonts = dmt::utility::Fonts;
 
   using Settings = dmt::Settings;
-  using Layout = Settings::Layout;
+  using Layout = Settings::Window;
   using Slider = Settings::Slider;
 
   const float& size = Layout::size;

@@ -18,7 +18,7 @@ class Oscilloscope : public juce::Thread
   using ReadWriteLock = juce::ReadWriteLock;
 
   using Settings = dmt::Settings;
-  const float& size = Settings::Layout::size;
+  const float& size = Settings::Window::size;
 
 public:
   //============================================================================

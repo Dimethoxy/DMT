@@ -25,7 +25,7 @@ class OscilloscopePanel
   using Unit = dmt::utility::Unit;
 
   using Settings = dmt::Settings;
-  const float& size = Settings::Layout::size;
+  const float& size = Settings::Window::size;
   const float& rawPadding = Settings::Panel::padding;
 
 public:

@@ -27,7 +27,7 @@ class OscilloscopeComponent
   const juce::Colour& backgroundColour =
     Settings::Oscilloscope::backgroundColour;
   // Layout
-  const float& size = Settings::Layout::size;
+  const float& size = Settings::Window::size;
   const float& rawCornerSize = Settings::Oscilloscope::cornerSize;
   const float& rawPadding = Settings::Oscilloscope::padding;
   // Border
