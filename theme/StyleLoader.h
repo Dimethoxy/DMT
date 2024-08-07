@@ -24,20 +24,19 @@ public:
   Loader(const Loader& obj) = delete;
   //============================================================================
   ~Loader() = delete;
-
+  //============================================================================
+  static void applyTheme(StyleSheet& sheet)
+  {
+    applyPanel(sheet);
+    applyCarousel(sheet);
+    applySlider(sheet);
+    applyTriangleButton(sheet);
+    applyOscillatorDisplay(sheet);
+    applyOscilloscope(sheet);
+  }
 protected:
   //============================================================================
-  void applyTheme()
-  {
-    applyPanel();
-    applyCarousel();
-    applySlider();
-    applyTriangleButton();
-    applyOscillatorDisplay();
-    applyOscilloscope();
-  }
-  //============================================================================
-  void applyPanel()
+  static void applyPanel(StyleSheet& sheet)
   {
     // General
     sheet.applyFloat(Panel::padding, "Panel", "padding");
@@ -59,13 +58,13 @@ protected:
     sheet.applyFloat(Panel::fontSize, "Panel", "fontSize");
   }
   //============================================================================
-  void applyCarousel()
+  static void applyCarousel(StyleSheet& sheet)
   {
     sheet.applyFloat(Carousel::buttonWidth, "Carousel", "buttonWidth");
     sheet.applyFloat(Carousel::buttonHeight, "Carousel", "buttonHeight");
   }
   //============================================================================
-  void applySlider()
+  static void applySlider(StyleSheet& sheet)
   {
     // General
     sheet.applyFloat(Slider::padding, "Slider", "padding");
@@ -105,7 +104,7 @@ protected:
       Slider::selectionActivePadding, "Slider", "selectionActivePadding");
   }
   //============================================================================
-  void applyTriangleButton()
+  static void applyTriangleButton(StyleSheet& sheet)
   {
     // General
     sheet.applyColour(
@@ -136,7 +135,7 @@ protected:
       TriangleButton::innerShadowRadius, "TriangleButton", "innerShadowRadius");
   }
   //============================================================================
-  void applyOscillatorDisplay()
+  static void applyOscillatorDisplay(StyleSheet& sheet)
   {
     // General
     sheet.applyInt(
@@ -162,7 +161,7 @@ protected:
                      "innerShadowRadius");
   }
   //============================================================================
-  void applyOscilloscope()
+  static void applyOscilloscope(StyleSheet& sheet)
   {
     // General
     sheet.applyColour(
@@ -189,9 +188,6 @@ protected:
     sheet.applyFloat(
       Oscilloscope::innerShadowRadius, "Oscilloscope", "innerShadowRadius");
   }
-  //============================================================================
-private:
-  StyleSheet sheet;
 };
 //==============================================================================
 } // namespace theme
