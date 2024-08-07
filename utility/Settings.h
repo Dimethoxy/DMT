@@ -64,7 +64,11 @@ struct Settings
     static inline juce::Colour fontColor = Colours::font;
     static inline float fontSize = 34.0f;
   };
-
+  struct Carousel
+  {
+    static inline float buttonWidth = 60.0f;
+    static inline float buttonHeight = 180.0f;
+  };
   struct Slider
   {
     // General
@@ -148,11 +152,6 @@ struct Settings
     static inline Colour innerShadowColour = Colours::shadow;
     static inline float outerShadowRadius = 4.0f;
     static inline float innerShadowRadius = 4.0f;
-  };
-  struct Carousel
-  {
-    static inline float buttonWidth = 60.0f;
-    static inline float buttonHeight = 180.0f;
   };
 };
 } // namespace dmt

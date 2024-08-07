@@ -11,7 +11,11 @@ class Loader
 {
   using Settings = dmt::Settings;
   using Panel = Settings::Panel;
+  using Carousel = Settings::Carousel;
   using Slider = Settings::Slider;
+  using TriangleButton = Settings::TriangleButton;
+  using OscillatorDisplay = Settings::OscillatorDisplay;
+  using Oscilloscope = Settings::Oscilloscope;
 
 public:
   //============================================================================
@@ -26,7 +30,11 @@ protected:
   void applyTheme()
   {
     applyPanel();
+    applyCarousel();
     applySlider();
+    applyTriangleButton();
+    applyOscillatorDisplay();
+    applyOscilloscope();
   }
   //============================================================================
   void applyPanel()
@@ -49,6 +57,12 @@ protected:
     // Text
     sheet.applyColour(Panel::fontColor, "Panel", "fontColor");
     sheet.applyFloat(Panel::fontSize, "Panel", "fontSize");
+  }
+  //============================================================================
+  void applyCarousel()
+  {
+    sheet.applyFloat(Carousel::buttonWidth, "Carousel", "buttonWidth");
+    sheet.applyFloat(Carousel::buttonHeight, "Carousel", "buttonHeight");
   }
   //============================================================================
   void applySlider()
@@ -89,6 +103,91 @@ protected:
     sheet.applyFloat(Slider::selectionSize, "Slider", "selectionSize");
     sheet.applyFloat(
       Slider::selectionActivePadding, "Slider", "selectionActivePadding");
+  }
+  //============================================================================
+  void applyTriangleButton()
+  {
+    // General
+    sheet.applyColour(
+      TriangleButton::standbyColour, "TriangleButton", "standbyColour");
+    sheet.applyColour(
+      TriangleButton::hoverColour, "TriangleButton", "hoverColour");
+    sheet.applyFloat(TriangleButton::margin, "TriangleButton", "margin");
+    sheet.applyFloat(
+      TriangleButton::toggleReduction, "TriangleButton", "toggleReduction");
+    // Border
+    sheet.applyBool(TriangleButton::drawBorder, "TriangleButton", "drawBorder");
+    sheet.applyColour(
+      TriangleButton::borderColour, "TriangleButton", "borderColour");
+    sheet.applyFloat(
+      TriangleButton::borderStrength, "TriangleButton", "borderStrength");
+    // Shadows
+    sheet.applyBool(
+      TriangleButton::drawOuterShadow, "TriangleButton", "drawOuterShadow");
+    sheet.applyBool(
+      TriangleButton::drawInnerShadow, "TriangleButton", "drawInnerShadow");
+    sheet.applyColour(
+      TriangleButton::outerShadowColour, "TriangleButton", "outerShadowColour");
+    sheet.applyColour(
+      TriangleButton::innerShadowColour, "TriangleButton", "innerShadowColour");
+    sheet.applyFloat(
+      TriangleButton::outerShadowRadius, "TriangleButton", "outerShadowRadius");
+    sheet.applyFloat(
+      TriangleButton::innerShadowRadius, "TriangleButton", "innerShadowRadius");
+  }
+  //============================================================================
+  void applyOscillatorDisplay()
+  {
+    // General
+    sheet.applyInt(
+      OscillatorDisplay::resolution, "OscillatorDisplay", "resolution");
+    // Shadow
+    sheet.applyBool(OscillatorDisplay::drawOuterShadow,
+                    "OscillatorDisplay",
+                    "drawOuterShadow");
+    sheet.applyBool(OscillatorDisplay::drawInnerShadow,
+                    "OscillatorDisplay",
+                    "drawInnerShadow");
+    sheet.applyColour(OscillatorDisplay::outerShadowColour,
+                      "OscillatorDisplay",
+                      "outerShadowColour");
+    sheet.applyColour(OscillatorDisplay::innerShadowColour,
+                      "OscillatorDisplay",
+                      "innerShadowColour");
+    sheet.applyFloat(OscillatorDisplay::outerShadowRadius,
+                     "OscillatorDisplay",
+                     "outerShadowRadius");
+    sheet.applyFloat(OscillatorDisplay::innerShadowRadius,
+                     "OscillatorDisplay",
+                     "innerShadowRadius");
+  }
+  //============================================================================
+  void applyOscilloscope()
+  {
+    // General
+    sheet.applyColour(
+      Oscilloscope::backgroundColour, "Oscilloscope", "backgroundColour");
+    sheet.applyFloat(Oscilloscope::padding, "Oscilloscope", "padding");
+    sheet.applyFloat(Oscilloscope::cornerSize, "Oscilloscope", "cornerSize");
+    // Border
+    sheet.applyBool(Oscilloscope::drawBorder, "Oscilloscope", "drawBorder");
+    sheet.applyColour(
+      Oscilloscope::borderColour, "Oscilloscope", "borderColour");
+    sheet.applyFloat(
+      Oscilloscope::borderStrength, "Oscilloscope", "borderStrength");
+    // Shadow
+    sheet.applyBool(
+      Oscilloscope::drawOuterShadow, "Oscilloscope", "drawOuterShadow");
+    sheet.applyBool(
+      Oscilloscope::drawInnerShadow, "Oscilloscope", "drawInnerShadow");
+    sheet.applyColour(
+      Oscilloscope::outerShadowColour, "Oscilloscope", "outerShadowColour");
+    sheet.applyColour(
+      Oscilloscope::innerShadowColour, "Oscilloscope", "innerShadowColour");
+    sheet.applyFloat(
+      Oscilloscope::outerShadowRadius, "Oscilloscope", "outerShadowRadius");
+    sheet.applyFloat(
+      Oscilloscope::innerShadowRadius, "Oscilloscope", "innerShadowRadius");
   }
   //============================================================================
 private:
