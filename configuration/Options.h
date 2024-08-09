@@ -1,15 +1,17 @@
 #pragma once
-
+//==============================================================================
 #include "utility/Settings.h"
 #include <JuceHeader.h>
-
+//==============================================================================
 namespace dmt {
 namespace configuration {
+//==============================================================================
 static inline auto
 getOptions()
 {
   auto options = juce::PropertiesFile::Options();
-  options.applicationName = ProjectInfo::projectName;
+  juce::String name = ProjectInfo::projectName;
+  options.applicationName = name;
   options.filenameSuffix = ".config";
   options.osxLibrarySubFolder = "Application Support";
   options.storageFormat = juce::PropertiesFile::storeAsXML;
@@ -19,11 +21,11 @@ getOptions()
   options.millisecondsBeforeSaving = -1; // Only when explicitly calling
 
   if (OS_IS_WINDOWS) {
-    options.folderName = "Dimethoxy/" + ProjectInfo::projectName;
+    options.folderName = "Dimethoxy/" + name;
   } else if (OS_IS_DARWIN) {
-    options.folderName = "Dimethoxy/" + ProjectInfo::projectName;
+    options.folderName = "Dimethoxy/" + name;
   } else if (OS_IS_LINUX) {
-    options.folderName = ".config/Dimethoxy/" + ProjectInfo::projectName;
+    options.folderName = ".config/Dimethoxy/" + name;
   }
 
   return options;
