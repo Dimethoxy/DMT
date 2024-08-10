@@ -8,14 +8,8 @@
 
 #pragma once
 
-#include "../gui/panels/GainPanel.h"
-#include "../gui/panels/OscSendPanel.h"
-#include "../gui/panels/OscillatorPanel.h"
-#include "../gui/panels/PitchPanel.h"
-#include "../gui/panels/VoicingPanel.h"
-#include "../gui/panels/WaveformDistortionPanel.h"
-#include "../utility/AppSettings.h"
-#include "./PluginProcessor.h"
+#include "PluginProcessor.h"
+#include <DmtHeader.h>
 #include <JuceHeader.h>
 
 namespace Panels = dmt::gui::panels;

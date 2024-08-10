@@ -9,12 +9,7 @@
 
 #pragma once
 
-#include "../dsp/filter/FilterProcessor.h"
-#include "../dsp/synth/SynthSound.h"
-#include "../dsp/synth/SynthVoice.h"
-#include "../gui/presets/PresetManager.h"
-#include "../model/ChainSettings.h"
-#include "../model/ParameterLayout.h"
+#include <DmtHeader.h>
 #include <JuceHeader.h>
 
 //==============================================================================
