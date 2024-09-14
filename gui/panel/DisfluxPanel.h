@@ -26,7 +26,6 @@ public:
   //============================================================================
   DisfluxPanel(juce::AudioProcessorValueTreeState& apvts)
     : AbstractPanel("Oscilloscope", false)
-    , oscilloscopeComponent(fifoBuffer)
     , amountSlider(apvts,
                    juce::String("Amount"),
                    juce::String("DisfluxAmount"),

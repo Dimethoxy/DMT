@@ -29,6 +29,9 @@ struct Unit
     OscilloscopeZoom,
     OscilloscopeThickness,
     OscilloscopeHeight,
+    DisfluxAmount,
+    DisfluxFrequency,
+    DisfluxPinch
   };
 
   static inline juce::String getString(Type type, float value)
@@ -42,6 +45,15 @@ struct Unit
         break;
       case Type::OscilloscopeHeight:
         return { juce::String((int)value) + juce::String("dB") };
+        break;
+      case Type::DisfluxAmount:
+        return { juce::String((int)value) + juce::String("x") };
+        break;
+      case Type::DisfluxFrequency:
+        return { juce::String((int)value) + juce::String("Hz") };
+        break;
+      case Type::DisfluxPinch:
+        return { juce::String((int)value) + juce::String("%") };
         break;
       default:
         return { juce::String("ERROR") };

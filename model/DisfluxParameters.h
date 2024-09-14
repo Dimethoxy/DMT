@@ -6,7 +6,7 @@ namespace dmt {
 namespace model {
 //==============================================================================
 static inline juce::AudioProcessorParameterGroup
-oscilloscopeParameterGroup(juce::String parentUid)
+disfluxParameterGroup(juce::String parentUid)
 {
   using ParameterInt = juce::AudioParameterInt;
   using ParameterFloat = juce::AudioParameterFloat;

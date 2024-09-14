@@ -4,6 +4,7 @@
 #include "./AnalogOscillatorPanel.h"
 #include "./AnalogPitchPanel.h"
 #include "./Carousel.h"
+#include "./DisfluxPanel.h"
 #include "./GainPanel.h"
 #include "./ModernGainPanel.h"
 #include "./ModernOscillatorPanel.h"
