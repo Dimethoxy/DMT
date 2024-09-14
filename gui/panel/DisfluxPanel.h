@@ -48,7 +48,6 @@ public:
                   LinearSliderOrientation::Vertical,
                   true)
   {
-    addAndMakeVisible(oscilloscopeComponent);
     addAndMakeVisible(amountSlider);
     addAndMakeVisible(fequencySlider);
     addAndMakeVisible(pinchSlider);

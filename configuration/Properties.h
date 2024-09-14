@@ -43,8 +43,6 @@ private:
   static std::shared_ptr<Properties> instance;
   juce::ApplicationProperties file;
   juce::PropertySet fallbackPropertySet;
-
-  JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Properties)
 };
 //==============================================================================
 } // namespace configuration
