@@ -4,7 +4,6 @@
 
 #include "dsp/envelope/AdhEnvelope.h"
 #include "dsp/synth/AnalogOscillator.h"
-#include "model/ChainSettings.h"
 #include <JuceHeader.h>
 
 //==============================================================================

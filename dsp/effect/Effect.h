@@ -1,3 +1,3 @@
 #pragma once
-#include "./Disflux.h"
+#include "./DisfluxProcessor.h"
 #include "./Distortion.h"
