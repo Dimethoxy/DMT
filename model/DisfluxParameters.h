@@ -28,9 +28,9 @@ disfluxParameterGroup(juce::String parentUid)
                                      "Frequency",
                                      NormalisableRange(20.0f,    // rangeStart
                                                        20000.0f, // rangeEnd
-                                                       1.0f,  // intervalValue
-                                                       1.0f), // skewFactor
-                                     1000.0f),                // defaultValue
+                                                       1.0f,   // intervalValue
+                                                       0.25f), // skewFactor
+                                     1000.0f),                 // defaultValue
     std::make_unique<ParameterFloat>(uid + "Pinch",
                                      "Pinch",
                                      NormalisableRange(0.0f,  // rangeStart
