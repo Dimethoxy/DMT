@@ -1,6 +1,5 @@
 #pragma once
 
-#include "dsp/filter/IIRFilter.h"
 #include <JuceHeader.h>
 
 namespace dmt {
@@ -10,34 +9,33 @@ class DisfluxProcessor
 {
   using AudioBuffer = juce::AudioBuffer<float>;
   using ProcessSpec = juce::dsp::ProcessSpec;
-  using Filter = dmt::dsp::filter::IIRFilterState;
-  using FilterArray = std::array<Filter, 2>;
+  using Filter = juce::IIRFilter;
+  using FilterArray = std::array<Filter, 1>;
   using FilterMatrix = std::array<FilterArray, 2>;
 
 public:
-  DisfluxProcessor() { setCoefficents(400.0f, 1.0f); }
+  DisfluxProcessor() {}
 
   void prepare(double newSampleRate)
   {
-    this->sampleRate = (float)sampleRate;
-    for (auto& channel : filters) {
-      for (auto& filter : channel) {
-        filter.sampleRate = sampleRate;
-      }
-    }
+    this->sampleRate = (float)newSampleRate;
+    setCoefficents(400.0f, 1.0f);
   }
   void processBlock(AudioBuffer& buffer)
   {
-    for (int channel = 0; channel < buffer.getNumChannels(); ++channel) {
-      auto* channelData = buffer.getWritePointer(channel);
-      auto channelFilters = filters[channel];
-      for (int i = 0; i < buffer.getNumSamples(); ++i) {
-        float sample = channelData[i];
-        for (auto& filter : channelFilters) {
-          sample = filter.base.processSingleSampleRaw(sample);
-        }
-        channelData[i] = sample;
-      }
+    if (sampleRate <= 0.0f) {
+      return;
+    }
+
+    for (int sample = 0; sample < buffer.getNumSamples(); ++sample) {
+      const auto left = buffer.getSample(0, sample);
+      const auto right = buffer.getSample(1, sample);
+
+      const auto leftFiltered = leftFilter.processSingleSampleRaw(left);
+      const auto rightFiltered = rightFilter.processSingleSampleRaw(right);
+
+      buffer.setSample(0, sample, leftFiltered);
+      buffer.setSample(1, sample, rightFiltered);
     }
   }
 
@@ -45,17 +43,15 @@ protected:
   void setCoefficents(float frequency, float q)
   {
     const auto coefficients =
-      juce::IIRCoefficients::makeHighPass(sampleRate, frequency, q);
-    for (auto& channel : filters) {
-      for (auto& filter : channel) {
-        filter.base.setCoefficients(coefficients);
-      }
-    }
+      juce::IIRCoefficients::makeLowPass((double)sampleRate, frequency, q);
+    leftFilter.setCoefficients(coefficients);
+    rightFilter.setCoefficients(coefficients);
   }
 
 private:
   float sampleRate = -1.0f;
-  FilterMatrix filters;
+  juce::IIRFilter leftFilter;
+  juce::IIRFilter rightFilter;
 };
 } // namespace effect
 } // namespace dsp
