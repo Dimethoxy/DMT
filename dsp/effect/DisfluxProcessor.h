@@ -45,7 +45,7 @@ public:
         left = filter.processSingleSampleRaw(left);
       }
       for (auto& filter : rightFilter) {
-        filter.processSingleSampleRaw(right);
+        right = filter.processSingleSampleRaw(right);
       }
 
       buffer.setSample(0, sample, left);
