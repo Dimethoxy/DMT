@@ -10,7 +10,7 @@ class DisfluxProcessor
   using AudioBuffer = juce::AudioBuffer<float>;
   using ProcessSpec = juce::dsp::ProcessSpec;
   using Filter = juce::IIRFilter;
-  using FilterArray = std::array<Filter, 32>;
+  using FilterArray = std::array<Filter, 100>;
 
 public:
   DisfluxProcessor(juce::AudioProcessorValueTreeState& apvts)
@@ -21,7 +21,7 @@ public:
   void prepare(double newSampleRate)
   {
     this->sampleRate = (float)newSampleRate;
-    setCoefficents(800.0f, 1.0f);
+    setCoefficents();
   }
   void processBlock(AudioBuffer& buffer)
   {
@@ -31,21 +31,22 @@ public:
 
     const auto newFrequency =
       apvts.getRawParameterValue("DisfluxFrequency")->load();
+    const auto newPinch = apvts.getRawParameterValue("DisfluxPinch")->load();
+    const auto amount = apvts.getRawParameterValue("DisfluxAmount")->load();
 
-    if (newFrequency != frequency) {
+    if (newFrequency != frequency || newPinch != pinch) {
       frequency = newFrequency;
-      setCoefficents(frequency, 1.0f);
+      pinch = newPinch;
+      setCoefficents();
     }
 
     for (int sample = 0; sample < buffer.getNumSamples(); ++sample) {
       auto left = buffer.getSample(0, sample);
       auto right = buffer.getSample(1, sample);
 
-      for (auto& filter : leftFilters) {
-        left = filter.processSingleSampleRaw(left);
-      }
-      for (auto& filter : rightFilter) {
-        right = filter.processSingleSampleRaw(right);
+      for (int filterIndex = 0; filterIndex < amount; ++filterIndex) {
+        left = leftFilters[filterIndex].processSingleSampleRaw(left);
+        right = rightFilters[filterIndex].processSingleSampleRaw(right);
       }
 
       buffer.setSample(0, sample, left);
@@ -54,15 +55,15 @@ public:
   }
 
 protected:
-  void setCoefficents(float frequency, float q)
+  void setCoefficents()
   {
     const auto coefficients =
-      juce::IIRCoefficients::makeAllPass((double)sampleRate, frequency, q);
+      juce::IIRCoefficients::makeAllPass((double)sampleRate, frequency, pinch);
 
     for (auto& filter : leftFilters) {
       filter.setCoefficients(coefficients);
     }
-    for (auto& filter : rightFilter) {
+    for (auto& filter : rightFilters) {
       filter.setCoefficients(coefficients);
     }
   }
@@ -70,9 +71,10 @@ protected:
 private:
   juce::AudioProcessorValueTreeState& apvts;
   float sampleRate = -1.0f;
-  float frequency = 0.0f;
+  float frequency = 800.0f;
+  float pinch = 1.0f;
   FilterArray leftFilters;
-  FilterArray rightFilter;
+  FilterArray rightFilters;
 };
 } // namespace effect
 } // namespace dsp

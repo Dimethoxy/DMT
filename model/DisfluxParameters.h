@@ -21,9 +21,9 @@ disfluxParameterGroup(juce::String parentUid)
     "|",       // separator
     std::make_unique<ParameterInt>(uid + "Amount",
                                    "Amount",
-                                   1,  // rangeStart
-                                   10, // rangeEnd
-                                   1), // defaultValue
+                                   1,   // rangeStart
+                                   100, // rangeEnd
+                                   1),  // defaultValue
     std::make_unique<ParameterFloat>(uid + "Frequency",
                                      "Frequency",
                                      NormalisableRange(20.0f,   // rangeStart
@@ -37,7 +37,7 @@ disfluxParameterGroup(juce::String parentUid)
                                                        1.0f,  // rangeEnd
                                                        0.01f, // intervalValue
                                                        1.0f), // skewFactor
-                                     0.0f)                    // defaultValue
+                                     1.0f)                    // defaultValue
   );
 }
 } // namespace model
