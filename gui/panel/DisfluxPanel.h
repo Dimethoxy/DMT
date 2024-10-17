@@ -1,5 +1,7 @@
 #pragma once
 //==============================================================================
+#include "gui/component/LinearSliderComponent.h"
+#include "gui/component/RotarySliderComponent.h"
 #include "gui/panel/AbstractPanel.h"
 #include "utility/Unit.h"
 #include <JuceHeader.h>
@@ -9,13 +11,13 @@ namespace gui {
 namespace panel {
 //==============================================================================
 template<typename SampleType>
-class DisfluxPanel
-  : public dmt::gui::panel::AbstractPanel
-  , public juce::Slider::Listener
+class DisfluxPanel : public dmt::gui::panel::AbstractPanel
 {
   using LinearSlider = dmt::gui::component::LinearSliderComponent;
   using LinearSliderType = dmt::gui::widget::LinearSlider::Type;
   using LinearSliderOrientation = dmt::gui::widget::LinearSlider::Orientation;
+  using RotarySlider = dmt::gui::component::RotarySliderComponent;
+  using RotarySliderType = dmt::gui::widget::RotarySlider::Type;
   using Unit = dmt::utility::Unit;
 
   using Settings = dmt::Settings;
@@ -30,9 +32,7 @@ public:
                    juce::String("Amount"),
                    juce::String("DisfluxAmount"),
                    Unit::Type::DisfluxAmount,
-                   LinearSliderType::Positive,
-                   LinearSliderOrientation::Vertical,
-                   true)
+                   RotarySliderType::Positive)
     , fequencySlider(apvts,
                      juce::String("Frequency"),
                      juce::String("DisfluxFrequency"),
@@ -44,16 +44,13 @@ public:
                   juce::String("Pinch"),
                   juce::String("DisfluxPinch"),
                   Unit::Type::DisfluxPinch,
-                  LinearSliderType::Bipolar,
-                  LinearSliderOrientation::Vertical,
-                  true)
+                  RotarySliderType::Positive)
   {
+    setLayout({ 14, 5 });
+
     addAndMakeVisible(amountSlider);
     addAndMakeVisible(fequencySlider);
     addAndMakeVisible(pinchSlider);
-    amountSlider.getSlider().addListener(this);
-    fequencySlider.getSlider().addListener(this);
-    pinchSlider.getSlider().addListener(this);
   }
   //============================================================================
   void extendResize() noexcept override
@@ -61,15 +58,31 @@ public:
     const auto padding = rawPadding * size;
     auto bounds = getLocalBounds().reduced(padding);
 
-    const auto sliderWidth = 38 * size;
+    const int rotarySliderRow = 3;
+
+    const int amountSliderCol = 3;
+    const int pinchSliderCol = 12;
+
+    const auto amountSliderPoint =
+      this->getGridPoint(bounds, amountSliderCol, rotarySliderRow);
+    amountSlider.setSizeAndCentre(amountSliderPoint);
+
+    // const auto fequencySliderLeftPoint =
+    //   this->getGridPoint(bounds, amountSliderCol, rotarySliderRow);
+    // const auto fequencySliderRightPoint =
+    //   this->getGridPoint(bounds, pinchSliderCol, rotarySliderRow);
+    // fequencySlider.setBoundsByPoints(fequencySliderLeftPoint,
+    //                                  fequencySliderRightPoint);
+
+    const auto pinchSliderPoint =
+      this->getGridPoint(bounds, pinchSliderCol, rotarySliderRow);
+    pinchSlider.setSizeAndCentre(pinchSliderPoint);
   }
   //============================================================================
-  void sliderValueChanged(juce::Slider* slider) override {}
-  //============================================================================
 private:
-  LinearSlider amountSlider;
+  RotarySlider amountSlider;
   LinearSlider fequencySlider;
-  LinearSlider pinchSlider;
+  RotarySlider pinchSlider;
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(DisfluxPanel)
 };
 
