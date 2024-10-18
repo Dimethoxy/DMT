@@ -38,8 +38,7 @@ public:
                      juce::String("DisfluxFrequency"),
                      Unit::Type::DisfluxFrequency,
                      LinearSliderType::Positive,
-                     LinearSliderOrientation::Horizontal,
-                     true)
+                     LinearSliderOrientation::Horizontal)
     , pinchSlider(apvts,
                   juce::String("Pinch"),
                   juce::String("DisfluxPinch"),
@@ -59,20 +58,23 @@ public:
     auto bounds = getLocalBounds().reduced(padding);
 
     const int rotarySliderRow = 3;
+    const int linearSliderRow = 4;
 
     const int amountSliderCol = 3;
+    const int leftFequencySliderCol = 4;
+    const int rightFequencySliderCol = 11;
     const int pinchSliderCol = 12;
 
     const auto amountSliderPoint =
       this->getGridPoint(bounds, amountSliderCol, rotarySliderRow);
     amountSlider.setSizeAndCentre(amountSliderPoint);
 
-    // const auto fequencySliderLeftPoint =
-    //   this->getGridPoint(bounds, amountSliderCol, rotarySliderRow);
-    // const auto fequencySliderRightPoint =
-    //   this->getGridPoint(bounds, pinchSliderCol, rotarySliderRow);
-    // fequencySlider.setBoundsByPoints(fequencySliderLeftPoint,
-    //                                  fequencySliderRightPoint);
+    const auto leftFequencySliderPoint =
+      this->getGridPoint(bounds, leftFequencySliderCol, linearSliderRow);
+    const auto rightFequencySliderPoint =
+      this->getGridPoint(bounds, rightFequencySliderCol, linearSliderRow);
+    fequencySlider.setBoundsByPoints(leftFequencySliderPoint,
+                                     rightFequencySliderPoint);
 
     const auto pinchSliderPoint =
       this->getGridPoint(bounds, pinchSliderCol, rotarySliderRow);
