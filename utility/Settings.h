@@ -25,9 +25,9 @@ struct Settings
   ~Settings() = delete;
 
   static inline int framerate = 30;
-  static inline const float unixFontScalingFactor = 0.9f;
-  static inline const bool debugBounds = false;
-  static inline const bool debugGrid = false;
+  static inline float unixFontScalingFactor = 0.9f;
+  static inline bool debugBounds = false;
+  static inline bool debugGrid = false;
 
   struct Colours
   {

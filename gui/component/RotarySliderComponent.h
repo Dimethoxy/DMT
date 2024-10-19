@@ -82,8 +82,12 @@ public:
     auto bounds = getLocalBounds();
     // Draw bounds debug
     g.setColour(juce::Colours::green);
-    if (Settings::debugBounds)
+    if (Settings::debugBounds) {
       g.drawRect(bounds, 1);
+      // draw center
+      g.setColour(juce::Colours::green);
+      g.drawEllipse(bounds.getCentreX(), bounds.getCentreY(), 5, 5, 1);
+    }
   }
   void sliderValueChanged(juce::Slider*) { updateLabel(); }
   void setSizeAndCentre(juce::Point<int> centrePoint)
@@ -91,7 +95,7 @@ public:
     int width = (int)(baseWidth * size);
     int height = (int)(baseHeight * size);
     setSize(width, height);
-    setCentrePosition(centrePoint);
+    setCentrePosition(centrePoint.getX(), centrePoint.getY());
   }
 
 protected:

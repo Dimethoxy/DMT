@@ -45,7 +45,7 @@ public:
                   Unit::Type::DisfluxPinch,
                   RotarySliderType::Positive)
   {
-    setLayout({ 14, 5 });
+    setLayout({ 28, 5 });
 
     addAndMakeVisible(amountSlider);
     addAndMakeVisible(fequencySlider);
@@ -54,16 +54,15 @@ public:
   //============================================================================
   void extendResize() noexcept override
   {
-    const auto padding = rawPadding * size;
-    auto bounds = getLocalBounds().reduced(padding);
+    auto bounds = getLocalBounds();
 
     const int rotarySliderRow = 3;
-    const int linearSliderRow = 4;
+    const int linearSliderRow = 5;
 
-    const int amountSliderCol = 3;
-    const int leftFequencySliderCol = 4;
-    const int rightFequencySliderCol = 11;
-    const int pinchSliderCol = 12;
+    const int amountSliderCol = 5;
+    const int leftFequencySliderCol = 8;
+    const int rightFequencySliderCol = 21;
+    const int pinchSliderCol = 24;
 
     const auto amountSliderPoint =
       this->getGridPoint(bounds, amountSliderCol, rotarySliderRow);

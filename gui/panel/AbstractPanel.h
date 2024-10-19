@@ -231,7 +231,6 @@ protected:
     jassert(row >= 0 && row < grid[col].size());
 
     auto rawPoint = grid[col][row];
-
     const auto x = rawPoint.getX() * (float)bounds.getWidth();
 
     const float gridOffsetY = (float)rawGridOffsetY * size;
