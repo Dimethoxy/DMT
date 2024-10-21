@@ -50,7 +50,6 @@ public:
     : juce::Slider()
     , type(type)
     , orientation(orientation)
-    , lastDistanceForFullScaleDrag(0)
   {
     switch (orientation) {
       case Orientation::Horizontal: {
@@ -84,7 +83,7 @@ public:
 
     // Calculate lower rail
     float thumbSize = rawThumbSize * size;
-    const auto railBounds = bounds.reduced((int)(thumbSize / 2.0f));
+    const auto railBounds = bounds.reduced((int)(thumbSize));
     float primaryPointX;
     float primaryPointY;
     float secondaryPointX;
@@ -108,11 +107,6 @@ public:
       default:
         jassert(false);
         return;
-    }
-
-    if (lastDistanceForFullScaleDrag != distanceForFullScaleDrag) {
-      lastDistanceForFullScaleDrag = distanceForFullScaleDrag;
-      setMouseDragSensitivity(distanceForFullScaleDrag);
     }
 
     const juce::Point<float> primaryPoint(primaryPointX, primaryPointY);
@@ -183,7 +177,6 @@ public:
 private:
   Type type;
   Orientation orientation;
-  int lastDistanceForFullScaleDrag;
 
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(LinearSlider)
 };

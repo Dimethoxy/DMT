@@ -103,7 +103,7 @@ protected:
     const float minValue = (float)getMinimum();
     const float maxValue = (float)getMaximum();
     const float normalizedStartAngle = 0.0f;
-    const float normalizedEndAngle = 270.0f;
+    const float normalizedEndAngle = 260.0f;
     const float angleRange = normalizedEndAngle - normalizedStartAngle;
     const float gapRange = 360.0f - angleRange;
     const float angleOffset = 180.0f + (gapRange / 2.0f);
