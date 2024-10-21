@@ -45,7 +45,7 @@ public:
                   Unit::Type::DisfluxPinch,
                   RotarySliderType::Positive)
   {
-    setLayout({ 28, 5 });
+    setLayout({ 28, 10 });
 
     addAndMakeVisible(amountSlider);
     addAndMakeVisible(fequencySlider);
@@ -56,8 +56,8 @@ public:
   {
     auto bounds = getLocalBounds();
 
-    const int rotarySliderRow = 3;
-    const int linearSliderRow = 5;
+    const int rotarySliderRow = 6;
+    const int linearSliderRow = 8;
 
     const int amountSliderCol = 5;
     const int leftFequencySliderCol = 8;
