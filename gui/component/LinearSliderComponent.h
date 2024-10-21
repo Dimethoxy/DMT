@@ -86,7 +86,23 @@ public:
         const int rawHorizontalSliderOffset = (int)(1.0f * size);
         const juce::Point<int> offset(0, rawHorizontalSliderOffset);
         const auto centre = bounds.getCentre() + offset;
+        auto const sliderBounds =
+          bounds.reduced((int)padding).withCentre(centre);
         slider.setBounds(bounds.reduced((int)padding).withCentre(centre));
+        auto titleLabelBounds = sliderBounds;
+        const auto titleLabelHeight = 2 * titleFontSize * size;
+        const auto titleLabelOffset = 4 * size;
+        const auto titleSliderBounds =
+          titleLabelBounds.removeFromTop(titleLabelHeight)
+            .reduced(titleLabelOffset);
+        titleLabel.setBounds(titleSliderBounds);
+        auto infoLabelBounds = sliderBounds;
+        const auto infoLabelHeight = 2 * infoFontSize * size;
+        const auto infoLabelOffset = 9 * size;
+        const auto infoSliderBounds =
+          infoLabelBounds.removeFromBottom(infoLabelHeight)
+            .reduced(infoLabelOffset);
+        infoLabel.setBounds(infoSliderBounds);
         return;
       }
       case Orientation::Vertical: {
@@ -128,7 +144,7 @@ public:
                          juce::Point<int> secondaryPoint)
   {
     const float padding = 2.0f * rawPadding * size;
-    const float minHeight = 34 * size;
+    const float minHeight = 50 * size;
     const float minWidth = 40 * size;
 
     const auto centre = (primaryPoint + secondaryPoint).toFloat() / 2.0f;
