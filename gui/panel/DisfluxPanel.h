@@ -33,6 +33,11 @@ public:
                    juce::String("DisfluxAmount"),
                    Unit::Type::DisfluxAmount,
                    RotarySliderType::Positive)
+    , spreadSlider(apvts,
+                   juce::String("Spread"),
+                   juce::String("DisfluxSpread"),
+                   Unit::Type::DisfluxSpread,
+                   RotarySliderType::Positive)
     , fequencySlider(apvts,
                      juce::String("Frequency"),
                      juce::String("DisfluxFrequency"),
@@ -44,29 +49,41 @@ public:
                   juce::String("DisfluxPinch"),
                   Unit::Type::DisfluxPinch,
                   RotarySliderType::Positive)
+    , mixSlider(apvts,
+                juce::String("Mix"),
+                juce::String("DisfluxMix"),
+                Unit::Type::DisfluxMix,
+                RotarySliderType::Positive)
   {
-    setLayout({ 28, 10 });
+    setLayout({ 28, 30 });
 
     addAndMakeVisible(amountSlider);
+    addAndMakeVisible(spreadSlider);
     addAndMakeVisible(fequencySlider);
     addAndMakeVisible(pinchSlider);
+    addAndMakeVisible(mixSlider);
   }
   //============================================================================
   void extendResize() noexcept override
   {
     auto bounds = getLocalBounds();
 
-    const int rotarySliderRow = 6;
-    const int linearSliderRow = 8;
+    const int upperRotarySliderRow = 8;
+    const int lowerRotarySliderRow = 22;
+    const int linearSliderRow = 26;
 
-    const int amountSliderCol = 5;
+    const int amountSliderCol = 4;
     const int leftFequencySliderCol = 8;
     const int rightFequencySliderCol = 21;
-    const int pinchSliderCol = 24;
+    const int pinchSliderCol = 25;
 
     const auto amountSliderPoint =
-      this->getGridPoint(bounds, amountSliderCol, rotarySliderRow);
+      this->getGridPoint(bounds, amountSliderCol, upperRotarySliderRow);
     amountSlider.setSizeAndCentre(amountSliderPoint);
+
+    const auto spreadSliderPoint =
+      this->getGridPoint(bounds, amountSliderCol, lowerRotarySliderRow);
+    spreadSlider.setSizeAndCentre(spreadSliderPoint);
 
     const auto leftFequencySliderPoint =
       this->getGridPoint(bounds, leftFequencySliderCol, linearSliderRow);
@@ -76,14 +93,20 @@ public:
                                      rightFequencySliderPoint);
 
     const auto pinchSliderPoint =
-      this->getGridPoint(bounds, pinchSliderCol, rotarySliderRow);
+      this->getGridPoint(bounds, pinchSliderCol, lowerRotarySliderRow);
     pinchSlider.setSizeAndCentre(pinchSliderPoint);
+
+    const auto mixSliderPoint =
+      this->getGridPoint(bounds, pinchSliderCol, upperRotarySliderRow);
+    mixSlider.setSizeAndCentre(mixSliderPoint);
   }
   //============================================================================
 private:
   RotarySlider amountSlider;
+  RotarySlider spreadSlider;
   LinearSlider fequencySlider;
   RotarySlider pinchSlider;
+  RotarySlider mixSlider;
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(DisfluxPanel)
 };
 
