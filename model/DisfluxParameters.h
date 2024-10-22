@@ -42,7 +42,14 @@ disfluxParameterGroup(juce::String parentUid)
                                                        1.0f,   // rangeEnd
                                                        0.001f, // intervalValue
                                                        1.0f),  // skewFactor
-                                     0.2f)                     // defaultValue
+                                     0.2f),                    // defaultValue
+    std::make_unique<ParameterFloat>(uid + "Mix",
+                                     "Mix",
+                                     NormalisableRange(0.0f,  // rangeStart
+                                                       1.0f,  // rangeEnd
+                                                       0.01f, // intervalValue
+                                                       1.0f), // skewFactor
+                                     1.0f)                    // defaultValue
   );
 }
 } // namespace model

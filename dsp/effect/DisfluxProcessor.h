@@ -37,6 +37,7 @@ public:
     const auto newFrequency =
       apvts.getRawParameterValue("DisfluxFrequency")->load();
     const auto newPinch = apvts.getRawParameterValue("DisfluxPinch")->load();
+    const auto mix = apvts.getRawParameterValue("DisfluxMix")->load();
 
     if (amount != newAmount || spread != newSpread ||
         std::abs(frequency - newFrequency) > tolerance ||
@@ -49,14 +50,20 @@ public:
     }
 
     for (size_t sample = 0; sample < buffer.getNumSamples(); ++sample) {
-      auto left = buffer.getSample(0, sample);
-      auto right = buffer.getSample(1, sample);
+      auto const leftDry = buffer.getSample(0, sample);
+      auto const rightDry = buffer.getSample(1, sample);
+      auto left = leftDry;
+      auto right = rightDry;
 
       for (size_t filterIndex = 0; filterIndex < amount; ++filterIndex) {
         left = leftFilters[filterIndex].processSingleSampleRaw(left);
         right = rightFilters[filterIndex].processSingleSampleRaw(right);
       }
 
+      const auto wetGain = mix;
+      const auto dryGain = 1.0f - mix;
+      left = (left * wetGain) + (leftDry * dryGain);
+      right = (right * wetGain) + (rightDry * dryGain);
       buffer.setSample(0, sample, left);
       buffer.setSample(1, sample, right);
     }
