@@ -34,7 +34,7 @@ disfluxParameterGroup(juce::String parentUid)
     std::make_unique<ParameterFloat>(uid + "Pinch",
                                      "Pinch",
                                      NormalisableRange(0.0f,  // rangeStart
-                                                       1.0f,  // rangeEnd
+                                                       5.0f,  // rangeEnd
                                                        0.01f, // intervalValue
                                                        1.0f), // skewFactor
                                      1.0f)                    // defaultValue
