@@ -53,8 +53,7 @@ struct Unit
         return { juce::String((int)value) + juce::String("Hz") };
         break;
       case Type::DisfluxPinch:
-        // round to 2 decimal places
-        return { juce::String(value, 2) };
+        return { juce::String((int)(value * 100)) + juce::String("%") };
         break;
       default:
         return { juce::String("ERROR") };

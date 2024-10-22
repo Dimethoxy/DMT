@@ -23,21 +23,21 @@ disfluxParameterGroup(juce::String parentUid)
                                    "Amount",
                                    1,   // rangeStart
                                    100, // rangeEnd
-                                   1),  // defaultValue
+                                   10), // defaultValue
     std::make_unique<ParameterFloat>(uid + "Frequency",
                                      "Frequency",
                                      NormalisableRange(20.0f,   // rangeStart
                                                        1000.0f, // rangeEnd
                                                        1.0f,    // intervalValue
                                                        0.5f),   // skewFactor
-                                     1000.0f),                  // defaultValue
+                                     300.0f),                   // defaultValue
     std::make_unique<ParameterFloat>(uid + "Pinch",
                                      "Pinch",
-                                     NormalisableRange(0.0f,  // rangeStart
-                                                       5.0f,  // rangeEnd
-                                                       0.01f, // intervalValue
-                                                       1.0f), // skewFactor
-                                     1.0f)                    // defaultValue
+                                     NormalisableRange(0.001f, // rangeStart
+                                                       1.0f,   // rangeEnd
+                                                       0.001f, // intervalValue
+                                                       1.0f),  // skewFactor
+                                     0.2f)                     // defaultValue
   );
 }
 } // namespace model
