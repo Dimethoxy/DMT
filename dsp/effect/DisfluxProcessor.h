@@ -65,10 +65,6 @@ public:
 protected:
   void setCoefficents()
   {
-    // const auto coefficients =
-    //   juce::IIRCoefficients::makeAllPass((double)sampleRate, frequency,
-    //   pinch);
-
     const float spreadAmount = (float)spread;
     const float maxFrequency = 20000.0f;
     const float rangeStartFrequency =
@@ -93,12 +89,6 @@ protected:
       leftFilters[filterIndex].setCoefficients(coefficients);
       rightFilters[filterIndex].setCoefficients(coefficients);
     }
-    // for (auto& filter : leftFilters) {
-    //   filter.setCoefficients(coefficients);
-    // }
-    // for (auto& filter : rightFilters) {
-    //   filter.setCoefficients(coefficients);
-    // }
   }
 
 private:
