@@ -201,7 +201,7 @@ struct Distortion
   static inline std::vector<float> getGirthSeeds(int numSamples)
   {
     std::vector<float> girthSeeds;
-    for (int i = 0; i < numSamples; i++) {
+    for (size_t i = 0; i < numSamples; i++) {
       girthSeeds.push_back(getNewGirthSeed());
     }
     return girthSeeds;
@@ -239,9 +239,9 @@ struct Distortion
     if (girth < 0)
       girthSeeds = getGirthSeeds(buffer.getNumSamples());
 
-    for (int channel = 0; channel < buffer.getNumChannels(); channel++) {
+    for (size_t channel = 0; channel < buffer.getNumChannels(); channel++) {
       auto* channelData = buffer.getWritePointer(channel);
-      for (int sample = 0; sample < buffer.getNumSamples(); sample++) {
+      for (size_t sample = 0; sample < buffer.getNumSamples(); sample++) {
         // Girth
         if (girth < 0)
           girthSample(channelData[sample], std::abs(girth), girthSeeds[sample]);

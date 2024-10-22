@@ -42,7 +42,7 @@ public:
     const int firstBlockSize = getNumSamples() - writePosition;
     const int secondBlockSize = samplesToWrite - firstBlockSize;
 
-    for (int channel = 0; channel < channelsToWrite; ++channel) {
+    for (size_t channel = 0; channel < channelsToWrite; ++channel) {
       if (firstBlockSize > 0)
         ringBuffer.copyFrom(channel,         // destChannel
                             writePosition,   // destStartSample
@@ -82,7 +82,7 @@ public:
     // Block 1 Section 1
     if (size1 > 0) {
       int section1size = jmin(size1, bufferSize - writePosition);
-      for (int channel = 0; channel < channelsToWrite; ++channel) {
+      for (size_t channel = 0; channel < channelsToWrite; ++channel) {
         ringBuffer.copyFrom(channel,       // destChannel
                             writePosition, // destStartSample
                             source,        // source
@@ -93,7 +93,7 @@ public:
       // Block 1 Section 2
       int section2size = size1 - section1size;
       if (section2size > 0) {
-        for (int channel = 0; channel < channelsToWrite; ++channel) {
+        for (size_t channel = 0; channel < channelsToWrite; ++channel) {
           ringBuffer.copyFrom(channel,               // destChannel
                               0,                     // destStartSample
                               source,                // source
@@ -107,7 +107,7 @@ public:
     if (size2 > 0) {
       int block2start = (writePosition + size1) % bufferSize;
       int section3size = jmin(size2, bufferSize - block2start);
-      for (int channel = 0; channel < channelsToWrite; ++channel) {
+      for (size_t channel = 0; channel < channelsToWrite; ++channel) {
         ringBuffer.copyFrom(channel,       // destChannel
                             block2start,   // destStartSample
                             source,        // source
@@ -118,7 +118,7 @@ public:
       // Block 2 Section 4
       int section4size = size2 - section3size;
       if (section4size > 0) {
-        for (int channel = 0; channel < channelsToWrite; ++channel) {
+        for (size_t channel = 0; channel < channelsToWrite; ++channel) {
           ringBuffer.copyFrom(channel,               // destChannel
                               0,                     // destStartSample
                               source,                // source
@@ -173,8 +173,8 @@ protected:
     }
 
     // Check if the new write position overlaps with any read positions
-    for (int channel = 0; channel < getNumChannels(); ++channel) {
-      for (int i = 0; i < increment; ++i) {
+    for (size_t channel = 0; channel < getNumChannels(); ++channel) {
+      for (size_t i = 0; i < increment; ++i) {
         if ((writePosition + i) % getNumSamples() == readPositions[channel]) {
           moveWriteOverRead = true;
           break;
@@ -186,7 +186,7 @@ protected:
 
     // Update read positions if necessary
     if (moveWriteOverRead) {
-      for (int channel = 0; channel < getNumChannels(); ++channel) {
+      for (size_t channel = 0; channel < getNumChannels(); ++channel) {
         readPositions[channel] = writePosition;
       }
     }

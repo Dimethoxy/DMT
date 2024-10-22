@@ -48,7 +48,7 @@ public:
       setCoefficents();
     }
 
-    for (int sample = 0; sample < buffer.getNumSamples(); ++sample) {
+    for (size_t sample = 0; sample < buffer.getNumSamples(); ++sample) {
       auto left = buffer.getSample(0, sample);
       auto right = buffer.getSample(1, sample);
 

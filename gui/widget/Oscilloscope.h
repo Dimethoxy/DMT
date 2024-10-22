@@ -129,7 +129,7 @@ protected:
     juce::Path path;
     path.startNewSubPath(startPoint);
 
-    for (int i = 0; i < samplesToDraw; ++i) {
+    for (size_t i = 0; i < samplesToDraw; ++i) {
       const int sampleIndex = firstSamplesToDraw + i;
       currentSample = ringBuffer.getSample(channel, sampleIndex);
       currentX += pixelsPerSample;

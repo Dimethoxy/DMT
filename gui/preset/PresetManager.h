@@ -78,7 +78,7 @@ public:
     juce::XmlDocument xmlDocument{ presetFile };
     const auto valueTreeToLoad =
       juce::ValueTree::fromXml(*xmlDocument.getDocumentElement());
-    for (int i = 0; i < valueTreeToLoad.getNumChildren(); i++) {
+    for (size_t i = 0; i < valueTreeToLoad.getNumChildren(); i++) {
       const auto parameterChildToLoad = valueTreeToLoad.getChild(i);
       const auto parameterId = parameterChildToLoad.getProperty("id");
       auto parameterTree =

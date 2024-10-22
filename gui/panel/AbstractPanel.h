@@ -111,7 +111,7 @@ public:
     // draw debug line grid
     if (debugGrid) {
       g.setColour(juce::Colours::red);
-      for (int col = 0; col < grid.size(); col++) {
+      for (size_t col = 0; col < grid.size(); col++) {
         const auto firstPoint = getGridPoint(bounds.toNearestInt(), col, 0);
         const auto endPoint =
           juce::Point<int>(firstPoint.getX(), (int)bounds.getHeight() - 1);
@@ -119,7 +119,7 @@ public:
           juce::Line<float>(firstPoint.toFloat(), endPoint.toFloat());
         g.drawLine(line, 1.0f);
       }
-      for (int row = 0; row < grid[0].size(); row++) {
+      for (size_t row = 0; row < grid[0].size(); row++) {
         const auto firstPoint = getGridPoint(bounds.toNearestInt(), 0, row);
         const auto endPoint =
           juce::Point<int>((int)bounds.getWidth() - 1, firstPoint.getY());
@@ -210,8 +210,8 @@ protected:
     const float rowSpacing = 1.0f / (float)(rows + 1);
     Grid newGrid(cols + 2, std::vector<juce::Point<float>>(rows + 2));
 
-    for (int col = 0; col <= (layoutToUse.cols + 1); col++) {
-      for (int row = 0; row <= (layoutToUse.rows + 1); row++) {
+    for (size_t col = 0; col <= (layoutToUse.cols + 1); col++) {
+      for (size_t row = 0; row <= (layoutToUse.rows + 1); row++) {
         const float x = (float)col * colSpacing;
         const float y = (float)row * rowSpacing;
         const auto point = juce::Point<float>(x, y);

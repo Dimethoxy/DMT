@@ -67,7 +67,8 @@ public:
     int highestReadChannel = 0;
 
     // Find the highest read position among all channels
-    for (int channel = 0; channel < audioBuffer.getNumChannels(); ++channel) {
+    for (size_t channel = 0; channel < audioBuffer.getNumChannels();
+         ++channel) {
       const int readPos = getReadPosition(channel);
       if (readPos > highestReadPosition) {
         highestReadPosition = readPos;
@@ -80,7 +81,8 @@ public:
     const int highestRawReadPosition = getRawReadPosition(highestReadChannel);
 
     // Set all channels to the highest raw read position found
-    for (int channel = 0; channel < audioBuffer.getNumChannels(); ++channel) {
+    for (size_t channel = 0; channel < audioBuffer.getNumChannels();
+         ++channel) {
       setRawReadPosition(channel, highestRawReadPosition);
     }
   }

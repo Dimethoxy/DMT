@@ -93,7 +93,7 @@ public:
     auto endSample = numSamples + startSample;
     auto* leftChannel = outputBuffer.getWritePointer(0);
     auto* rightChannel = outputBuffer.getWritePointer(1);
-    for (int sample = startSample; sample < endSample; sample++) {
+    for (size_t sample = startSample; sample < endSample; sample++) {
       osc.setFrequency(getNextFrequency(oscOctave, oscSemitone, oscModDepth));
       const auto rawSample = osc.getNextSample();
       const auto gainedSample = applyGain(rawSample, oscGain);

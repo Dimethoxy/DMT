@@ -29,7 +29,7 @@ public:
     path.preallocateSpace((3 * width) + 6);
     path.startNewSubPath(0, (float)height / 2.0f);
 
-    for (int i = 0; i < width; ++i) {
+    for (size_t i = 0; i < width; ++i) {
       const SampleType sample = dataSource(i);
       path.lineTo((float)i,
                   (float)height / 2.0f - sample * (float)height / 2.0f);

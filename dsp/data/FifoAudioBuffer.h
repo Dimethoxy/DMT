@@ -31,7 +31,7 @@ public:
                    secondBlockStart,
                    secondBlockSize);
 
-    for (int channel = 0; channel < buffer.getNumChannels(); ++channel) {
+    for (size_t channel = 0; channel < buffer.getNumChannels(); ++channel) {
       if (firstBlockSize > 0)
         buffer.copyFrom(channel,         // destChannel
                         firstBlockStart, // destStartSample
@@ -63,7 +63,7 @@ public:
                   secondBlockStart,
                   secondBlockSize);
 
-    for (int channel = 0; channel < buffer.getNumChannels(); ++channel) {
+    for (size_t channel = 0; channel < buffer.getNumChannels(); ++channel) {
       if (firstBlockSize > 0)
         target.copyFrom(channel,         // destChannel
                         0,               // destStartSample

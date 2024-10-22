@@ -84,7 +84,7 @@ protected:
 
     auto width = bounds.getWidth();
 
-    for (int i = 0; i < width; i++) {
+    for (size_t i = 0; i < width; i++) {
       auto x = bounds.getX() + i;
       auto y = bounds.getY() + (bounds.getHeight() / 2.0f) -
                (table[i / width * resolution] * bounds.getHeight() / 2.0f);
