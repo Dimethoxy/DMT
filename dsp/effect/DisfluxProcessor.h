@@ -1,6 +1,7 @@
 #pragma once
 
 #include <JuceHeader.h>
+#include <utility/Settings.h>
 
 namespace dmt {
 namespace dsp {
@@ -11,6 +12,7 @@ class DisfluxProcessor
   using ProcessSpec = juce::dsp::ProcessSpec;
   using Filter = juce::IIRFilter;
   using FilterArray = std::array<Filter, 100>;
+  const float& tolerance = dmt::Settings::floatTolerance;
 
 public:
   DisfluxProcessor(juce::AudioProcessorValueTreeState& apvts)
@@ -34,7 +36,8 @@ public:
     const auto newPinch = apvts.getRawParameterValue("DisfluxPinch")->load();
     const auto amount = apvts.getRawParameterValue("DisfluxAmount")->load();
 
-    if (newFrequency != frequency || newPinch != pinch) {
+    if (std::abs(newFrequency - frequency) > tolerance ||
+        std::abs(newPinch - pinch) > tolerance) {
       frequency = newFrequency;
       pinch = newPinch;
       setCoefficents();
@@ -44,7 +47,7 @@ public:
       auto left = buffer.getSample(0, sample);
       auto right = buffer.getSample(1, sample);
 
-      for (int filterIndex = 0; filterIndex < amount; ++filterIndex) {
+      for (size_t filterIndex = 0; filterIndex < amount; ++filterIndex) {
         left = leftFilters[filterIndex].processSingleSampleRaw(left);
         right = rightFilters[filterIndex].processSingleSampleRaw(right);
       }
