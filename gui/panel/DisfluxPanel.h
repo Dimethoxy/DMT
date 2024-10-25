@@ -1,5 +1,6 @@
 #pragma once
 //==============================================================================
+#include "gui/component/DisfluxDisplayComponent.h"
 #include "gui/component/LinearSliderComponent.h"
 #include "gui/component/RotarySliderComponent.h"
 #include "gui/panel/AbstractPanel.h"
@@ -13,13 +14,13 @@ namespace panel {
 template<typename SampleType>
 class DisfluxPanel : public dmt::gui::panel::AbstractPanel
 {
+  using DisfluxDisplayComponent = dmt::gui::component::DisfluxDisplayComponent;
   using LinearSlider = dmt::gui::component::LinearSliderComponent;
   using LinearSliderType = dmt::gui::widget::LinearSlider::Type;
   using LinearSliderOrientation = dmt::gui::widget::LinearSlider::Orientation;
   using RotarySlider = dmt::gui::component::RotarySliderComponent;
   using RotarySliderType = dmt::gui::widget::RotarySlider::Type;
   using Unit = dmt::utility::Unit;
-
   using Settings = dmt::Settings;
   const float& size = Settings::Window::size;
   const float& rawPadding = Settings::Panel::padding;
@@ -57,16 +58,27 @@ public:
   {
     setLayout({ 28, 30 });
 
+    addAndMakeVisible(display);
     addAndMakeVisible(amountSlider);
     addAndMakeVisible(spreadSlider);
     addAndMakeVisible(fequencySlider);
     addAndMakeVisible(pinchSlider);
     addAndMakeVisible(mixSlider);
   }
+
   //============================================================================
   void extendResize() noexcept override
   {
     auto bounds = getLocalBounds();
+
+    const float padding = rawPadding * size;
+    auto displayBounds = bounds.reduced(padding);
+    const float displayHorizontalPadding = 95.0f;
+    const float displayVerticalPadding = 55.0f;
+    displayBounds.removeFromBottom(displayVerticalPadding * size);
+    displayBounds.removeFromLeft(displayHorizontalPadding * size);
+    displayBounds.removeFromRight(displayHorizontalPadding * size);
+    display.setBounds(displayBounds);
 
     const int upperRotarySliderRow = 8;
     const int lowerRotarySliderRow = 22;
@@ -102,6 +114,7 @@ public:
   }
   //============================================================================
 private:
+  DisfluxDisplayComponent display;
   RotarySlider amountSlider;
   RotarySlider spreadSlider;
   LinearSlider fequencySlider;
