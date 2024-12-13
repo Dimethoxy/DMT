@@ -56,7 +56,7 @@ public:
                 Unit::Type::DisfluxMix,
                 RotarySliderType::Positive)
   {
-    setLayout({ 28, 30 });
+    setLayout({ 22, 60 });
 
     addAndMakeVisible(display);
     addAndMakeVisible(amountSlider);
@@ -73,21 +73,21 @@ public:
 
     const float padding = rawPadding * size;
     auto displayBounds = bounds.reduced(padding);
-    const float displayHorizontalPadding = 95.0f;
-    const float displayVerticalPadding = 55.0f;
+    const float displayHorizontalPadding = 100.0f;
+    const float displayVerticalPadding = 57.0f;
     displayBounds.removeFromBottom(displayVerticalPadding * size);
     displayBounds.removeFromLeft(displayHorizontalPadding * size);
     displayBounds.removeFromRight(displayHorizontalPadding * size);
     display.setBounds(displayBounds);
 
-    const int upperRotarySliderRow = 8;
-    const int lowerRotarySliderRow = 22;
-    const int linearSliderRow = 26;
+    const int upperRotarySliderRow = 17;
+    const int lowerRotarySliderRow = 43;
+    const int linearSliderRow = 51;
 
-    const int amountSliderCol = 4;
-    const int leftFequencySliderCol = 8;
-    const int rightFequencySliderCol = 21;
-    const int pinchSliderCol = 25;
+    const int amountSliderCol = 3;
+    const int leftFequencySliderCol = 6;
+    const int rightFequencySliderCol = 17;
+    const int pinchSliderCol = 20;
 
     const auto amountSliderPoint =
       this->getGridPoint(bounds, amountSliderCol, upperRotarySliderRow);

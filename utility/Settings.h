@@ -45,7 +45,7 @@ struct Settings
   struct Window
   {
     static inline float size = 1.0f;
-    static inline float margin = 5.0f;
+    static inline float margin = 8.0f;
   };
 
   struct Panel
@@ -56,7 +56,7 @@ struct Settings
     // Border
     static inline bool drawBorder = true;
     static inline Colour borderColour = Colours::solid_dark;
-    static inline float borderStrength = 4.0f;
+    static inline float borderStrength = 6.0f;
     static inline juce::Colour backgroundColour = Colours::solid_mid;
     // Shadows
     static inline bool drawOuterShadow = true;
@@ -119,7 +119,7 @@ struct Settings
     // Border
     static inline bool drawBorder = true;
     static inline Colour borderColour = Colours::solid_dark;
-    static inline float borderStrength = 4.0f;
+    static inline float borderStrength = 6.0f;
     // Shadow
     static inline bool drawOuterShadow = false;
     static inline bool drawInnerShadow = true;
