@@ -1,6 +1,7 @@
 //==============================================================================
 #pragma once
 //==============================================================================
+#include "utility/Settings.h"
 #include <JuceHeader.h>
 //==============================================================================
 namespace dmt {
@@ -13,6 +14,8 @@ class Shadow : public juce::Component
   using Graphics = juce::Graphics;
   using String = juce::String;
   using PixelFormat = juce::Image::PixelFormat;
+
+  const float& size = Settings::Window::size;
 
 public:
   Shadow(const bool& visibility,
@@ -75,7 +78,7 @@ protected:
     shadowPath.addRectangle(target.getBounds().expanded(10));
     shadowPath.setUsingNonZeroWinding(false);
     g.reduceClipRegion(target);
-    juce::DropShadow ds(colour, (int)radius, offset);
+    juce::DropShadow ds(colour, (int)radius * size, offset);
     ds.drawForPath(g, shadowPath);
   }
   //============================================================================
@@ -87,7 +90,7 @@ protected:
     shadowPath.addRectangle(target.getBounds().expanded(10));
     shadowPath.setUsingNonZeroWinding(false);
     g.reduceClipRegion(shadowPath);
-    juce::DropShadow ds(colour, (int)radius, offset);
+    juce::DropShadow ds(colour, (int)radius * size, offset);
     ds.drawForPath(g, target);
   }
 
