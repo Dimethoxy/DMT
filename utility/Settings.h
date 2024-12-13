@@ -109,6 +109,25 @@ struct Settings
     static inline float selectionSize = 9.0f;
     static inline float selectionActivePadding = 2.0f;
   };
+  struct Display
+  {
+    // General
+    static inline Colour backgroundColour = Colours::background;
+    // Layout
+    static inline float padding = 10.0f;
+    static inline float cornerSize = 15.0f;
+    // Border
+    static inline bool drawBorder = true;
+    static inline Colour borderColour = Colours::solid_dark;
+    static inline float borderStrength = 4.0f;
+    // Shadow
+    static inline bool drawOuterShadow = false;
+    static inline bool drawInnerShadow = true;
+    static inline Colour outerShadowColour = Colours::shadow;
+    static inline Colour innerShadowColour = Colours::shadow;
+    static inline float outerShadowRadius = 4.0f;
+    static inline float innerShadowRadius = 4.0f;
+  };
   struct TriangleButton
   {
     // General

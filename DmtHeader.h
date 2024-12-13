@@ -15,12 +15,12 @@
 //==============================================================================
 #pragma once
 //==============================================================================
-#include "../perfetto/melatonin_perfetto/melatonin_perfetto.h"
+#include "../melatonin_perfetto/melatonin_perfetto/melatonin_perfetto.h"
 //==============================================================================
 #include "./configuration/Configuration.h"
 #include "./dsp/Dsp.h"
 #include "./gui/Gui.h"
 #include "./model/Model.h"
-#include "./utility/Utility.h"
 #include "./theme/Theme.h"
+#include "./utility/Utility.h"
 //==============================================================================
