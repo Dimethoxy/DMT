@@ -1,11 +1,56 @@
+//==============================================================================
+/*
+ * ██████  ██ ███    ███ ███████ ████████ ██   ██  ██████  ██   ██ ██    ██
+ * ██   ██ ██ ████  ████ ██         ██    ██   ██ ██    ██  ██ ██   ██  ██
+ * ██   ██ ██ ██ ████ ██ █████      ██    ███████ ██    ██   ███     ████
+ * ██   ██ ██ ██  ██  ██ ██         ██    ██   ██ ██    ██  ██ ██     ██
+ * ██████  ██ ██      ██ ███████    ██    ██   ██  ██████  ██   ██    ██
+ *
+ * Copyright (C) 2024 Dimethoxy Audio (https://dimethoxy.com)
+ *
+ * This file is part of the Dimethoxy Library, a collection of essential
+ * classes used across various Dimethoxy projects.
+ * These files are primarily designed for internal use within our repositories.
+ *
+ * License:
+ * This code is licensed under the GPLv3 license. You are permitted to use and
+ * modify this code under the terms of this license. You must adhere GPLv3
+ * license for any project using this code or parts of it. Your are not allowed
+ * to use this code in any closed-source project.
+ *
+ * Description:
+ * Distortion effect processor.
+ *
+ * Authors:
+ * Lunix-420 (Primary Author)
+ */
+//==============================================================================
+
 #pragma once
 
+//==============================================================================
+
 #include <JuceHeader.h>
+#include <algorithm>
+#include <cmath>
+#include <random>
+#include <vector>
+
+//==============================================================================
 
 namespace dmt {
 namespace dsp {
 namespace effect {
-struct Distortion
+
+//==============================================================================
+
+/**
+ * @brief Distortion effect processor
+ *
+ * This class provides various types of distortion effects.
+ * It is optimized for real-time performance.
+ */
+struct alignas(64) Distortion
 {
   enum class Type
   {
@@ -23,240 +68,296 @@ struct Distortion
     Bitcrush,
   };
 
-  static inline const juce::String getString(const Type type)
+  //==============================================================================
+  /**
+   * @brief Get the string representation of the distortion type.
+   *
+   * @param _type The distortion type.
+   * @return The string representation of the type.
+   */
+  [[nodiscard]] static inline const juce::String getString(
+    const Type _type) noexcept
   {
-    switch (type) {
+    switch (_type) {
       case Distortion::Type::Hardclip:
-        return ("Hardclip");
-        break;
+        return "Hardclip";
       case Distortion::Type::Softclip:
-        return ("Softclip");
-        break;
+        return "Softclip";
       case Distortion::Type::Saturate:
-        return ("Saturate");
-        break;
+        return "Saturate";
       case Distortion::Type::Atan:
-        return ("Atan");
-        break;
+        return "Atan";
       case Distortion::Type::Crunch:
-        return ("Crunch");
-        break;
+        return "Crunch";
       case Distortion::Type::Extreme:
-        return ("Extreme");
-        break;
+        return "Extreme";
       case Distortion::Type::Scream:
-        return ("Scream");
-        break;
+        return "Scream";
       case Distortion::Type::Sine:
-        return ("Sine");
-        break;
+        return "Sine";
       case Distortion::Type::Cosine:
-        return ("Cosine");
-        break;
+        return "Cosine";
       case Distortion::Type::Harmonize:
-        return ("Harmonize");
-        break;
+        return "Harmonize";
       case Distortion::Type::Weird:
-        return ("Weird");
-        break;
+        return "Weird";
       case Distortion::Type::Bitcrush:
-        return ("Bitcrush");
-        break;
+        return "Bitcrush";
       default:
-        // impossible to reach exit with assertion
-        jassert(false);
-        return ("Hardclip");
-        break;
+        jassertfalse;
+        return "Hardclip";
     }
   }
 
-  static inline void distortSample(float& data, const Type type, float drive)
+  //==============================================================================
+  /**
+   * @brief Apply distortion to a sample.
+   *
+   * @param _data The sample data.
+   * @param _type The distortion type.
+   * @param _drive The drive amount.
+   */
+  static inline void distortSample(float& _data,
+                                   const Type _type,
+                                   const float _drive) noexcept
   {
-    switch (type) {
-      case Type::Hardclip: {
-        data = std::clamp(drive * data, -1.0f, 1.0f);
+    switch (_type) {
+      case Type::Hardclip:
+        _data = std::clamp(_drive * _data, -1.0f, 1.0f);
         break;
-      }
       case Type::Softclip: {
-        float threshold1 = 1.0f / 3.0f;
-        float threshold2 = 2.0f / 3.0f;
+        constexpr float threshold1 = 1.0f / 3.0f;
+        constexpr float threshold2 = 2.0f / 3.0f;
 
-        data *= drive;
-        if (data > threshold2)
-          data = 1.0f;
-        else if (data > threshold1)
-          data = 1.0f - powf(2.0f - 3.0f * data, 2.0f) / 3.0f;
-        else if (data < -threshold2)
-          data = -1.0f;
-        else if (data < -threshold1)
-          data = -1.0f + powf(2.0f + 3.0f * data, 2.0f) / 3.0f;
+        _data *= _drive;
+        if (_data > threshold2)
+          _data = 1.0f;
+        else if (_data > threshold1)
+          _data = 1.0f - std::pow(2.0f - 3.0f * _data, 2.0f) / 3.0f;
+        else if (_data < -threshold2)
+          _data = -1.0f;
+        else if (_data < -threshold1)
+          _data = -1.0f + std::pow(2.0f + 3.0f * _data, 2.0f) / 3.0f;
         else
-          data = 2.0f * data;
-
+          _data = 2.0f * _data;
         break;
       }
-      case Type::Saturate: {
-        if (data > 0.0) {
-          data = std::clamp(pow(data, 1.0 / ((drive / 4) + 0.75)), -1.0, 1.0);
+
+      case Type::Saturate:
+        if (_data > 0.0f) {
+          _data = std::clamp(
+            std::pow(_data, 1.0f / ((_drive / 4.0f) + 0.75f)), -1.0f, 1.0f);
         } else {
-          data = -std::clamp(pow(-data, 1.0 / ((drive / 4) + 0.75)), -1.0, 1.0);
+          _data = -std::clamp(
+            std::pow(-_data, 1.0f / ((_drive / 4.0f) + 0.75f)), -1.0f, 1.0f);
         }
         break;
-      }
-      case Type::Atan: {
-        if (std::abs(data) <= 1.0e-05) {
-          if (data > 0.0f) {
-            data = pow(data, 1.0f / drive);
-            data = 1.27f * atan(data);
+      case Type::Atan:
+        if (juce::approximatelyEqual(_data, 0.0f)) {
+          if (_data > 0.0f) {
+            _data = std::pow(_data, 1.0f / _drive);
+            _data = 1.27f * std::atan(_data);
           } else {
-            data = pow(-data, 1.0f / drive);
-            data = 1.27f * atan(data);
-            data = -data;
+            _data = std::pow(-_data, 1.0f / _drive);
+            _data = 1.27f * std::atan(_data);
+            _data = -_data;
           }
         }
         break;
-      }
-      case Type::Crunch: {
-        if (data > 0.0) {
-          data = pow(data, 1.0f / drive);
-          data = 1.27 * atan(data);
+      case Type::Crunch:
+        if (_data > 0.0f) {
+          _data = std::pow(_data, 1.0f / _drive);
+          _data = 1.27f * std::atan(_data);
         } else {
-          data = std::clamp((float)sin(drive * data), -1.0f, 1.0f);
-          data = std::clamp(drive * data, -1.0f, 1.0f);
-        };
+          _data = std::clamp(std::sin(_drive * _data), -1.0f, 1.0f);
+          _data = std::clamp(_drive * _data, -1.0f, 1.0f);
+        }
         break;
-      }
       case Type::Extreme: {
-        float invertedDrive = 10.0f - (drive - 1);
-        if (std::abs(data) >= ((invertedDrive - 1) / 9.0f)) {
-          auto signbit = (std::signbit(data) ? -1 : 1);
-          data = signbit;
+        const float invertedDrive = 10.0f - (_drive - 1.0f);
+        if (std::abs(_data) >= ((invertedDrive - 1.0f) / 9.0f)) {
+          _data = std::signbit(_data) ? -1.0f : 1.0f;
         }
         break;
       }
       case Type::Scream: {
-        auto temp = data;
-        auto normalizedDrive = (drive - 1) / 10.0f;
+        auto temp = _data;
+        const float normalizedDrive = (_drive - 1.0f) / 10.0f;
 
-        if (data > 0.0) {
-          data = std::clamp(
-            (float)pow(data, 1.0f / ((drive / 4.0f) + 0.75f)), -1.0f, 1.0f);
+        if (_data > 0.0f) {
+          _data = std::clamp(
+            std::pow(_data, 1.0f / ((_drive / 4.0f) + 0.75f)), -1.0f, 1.0f);
         } else {
-          data = -std::clamp(
-            (float)pow(-data, 1.0f / ((drive / 4.0f) + 0.75f)), -1.0f, 1.0f);
+          _data = -std::clamp(
+            std::pow(-_data, 1.0f / ((_drive / 4.0f) + 0.75f)), -1.0f, 1.0f);
         }
 
-        if (data <= -0.5) {
-          auto offset = 3.0;
-          temp = 4 * data + offset;
-        } else if (data > -0.5 && data < 0.5) {
-          temp = -2 * data;
+        if (_data <= -0.5f) {
+          constexpr float offset = 3.0f;
+          temp = 4.0f * _data + offset;
+        } else if (_data > -0.5f && _data < 0.5f) {
+          temp = -2.0f * _data;
         } else {
-          auto offset = -3.0;
-          temp = 4 * data + offset;
+          constexpr float offset = -3.0f;
+          temp = 4.0f * _data + offset;
         }
 
-        data = (temp * normalizedDrive) + (data * (1 - normalizedDrive));
-
+        _data = (temp * normalizedDrive) + (_data * (1.0f - normalizedDrive));
         break;
       }
-      case Type::Sine: {
-        data = std::clamp((float)sin(drive * data), -1.0f, 1.0f);
+      case Type::Sine:
+        _data = std::clamp(std::sin(_drive * _data), -1.0f, 1.0f);
         break;
-      }
-      case Type::Cosine: {
-        data = std::clamp((float)cos(drive * data), -1.0f, 1.0f);
+      case Type::Cosine:
+        _data = std::clamp(std::cos(_drive * _data), -1.0f, 1.0f);
         break;
-      }
       case Type::Harmonize: {
-        data = data * (drive * 5);
-        float h1 = sin(2 * data);
-        float h2 = sin(3 * data);
-        float h3 = sin(4 * data);
-        data = (h1 + h2 + h3 + data) / (drive * 5);
+        _data *= _drive * 5.0f;
+        const float h1 = std::sin(2.0f * _data);
+        const float h2 = std::sin(3.0f * _data);
+        const float h3 = std::sin(4.0f * _data);
+        _data = (h1 + h2 + h3 + _data) / (_drive * 5.0f);
         break;
       }
       case Type::Weird: {
-        data = data * (drive * 2);
-        float h1 = sin(2 * data);
-        float h2 = sin(3 * data);
-        float h3 = sin(4 * data);
-        data = sin(h1 + h2 + h3 + data);
+        _data *= _drive * 2.0f;
+        const float h1 = std::sin(2.0f * _data);
+        const float h2 = std::sin(3.0f * _data);
+        const float h3 = std::sin(4.0f * _data);
+        _data = std::sin(h1 + h2 + h3 + _data);
         break;
       }
       case Type::Bitcrush: {
-        float bitDepth = 10.0f - (drive - 1);
-        float exponent = bitDepth - 1;
-        float possibleValues = pow(2, exponent);
-        float quantized = (data + 1.0f) * possibleValues;
-        quantized = round(quantized);
-        data = (quantized / possibleValues) - 1.0f;
+        const float bitDepth = 10.0f - (_drive - 1.0f);
+        const float exponent = bitDepth - 1.0f;
+        const float possibleValues = std::pow(2.0f, exponent);
+        float quantized = (_data + 1.0f) * possibleValues;
+        quantized = std::round(quantized);
+        _data = (quantized / possibleValues) - 1.0f;
         break;
       }
     }
   }
 
-  static inline float getNewGirthSeed() { return (float)(rand() % 100); }
+  //==============================================================================
+  /**
+   * @brief Generate a new random seed for girth effect.
+   *
+   * @return The new girth seed.
+   */
+  [[nodiscard]] static inline float getNewGirthSeed() noexcept
+  {
+    static thread_local std::mt19937 generator{ std::random_device{}() };
+    static thread_local std::uniform_real_distribution<float> distribution(
+      0.0f, 100.0f);
+    return distribution(generator);
+  }
 
-  static inline std::vector<float> getGirthSeeds(int numSamples)
+  //==============================================================================
+  /**
+   * @brief Generate a vector of girth seeds.
+   *
+   * @param _numSamples The number of samples.
+   * @return A vector of girth seeds.
+   */
+  [[nodiscard]] static inline std::vector<float> getGirthSeeds(
+    const int _numSamples) noexcept
   {
     std::vector<float> girthSeeds;
-    for (size_t i = 0; i < numSamples; i++) {
+    girthSeeds.reserve(static_cast<size_t>(_numSamples));
+    for (int i = 0; i < _numSamples; ++i) {
       girthSeeds.push_back(getNewGirthSeed());
     }
     return girthSeeds;
   }
 
-  static inline void girthSample(float& value, float girth)
+  //==============================================================================
+  /**
+   * @brief Apply girth effect to a sample.
+   *
+   * @param _value The sample value.
+   * @param _girth The girth amount.
+   */
+  static inline void girthSample(float& _value, const float _girth) noexcept
   {
-    value = value * ((getNewGirthSeed() / 100 * girth) + 1);
-    value = std::clamp(value, -1.0f, 1.0f);
+    _value *= ((getNewGirthSeed() / 100.0f * _girth) + 1.0f);
+    _value = std::clamp(_value, -1.0f, 1.0f);
   }
 
-  static inline void girthSample(float& value, float girth, float seed)
+  //==============================================================================
+  /**
+   * @brief Apply girth effect to a sample with a specific seed.
+   *
+   * @param _value The sample value.
+   * @param _girth The girth amount.
+   * @param _seed The girth seed.
+   */
+  static inline void girthSample(float& _value,
+                                 const float _girth,
+                                 const float _seed) noexcept
   {
-    value = value * (((seed) / 100 * girth) + 1);
-    value = std::clamp(value, -1.0f, 1.0f);
+    _value *= ((_seed / 100.0f * _girth) + 1.0f);
+    _value = std::clamp(_value, -1.0f, 1.0f);
   }
 
-  static inline void symmetrySample(float& value, float symmetry)
+  //==============================================================================
+  /**
+   * @brief Apply symmetry effect to a sample.
+   *
+   * @param _value The sample value.
+   * @param _symmetry The symmetry amount.
+   */
+  static inline void symmetrySample(float& _value,
+                                    const float _symmetry) noexcept
   {
-    if (value > 0) {
-      value += value * symmetry;
+    if (_value > 0.0f) {
+      _value += _value * _symmetry;
     } else {
-      value -= value * symmetry;
+      _value -= _value * _symmetry;
     }
-    value = std::clamp(value, -1.0f, 1.0f);
+    _value = std::clamp(_value, -1.0f, 1.0f);
   }
 
-  static inline void processBuffer(juce::AudioBuffer<float>& buffer,
-                                   Type type,
-                                   float symmetry,
-                                   float girth,
-                                   float drive)
+  //==============================================================================
+  /**
+   * @brief Process an audio buffer with distortion, girth, and symmetry
+   * effects.
+   *
+   * @param _buffer The audio buffer.
+   * @param _type The distortion type.
+   * @param _symmetry The symmetry amount.
+   * @param _girth The girth amount.
+   * @param _drive The drive amount.
+   */
+  static inline void processBuffer(juce::AudioBuffer<float>& _buffer,
+                                   const Type _type,
+                                   const float _symmetry,
+                                   const float _girth,
+                                   const float _drive) noexcept
   {
     std::vector<float> girthSeeds;
-    if (girth < 0)
-      girthSeeds = getGirthSeeds(buffer.getNumSamples());
+    if (_girth < 0.0f) {
+      girthSeeds = getGirthSeeds(_buffer.getNumSamples());
+    }
 
-    for (size_t channel = 0; channel < buffer.getNumChannels(); channel++) {
-      auto* channelData = buffer.getWritePointer(channel);
-      for (size_t sample = 0; sample < buffer.getNumSamples(); sample++) {
-        // Girth
-        if (girth < 0)
-          girthSample(channelData[sample], std::abs(girth), girthSeeds[sample]);
-        else
-          girthSample(channelData[sample], girth);
+    for (int channel = 0; channel < _buffer.getNumChannels(); ++channel) {
+      auto* channelData = _buffer.getWritePointer(channel);
+      for (int sample = 0; sample < _buffer.getNumSamples(); ++sample) {
+        if (_girth < 0.0f) {
+          girthSample(
+            channelData[sample], std::abs(_girth), girthSeeds[sample]);
+        } else {
+          girthSample(channelData[sample], _girth);
+        }
 
-        // Distortion
-        distortSample(channelData[sample], type, drive);
-
-        // Symmetry
-        symmetrySample(channelData[sample], symmetry);
+        distortSample(channelData[sample], _type, _drive);
+        symmetrySample(channelData[sample], _symmetry);
       }
     }
   }
 };
+
+//==============================================================================
 } // namespace effect
 } // namespace dsp
 } // namespace dmt

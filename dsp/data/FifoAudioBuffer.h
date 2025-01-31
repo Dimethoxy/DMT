@@ -1,28 +1,79 @@
+//==============================================================================
+/*
+ * ██████  ██ ███    ███ ███████ ████████ ██   ██  ██████  ██   ██ ██    ██
+ * ██   ██ ██ ████  ████ ██         ██    ██   ██ ██    ██  ██ ██   ██  ██
+ * ██   ██ ██ ██ ████ ██ █████      ██    ███████ ██    ██   ███     ████
+ * ██   ██ ██ ██  ██  ██ ██         ██    ██   ██ ██    ██  ██ ██     ██
+ * ██████  ██ ██      ██ ███████    ██    ██   ██  ██████  ██   ██    ██
+ *
+ * Copyright (C) 2024 Dimethoxy Audio (https://dimethoxy.com)
+ *
+ * This file is part of the Dimethoxy Library, a collection of essential
+ * classes used across various Dimethoxy projects.
+ * These files are primarily designed for internal use within our repositories.
+ *
+ * License:
+ * This code is licensed under the GPLv3 license. You are permitted to use and
+ * modify this code under the terms of this license.
+ * You must adhere GPLv3 license for any project using this code or parts of it.
+ * Your are not allowed to use this code in any closed-source project.
+ *
+ * Description:
+ * A lock-free FIFO audio buffer optimized for real-time performance.
+ *
+ * Authors:
+ * Lunix-420 (Primary Author)
+ */
+//==============================================================================
+
 #pragma once
-//==============================================================================
 #include <JuceHeader.h>
+
 //==============================================================================
+
 namespace dmt {
 namespace dsp {
 namespace data {
+
 //==============================================================================
+/**
+ * @brief A lock-free FIFO audio buffer optimized for real-time performance.
+ *
+ * This class uses a circular buffer to manage audio data in a lock-free manner.
+ *
+ * @tparam SampleType The type of audio sample (e.g., float, double).
+ */
 template<typename SampleType>
-class FifoAudioBuffer : public juce::AbstractFifo
+class alignas(64) FifoAudioBuffer : public juce::AbstractFifo
 {
   using BufferData = std::vector<std::vector<float>>;
   using ChannelData = std::vector<float>;
-  //============================================================================
+
 public:
-  FifoAudioBuffer(int channels, int bufferSize)
-    : AbstractFifo(bufferSize)
-  {
-    buffer.setSize(channels, bufferSize);
-  }
   //============================================================================
-  void addToFifo(const juce::AudioBuffer<SampleType>& target)
+  /**
+   * @brief Constructs a FifoAudioBuffer with the specified number of channels
+   * and buffer size.
+   *
+   * @param _channels The number of audio channels.
+   * @param _bufferSize The size of the buffer.
+   */
+  constexpr inline FifoAudioBuffer(int _channels, int _bufferSize) noexcept
+    : AbstractFifo(_bufferSize)
   {
-    TRACE_DSP();
-    const int numSamples = target.getNumSamples();
+    buffer.setSize(_channels, _bufferSize);
+  }
+
+  //============================================================================
+  /**
+   * @brief Adds audio data to the FIFO buffer.
+   *
+   * @param _target The audio buffer containing the data to add.
+   */
+  __attribute__((always_inline)) inline void addToFifo(
+    const juce::AudioBuffer<SampleType>& _target) noexcept
+  {
+    const int numSamples = _target.getNumSamples();
     int firstBlockStart, firstBlockSize, secondBlockStart, secondBlockSize;
 
     prepareToWrite(numSamples,
@@ -31,30 +82,32 @@ public:
                    secondBlockStart,
                    secondBlockSize);
 
-    for (size_t channel = 0; channel < buffer.getNumChannels(); ++channel) {
+    for (int channel = 0; channel < buffer.getNumChannels(); ++channel) {
       if (firstBlockSize > 0)
-        buffer.copyFrom(channel,         // destChannel
-                        firstBlockStart, // destStartSample
-                        target,          // source
-                        channel,         // sourceChannel
-                        0,               // sourceStartSample
-                        firstBlockSize); // numSamples
+        buffer.copyFrom(
+          channel, firstBlockStart, _target, channel, 0, firstBlockSize);
       if (secondBlockSize > 0)
-        buffer.copyFrom(channel,          // destChannel
-                        secondBlockStart, // destStartSample
-                        target,           // source
-                        channel,          // sourceChannel
-                        firstBlockSize,   // sourceStartSample
-                        secondBlockSize); // numSamples
+        buffer.copyFrom(channel,
+                        secondBlockStart,
+                        _target,
+                        channel,
+                        firstBlockSize,
+                        secondBlockSize);
     }
 
     finishedWrite(firstBlockSize + secondBlockSize);
   }
+
   //============================================================================
-  void readFromFifo(juce::AudioBuffer<SampleType>& target)
+  /**
+   * @brief Reads audio data from the FIFO buffer.
+   *
+   * @param _target The audio buffer to store the read data.
+   */
+  __attribute__((always_inline)) inline void readFromFifo(
+    juce::AudioBuffer<SampleType>& _target) noexcept
   {
-    TRACE_COMPONENT();
-    const int numSamples = target.getNumSamples();
+    const int numSamples = _target.getNumSamples();
     int firstBlockStart, firstBlockSize, secondBlockStart, secondBlockSize;
 
     prepareToRead(numSamples,
@@ -63,51 +116,88 @@ public:
                   secondBlockStart,
                   secondBlockSize);
 
-    for (size_t channel = 0; channel < buffer.getNumChannels(); ++channel) {
+    for (int channel = 0; channel < buffer.getNumChannels(); ++channel) {
       if (firstBlockSize > 0)
-        target.copyFrom(channel,         // destChannel
-                        0,               // destStartSample
-                        buffer,          // source
-                        channel,         // sourceChannel
-                        firstBlockStart, // sourceStartSample
-                        firstBlockSize); // numSamples
+        _target.copyFrom(
+          channel, 0, buffer, channel, firstBlockStart, firstBlockSize);
       if (secondBlockSize > 0)
-        target.copyFrom(channel,          // destChannel
-                        firstBlockSize,   // destStartSample
-                        buffer,           // source
-                        channel,          // sourceChannel
-                        secondBlockStart, // sourceStartSample
-                        secondBlockSize); // numSamples
+        _target.copyFrom(channel,
+                         firstBlockSize,
+                         buffer,
+                         channel,
+                         secondBlockStart,
+                         secondBlockSize);
     }
 
     finishedRead(firstBlockSize + secondBlockSize);
   }
 
   //============================================================================
-  void setSize(const int channels, const int newBufferSize)
+  /**
+   * @brief Resizes the FIFO buffer.
+   *
+   * @param _channels The new number of channels.
+   * @param _newBufferSize The new buffer size.
+   */
+  __attribute__((always_inline)) inline void setSize(
+    const int _channels,
+    const int _newBufferSize) noexcept
   {
-    buffer.setSize(channels, newBufferSize);
-    setTotalSize(newBufferSize);
+    buffer.setSize(_channels, _newBufferSize);
+    setTotalSize(_newBufferSize);
     reset();
   }
+
   //============================================================================
-  void clear()
+  /**
+   * @brief Clears the FIFO buffer.
+   */
+  __attribute__((always_inline)) inline void clear() noexcept
   {
     buffer.clear();
     reset();
   }
+
   //============================================================================
-  int getNumChannels() const { return buffer.getNumChannels(); }
+  /**
+   * @brief Gets the number of channels in the FIFO buffer.
+   *
+   * @return The number of channels.
+   */
+  __attribute__((always_inline)) inline int getNumChannels() const noexcept
+  {
+    return buffer.getNumChannels();
+  }
+
   //============================================================================
-  int getNumSamples() const { return buffer.getNumSamples(); }
+  /**
+   * @brief Gets the number of samples in the FIFO buffer.
+   *
+   * @return The number of samples.
+   */
+  __attribute__((always_inline)) inline int getNumSamples() const noexcept
+  {
+    return buffer.getNumSamples();
+  }
+
   //============================================================================
-  const juce::AudioBuffer<SampleType>& getBuffer() const { return buffer; }
-  //============================================================================
+  /**
+   * @brief Gets the underlying audio buffer.
+   *
+   * @return A const reference to the audio buffer.
+   */
+  __attribute__((always_inline)) inline const juce::AudioBuffer<SampleType>&
+  getBuffer() const noexcept
+  {
+    return buffer;
+  }
+
 private:
   juce::AudioBuffer<SampleType> buffer;
 
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(FifoAudioBuffer)
 };
+
 } // namespace data
 } // namespace dsp
 } // namespace dmt

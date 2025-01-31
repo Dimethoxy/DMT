@@ -1,4 +1,30 @@
 //==============================================================================
+/*
+ * ██████  ██ ███    ███ ███████ ████████ ██   ██  ██████  ██   ██ ██    ██
+ * ██   ██ ██ ████  ████ ██         ██    ██   ██ ██    ██  ██ ██   ██  ██
+ * ██   ██ ██ ██ ████ ██ █████      ██    ███████ ██    ██   ███     ████
+ * ██   ██ ██ ██  ██  ██ ██         ██    ██   ██ ██    ██  ██ ██     ██
+ * ██████  ██ ██      ██ ███████    ██    ██   ██  ██████  ██   ██    ██
+ *
+ * Copyright (C) 2024 Dimethoxy Audio (https://dimethoxy.com)
+ *
+ * This file is part of the Dimethoxy Library, a collection of essential
+ * classes used across various Dimethoxy projects.
+ * These files are primarily designed for internal use within our repositories.
+ *
+ * License:
+ * This code is licensed under the GPLv3 license. You are permitted to use and
+ * modify this code under the terms of this license.
+ * You must adhere GPLv3 license for any project using this code or parts of it.
+ * Your are not allowed to use this code in any closed-source project.
+ *
+ * Description:
+ * Specialized display component inheriting from AbstractDisplayComponent.
+ *
+ * Authors:
+ * Lunix-420 (Primary Author)
+ */
+//==============================================================================
 
 #pragma once
 
@@ -10,24 +36,41 @@ namespace dmt {
 namespace gui {
 namespace component {
 //==============================================================================
-class DisfluxDisplayComponent : public AbstractDisplayComponent
+
+/**
+ * @class DisfluxDisplayComponent
+ * @brief Specialized display component inheriting from
+ * AbstractDisplayComponent.
+ */
+class alignas(64) DisfluxDisplayComponent : public AbstractDisplayComponent
 {
 public:
   //============================================================================
-  DisfluxDisplayComponent(/*juce::AudioProcessorValueTreeState& apvts*/)
+  /**
+   * @brief Constructor for DisfluxDisplayComponent.
+   */
+  constexpr inline DisfluxDisplayComponent() noexcept
     : AbstractDisplayComponent()
   {
   }
+
   //============================================================================
-  void repaintDisplay(
-    juce::Graphics& g,
-    const juce::Rectangle<int>& displayBounds) const noexcept override
+  /**
+   * @brief Repaints the display.
+   * @param _g Graphics context used for drawing.
+   * @param _displayBounds Bounds of the display area.
+   */
+  __attribute__((always_inline)) inline void repaintDisplay(
+    juce::Graphics& _g,
+    const juce::Rectangle<int>& _displayBounds) const noexcept override
   {
     TRACER("DisfluxDisplayComponent::repaintDisplay");
   }
 
 private:
+  //============================================================================
+  // Private members can be added here if needed
 };
-} // namespace components
+} // namespace component
 } // namespace gui
 } // namespace dmt

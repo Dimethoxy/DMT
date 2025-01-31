@@ -1,34 +1,84 @@
-// #pragma once
-// //==============================================================================
-// #include "utility/Settings.h"
-// #include <JuceHeader.h>
-// //==============================================================================
-// namespace dmt {
-// namespace configuration {
-// //==============================================================================
-// static inline auto
-// getOptions()
-// {
-//   auto options = juce::PropertiesFile::Options();
-//   juce::String name = ProjectInfo::projectName;
-//   options.applicationName = name;
-//   options.filenameSuffix = ".config";
-//   options.osxLibrarySubFolder = "Application Support";
-//   options.storageFormat = juce::PropertiesFile::storeAsXML;
-//   options.commonToAllUsers = false;
-//   options.ignoreCaseOfKeyNames = true;
-//   options.doNotSave = false;
-//   options.millisecondsBeforeSaving = -1; // Only when explicitly calling
+//==============================================================================
+/*
+ * ██████  ██ ███    ███ ███████ ████████ ██   ██  ██████  ██   ██ ██    ██
+ * ██   ██ ██ ████  ████ ██         ██    ██   ██ ██    ██  ██ ██   ██  ██
+ * ██   ██ ██ ██ ████ ██ █████      ██    ███████ ██    ██   ███     ████
+ * ██   ██ ██ ██  ██  ██ ██         ██    ██   ██ ██    ██  ██ ██     ██
+ * ██████  ██ ██      ██ ███████    ██    ██   ██  ██████  ██   ██    ██
+ *
+ * Copyright (C) 2024 Dimethoxy Audio (https://dimethoxy.com)
+ *
+ * This file is part of the Dimethoxy Library, a collection of essential
+ * classes used across various Dimethoxy projects.
+ * These files are primarily designed for internal use within our repositories.
+ *
+ * License:
+ * This code is licensed under the GPLv3 license. You are permitted to use and
+ * modify this code under the terms of this license.
+ * You must adhere GPLv3 license for any project using this code or parts of it.
+ * Your are not allowed to use this code in any closed-source project.
+ *
+ * Description:
+ * Get the options for the properties file with predefined settings.
+ *
+ * Authors:
+ * Lunix-420 (Primary Author)
+ */
+//==============================================================================
 
-//   if (OS_IS_WINDOWS) {
-//     options.folderName = "Dimethoxy/" + name;
-//   } else if (OS_IS_DARWIN) {
-//     options.folderName = "Dimethoxy/" + name;
-//   } else if (OS_IS_LINUX) {
-//     options.folderName = ".config/Dimethoxy/" + name;
-//   }
+#pragma once
 
-//   return options;
-// }
-// } // namespace configuration
-// } // namespace dmt
+//==============================================================================
+
+#include "utility/Settings.h"
+#include <JuceHeader.h>
+
+//==============================================================================
+
+namespace dmt {
+namespace configuration {
+
+//==============================================================================
+/**
+ * @brief Get the options for the properties file with predefined settings.
+ *
+ * This function is optimized for maximum real-time performance. It uses
+ * constexpr, inline, noexcept, and other relevant optimizations to minimize
+ * runtime overhead.
+ *
+ * @return A juce::PropertiesFile::Options object with default settings.
+ */
+[[nodiscard]] static inline auto
+getOptions() noexcept -> juce::PropertiesFile::Options
+{
+  juce::PropertiesFile::Options options;
+
+  constexpr auto name = ProjectInfo::projectName;
+  options.applicationName = name;
+
+  options.filenameSuffix = ".config";
+  options.storageFormat = juce::PropertiesFile::storeAsXML;
+
+  if constexpr (OS_IS_WINDOWS) {
+    options.folderName = "Dimethoxy/" + name;
+  } else if constexpr (OS_IS_DARWIN) {
+    options.folderName = "Dimethoxy/" + name;
+  } else if constexpr (OS_IS_LINUX) {
+    options.folderName = ".config/Dimethoxy/" + name;
+  }
+
+  options.osxLibrarySubFolder = "Application Support";
+  options.commonToAllUsers = false;
+  options.ignoreCaseOfKeyNames = true;
+  options.doNotSave = false;
+  options.millisecondsBeforeSaving = -1;
+
+  return options;
+}
+
+//==============================================================================
+
+} // namespace configuration
+} // namespace dmt
+
+//==============================================================================

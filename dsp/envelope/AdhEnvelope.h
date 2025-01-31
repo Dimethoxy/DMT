@@ -1,19 +1,51 @@
+//==============================================================================
 /*
-  ==============================================================================
-
-    AdhEnvelope.h
-    Created: 21 Feb 2023 12:11:41am
-    Author:  Lunix
-
-  ==============================================================================
-*/
+ * ██████  ██ ███    ███ ███████ ████████ ██   ██  ██████  ██   ██ ██    ██
+ * ██   ██ ██ ████  ████ ██         ██    ██   ██ ██    ██  ██ ██   ██  ██
+ * ██   ██ ██ ██ ████ ██ █████      ██    ███████ ██    ██   ███     ████
+ * ██   ██ ██ ██  ██  ██ ██         ██    ██   ██ ██    ██  ██ ██     ██
+ * ██████  ██ ██      ██ ███████    ██    ██   ██  ██████  ██   ██    ██
+ *
+ * Copyright (C) 2024 Dimethoxy Audio (https://dimethoxy.com)
+ *
+ * This file is part of the Dimethoxy Library, a collection of essential
+ * classes used across various Dimethoxy projects.
+ * These files are primarily designed for internal use within our repositories.
+ *
+ * License:
+ * This code is licensed under the GPLv3 license. You are permitted to use and
+ * modify this code under the terms of this license.
+ * You must adhere GPLv3 license for any project using this code or parts of it.
+ * Your are not allowed to use this code in any closed-source project.
+ *
+ * Description:
+ * Get the options for the properties file with predefined settings.
+ *
+ * Authors:
+ * Lunix-420 (Primary Author)
+ */
+//==============================================================================
 
 #pragma once
+
+//==============================================================================
+
 #include "utility/Math.h"
+
+//==============================================================================
 
 namespace dmt {
 namespace dsp {
 namespace envelope {
+
+//==============================================================================
+
+/**
+ * @brief AHD Envelope Generator
+ *
+ * This class generates an Attack-Hold-Decay (AHD) envelope.
+ * It is optimized for real-time performance.
+ */
 class AhdEnvelope
 {
 public:
@@ -23,9 +55,8 @@ public:
     float hold = 0.08f;
     float decay = 0.5f;
 
-    // Negative scew = curve pulled up
-    float attackScew = 0;
-    float decayScew = 10;
+    float attackSkew = 0;
+    float decaySkew = 10;
   };
 
   enum class State
@@ -36,90 +67,145 @@ public:
     Idle
   };
 
-  AhdEnvelope() {}
+  constexpr AhdEnvelope() noexcept = default;
 
-  void setParameters(Parameters& newParams) { this->params = newParams; }
-  void setSampleRate(float newSampleRate) { this->sampleRate = newSampleRate; }
-  void noteOn() { sampleIndex = 0; }
-
-  State getState()
+  /**
+   * @brief Set the envelope parameters.
+   * @param _newParams The new parameters to set.
+   */
+  inline void setParameters(const Parameters& _newParams) noexcept
   {
-    if (sampleIndex < getHoldStart())
-      return State::Attack;
-    if (sampleIndex < getDecayStart())
-      return State::Hold;
-    if (sampleIndex < getDecayEnd())
-      return State::Decay;
-    else
-      return State::Idle;
+    params = _newParams;
   }
 
-  float getNextSample()
+  /**
+   * @brief Set the sample rate.
+   * @param _newSampleRate The new sample rate to set.
+   */
+  inline void setSampleRate(const float _newSampleRate) noexcept
   {
-    auto state = getState();
-    float result = getValue(state);
-    sampleIndex++;
+    sampleRate = _newSampleRate;
+  }
+
+  /**
+   * @brief Trigger the envelope to start.
+   */
+  inline void noteOn() noexcept { sampleIndex = 0; }
+
+  /**
+   * @brief Get the current state of the envelope.
+   * @return The current state.
+   */
+  [[nodiscard]] inline State getState() const noexcept
+  {
+    if (sampleIndex < getHoldStart()) [[likely]]
+      return State::Attack;
+    if (sampleIndex < getDecayStart()) [[likely]]
+      return State::Hold;
+    if (sampleIndex < getDecayEnd()) [[likely]]
+      return State::Decay;
+    return State::Idle;
+  }
+
+  /**
+   * @brief Get the next sample value of the envelope.
+   * @return The next sample value.
+   */
+  [[nodiscard]] inline float getNextSample() noexcept
+  {
+    const auto state = getState();
+    const float result = getValue(state);
+    ++sampleIndex;
     return result;
   }
 
 private:
-  float getValue(State state)
+  /**
+   * @brief Get the value of the envelope based on its state.
+   * @param _state The current state of the envelope.
+   * @return The value of the envelope.
+   */
+  [[nodiscard]] inline float getValue(const State _state) const noexcept
   {
-    switch (state) {
+    constexpr float one = 1.0f;
+    constexpr float zero = 0.0f;
+
+    switch (_state) {
       case State::Attack: {
-        float normalizedPosition = sampleIndex / sampleRate;
-        float scew = getScew(State::Attack);
-        float value = std::pow(normalizedPosition / params.attack, scew);
-        return value;
+        const float normalizedPosition =
+          static_cast<float>(sampleIndex) / sampleRate;
+        const float skew = getSkew(State::Attack);
+        return std::pow(normalizedPosition / params.attack, skew);
       }
-      case State::Hold: {
-        return 1.0f;
-      }
+      case State::Hold:
+        return one;
       case State::Decay: {
-        float decayStart = (float)getDecayStart();
-        float normalizedPosition = (sampleIndex - decayStart) / sampleRate;
-        float scew = getScew(State::Decay);
-        float value = 1.0f - std::pow(normalizedPosition / params.decay, scew);
-        return value;
+        const float decayStart = static_cast<float>(getDecayStart());
+        const float normalizedPosition =
+          (static_cast<float>(sampleIndex) - decayStart) / sampleRate;
+        const float skew = getSkew(State::Decay);
+        return one - std::pow(normalizedPosition / params.decay, skew);
       }
-      default: {
-        return 0.0f;
-      }
+      default:
+        return zero;
     }
   }
-  float getScew(State state)
+
+  /**
+   * @brief Get the skew value for the given state.
+   * @param _state The current state of the envelope.
+   * @return The skew value.
+   */
+  [[nodiscard]] inline float getSkew(const State _state) const noexcept
   {
-    switch (state) {
-      case State::Attack: {
-        return dmt::math::linearToExponent(params.attackScew);
-      }
-      case State::Decay: {
-        return dmt::math::linearToExponent(-params.decayScew);
-      }
-      default: {
+    switch (_state) {
+      case State::Attack:
+        return dmt::math::linearToExponent(params.attackSkew);
+      case State::Decay:
+        return dmt::math::linearToExponent(-params.decaySkew);
+      default:
         return 1.0f;
-      }
     }
   }
-  int getHoldStart() { return (int)(params.attack * sampleRate); }
-  int getDecayStart()
+
+  /**
+   * @brief Get the sample index where the hold phase starts.
+   * @return The sample index.
+   */
+  [[nodiscard]] inline size_t getHoldStart() const noexcept
   {
-    float rawDecayDelay = params.attack + params.hold;
-    int decayDelay = (int)(rawDecayDelay * sampleRate);
-    int decayStart = decayDelay + 1;
-    return decayStart;
+    return static_cast<size_t>(params.attack * sampleRate);
   }
-  int getDecayEnd()
+
+  /**
+   * @brief Get the sample index where the decay phase starts.
+   * @return The sample index.
+   */
+  [[nodiscard]] inline size_t getDecayStart() const noexcept
   {
-    float rawDecayEnd = (params.attack + params.hold + params.decay);
-    int decayEnd = (int)(rawDecayEnd * sampleRate);
-    return decayEnd;
+    const float rawDecayDelay = params.attack + params.hold;
+    return static_cast<size_t>(rawDecayDelay * sampleRate) + 1;
   }
+
+  /**
+   * @brief Get the sample index where the decay phase ends.
+   * @return The sample index.
+   */
+  [[nodiscard]] inline size_t getDecayEnd() const noexcept
+  {
+    const float rawDecayEnd = params.attack + params.hold + params.decay;
+    return static_cast<size_t>(rawDecayEnd * sampleRate);
+  }
+
   float sampleRate = -1.0f;
   Parameters params;
-  int sampleIndex = 0;
+  size_t sampleIndex = 0;
 };
+
+//==============================================================================
 
 } // namespace envelope
 } // namespace dsp
 } // namespace dmt
+
+//==============================================================================
