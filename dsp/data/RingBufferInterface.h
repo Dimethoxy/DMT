@@ -79,9 +79,8 @@ public:
    * @param _sample The sample index to read.
    * @return The sample value.
    */
-  __attribute__((always_inline)) inline SampleType getSample(
-    const int _channel,
-    const int _sample) const noexcept
+  forcedinline SampleType getSample(const int _channel,
+                                    const int _sample) const noexcept
   {
     const int numSamples = audioBuffer.getNumSamples();
     const int block1size = numSamples - writePosition;
@@ -98,8 +97,7 @@ public:
    * @param _channel The channel index.
    * @return The read position.
    */
-  __attribute__((always_inline)) inline int getReadPosition(
-    int _channel) const noexcept
+  forcedinline int getReadPosition(int _channel) const noexcept
   {
     const int numSamples = audioBuffer.getNumSamples();
     const int rawReadPosition = readPosition[_channel];
@@ -116,9 +114,7 @@ public:
    * @param _channel The channel index.
    * @param _increment The amount to increment.
    */
-  __attribute__((always_inline)) inline void incrementReadPosition(
-    int _channel,
-    int _increment) noexcept
+  forcedinline void incrementReadPosition(int _channel, int _increment) noexcept
   {
     const int numSamples = audioBuffer.getNumSamples();
     const int oldReadPosition = readPosition[_channel];
@@ -133,9 +129,8 @@ public:
    * @param _channel The channel index.
    * @param _position The new read position.
    */
-  __attribute__((always_inline)) inline void setRawReadPosition(
-    const int _channel,
-    const int _position) noexcept
+  forcedinline void setRawReadPosition(const int _channel,
+                                       const int _position) noexcept
   {
     readPosition[_channel] = _position;
   }
@@ -147,8 +142,7 @@ public:
    * @param _channel The channel index.
    * @return The raw read position.
    */
-  __attribute__((always_inline)) inline int getRawReadPosition(
-    const int _channel) const noexcept
+  forcedinline int getRawReadPosition(const int _channel) const noexcept
   {
     return readPosition[_channel];
   }
@@ -157,7 +151,7 @@ public:
   /**
    * @brief Equalizes the read positions across all channels.
    */
-  __attribute__((always_inline)) inline void equalizeReadPositions() noexcept
+  forcedinline void equalizeReadPositions() noexcept
   {
     int highestReadPosition = 0;
     int highestReadChannel = 0;

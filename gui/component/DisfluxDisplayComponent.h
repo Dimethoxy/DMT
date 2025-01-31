@@ -60,7 +60,7 @@ public:
    * @param _g Graphics context used for drawing.
    * @param _displayBounds Bounds of the display area.
    */
-  __attribute__((always_inline)) inline void repaintDisplay(
+  forcedinline void repaintDisplay(
     juce::Graphics& _g,
     const juce::Rectangle<int>& _displayBounds) const noexcept override
   {

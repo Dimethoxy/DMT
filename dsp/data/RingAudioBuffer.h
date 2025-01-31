@@ -79,8 +79,7 @@ public:
    *
    * @param _bufferToWrite The audio buffer containing the data to write.
    */
-  __attribute__((always_inline)) inline void write(
-    const AudioBuffer& _bufferToWrite) noexcept
+  forcedinline void write(const AudioBuffer& _bufferToWrite) noexcept
   {
     const int numChannels = getNumChannels();
     const int bufferSize = getNumSamples();
@@ -123,8 +122,7 @@ public:
    *
    * @param _bufferToWrite The FIFO buffer containing the data to write.
    */
-  __attribute__((always_inline)) inline void write(
-    FifoAudioBuffer& _bufferToWrite) noexcept
+  forcedinline void write(FifoAudioBuffer& _bufferToWrite) noexcept
   {
     const int numChannels = getNumChannels();
     const int bufferSize = getNumSamples();
@@ -206,9 +204,8 @@ public:
    * @param _numChannelsToAllocate The new number of channels.
    * @param _numSamplesToAllocate The new buffer size.
    */
-  __attribute__((always_inline)) inline void resize(
-    const int _numChannelsToAllocate,
-    const int _numSamplesToAllocate) noexcept
+  forcedinline void resize(const int _numChannelsToAllocate,
+                           const int _numSamplesToAllocate) noexcept
   {
     ringBuffer.setSize(_numChannelsToAllocate, _numSamplesToAllocate);
   }
@@ -219,7 +216,7 @@ public:
    *
    * @return The number of channels.
    */
-  __attribute__((always_inline)) inline int getNumChannels() const noexcept
+  forcedinline int getNumChannels() const noexcept
   {
     return ringBuffer.getNumChannels();
   }
@@ -230,7 +227,7 @@ public:
    *
    * @return The number of samples.
    */
-  __attribute__((always_inline)) inline int getNumSamples() const noexcept
+  forcedinline int getNumSamples() const noexcept
   {
     return ringBuffer.getNumSamples();
   }
@@ -241,16 +238,13 @@ public:
    *
    * @return The write position.
    */
-  __attribute__((always_inline)) inline int getWritePosition() const noexcept
-  {
-    return writePosition;
-  }
+  forcedinline int getWritePosition() const noexcept { return writePosition; }
 
   //============================================================================
   /**
    * @brief Clears the ring buffer.
    */
-  __attribute__((always_inline)) inline void clear() noexcept
+  forcedinline void clear() noexcept
   {
     ringBuffer.clear();
     writePosition = 0;
@@ -262,10 +256,7 @@ public:
    *
    * @return A reference to the audio buffer.
    */
-  __attribute__((always_inline)) inline AudioBuffer& getBuffer() noexcept
-  {
-    return ringBuffer;
-  }
+  forcedinline AudioBuffer& getBuffer() noexcept { return ringBuffer; }
 
 protected:
   //============================================================================
@@ -274,8 +265,7 @@ protected:
    *
    * @param _increment The amount to increment the write position.
    */
-  __attribute__((always_inline)) inline void updateWritePosition(
-    const int _increment) noexcept
+  forcedinline void updateWritePosition(const int _increment) noexcept
   {
     bool moveWriteOverRead = false;
     int newWritePosition = (writePosition + _increment) % getNumSamples();

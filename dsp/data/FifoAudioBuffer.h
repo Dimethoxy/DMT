@@ -70,7 +70,7 @@ public:
    *
    * @param _target The audio buffer containing the data to add.
    */
-  __attribute__((always_inline)) inline void addToFifo(
+  forcedinline void addToFifo(
     const juce::AudioBuffer<SampleType>& _target) noexcept
   {
     const int numSamples = _target.getNumSamples();
@@ -104,7 +104,7 @@ public:
    *
    * @param _target The audio buffer to store the read data.
    */
-  __attribute__((always_inline)) inline void readFromFifo(
+  forcedinline void readFromFifo(
     juce::AudioBuffer<SampleType>& _target) noexcept
   {
     const int numSamples = _target.getNumSamples();
@@ -139,9 +139,8 @@ public:
    * @param _channels The new number of channels.
    * @param _newBufferSize The new buffer size.
    */
-  __attribute__((always_inline)) inline void setSize(
-    const int _channels,
-    const int _newBufferSize) noexcept
+  forcedinline void setSize(const int _channels,
+                            const int _newBufferSize) noexcept
   {
     buffer.setSize(_channels, _newBufferSize);
     setTotalSize(_newBufferSize);
@@ -152,7 +151,7 @@ public:
   /**
    * @brief Clears the FIFO buffer.
    */
-  __attribute__((always_inline)) inline void clear() noexcept
+  forcedinline void clear() noexcept
   {
     buffer.clear();
     reset();
@@ -164,7 +163,7 @@ public:
    *
    * @return The number of channels.
    */
-  __attribute__((always_inline)) inline int getNumChannels() const noexcept
+  forcedinline int getNumChannels() const noexcept
   {
     return buffer.getNumChannels();
   }
@@ -175,7 +174,7 @@ public:
    *
    * @return The number of samples.
    */
-  __attribute__((always_inline)) inline int getNumSamples() const noexcept
+  forcedinline int getNumSamples() const noexcept
   {
     return buffer.getNumSamples();
   }
@@ -186,8 +185,7 @@ public:
    *
    * @return A const reference to the audio buffer.
    */
-  __attribute__((always_inline)) inline const juce::AudioBuffer<SampleType>&
-  getBuffer() const noexcept
+  forcedinline const juce::AudioBuffer<SampleType>& getBuffer() const noexcept
   {
     return buffer;
   }
