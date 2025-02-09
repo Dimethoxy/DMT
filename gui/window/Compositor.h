@@ -15,7 +15,7 @@ class Compositor : public juce::Component
 
   // Window size
   const float& size = dmt::Settings::Window::size;
-  const int headerHeight = dmt::Settings::Window::headerHeight;
+  const int headerHeight = dmt::Settings::Header::height;
 
 public:
   Compositor(AbstractPanel& mainPanel)

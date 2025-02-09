@@ -6,7 +6,7 @@ namespace gui {
 namespace component {
 class HeaderComponent : public juce::Component
 {
-  const juce::Colour& headerColour = dmt::Settings::getColour("headerColour");
+  const juce::Colour& headerColour = dmt::Settings::Header::backroundColour;
 
 public:
   HeaderComponent()

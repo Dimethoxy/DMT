@@ -48,6 +48,12 @@ struct Settings
     static inline float margin = 8.0f;
   };
 
+  struct Header
+  {
+    static inline Colour backroundColour = Colours::solid_mid;
+    static inline int height = 100;
+  };
+
   struct Panel
   {
     // General
