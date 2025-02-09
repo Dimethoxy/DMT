@@ -42,10 +42,6 @@ namespace configuration {
 /**
  * @brief Get the options for the properties file with predefined settings.
  *
- * This function is optimized for maximum real-time performance. It uses
- * constexpr, inline, noexcept, and other relevant optimizations to minimize
- * runtime overhead.
- *
  * @return A juce::PropertiesFile::Options object with default settings.
  */
 [[nodiscard]] static inline auto
@@ -53,18 +49,18 @@ getOptions() noexcept -> juce::PropertiesFile::Options
 {
   juce::PropertiesFile::Options options;
 
-  constexpr auto name = ProjectInfo::projectName;
+  constexpr auto& name = ProjectInfo::projectName;
   options.applicationName = name;
 
   options.filenameSuffix = ".config";
   options.storageFormat = juce::PropertiesFile::storeAsXML;
 
   if constexpr (OS_IS_WINDOWS) {
-    options.folderName = "Dimethoxy/" + name;
+    options.folderName = juce::String("Dimethoxy/") + name;
   } else if constexpr (OS_IS_DARWIN) {
-    options.folderName = "Dimethoxy/" + name;
+    options.folderName = juce::String("Dimethoxy/") + name;
   } else if constexpr (OS_IS_LINUX) {
-    options.folderName = ".config/Dimethoxy/" + name;
+    options.folderName = juce::String(".config/Dimethoxy/") + name;
   }
 
   options.osxLibrarySubFolder = "Application Support";

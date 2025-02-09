@@ -75,7 +75,7 @@ public:
    * @brief Generates the next sample of the waveform.
    * @return The next sample value.
    */
-  [[nodiscard]] forceinline float getNextSample() noexcept
+  [[nodiscard]] forcedinline float getNextSample() noexcept
   {
     if (sampleRate <= 0.0f)
       return 0.0f;
@@ -196,7 +196,7 @@ private:
   /**
    * @brief Advances the phase of the oscillator.
    */
-  forceinline void advancePhase() noexcept
+  forcedinline void advancePhase() noexcept
   {
     float cycleLength = sampleRate / frequency;
     float phaseDelta = twoPi / cycleLength;
@@ -213,7 +213,7 @@ private:
    * @param _rawPhase The raw phase value.
    * @return The synced phase value.
    */
-  forceinline float getSyncedPhase(float _rawPhase) const noexcept
+  forcedinline float getSyncedPhase(float _rawPhase) const noexcept
   {
     float syncedPhase = _rawPhase * syncModifier;
     while (syncedPhase >= twoPi) {
@@ -228,7 +228,7 @@ private:
    * @param _rawPhase The raw phase value.
    * @return The bended phase value.
    */
-  forceinline float getBendedPhase(float _rawPhase) const noexcept
+  forcedinline float getBendedPhase(float _rawPhase) const noexcept
   {
     auto bendedPhase = _rawPhase;
 
@@ -253,7 +253,7 @@ private:
    * settings.
    * @param _sample The sample value to be distorted.
    */
-  forceinline void distortSample(float& _sample) const noexcept
+  forcedinline void distortSample(float& _sample) const noexcept
   {
     constexpr float magicNumber = 0.7615941559558f;
     if (drive >= 1.0f) {
