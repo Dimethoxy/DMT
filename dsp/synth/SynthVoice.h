@@ -65,7 +65,7 @@ public:
    * @param _sound Pointer to the SynthesiserSound.
    * @return True if the sound can be played, false otherwise.
    */
-  bool canPlaySound(juce::SynthesiserSound* _sound) const noexcept override
+  bool canPlaySound(juce::SynthesiserSound* _sound) override
   {
     return dynamic_cast<juce::SynthesiserSound*>(_sound) != nullptr;
   }
@@ -263,7 +263,7 @@ protected:
    */
   [[nodiscard]] float getNextFrequency(const int _rawOctave,
                                        const int _rawSemitone,
-                                       const float _rawModDepth) const noexcept
+                                       const float _rawModDepth) noexcept
   {
     const int octaves = 12 * _rawOctave;
     const int semitone = octaves + _rawSemitone;
@@ -283,7 +283,7 @@ protected:
    * @param _oscGain The oscillator gain.
    * @return The gained sample.
    */
-  [[nodiscard]] float applyGain(float _sample, float _oscGain) const noexcept
+  [[nodiscard]] float applyGain(float _sample, float _oscGain) noexcept
   {
     const float envGain = gainEnvelope.getNextSample();
     const float gain = juce::Decibels::decibelsToGain(_oscGain, -96.0f);
