@@ -49,27 +49,6 @@ namespace configuration {
 class Properties
 {
 public:
-  Properties() = delete;
-  Properties(const Properties& _obj) = delete;
-  ~Properties() noexcept
-  {
-    file.saveIfNeeded();
-    file.closeFiles();
-  }
-
-  //============================================================================
-  /**
-   * @brief Get the singleton instance of Properties.
-   * @return Shared pointer to the Properties instance.
-   */
-  [[nodiscard]] static std::shared_ptr<Properties> getInstance() noexcept
-  {
-    if (instance == nullptr) {
-      instance = std::make_shared<Properties>();
-    }
-    return instance;
-  }
-
   //============================================================================
   /**
    * @brief Initialize the properties with options and settings.
@@ -85,10 +64,8 @@ public:
   }
 
 private:
-  static inline std::shared_ptr<Properties> instance = nullptr;
-  juce::ApplicationProperties file;
-  juce::PropertySet fallbackPropertySet;
+  static juce::ApplicationProperties file;
+  static juce::PropertySet fallbackPropertySet;
 };
-
 } // namespace configuration
 } // namespace dmt
