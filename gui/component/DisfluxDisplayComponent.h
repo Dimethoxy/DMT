@@ -49,7 +49,7 @@ public:
   /**
    * @brief Constructor for DisfluxDisplayComponent.
    */
-  constexpr inline DisfluxDisplayComponent() noexcept
+  inline DisfluxDisplayComponent() noexcept
     : AbstractDisplayComponent()
   {
   }

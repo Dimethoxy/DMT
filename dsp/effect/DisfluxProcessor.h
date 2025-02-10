@@ -65,8 +65,7 @@ public:
    *
    * @param _apvts The AudioProcessorValueTreeState containing the parameters.
    */
-  constexpr DisfluxProcessor(
-    juce::AudioProcessorValueTreeState& _apvts) noexcept
+  DisfluxProcessor(juce::AudioProcessorValueTreeState& _apvts) noexcept
     : apvts(_apvts)
   {
   }
