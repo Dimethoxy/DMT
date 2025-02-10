@@ -45,7 +45,7 @@ namespace configuration {
  * @return A juce::PropertiesFile::Options object with default settings.
  */
 [[nodiscard]] static inline auto
-getOptions() noexcept -> juce::PropertiesFile::Options
+getOptions() noexcept
 {
   juce::PropertiesFile::Options options;
 
