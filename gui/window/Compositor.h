@@ -1,7 +1,7 @@
 #pragma once
 
-#include "gui/component/HeaderComponent.h"
 #include "gui/panel/AbstractPanel.h"
+#include "gui/window/Header.h"
 #include <JuceHeader.h>
 
 namespace dmt {
@@ -11,7 +11,7 @@ namespace window {
 class Compositor : public juce::Component
 {
   using AbstractPanel = dmt::gui::panel::AbstractPanel;
-  using HeaderComponent = dmt::gui::component::HeaderComponent;
+  using Header = dmt::gui::window::Header;
 
   // Window size
   const float& size = dmt::Settings::Window::size;
@@ -41,7 +41,7 @@ public:
 
 private:
   AbstractPanel& mainPanel;
-  HeaderComponent header;
+  Header header;
 };
 } // namespace window
 } // namespace gui

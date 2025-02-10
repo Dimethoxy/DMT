@@ -50,8 +50,9 @@ struct Settings
 
   struct Header
   {
-    static inline Colour backroundColour = Colours::solid_mid;
-    static inline int height = 100;
+    static inline Colour backroundColour = Colours::solid_dark;
+    static inline Colour borderColor = Colours::solid_mid;
+    static inline int height = 40;
   };
 
   struct Panel
