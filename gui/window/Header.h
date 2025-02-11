@@ -6,22 +6,16 @@ namespace gui {
 namespace window {
 class Header : public juce::Component
 {
-  const juce::String& name = ProjectInfo::projectName;
+  const juce::String name = ProjectInfo::projectName;
   const float& size = dmt::Settings::Window::size;
   const float& rawBorderStrength = dmt::Settings::Panel::borderStrength;
   const juce::Colour& backroundColour = dmt::Settings::Header::backroundColour;
   const juce::Colour& borderColor = dmt::Settings::Header::borderColor;
 
 public:
-  Header()
-  {
-    // Constructor code here
-  }
+  Header() {};
 
-  ~Header() override
-  {
-    // Destructor code here
-  }
+  ~Header() override {}
 
   void paint(juce::Graphics& g) override
   {
@@ -37,7 +31,7 @@ public:
     g.fillRect(bounds);
 
     // Paint the title
-    // g.setColour(dmt::Settings::Header::titleColour);
+    g.setColour(dmt::Settings::Header::titleColour);
   }
 
   void resized() override
