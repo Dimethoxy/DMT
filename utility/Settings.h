@@ -18,13 +18,13 @@ namespace dmt {
 //==============================================================================
 struct Settings
 {
+public:
   using Colour = juce::Colour;
 
   Settings() = delete;
   Settings(const Settings& obj) = delete;
   ~Settings() = delete;
 
-  static inline float floatTolerance = 1e-6f;
   static inline int framerate = 30;
   static inline float unixFontScalingFactor = 0.9f;
   static inline bool debugBounds = false;

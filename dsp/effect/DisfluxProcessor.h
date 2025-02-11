@@ -56,7 +56,6 @@ class alignas(64) DisfluxProcessor
   using ProcessSpec = juce::dsp::ProcessSpec;
   using Filter = juce::IIRFilter;
   using FilterArray = std::array<Filter, FILTER_AMOUNT>;
-  const float& tolerance = dmt::Settings::floatTolerance;
 
 public:
   //==============================================================================
@@ -102,8 +101,8 @@ public:
     const auto mix = apvts.getRawParameterValue("DisfluxMix")->load();
 
     if (amount != newAmount || spread != newSpread ||
-        std::abs(frequency - newFrequency) > tolerance ||
-        std::abs(pinch - newPinch) > tolerance) {
+        !juce::approximatelyEqual(frequency, newFrequency) ||
+        !juce::approximatelyEqual(pinch, newPinch)) {
       amount = newAmount;
       spread = newSpread;
       frequency = newFrequency;
