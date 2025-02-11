@@ -17,7 +17,6 @@ class AbstractDisplayComponent
   , public dmt::utility::RepaintTimer
 {
   using Shadow = dmt::gui::widget::Shadow;
-  using Colour = dmt::Settings::Colour;
 
   // General
   using Display = dmt::Settings::Display;

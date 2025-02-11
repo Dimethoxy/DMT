@@ -99,7 +99,7 @@ public:
     const float leftScopeHeight = leftScopeBounds.getHeight();
     const float rightScopeY = rightScopeBounds.getY();
     const float rightScopeHeight = rightScopeBounds.getHeight();
-    g.setColour(Settings::Colours::background.brighter(0.05));
+    g.setColour(backgroundColour.brighter(0.05));
     const int numLines = getWidth() / (getHeight() / 4.0f);
     const float lineSpacing = scopeWidth / numLines;
     for (size_t i = 1; i < numLines; ++i) {
@@ -118,13 +118,13 @@ public:
                                   0.05f, 0.05f, 0.15f };
     for (size_t i = 0; i < 7; ++i) {
       const float y = leftScopeY + (leftScopeHeight / 6) * i;
-      g.setColour(Settings::Colours::background.brighter(brightnessValues[i]));
+      g.setColour(backgroundColour.brighter(brightnessValues[i]));
       g.drawLine(juce::Line<float>(scopeX, y, scopeX + scopeWidth, y),
                  3.0f * lineThicknessModifiers[i] * size);
     }
     for (size_t i = 0; i < 7; ++i) {
       const float y = rightScopeY + (rightScopeHeight / 6) * i;
-      g.setColour(Settings::Colours::background.brighter(brightnessValues[i]));
+      g.setColour(backgroundColour.brighter(brightnessValues[i]));
       g.drawLine(juce::Line<float>(scopeX, y, scopeX + scopeWidth, y),
                  3.0f * lineThicknessModifiers[i] * size);
     }

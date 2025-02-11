@@ -30,6 +30,7 @@ struct Settings
   static inline bool debugBounds = false;
   static inline bool debugGrid = false;
 
+private:
   struct Colours
   {
     using Colour = juce::Colour;
@@ -42,19 +43,21 @@ struct Settings
     static inline float opacityStep = 0.05f;
   };
 
+public:
   struct Window
   {
     static inline float size = 1.0f;
-    static inline float margin = 8.0f;
+    static inline float margin = 10.0f;
+    static inline Colour backroundColour = Colours::background;
   };
 
   struct Header
   {
-    static inline Colour backroundColour = Colours::solid_dark;
-    static inline Colour borderColor = Colours::solid_mid;
+    static inline Colour backroundColour = Colours::solid_mid;
+    static inline Colour borderColor = Colours::solid_dark;
     static inline Colour titleColour = Colours::font;
     static inline float titleFontSize = 24.0f;
-    static inline int height = 40;
+    static inline int height = 50;
   };
 
   struct Panel
@@ -65,7 +68,7 @@ struct Settings
     // Border
     static inline bool drawBorder = true;
     static inline Colour borderColour = Colours::solid_dark;
-    static inline float borderStrength = 6.0f;
+    static inline float borderStrength = 4.0f;
     static inline juce::Colour backgroundColour = Colours::solid_mid;
     // Shadows
     static inline bool drawOuterShadow = true;
@@ -128,7 +131,7 @@ struct Settings
     // Border
     static inline bool drawBorder = true;
     static inline Colour borderColour = Colours::solid_dark;
-    static inline float borderStrength = 6.0f;
+    static inline float borderStrength = 4.0f;
     // Shadow
     static inline bool drawOuterShadow = false;
     static inline bool drawInnerShadow = true;

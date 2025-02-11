@@ -25,17 +25,19 @@ public:
 
   void paint(juce::Graphics& g) override
   {
-    // Paint the background
+    // Paint the border
     auto bounds = getLocalBounds();
-    g.setColour(backroundColour);
-    g.fillRect(bounds);
-    const auto borderStrength = rawBorderStrength * size;
-    bounds.removeFromBottom(borderStrength);
     g.setColour(borderColor);
     g.fillRect(bounds);
 
+    // Paint the background
+    const auto borderStrength = rawBorderStrength * size;
+    bounds.removeFromBottom(borderStrength);
+    g.setColour(backroundColour);
+    g.fillRect(bounds);
+
     // Paint the title
-    g.setColour(dmt::Settings::Header::titleColour);
+    // g.setColour(dmt::Settings::Header::titleColour);
   }
 
   void resized() override
