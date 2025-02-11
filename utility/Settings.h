@@ -52,6 +52,8 @@ struct Settings
   {
     static inline Colour backroundColour = Colours::solid_dark;
     static inline Colour borderColor = Colours::solid_mid;
+    static inline Colour titleColour = Colours::font;
+    static inline float titleFontSize = 24.0f;
     static inline int height = 40;
   };
 
