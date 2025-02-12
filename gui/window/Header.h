@@ -28,7 +28,7 @@ class Header : public juce::Component
 public:
   Header()
     : title(juce::String("ProjectLabel"),
-            fonts.light,
+            fonts.display,
             titleFontSize,
             juce::Colours::green,
             juce::Justification::centred)
