@@ -24,16 +24,17 @@ class Header : public juce::Component
   // Labels
   const juce::Colour& titleFontColour = HeaderSettings::titleFontColour;
   const float& titleFontSize = HeaderSettings::titleFontSize;
+  const float& rawTitleOffset = HeaderSettings::titleOffset;
 
 public:
-  Header()
+  Header(juce::String titleText)
     : title(juce::String("ProjectLabel"),
             fonts.display,
             titleFontSize,
-            juce::Colours::green,
+            juce::Colours::white,
             juce::Justification::centred)
   {
-    title.setText("Test");
+    title.setText(titleText);
     addAndMakeVisible(title);
   };
 
@@ -51,15 +52,14 @@ public:
     bounds.removeFromBottom(borderStrength);
     g.setColour(backroundColour);
     g.fillRect(bounds);
-
-    // Paint the title
-    g.setColour(dmt::Settings::Header::titleColour);
   }
 
   void resized() override
   {
     auto bounds = getLocalBounds();
-    title.setBounds(bounds);
+    const auto titleOffset = rawTitleOffset * size;
+    const auto titleBounds = bounds.withY(titleOffset);
+    title.setBounds(titleBounds);
   }
 
 private:

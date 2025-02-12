@@ -18,8 +18,9 @@ class Compositor : public juce::Component
   const int headerHeight = dmt::Settings::Header::height;
 
 public:
-  Compositor(AbstractPanel& mainPanel)
+  Compositor(juce::String titleText, AbstractPanel& mainPanel)
     : mainPanel(mainPanel)
+    , header(titleText)
   {
     addAndMakeVisible(header);
     addAndMakeVisible(mainPanel);

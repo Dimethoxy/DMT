@@ -56,7 +56,8 @@ public:
     static inline Colour backroundColour = Colours::solid_mid;
     static inline Colour borderColor = Colours::solid_dark;
     static inline Colour titleColour = Colours::font;
-    static inline float titleFontSize = 24.0f;
+    static inline float titleFontSize = 42.0f;
+    static inline float titleOffset = 3.0f;
     static inline int height = 50;
     static inline Colour titleFontColour = Colours::font;
   };
