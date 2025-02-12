@@ -58,6 +58,7 @@ public:
     static inline Colour titleColour = Colours::font;
     static inline float titleFontSize = 24.0f;
     static inline int height = 50;
+    static inline Colour titleFontColour = Colours::font;
   };
 
   struct Panel
