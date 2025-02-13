@@ -133,7 +133,8 @@ public:
     const auto maximum = getMaximum();
     const auto minimum = getMinimum();
     const auto range = maximum - minimum;
-    const auto valueRatio = (value - minimum) / range;
+    const auto scew = getSkewFactor();
+    const auto valueRatio = (std::pow((value - minimum) / range, scew));
     const auto diffrencePoint = secondaryPoint - primaryPoint;
     const auto valueDiffrencePoint = diffrencePoint * valueRatio;
     const auto valuePoint = primaryPoint + valueDiffrencePoint;
