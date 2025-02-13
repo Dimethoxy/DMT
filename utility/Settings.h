@@ -56,10 +56,17 @@ public:
     static inline Colour backroundColour = Colours::solid_mid;
     static inline Colour borderColor = Colours::solid_dark;
     static inline Colour titleColour = Colours::font;
-    static inline float titleFontSize = 42.0f;
-    static inline float titleOffset = 3.0f;
+    static inline Colour buttonColour = Colours::solid_dark;
+    static inline float titleFontSize = 30.0f;
+    static inline float titleOffset = 2.2f;
+    static inline float titleButtonWidth = 120.0f;
     static inline int height = 50;
     static inline Colour titleFontColour = Colours::font;
+  };
+
+  struct Button
+  {
+    static inline float squareCornerRadius = 10.0f;
   };
 
   struct Panel
@@ -83,11 +90,13 @@ public:
     static inline juce::Colour fontColor = Colours::font;
     static inline float fontSize = 34.0f;
   };
+
   struct Carousel
   {
     static inline float buttonWidth = 60.0f;
     static inline float buttonHeight = 180.0f;
   };
+
   struct Slider
   {
     // General
@@ -142,6 +151,7 @@ public:
     static inline float outerShadowRadius = 4.0f;
     static inline float innerShadowRadius = 4.0f;
   };
+
   struct TriangleButton
   {
     // General
@@ -161,6 +171,7 @@ public:
     static inline float outerShadowRadius = 4.0f;
     static inline float innerShadowRadius = 4.0f;
   };
+
   struct OscillatorDisplay
   {
     // General
@@ -173,6 +184,7 @@ public:
     static inline float outerShadowRadius = 4.0f;
     static inline float innerShadowRadius = 4.0f;
   };
+
   struct Oscilloscope
   {
     // General

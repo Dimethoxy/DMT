@@ -1,6 +1,8 @@
 #pragma once
 
+#include "dmt/gui/widget/Button.h"
 #include "dmt/gui/widget/Label.h"
+#include "dmt/utility/Fonts.h"
 #include "dmt/utility/Settings.h"
 #include <JuceHeader.h>
 
@@ -10,29 +12,37 @@ namespace window {
 class Header : public juce::Component
 {
   // Aliases
+  using Button = dmt::gui::widget::Button;
   using Label = dmt::gui::widget::Label;
+  using String = juce::String;
+  using Colour = juce::Colour;
   using Fonts = dmt::utility::Fonts;
   using HeaderSettings = dmt::Settings::Header;
 
-  // General
-  const juce::String name = ProjectInfo::projectName;
+  // Window
   const float& size = dmt::Settings::Window::size;
-  const float& rawBorderStrength = dmt::Settings::Panel::borderStrength;
-  const juce::Colour& backroundColour = HeaderSettings::backroundColour;
-  const juce::Colour& borderColor = dmt::Settings::Header::borderColor;
 
-  // Labels
-  const juce::Colour& titleFontColour = HeaderSettings::titleFontColour;
+  // Panel
+  const float& rawBorderStrength = dmt::Settings::Panel::borderStrength;
+
+  // Header
+  const String name = ProjectInfo::projectName;
+  const Colour& backroundColour = HeaderSettings::backroundColour;
+  const Colour& borderColor = HeaderSettings::borderColor;
+  const Colour& titleFontColour = HeaderSettings::titleFontColour;
+  const Colour& buttonColour = HeaderSettings::buttonColour;
   const float& titleFontSize = HeaderSettings::titleFontSize;
   const float& rawTitleOffset = HeaderSettings::titleOffset;
+  const float& rawTitleButtonWidth = HeaderSettings::titleButtonWidth;
 
 public:
   Header(juce::String titleText)
-    : title(juce::String("ProjectLabel"),
+    : title(String("ProjectLabel"),
             fonts.display,
             titleFontSize,
-            juce::Colours::white,
+            Colours::white,
             juce::Justification::centred)
+    , settingsButton("SettingsButton")
   {
     title.setText(titleText);
     addAndMakeVisible(title);
@@ -52,6 +62,14 @@ public:
     bounds.removeFromBottom(borderStrength);
     g.setColour(backroundColour);
     g.fillRect(bounds);
+
+    // Paint rounded rectangle behind the title
+    const auto titleButtonWidth = rawTitleButtonWidth * size;
+    const auto titleBounds = bounds.withWidth(titleButtonWidth)
+                               .withCentre(bounds.getCentre())
+                               .reduced(6.0f * size);
+    g.setColour(buttonColour);
+    g.fillRoundedRectangle(titleBounds.toFloat(), 20.0f);
   }
 
   void resized() override
@@ -65,6 +83,7 @@ public:
 private:
   Label title;
   Fonts fonts;
+  Button settingsButton;
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Header)
 };
 } // namespace component
