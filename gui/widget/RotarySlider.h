@@ -98,16 +98,19 @@ protected:
     g.drawEllipse(shaftBounds, lineStrength);
 
     // Draw the tick
-    const float value = (float)getValue();
     const float minValue = (float)getMinimum();
     const float maxValue = (float)getMaximum();
+    const float value = (float)getValue();
+    const float skew = getSkewFactor();
+    const float valueRatio =
+      (std::pow((value - minValue) / (maxValue - minValue), skew));
     const float normalizedStartAngle = 0.0f;
     const float normalizedEndAngle = 260.0f;
     const float angleRange = normalizedEndAngle - normalizedStartAngle;
     const float gapRange = 360.0f - angleRange;
     const float angleOffset = 180.0f + (gapRange / 2.0f);
     const float rawAngle = juce::jmap(
-      value, minValue, maxValue, normalizedStartAngle, normalizedEndAngle);
+      valueRatio, 0.0f, 1.0f, normalizedStartAngle, normalizedEndAngle);
     const float valueAngleInRadians =
       dmt::math::degreeToRadians(rawAngle + angleOffset);
     const auto tickLine = getTick(shaftBounds, centre, valueAngleInRadians);
