@@ -37,6 +37,8 @@ private:
     static inline Colour background = Colour(25, 26, 33);
     static inline Colour solid_dark = Colour(40, 42, 54);
     static inline Colour solid_mid = Colour(61, 64, 82);
+    static inline Colour solid_light1 = Colour(69, 73, 94);
+    static inline Colour solid_light2 = Colour(78, 83, 106);
     static inline Colour font = Colour(248, 248, 248);
     static inline Colour primary = Colour(80, 250, 123);
     static inline Colour shadow = Colour(0, 0, 0);
@@ -66,7 +68,9 @@ public:
 
   struct Button
   {
-    static inline float squareCornerRadius = 10.0f;
+    static inline Colour backgroundColour = Colours::solid_dark;
+    static inline float cornerRadius = 10.0f;
+    static inline float padding = 6.0f;
   };
 
   struct Panel
