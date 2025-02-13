@@ -18,6 +18,9 @@ getIcon(const juce::String iconName)
   if (iconName == "OscilloscopeGain")
     return juce::Drawable::createFromImageData(BinaryData::height_svg,
                                                BinaryData::height_svgSize);
+  if (iconName == "Settings")
+    return juce::Drawable::createFromImageData(BinaryData::gear_svg,
+                                               BinaryData::gear_svgSize);
   return nullptr;
 };
 //==============================================================================
@@ -30,6 +33,8 @@ getPadding(const juce::String iconName)
     return 5.0f;
   if (iconName == "OscilloscopeGain")
     return 3.5f;
+  if (iconName == "Settings")
+    return 5.0f;
   return 0.0f;
 };
 //==============================================================================

@@ -24,9 +24,11 @@ class Button : public juce::Button
   const float& rawButtonPadding = ButtonSettings::padding;
 
 public:
-  Button(juce::String _name)
+  Button(juce::String _name, juce::String _iconName)
     : juce::Button(_name)
+    , rawSpecificSvgPadding(dmt::icons::getPadding(_iconName))
   {
+    icon = dmt::icons::getIcon(_iconName);
   }
 
   ~Button() override {}
@@ -42,10 +44,20 @@ public:
     const auto cornerRadius = rawCornerRadius * size;
     g.setColour(backgroundColour);
     g.fillRoundedRectangle(innerBounds.toFloat(), cornerRadius * size);
+
+    const auto specificSvgPadding = rawSpecificSvgPadding * size;
+    const auto globalSvgPadding = 2.5f * size;
+    const auto svgPadding = specificSvgPadding + globalSvgPadding;
+    const auto iconArea = innerBounds.reduced(svgPadding).toFloat();
+    g.setColour(juce::Colours::white);
+    icon->replaceColour(juce::Colours::black, juce::Colours::white);
+    icon->drawWithin(g, iconArea, juce::RectanglePlacement::centred, 1.0f);
   }
 
 private:
   std::function<void()> onClick;
+  std::unique_ptr<juce::Drawable> icon;
+  const float rawSpecificSvgPadding;
 };
 } // namespace widget
 } // namespace dmt

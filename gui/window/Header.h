@@ -45,7 +45,7 @@ public:
             titleFontSize,
             Colours::white,
             juce::Justification::centred)
-    , settingsButton("SettingsButton")
+    , settingsButton("SettingsButton", "Settings")
   {
     title.setText(titleText);
     addAndMakeVisible(title);
