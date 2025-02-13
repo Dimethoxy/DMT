@@ -35,6 +35,9 @@ class Header : public juce::Component
   const float& rawTitleOffset = HeaderSettings::titleOffset;
   const float& rawTitleButtonWidth = HeaderSettings::titleButtonWidth;
 
+  // Button
+  const float& rawButtonPadding = dmt::Settings::Button::padding;
+
 public:
   Header(juce::String titleText)
     : title(String("ProjectLabel"),
@@ -66,9 +69,10 @@ public:
 
     // Paint rounded rectangle behind the title
     const auto titleButtonWidth = rawTitleButtonWidth * size;
+    const auto buttonPadding = rawButtonPadding * size;
     const auto titleBounds = bounds.withWidth(titleButtonWidth)
                                .withCentre(bounds.getCentre())
-                               .reduced(6.0f * size);
+                               .reduced(buttonPadding);
     g.setColour(buttonColour);
     g.fillRoundedRectangle(titleBounds.toFloat(), 20.0f);
   }
