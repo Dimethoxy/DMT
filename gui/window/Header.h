@@ -46,6 +46,7 @@ public:
   {
     title.setText(titleText);
     addAndMakeVisible(title);
+    addAndMakeVisible(settingsButton);
   };
 
   ~Header() override {}
@@ -78,6 +79,11 @@ public:
     const auto titleOffset = rawTitleOffset * size;
     const auto titleBounds = bounds.withY(titleOffset);
     title.setBounds(titleBounds);
+
+    const auto borderStrength = rawBorderStrength * size;
+    bounds.removeFromBottom(borderStrength);
+    const auto settingsButtonBounds = bounds.removeFromRight(48.0f * size);
+    settingsButton.setBounds(settingsButtonBounds);
   }
 
 private:

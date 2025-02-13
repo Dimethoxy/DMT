@@ -31,7 +31,7 @@ public:
                    bool isButtonDown) override
   {
     auto bounds = getLocalBounds();
-    auto innerBounds = bounds.reduced(10 * size);
+    auto innerBounds = bounds.reduced(6.0f * size);
     g.setColour(Colour(40, 42, 54));
     g.fillRoundedRectangle(innerBounds.toFloat(), 10.0f * size);
   }
