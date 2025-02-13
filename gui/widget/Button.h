@@ -18,6 +18,11 @@ class Button : public juce::Button
   // General
   const float& size = Settings::Window::size;
 
+  // Button
+  const Colour& backgroundColour = ButtonSettings::backgroundColour;
+  const float& rawCornerRadius = ButtonSettings::cornerRadius;
+  const float& rawButtonPadding = ButtonSettings::padding;
+
 public:
   Button(juce::String _name)
     : juce::Button(_name)
@@ -31,9 +36,12 @@ public:
                    bool isButtonDown) override
   {
     auto bounds = getLocalBounds();
-    auto innerBounds = bounds.reduced(6.0f * size);
-    g.setColour(Colour(40, 42, 54));
-    g.fillRoundedRectangle(innerBounds.toFloat(), 10.0f * size);
+    const auto buttonPadding = rawButtonPadding * size;
+    auto innerBounds = bounds.reduced(buttonPadding);
+
+    const auto cornerRadius = rawCornerRadius * size;
+    g.setColour(backgroundColour);
+    g.fillRoundedRectangle(innerBounds.toFloat(), cornerRadius * size);
   }
 
 private:
