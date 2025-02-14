@@ -42,7 +42,6 @@ private:
     static inline Colour font = Colour(248, 248, 248);
     static inline Colour primary = Colour(80, 250, 123);
     static inline Colour shadow = Colour(0, 0, 0);
-    static inline float opacityStep = 0.05f;
   };
 
 public:
@@ -69,11 +68,13 @@ public:
   struct Button
   {
     static inline Colour backgroundColour = Colours::solid_dark;
-    static inline Colour shadowColour = Colours::shadow;
+    static inline Colour outerShadowColour = Colours::shadow.withAlpha(0.5f);
+    static inline Colour innerShadowColour = Colours::shadow.withAlpha(0.5f);
     static inline float shadowRadius = 5.0f;
     static inline float cornerRadius = 10.0f;
     static inline float padding = 6.0f;
-    static inline bool drawShadow = true;
+    static inline bool drawInnerShadow = true;
+    static inline bool drawOuterShadow = false;
   };
 
   struct Panel

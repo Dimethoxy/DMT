@@ -20,18 +20,20 @@ class Button : public juce::Button
 
   // Button
   const Colour& backgroundColour = ButtonSettings::backgroundColour;
-  const Colour& shadowColour = ButtonSettings::shadowColour;
+  const Colour& outerShadowColour = ButtonSettings::outerShadowColour;
+  const Colour& innerShadowColour = ButtonSettings::innerShadowColour;
   const float& rawCornerRadius = ButtonSettings::cornerRadius;
   const float& rawButtonPadding = ButtonSettings::padding;
   const float& shadowRadius = ButtonSettings::shadowRadius;
-  const bool& drawShadow = ButtonSettings::drawShadow;
+  const bool& drawOuterShadow = ButtonSettings::drawOuterShadow;
+  const bool& drawInnerShadow = ButtonSettings::drawInnerShadow;
 
 public:
   Button(juce::String _name, juce::String _iconName)
     : juce::Button(_name)
     , rawSpecificSvgPadding(dmt::icons::getPadding(_iconName))
-    , outerShadow(drawShadow, shadowColour, shadowRadius, false)
-    , innerShadow(drawShadow, shadowColour, shadowRadius, true)
+    , outerShadow(drawOuterShadow, outerShadowColour, shadowRadius, false)
+    , innerShadow(drawInnerShadow, innerShadowColour, shadowRadius, true)
   {
     icon = dmt::icons::getIcon(_iconName);
     addAndMakeVisible(outerShadow);
@@ -41,8 +43,8 @@ public:
   ~Button() override {}
 
   void paintButton(juce::Graphics& g,
-                   bool isMouseOverButton,
-                   bool isButtonDown) override
+                   bool /*isMouseOverButton*/,
+                   bool /*isButtonDown*/) override
   {
     auto bounds = getLocalBounds();
     const auto buttonPadding = rawButtonPadding * size;
@@ -66,18 +68,16 @@ public:
     auto bounds = getLocalBounds();
     const auto buttonPadding = rawButtonPadding * size;
     auto innerBounds = bounds.reduced(buttonPadding);
-
-    // TODO: Correct shadow bounds, the inner will not scale with the border and
-    // draw under/over the border
+    const auto cornerRadius = rawCornerRadius * size;
 
     juce::Path outerShadowPath;
-    outerShadowPath.addRoundedRectangle(innerBounds, 5.0f);
+    outerShadowPath.addRoundedRectangle(innerBounds, cornerRadius);
     outerShadow.setPath(outerShadowPath);
     outerShadow.setBoundsRelative(0.0f, 0.0f, 1.0f, 1.0f);
     outerShadow.toBack();
 
     juce::Path innerShadowPath;
-    innerShadowPath.addRoundedRectangle(innerBounds, 5.0f);
+    innerShadowPath.addRoundedRectangle(innerBounds, cornerRadius);
     innerShadow.setPath(innerShadowPath);
     innerShadow.setBoundsRelative(0.0f, 0.0f, 1.0f, 1.0f);
     innerShadow.toBack();
