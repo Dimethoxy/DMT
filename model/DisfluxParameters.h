@@ -10,7 +10,7 @@ disfluxParameterGroup(juce::String parentUid)
 {
   using ParameterInt = juce::AudioParameterInt;
   using ParameterFloat = juce::AudioParameterFloat;
-  using ParameterChoice = juce::AudioParameterChoice;
+  // using ParameterChoice = juce::AudioParameterChoice;
   using NormalisableRange = juce::NormalisableRange<float>;
 
   juce::String uid = parentUid + "Disflux";
@@ -19,16 +19,20 @@ disfluxParameterGroup(juce::String parentUid)
     uid,       // group ID
     "Disflux", // group name
     "|",       // separator
-    std::make_unique<ParameterInt>(uid + "Amount",
-                                   "Amount",
-                                   1,   // rangeStart
-                                   100, // rangeEnd
-                                   3),  // defaultValue
-    std::make_unique<ParameterInt>(uid + "Spread",
-                                   "Spread",
-                                   0,    // rangeStart
-                                   5000, // rangeEnd
-                                   200), // defaultValue
+    std::make_unique<ParameterFloat>(uid + "Amount",
+                                     "Amount",
+                                     NormalisableRange(1.0f,   // rangeStart
+                                                       256.0f, // rangeEnd
+                                                       1.0f,   // intervalValue
+                                                       0.5f),  // skewFactor
+                                     3.0f),                    // defaultValue
+    std::make_unique<ParameterFloat>(uid + "Spread",
+                                     "Spread",
+                                     NormalisableRange(0.0f,     // rangeStart
+                                                       10000.0f, // rangeEnd
+                                                       1.0f,  // intervalValue
+                                                       0.5f), // skewFactor
+                                     200.0f),                 // defaultValue
     std::make_unique<ParameterFloat>(uid + "Frequency",
                                      "Frequency",
                                      NormalisableRange(20.0f,    // rangeStart
