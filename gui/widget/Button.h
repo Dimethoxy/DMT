@@ -20,15 +20,22 @@ class Button : public juce::Button
 
   // Button
   const Colour& backgroundColour = ButtonSettings::backgroundColour;
+  const Colour& shadowColour = ButtonSettings::shadowColour;
   const float& rawCornerRadius = ButtonSettings::cornerRadius;
   const float& rawButtonPadding = ButtonSettings::padding;
+  const float& shadowRadius = ButtonSettings::shadowRadius;
+  const bool& drawShadow = ButtonSettings::drawShadow;
 
 public:
   Button(juce::String _name, juce::String _iconName)
     : juce::Button(_name)
     , rawSpecificSvgPadding(dmt::icons::getPadding(_iconName))
+    , outerShadow(drawShadow, shadowColour, shadowRadius, false)
+    , innerShadow(drawShadow, shadowColour, shadowRadius, true)
   {
     icon = dmt::icons::getIcon(_iconName);
+    addAndMakeVisible(outerShadow);
+    addAndMakeVisible(innerShadow);
   }
 
   ~Button() override {}
@@ -43,7 +50,7 @@ public:
 
     const auto cornerRadius = rawCornerRadius * size;
     g.setColour(backgroundColour);
-    g.fillRoundedRectangle(innerBounds.toFloat(), cornerRadius * size);
+    g.fillRoundedRectangle(innerBounds.toFloat(), cornerRadius);
 
     const auto specificSvgPadding = rawSpecificSvgPadding * size;
     const auto globalSvgPadding = 2.5f * size;
@@ -54,10 +61,33 @@ public:
     icon->drawWithin(g, iconArea, juce::RectanglePlacement::centred, 1.0f);
   }
 
+  void resized() override
+  {
+    auto bounds = getLocalBounds();
+    const auto buttonPadding = rawButtonPadding * size;
+    auto innerBounds = bounds.reduced(buttonPadding);
+
+    // TODO: Correct shadow bounds, the inner will not scale with the border and
+    // draw under/over the border
+
+    juce::Path outerShadowPath;
+    outerShadowPath.addRoundedRectangle(innerBounds, 5.0f);
+    outerShadow.setPath(outerShadowPath);
+    outerShadow.setBoundsRelative(0.0f, 0.0f, 1.0f, 1.0f);
+    outerShadow.toBack();
+
+    juce::Path innerShadowPath;
+    innerShadowPath.addRoundedRectangle(innerBounds, 5.0f);
+    innerShadow.setPath(innerShadowPath);
+    innerShadow.setBoundsRelative(0.0f, 0.0f, 1.0f, 1.0f);
+    innerShadow.toBack();
+  }
+
 private:
-  std::function<void()> onClick;
   std::unique_ptr<juce::Drawable> icon;
   const float rawSpecificSvgPadding;
+  Shadow outerShadow;
+  Shadow innerShadow;
 };
 } // namespace widget
 } // namespace dmt

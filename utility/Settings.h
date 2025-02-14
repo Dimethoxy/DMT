@@ -69,8 +69,11 @@ public:
   struct Button
   {
     static inline Colour backgroundColour = Colours::solid_dark;
+    static inline Colour shadowColour = Colours::shadow;
+    static inline float shadowRadius = 5.0f;
     static inline float cornerRadius = 10.0f;
     static inline float padding = 6.0f;
+    static inline bool drawShadow = true;
   };
 
   struct Panel
