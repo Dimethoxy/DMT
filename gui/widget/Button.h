@@ -14,6 +14,8 @@ class Button : public juce::Button
   using Justification = juce::Justification;
   using ButtonSettings = dmt::Settings::Button;
   using String = juce::String;
+  using Image = juce::Image;
+  using ImageComponent = juce::ImageComponent;
 
   // General
   const float& size = Settings::Window::size;
@@ -37,8 +39,13 @@ public:
     , innerShadow(drawInnerShadow, innerShadowColour, innerShadowRadius, true)
   {
     icon = dmt::icons::getIcon(_iconName);
+    iconImage = Image(Image::ARGB, getWidth(), getHeight(), true);
+    iconImage.setPixelAt(2, 2, juce::Colours::red);
+    iconImageComponent.setImage(iconImage);
+
     addAndMakeVisible(outerShadow);
     addAndMakeVisible(innerShadow);
+    addAndMakeVisible(iconImageComponent);
   }
 
   ~Button() override {}
@@ -55,14 +62,19 @@ public:
     g.setColour(backgroundColour);
     g.fillRoundedRectangle(innerBounds.toFloat(), cornerRadius);
 
-    const auto specificSvgPadding = rawSpecificSvgPadding * size;
-    const auto globalSvgPadding = 2.5f * size;
-    const auto svgPadding = specificSvgPadding + globalSvgPadding;
-    const auto iconArea = innerBounds.reduced(svgPadding).toFloat();
     if (icon != nullptr) {
-      g.setColour(juce::Colours::white);
+      iconImage = Image(Image::ARGB, getWidth(), getHeight(), true);
+      juce::Graphics iconGraphics(iconImage);
+      iconGraphics.fillAll(
+        juce::Colours::transparentBlack); // Clear previous icon
+      const auto specificSvgPadding = rawSpecificSvgPadding * size;
+      const auto globalSvgPadding = 2.5f * size;
+      const auto svgPadding = specificSvgPadding + globalSvgPadding;
+      const auto iconArea = innerBounds.reduced(svgPadding).toFloat();
       icon->replaceColour(juce::Colours::black, juce::Colours::white);
-      icon->drawWithin(g, iconArea, juce::RectanglePlacement::centred, 1.0f);
+      icon->drawWithin(
+        iconGraphics, iconArea, juce::RectanglePlacement::centred, 1.0f);
+      iconImageComponent.setImage(iconImage);
     }
   }
 
@@ -84,11 +96,18 @@ public:
     innerShadow.setPath(innerShadowPath);
     innerShadow.setBoundsRelative(0.0f, 0.0f, 1.0f, 1.0f);
     innerShadow.toBack();
+
+    // Set the bounds for the iconImage
+    iconImageComponent.setBounds(bounds);
+    iconImageComponent.setAlwaysOnTop(true);
   }
 
 private:
   std::unique_ptr<juce::Drawable> icon;
   const float rawSpecificSvgPadding;
+  ImageComponent iconImageComponent;
+  Image iconImage;
+  juce::Rectangle<int> iconImageArea;
   Shadow outerShadow;
   Shadow innerShadow;
 };
