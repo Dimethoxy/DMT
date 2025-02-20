@@ -58,8 +58,8 @@ public:
     static inline Colour borderColor = Colours::solid_dark;
     static inline Colour titleColour = Colours::font;
     static inline Colour buttonColour = Colours::solid_dark;
-    static inline float titleFontSize = 30.0f;
-    static inline float titleOffset = 2.2f;
+    static inline float titleFontSize = 34.0f;
+    static inline float titleOffset = 2.5f;
     static inline float titleButtonWidth = 120.0f;
     static inline int height = 50;
     static inline Colour titleFontColour = Colours::font;
