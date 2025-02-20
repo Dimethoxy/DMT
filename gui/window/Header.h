@@ -2,6 +2,7 @@
 
 #include "dmt/gui/widget/Button.h"
 #include "dmt/gui/widget/Label.h"
+#include "dmt/gui/widget/Shadow.h"
 #include "dmt/utility/Fonts.h"
 #include "dmt/utility/Settings.h"
 #include <JuceHeader.h>
@@ -18,6 +19,7 @@ class Header : public juce::Component
   using Colour = juce::Colour;
   using Fonts = dmt::utility::Fonts;
   using HeaderSettings = dmt::Settings::Header;
+  using Shadow = dmt::gui::widget::Shadow;
 
   // Window
   const float& size = dmt::Settings::Window::size;
@@ -45,11 +47,13 @@ public:
             titleFontSize,
             Colours::white,
             juce::Justification::centred)
-    , settingsButton("SettingsButton", "Settings")
+    , settingsButton("HeaderSettingsButton", "Settings")
+    , titleButton("HeaderTitleButton", "None")
   {
     title.setText(titleText);
     addAndMakeVisible(title);
     addAndMakeVisible(settingsButton);
+    addAndMakeVisible(titleButton);
   };
 
   ~Header() override {}
@@ -66,15 +70,6 @@ public:
     bounds.removeFromBottom(borderStrength);
     g.setColour(backroundColour);
     g.fillRect(bounds);
-
-    // Paint rounded rectangle behind the title
-    const auto titleButtonWidth = rawTitleButtonWidth * size;
-    const auto buttonPadding = rawButtonPadding * size;
-    const auto titleBounds = bounds.withWidth(titleButtonWidth)
-                               .withCentre(bounds.getCentre())
-                               .reduced(buttonPadding);
-    g.setColour(buttonColour);
-    g.fillRoundedRectangle(titleBounds.toFloat(), 20.0f);
   }
 
   void resized() override
@@ -83,17 +78,26 @@ public:
     const auto titleOffset = rawTitleOffset * size;
     const auto titleBounds = bounds.withY(titleOffset);
     title.setBounds(titleBounds);
+    title.setAlwaysOnTop(true);
 
     const auto borderStrength = rawBorderStrength * size;
     bounds.removeFromBottom(borderStrength);
-    const auto settingsButtonBounds = bounds.removeFromRight(48.0f * size);
+    const auto settingsButtonBounds =
+      Rectangle(bounds).removeFromRight(48.0f * size);
     settingsButton.setBounds(settingsButtonBounds);
+
+    const auto titleButtonWidth = rawTitleButtonWidth * size;
+    const auto titleButtonBounds =
+      bounds.withWidth(titleButtonWidth).withCentre(bounds.getCentre());
+    titleButton.setBounds(titleButtonBounds);
   }
 
 private:
   Label title;
   Fonts fonts;
   Button settingsButton;
+  Button titleButton;
+
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Header)
 };
 } // namespace component

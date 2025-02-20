@@ -24,7 +24,8 @@ class Button : public juce::Button
   const Colour& innerShadowColour = ButtonSettings::innerShadowColour;
   const float& rawCornerRadius = ButtonSettings::cornerRadius;
   const float& rawButtonPadding = ButtonSettings::padding;
-  const float& shadowRadius = ButtonSettings::shadowRadius;
+  const float& outerShadowRadius = ButtonSettings::shadowRadius;
+  const float& innerShadowRadius = ButtonSettings::shadowRadius;
   const bool& drawOuterShadow = ButtonSettings::drawOuterShadow;
   const bool& drawInnerShadow = ButtonSettings::drawInnerShadow;
 
@@ -32,8 +33,8 @@ public:
   Button(juce::String _name, juce::String _iconName)
     : juce::Button(_name)
     , rawSpecificSvgPadding(dmt::icons::getPadding(_iconName))
-    , outerShadow(drawOuterShadow, outerShadowColour, shadowRadius, false)
-    , innerShadow(drawInnerShadow, innerShadowColour, shadowRadius, true)
+    , outerShadow(drawOuterShadow, outerShadowColour, outerShadowRadius, false)
+    , innerShadow(drawInnerShadow, innerShadowColour, innerShadowRadius, true)
   {
     icon = dmt::icons::getIcon(_iconName);
     addAndMakeVisible(outerShadow);
@@ -58,9 +59,11 @@ public:
     const auto globalSvgPadding = 2.5f * size;
     const auto svgPadding = specificSvgPadding + globalSvgPadding;
     const auto iconArea = innerBounds.reduced(svgPadding).toFloat();
-    g.setColour(juce::Colours::white);
-    icon->replaceColour(juce::Colours::black, juce::Colours::white);
-    icon->drawWithin(g, iconArea, juce::RectanglePlacement::centred, 1.0f);
+    if (icon != nullptr) {
+      g.setColour(juce::Colours::white);
+      icon->replaceColour(juce::Colours::black, juce::Colours::white);
+      icon->drawWithin(g, iconArea, juce::RectanglePlacement::centred, 1.0f);
+    }
   }
 
   void resized() override
