@@ -39,16 +39,12 @@ public:
     , innerShadow(drawInnerShadow, innerShadowColour, innerShadowRadius, true)
   {
     icon = dmt::icons::getIcon(_iconName);
-    iconImage = Image(Image::ARGB, getWidth(), getHeight(), true);
-    iconImageComponent.setImage(iconImage);
-
-    backgroundImage = Image(Image::ARGB, getWidth(), getHeight(), true);
-    backgroundImageComponent.setImage(backgroundImage);
-
-    addAndMakeVisible(backgroundImageComponent);
     addAndMakeVisible(outerShadow);
     addAndMakeVisible(innerShadow);
+    addAndMakeVisible(backgroundImageComponent);
     addAndMakeVisible(iconImageComponent);
+    addAndMakeVisible(hoverBackgroundImageComponent);
+    hoverBackgroundImageComponent.setVisible(false);
   }
 
   ~Button() override {}
@@ -57,7 +53,27 @@ public:
                    bool /*isMouseOverButton*/,
                    bool /*isButtonDown*/) override
   {
-    // No need to paint the background here, it's cached in the background image
+  }
+
+  void mouseEnter(const juce::MouseEvent& event) override
+  {
+    backgroundImageComponent.setVisible(false);
+    hoverBackgroundImageComponent.setVisible(true);
+    repaint();
+  }
+
+  void mouseExit(const juce::MouseEvent& event) override
+  {
+    backgroundImageComponent.setVisible(true);
+    hoverBackgroundImageComponent.setVisible(false);
+    repaint();
+  }
+
+  void mouseDown(const juce::MouseEvent& event) override
+  {
+    backgroundImageComponent.setVisible(false);
+    hoverBackgroundImageComponent.setVisible(true);
+    repaint();
   }
 
   void resized() override
@@ -71,6 +87,9 @@ public:
     backgroundImage =
       Image(Image::ARGB, innerBounds.getWidth(), innerBounds.getHeight(), true);
     backgroundImageComponent.setBounds(innerBounds);
+    hoverBackgroundImage =
+      Image(Image::ARGB, innerBounds.getWidth(), innerBounds.getHeight(), true);
+    hoverBackgroundImageComponent.setBounds(innerBounds);
 
     // Set the bounds for the outer shadow
     juce::Path outerShadowPath;
@@ -119,27 +138,39 @@ private:
       iconImageComponent.setImage(iconImage);
     }
   }
+
   void drawBackground()
   {
-    juce::Graphics g(backgroundImage);
-    g.fillAll(juce::Colours::transparentBlack); // Clear previous background
+    // Get the bounds for the background
     const auto cornerRadius = rawCornerRadius * size;
     const auto backgroundArea = backgroundImage.getBounds().toFloat();
-    g.setColour(backgroundColour);
-    g.fillRoundedRectangle(backgroundArea, cornerRadius);
+
+    // Normal background
+    juce::Graphics backgroundGraphics(backgroundImage);
+    backgroundGraphics.fillAll(juce::Colours::transparentBlack);
+    backgroundGraphics.setColour(backgroundColour);
+    backgroundGraphics.fillRoundedRectangle(backgroundArea, cornerRadius);
     backgroundImageComponent.setImage(backgroundImage);
+
+    // Hover background
+    juce::Graphics hoverGraphics(hoverBackgroundImage);
+    hoverGraphics.fillAll(juce::Colours::transparentBlack);
+    hoverGraphics.setColour(juce::Colours::red);
+    hoverGraphics.fillRoundedRectangle(backgroundArea, cornerRadius);
+    hoverBackgroundImageComponent.setImage(hoverBackgroundImage);
   }
 
-  std::unique_ptr<juce::Drawable> icon;
   const float rawSpecificSvgPadding;
-  ImageComponent iconImageComponent;
-  Image iconImage;
-  juce::Rectangle<int> iconImageArea;
+  std::unique_ptr<juce::Drawable> icon;
   Shadow outerShadow;
   Shadow innerShadow;
 
   Image backgroundImage;
   ImageComponent backgroundImageComponent;
+  Image hoverBackgroundImage;
+  ImageComponent hoverBackgroundImageComponent;
+  Image iconImage;
+  ImageComponent iconImageComponent;
 };
 } // namespace widget
 } // namespace dmt
