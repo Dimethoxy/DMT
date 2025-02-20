@@ -40,9 +40,12 @@ public:
   {
     icon = dmt::icons::getIcon(_iconName);
     iconImage = Image(Image::ARGB, getWidth(), getHeight(), true);
-    iconImage.setPixelAt(2, 2, juce::Colours::red);
     iconImageComponent.setImage(iconImage);
 
+    backgroundImage = Image(Image::ARGB, getWidth(), getHeight(), true);
+    backgroundImageComponent.setImage(backgroundImage);
+
+    addAndMakeVisible(backgroundImageComponent);
     addAndMakeVisible(outerShadow);
     addAndMakeVisible(innerShadow);
     addAndMakeVisible(iconImageComponent);
@@ -54,28 +57,7 @@ public:
                    bool /*isMouseOverButton*/,
                    bool /*isButtonDown*/) override
   {
-    auto bounds = getLocalBounds();
-    const auto buttonPadding = rawButtonPadding * size;
-    auto innerBounds = bounds.reduced(buttonPadding);
-
-    const auto cornerRadius = rawCornerRadius * size;
-    g.setColour(backgroundColour);
-    g.fillRoundedRectangle(innerBounds.toFloat(), cornerRadius);
-
-    if (icon != nullptr) {
-      iconImage = Image(Image::ARGB, getWidth(), getHeight(), true);
-      juce::Graphics iconGraphics(iconImage);
-      iconGraphics.fillAll(
-        juce::Colours::transparentBlack); // Clear previous icon
-      const auto specificSvgPadding = rawSpecificSvgPadding * size;
-      const auto globalSvgPadding = 2.5f * size;
-      const auto svgPadding = specificSvgPadding + globalSvgPadding;
-      const auto iconArea = innerBounds.reduced(svgPadding).toFloat();
-      icon->replaceColour(juce::Colours::black, juce::Colours::white);
-      icon->drawWithin(
-        iconGraphics, iconArea, juce::RectanglePlacement::centred, 1.0f);
-      iconImageComponent.setImage(iconImage);
-    }
+    // No need to paint the background here, it's cached in the background image
   }
 
   void resized() override
@@ -85,24 +67,69 @@ public:
     auto innerBounds = bounds.reduced(buttonPadding);
     const auto cornerRadius = rawCornerRadius * size;
 
+    // Set the bounds for the background
+    backgroundImage =
+      Image(Image::ARGB, innerBounds.getWidth(), innerBounds.getHeight(), true);
+    backgroundImageComponent.setBounds(innerBounds);
+
+    // Set the bounds for the outer shadow
     juce::Path outerShadowPath;
     outerShadowPath.addRoundedRectangle(innerBounds, cornerRadius);
     outerShadow.setPath(outerShadowPath);
     outerShadow.setBoundsRelative(0.0f, 0.0f, 1.0f, 1.0f);
-    outerShadow.toBack();
 
+    // Set the bounds for the inner shadow
     juce::Path innerShadowPath;
     innerShadowPath.addRoundedRectangle(innerBounds, cornerRadius);
     innerShadow.setPath(innerShadowPath);
     innerShadow.setBoundsRelative(0.0f, 0.0f, 1.0f, 1.0f);
-    innerShadow.toBack();
 
-    // Set the bounds for the iconImage
-    iconImageComponent.setBounds(bounds);
+    // Reorder the components
+    innerShadow.toBack();
+    outerShadow.toBack();
+    backgroundImageComponent.toBack();
+
+    // Set the bounds for the iconImageComponent and draw the icon
+    const auto specificSvgPadding = rawSpecificSvgPadding * size;
+    const auto globalSvgPadding = 2.5f * size;
+    const auto svgPadding = specificSvgPadding + globalSvgPadding;
+    const auto iconArea = innerBounds.reduced(svgPadding);
+    iconImage = juce::Image(
+      juce::Image::ARGB, iconArea.getWidth(), iconArea.getHeight(), true);
+
+    iconImageComponent.setBounds(iconArea);
     iconImageComponent.setAlwaysOnTop(true);
+
+    // Paint all the components
+    drawBackground();
+    drawIcon();
   }
 
 private:
+  void drawIcon()
+  {
+    if (icon != nullptr) {
+      juce::Graphics iconGraphics(iconImage);
+      iconGraphics.fillAll(
+        juce::Colours::transparentBlack); // Clear previous icon
+      const auto iconArea = iconImage.getBounds().toFloat();
+      icon->replaceColour(juce::Colours::black, juce::Colours::white);
+      icon->drawWithin(
+        iconGraphics, iconArea, juce::RectanglePlacement::centred, 1.0f);
+      iconImageComponent.setImage(iconImage);
+    }
+  }
+  void drawBackground()
+  {
+    juce::Graphics g(backgroundImage);
+    g.fillAll(juce::Colours::transparentBlack); // Clear previous background
+    const auto cornerRadius = rawCornerRadius * size;
+    const auto backgroundArea = backgroundImage.getBounds().toFloat();
+    g.setColour(backgroundColour);
+    g.fillRoundedRectangle(backgroundArea, cornerRadius);
+    backgroundImageComponent.setImage(backgroundImage);
+  }
+
   std::unique_ptr<juce::Drawable> icon;
   const float rawSpecificSvgPadding;
   ImageComponent iconImageComponent;
@@ -110,6 +137,9 @@ private:
   juce::Rectangle<int> iconImageArea;
   Shadow outerShadow;
   Shadow innerShadow;
+
+  Image backgroundImage;
+  ImageComponent backgroundImageComponent;
 };
 } // namespace widget
 } // namespace dmt
