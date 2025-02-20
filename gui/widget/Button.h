@@ -45,6 +45,8 @@ public:
     addAndMakeVisible(iconImageComponent);
     addAndMakeVisible(hoverBackgroundImageComponent);
     hoverBackgroundImageComponent.setVisible(false);
+
+    addMouseListener(this, true);
   }
 
   ~Button() override {}

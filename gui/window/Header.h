@@ -76,7 +76,10 @@ public:
   {
     auto bounds = getLocalBounds();
     const auto titleOffset = rawTitleOffset * size;
-    const auto titleBounds = bounds.withY(titleOffset);
+    const auto titleButtonWidth = rawTitleButtonWidth * size;
+    const auto titleBounds = bounds.withWidth(titleButtonWidth)
+                               .withCentre(bounds.getCentre())
+                               .withY(titleOffset);
     title.setBounds(titleBounds);
     title.setAlwaysOnTop(true);
 
@@ -86,7 +89,6 @@ public:
       Rectangle(bounds).removeFromRight(48.0f * size);
     settingsButton.setBounds(settingsButtonBounds);
 
-    const auto titleButtonWidth = rawTitleButtonWidth * size;
     const auto titleButtonBounds =
       bounds.withWidth(titleButtonWidth).withCentre(bounds.getCentre());
     titleButton.setBounds(titleButtonBounds);
