@@ -46,9 +46,11 @@ public:
     addAndMakeVisible(innerShadow);
     addAndMakeVisible(backgroundImageComponent);
     addAndMakeVisible(hoverBackgroundImageComponent);
+    addAndMakeVisible(clickedBackgroundImageComponent);
     addAndMakeVisible(iconImageComponent);
     addAndMakeVisible(hoverIconImageComponent);
     hoverBackgroundImageComponent.setVisible(false);
+    clickedBackgroundImageComponent.setVisible(false);
     hoverIconImageComponent.setVisible(false);
     addMouseListener(this, true);
   }
@@ -61,6 +63,7 @@ public:
       return;
     backgroundImageComponent.setVisible(false);
     hoverBackgroundImageComponent.setVisible(true);
+    clickedBackgroundImageComponent.setVisible(false);
     iconImageComponent.setVisible(false);
     hoverIconImageComponent.setVisible(true);
   }
@@ -71,6 +74,7 @@ public:
       return;
     backgroundImageComponent.setVisible(true);
     hoverBackgroundImageComponent.setVisible(false);
+    clickedBackgroundImageComponent.setVisible(false);
     iconImageComponent.setVisible(true);
     hoverIconImageComponent.setVisible(false);
   }
@@ -80,7 +84,19 @@ public:
     if (!isEnabled())
       return;
     backgroundImageComponent.setVisible(false);
+    hoverBackgroundImageComponent.setVisible(false);
+    clickedBackgroundImageComponent.setVisible(true);
+    iconImageComponent.setVisible(false);
+    hoverIconImageComponent.setVisible(true);
+  }
+
+  void mouseUp(const juce::MouseEvent& /*event*/) override
+  {
+    if (!isEnabled())
+      return;
+    backgroundImageComponent.setVisible(false);
     hoverBackgroundImageComponent.setVisible(true);
+    clickedBackgroundImageComponent.setVisible(false);
     iconImageComponent.setVisible(false);
     hoverIconImageComponent.setVisible(true);
   }
@@ -116,6 +132,9 @@ protected:
     hoverBackgroundImage =
       Image(Image::ARGB, innerBounds.getWidth(), innerBounds.getHeight(), true);
     hoverBackgroundImageComponent.setBounds(innerBounds);
+    clickedBackgroundImage =
+      Image(Image::ARGB, innerBounds.getWidth(), innerBounds.getHeight(), true);
+    clickedBackgroundImageComponent.setBounds(innerBounds);
   }
 
   void setShadowBounds(const juce::Rectangle<int>& innerBounds,
@@ -136,6 +155,7 @@ protected:
     // Reorder the components
     innerShadow.toBack();
     outerShadow.toBack();
+    clickedBackgroundImageComponent.toBack();
     hoverBackgroundImageComponent.toBack();
     backgroundImageComponent.toBack();
   }
@@ -204,6 +224,13 @@ protected:
     hoverGraphics.setColour(hoverColour);
     hoverGraphics.fillRoundedRectangle(backgroundArea, cornerRadius);
     hoverBackgroundImageComponent.setImage(hoverBackgroundImage);
+
+    // Click background
+    juce::Graphics clickGraphics(clickedBackgroundImage);
+    clickGraphics.fillAll(juce::Colours::transparentBlack);
+    clickGraphics.setColour(clickColour);
+    clickGraphics.fillRoundedRectangle(backgroundArea, cornerRadius);
+    clickedBackgroundImageComponent.setImage(clickedBackgroundImage);
   }
 
 private:
@@ -216,6 +243,8 @@ private:
   ImageComponent backgroundImageComponent;
   Image hoverBackgroundImage;
   ImageComponent hoverBackgroundImageComponent;
+  Image clickedBackgroundImage;
+  ImageComponent clickedBackgroundImageComponent;
   Image iconImage;
   ImageComponent iconImageComponent;
   Image hoverIconImage;
