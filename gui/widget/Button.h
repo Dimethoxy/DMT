@@ -24,6 +24,9 @@ class Button : public juce::Button
   const Colour& backgroundColour = ButtonSettings::backgroundColour;
   const Colour& outerShadowColour = ButtonSettings::outerShadowColour;
   const Colour& innerShadowColour = ButtonSettings::innerShadowColour;
+  const Colour& fontColour = ButtonSettings::fontColour;
+  const Colour& hoverColour = ButtonSettings::hoverColour;
+  const Colour& clickColour = ButtonSettings::clickColour;
   const float& rawCornerRadius = ButtonSettings::cornerRadius;
   const float& rawButtonPadding = ButtonSettings::padding;
   const float& outerShadowRadius = ButtonSettings::shadowRadius;
@@ -42,10 +45,11 @@ public:
     addAndMakeVisible(outerShadow);
     addAndMakeVisible(innerShadow);
     addAndMakeVisible(backgroundImageComponent);
-    addAndMakeVisible(iconImageComponent);
     addAndMakeVisible(hoverBackgroundImageComponent);
+    addAndMakeVisible(iconImageComponent);
+    addAndMakeVisible(hoverIconImageComponent);
     hoverBackgroundImageComponent.setVisible(false);
-
+    hoverIconImageComponent.setVisible(false);
     addMouseListener(this, true);
   }
 
@@ -61,6 +65,8 @@ public:
   {
     backgroundImageComponent.setVisible(false);
     hoverBackgroundImageComponent.setVisible(true);
+    iconImageComponent.setVisible(false);
+    hoverIconImageComponent.setVisible(true);
     repaint();
   }
 
@@ -68,6 +74,8 @@ public:
   {
     backgroundImageComponent.setVisible(true);
     hoverBackgroundImageComponent.setVisible(false);
+    iconImageComponent.setVisible(true);
+    hoverIconImageComponent.setVisible(false);
     repaint();
   }
 
@@ -75,6 +83,8 @@ public:
   {
     backgroundImageComponent.setVisible(false);
     hoverBackgroundImageComponent.setVisible(true);
+    iconImageComponent.setVisible(false);
+    hoverIconImageComponent.setVisible(true);
     repaint();
   }
 
@@ -108,18 +118,26 @@ public:
     // Reorder the components
     innerShadow.toBack();
     outerShadow.toBack();
+    hoverBackgroundImageComponent.toBack();
     backgroundImageComponent.toBack();
 
-    // Set the bounds for the iconImageComponent and draw the icon
+    // Parameters for the icon
     const auto specificSvgPadding = rawSpecificSvgPadding * size;
     const auto globalSvgPadding = 2.5f * size;
     const auto svgPadding = specificSvgPadding + globalSvgPadding;
+
+    // Get the bounds for the icon
     const auto iconArea = innerBounds.reduced(svgPadding);
     iconImage = juce::Image(
       juce::Image::ARGB, iconArea.getWidth(), iconArea.getHeight(), true);
-
     iconImageComponent.setBounds(iconArea);
     iconImageComponent.setAlwaysOnTop(true);
+
+    // Get the bounds for the hover icon
+    hoverIconImage = juce::Image(
+      juce::Image::ARGB, iconArea.getWidth(), iconArea.getHeight(), true);
+    hoverIconImageComponent.setBounds(iconArea);
+    hoverIconImageComponent.setAlwaysOnTop(true);
 
     // Paint all the components
     drawBackground();
@@ -134,10 +152,20 @@ private:
       iconGraphics.fillAll(
         juce::Colours::transparentBlack); // Clear previous icon
       const auto iconArea = iconImage.getBounds().toFloat();
-      icon->replaceColour(juce::Colours::black, juce::Colours::white);
-      icon->drawWithin(
+      const auto clonedIcon = icon->createCopy();
+      clonedIcon->replaceColour(juce::Colours::black, fontColour);
+      clonedIcon->drawWithin(
         iconGraphics, iconArea, juce::RectanglePlacement::centred, 1.0f);
       iconImageComponent.setImage(iconImage);
+
+      juce::Graphics hoverIconGraphics(hoverIconImage);
+      hoverIconGraphics.fillAll(juce::Colours::transparentBlack);
+      hoverIconGraphics.setColour(hoverColour);
+      const auto clonedHoverIcon = icon->createCopy();
+      clonedHoverIcon->replaceColour(juce::Colours::black, backgroundColour);
+      clonedHoverIcon->drawWithin(
+        hoverIconGraphics, iconArea, juce::RectanglePlacement::centred, 1.0f);
+      hoverIconImageComponent.setImage(hoverIconImage);
     }
   }
 
@@ -157,7 +185,7 @@ private:
     // Hover background
     juce::Graphics hoverGraphics(hoverBackgroundImage);
     hoverGraphics.fillAll(juce::Colours::transparentBlack);
-    hoverGraphics.setColour(juce::Colours::red);
+    hoverGraphics.setColour(hoverColour);
     hoverGraphics.fillRoundedRectangle(backgroundArea, cornerRadius);
     hoverBackgroundImageComponent.setImage(hoverBackgroundImage);
   }
@@ -173,6 +201,8 @@ private:
   ImageComponent hoverBackgroundImageComponent;
   Image iconImage;
   ImageComponent iconImageComponent;
+  Image hoverIconImage;
+  ImageComponent hoverIconImageComponent;
 };
 } // namespace widget
 } // namespace dmt

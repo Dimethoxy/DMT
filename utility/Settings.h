@@ -70,6 +70,9 @@ public:
     static inline Colour backgroundColour = Colours::solid_dark;
     static inline Colour outerShadowColour = Colours::shadow.withAlpha(0.5f);
     static inline Colour innerShadowColour = Colours::shadow.withAlpha(0.5f);
+    static inline Colour fontColour = Colours::font;
+    static inline Colour hoverColour = Colours::primary;
+    static inline Colour clickColour = Colours::font;
     static inline float shadowRadius = 5.0f;
     static inline float cornerRadius = 10.0f;
     static inline float padding = 6.0f;
