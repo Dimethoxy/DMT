@@ -15,7 +15,7 @@ class Compositor : public juce::Component
 
   // Window size
   const float& size = dmt::Settings::Window::size;
-  const int headerHeight = dmt::Settings::Header::height;
+  const int rawHeaderHeight = dmt::Settings::Header::height;
 
 public:
   Compositor(juce::String titleText, AbstractPanel& mainPanel)
@@ -24,6 +24,7 @@ public:
   {
     addAndMakeVisible(header);
     addAndMakeVisible(mainPanel);
+    header.getSettingsButton().onClick = [this] { showSettings(); };
   }
 
   ~Compositor() noexcept override {}
@@ -33,11 +34,20 @@ public:
   void resized() noexcept override
   {
     const auto bounds = getLocalBounds();
-    auto contentBounds = bounds;
-    auto headerBounds = contentBounds.removeFromTop(headerHeight * size);
+
+    const auto headerHeight = rawHeaderHeight * size;
+    const auto headerBounds =
+      juce::Rectangle(bounds).removeFromTop(headerHeight);
 
     header.setBounds(headerBounds);
     mainPanel.setBounds(contentBounds);
+  }
+
+  void showSettings() noexcept
+  {
+    mainPanel.setVisible(false);
+    header.getSettingsButton().setVisible(false);
+    repaint();
   }
 
 private:

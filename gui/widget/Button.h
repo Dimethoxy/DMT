@@ -88,6 +88,7 @@ public:
     clickedBackgroundImageComponent.setVisible(true);
     iconImageComponent.setVisible(false);
     hoverIconImageComponent.setVisible(true);
+    onClick();
   }
 
   void mouseUp(const juce::MouseEvent& /*event*/) override

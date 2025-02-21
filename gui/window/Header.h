@@ -37,6 +37,7 @@ class Header : public juce::Component
   const float& titleFontSize = HeaderSettings::titleFontSize;
   const float& rawTitleOffset = HeaderSettings::titleOffset;
   const float& rawTitleButtonWidth = HeaderSettings::titleButtonWidth;
+  const float& rawHeaderButtonWidth = HeaderSettings::buttonWidth;
 
   // Button
   const float& rawButtonPadding = dmt::Settings::Button::padding;
@@ -88,13 +89,15 @@ public:
     const auto borderStrength = rawBorderStrength * size;
     bounds.removeFromBottom(borderStrength);
     const auto settingsButtonBounds =
-      Rectangle(bounds).removeFromRight(48.0f * size);
+      Rectangle(bounds).removeFromRight(rawHeaderButtonWidth * size);
     settingsButton.setBounds(settingsButtonBounds);
 
     const auto titleButtonBounds =
       bounds.withWidth(titleButtonWidth).withCentre(bounds.getCentre());
     titleButton.setBounds(titleButtonBounds);
   }
+
+  Button& getSettingsButton() noexcept { return settingsButton; }
 
 private:
   Label title;

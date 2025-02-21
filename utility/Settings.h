@@ -35,10 +35,10 @@ private:
   {
     using Colour = juce::Colour;
     static inline Colour background = Colour(25, 26, 33);
-    static inline Colour solid_dark = Colour(40, 42, 54);
-    static inline Colour solid_mid = Colour(61, 64, 82);
-    static inline Colour solid_light = Colour(69, 73, 94);
-    static inline Colour solid_extra_light = Colour(78, 83, 106);
+    static inline Colour solidDark = Colour(40, 42, 54);
+    static inline Colour solidMedium = Colour(61, 64, 82);
+    static inline Colour solidLight = Colour(69, 73, 94);
+    static inline Colour solidExtraLight = Colour(78, 83, 106);
     static inline Colour font = Colour(248, 248, 248);
     static inline Colour primary = Colour(80, 250, 123);
     static inline Colour shadow = Colour(0, 0, 0);
@@ -54,20 +54,21 @@ public:
 
   struct Header
   {
-    static inline Colour backroundColour = Colours::solid_mid;
-    static inline Colour borderColor = Colours::solid_dark;
+    static inline Colour backroundColour = Colours::solidMedium;
+    static inline Colour borderColor = Colours::solidDark;
     static inline Colour titleColour = Colours::font;
-    static inline Colour buttonColour = Colours::solid_dark;
+    static inline Colour buttonColour = Colours::solidDark;
+    static inline Colour titleFontColour = Colours::font;
     static inline float titleFontSize = 34.0f;
     static inline float titleOffset = 2.5f;
     static inline float titleButtonWidth = 120.0f;
+    static inline float buttonWidth = 48.0f;
     static inline int height = 50;
-    static inline Colour titleFontColour = Colours::font;
   };
 
   struct Button
   {
-    static inline Colour backgroundColour = Colours::solid_dark;
+    static inline Colour backgroundColour = Colours::solidDark;
     static inline Colour outerShadowColour = Colours::shadow.withAlpha(0.5f);
     static inline Colour innerShadowColour = Colours::shadow.withAlpha(0.5f);
     static inline Colour fontColour = Colours::font;
@@ -87,9 +88,9 @@ public:
     static inline float cornerSize = 15.0f;
     // Border
     static inline bool drawBorder = true;
-    static inline Colour borderColour = Colours::solid_dark;
+    static inline Colour borderColour = Colours::solidDark;
     static inline float borderStrength = 4.0f;
-    static inline juce::Colour backgroundColour = Colours::solid_mid;
+    static inline juce::Colour backgroundColour = Colours::solidMedium;
     // Shadows
     static inline bool drawOuterShadow = true;
     static inline bool drawInnerShadow = false;
@@ -126,18 +127,18 @@ public:
     static inline float shaftLineStrength = 3.0f;
     static inline float shaftSize = 0.45f;
     // Rail
-    static inline juce::Colour lowerRailColour = Colours::solid_dark;
+    static inline juce::Colour lowerRailColour = Colours::solidDark;
     static inline juce::Colour upperRailColour = Colours::primary;
     static inline float railWidth = 8.0f;
     static inline float railSize = 0.72f;
     // Thumb
-    static inline juce::Colour thumbInnerColour = Colours::solid_dark;
+    static inline juce::Colour thumbInnerColour = Colours::solidDark;
     static inline juce::Colour thumOuterColour = Colours::font;
     static inline float thumbSize = 22.0f;
     static inline float thumbStrength = 3.0f;
     // Selections
     static inline juce::Colour selectionOuterColour = Colours::font;
-    static inline juce::Colour selectionInnerColour = Colours::solid_dark;
+    static inline juce::Colour selectionInnerColour = Colours::solidDark;
     static inline juce::Colour selectionActiveColour = Colours::primary;
     static inline float selectionWidth = 2.0f;
     static inline float selectionSize = 9.0f;
@@ -152,7 +153,7 @@ public:
     static inline float cornerSize = 15.0f;
     // Border
     static inline bool drawBorder = true;
-    static inline Colour borderColour = Colours::solid_dark;
+    static inline Colour borderColour = Colours::solidDark;
     static inline float borderStrength = 4.0f;
     // Shadow
     static inline bool drawOuterShadow = false;
@@ -204,7 +205,7 @@ public:
     static inline float cornerSize = 15.0f;
     // Border
     static inline bool drawBorder = true;
-    static inline Colour borderColour = Colours::solid_dark;
+    static inline Colour borderColour = Colours::solidDark;
     static inline float borderStrength = 4.0f;
     // Shadow
     static inline bool drawOuterShadow = false;
