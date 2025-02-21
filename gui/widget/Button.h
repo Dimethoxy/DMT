@@ -63,29 +63,32 @@ public:
 
   void mouseEnter(const juce::MouseEvent& event) override
   {
+    if (!isEnabled())
+      return;
     backgroundImageComponent.setVisible(false);
     hoverBackgroundImageComponent.setVisible(true);
     iconImageComponent.setVisible(false);
     hoverIconImageComponent.setVisible(true);
-    repaint();
   }
 
   void mouseExit(const juce::MouseEvent& event) override
   {
+    if (!isEnabled())
+      return;
     backgroundImageComponent.setVisible(true);
     hoverBackgroundImageComponent.setVisible(false);
     iconImageComponent.setVisible(true);
     hoverIconImageComponent.setVisible(false);
-    repaint();
   }
 
   void mouseDown(const juce::MouseEvent& event) override
   {
+    if (!isEnabled())
+      return;
     backgroundImageComponent.setVisible(false);
     hoverBackgroundImageComponent.setVisible(true);
     iconImageComponent.setVisible(false);
     hoverIconImageComponent.setVisible(true);
-    repaint();
   }
 
   void resized() override
@@ -95,14 +98,29 @@ public:
     auto innerBounds = bounds.reduced(buttonPadding);
     const auto cornerRadius = rawCornerRadius * size;
 
-    // Set the bounds for the background
+    setBackgroundBounds(innerBounds);
+    setShadowBounds(innerBounds, cornerRadius);
+    setIconBounds(innerBounds);
+
+    // Paint all the components
+    drawBackground();
+    drawIcon();
+  }
+
+protected:
+  void setBackgroundBounds(const juce::Rectangle<int>& innerBounds)
+  {
     backgroundImage =
       Image(Image::ARGB, innerBounds.getWidth(), innerBounds.getHeight(), true);
     backgroundImageComponent.setBounds(innerBounds);
     hoverBackgroundImage =
       Image(Image::ARGB, innerBounds.getWidth(), innerBounds.getHeight(), true);
     hoverBackgroundImageComponent.setBounds(innerBounds);
+  }
 
+  void setShadowBounds(const juce::Rectangle<int>& innerBounds,
+                       float cornerRadius)
+  {
     // Set the bounds for the outer shadow
     juce::Path outerShadowPath;
     outerShadowPath.addRoundedRectangle(innerBounds, cornerRadius);
@@ -120,7 +138,10 @@ public:
     outerShadow.toBack();
     hoverBackgroundImageComponent.toBack();
     backgroundImageComponent.toBack();
+  }
 
+  void setIconBounds(const juce::Rectangle<int>& innerBounds)
+  {
     // Parameters for the icon
     const auto specificSvgPadding = rawSpecificSvgPadding * size;
     const auto globalSvgPadding = 2.5f * size;
@@ -138,13 +159,8 @@ public:
       juce::Image::ARGB, iconArea.getWidth(), iconArea.getHeight(), true);
     hoverIconImageComponent.setBounds(iconArea);
     hoverIconImageComponent.setAlwaysOnTop(true);
-
-    // Paint all the components
-    drawBackground();
-    drawIcon();
   }
 
-private:
   void drawIcon()
   {
     if (icon != nullptr) {
@@ -190,6 +206,7 @@ private:
     hoverBackgroundImageComponent.setImage(hoverBackgroundImage);
   }
 
+private:
   const float rawSpecificSvgPadding;
   std::unique_ptr<juce::Drawable> icon;
   Shadow outerShadow;
