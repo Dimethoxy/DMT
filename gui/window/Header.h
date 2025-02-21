@@ -54,6 +54,7 @@ public:
     addAndMakeVisible(title);
     addAndMakeVisible(settingsButton);
     addAndMakeVisible(titleButton);
+    titleButton.setEnabled(false);
   };
 
   ~Header() override {}

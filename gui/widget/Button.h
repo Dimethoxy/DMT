@@ -55,13 +55,7 @@ public:
 
   ~Button() override {}
 
-  void paintButton(juce::Graphics& g,
-                   bool /*isMouseOverButton*/,
-                   bool /*isButtonDown*/) override
-  {
-  }
-
-  void mouseEnter(const juce::MouseEvent& event) override
+  void mouseEnter(const juce::MouseEvent& /*event*/) override
   {
     if (!isEnabled())
       return;
@@ -71,7 +65,7 @@ public:
     hoverIconImageComponent.setVisible(true);
   }
 
-  void mouseExit(const juce::MouseEvent& event) override
+  void mouseExit(const juce::MouseEvent& /*event*/) override
   {
     if (!isEnabled())
       return;
@@ -81,7 +75,7 @@ public:
     hoverIconImageComponent.setVisible(false);
   }
 
-  void mouseDown(const juce::MouseEvent& event) override
+  void mouseDown(const juce::MouseEvent& /*event*/) override
   {
     if (!isEnabled())
       return;
@@ -89,6 +83,12 @@ public:
     hoverBackgroundImageComponent.setVisible(true);
     iconImageComponent.setVisible(false);
     hoverIconImageComponent.setVisible(true);
+  }
+
+  void paintButton(juce::Graphics& g,
+                   bool /*isMouseOverButton*/,
+                   bool /*isButtonDown*/) override
+  {
   }
 
   void resized() override
