@@ -1,15 +1,16 @@
 #pragma once
-
+//==============================================================================
 #include "dmt/gui/widget/Button.h"
 #include "dmt/gui/widget/Label.h"
 #include "dmt/gui/widget/Shadow.h"
 #include "dmt/utility/Fonts.h"
 #include "dmt/utility/Settings.h"
 #include <JuceHeader.h>
-
+//==============================================================================
 namespace dmt {
 namespace gui {
 namespace window {
+//==============================================================================
 class Header : public juce::Component
 {
   // Aliases

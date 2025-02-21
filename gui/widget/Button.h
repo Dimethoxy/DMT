@@ -1,8 +1,8 @@
 #pragma once
-
+//==============================================================================
 #include "utility/Settings.h"
 #include <JuceHeader.h>
-
+//==============================================================================
 namespace dmt {
 namespace gui {
 namespace widget {
