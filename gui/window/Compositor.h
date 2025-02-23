@@ -18,9 +18,9 @@ class Compositor : public juce::Component
   const int rawHeaderHeight = dmt::Settings::Header::height;
 
 public:
-  Compositor(juce::String titleText, AbstractPanel& mainPanel)
-    : mainPanel(mainPanel)
-    , header(titleText)
+  Compositor(juce::String _titleText, AbstractPanel& _mainPanel)
+    : mainPanel(_mainPanel)
+    , header(_titleText)
   {
     addAndMakeVisible(header);
     addAndMakeVisible(mainPanel);
@@ -29,7 +29,7 @@ public:
 
   ~Compositor() noexcept override {}
 
-  void paint(juce::Graphics& g) noexcept override {}
+  void paint(juce::Graphics& /*_g*/) noexcept override {}
 
   void resized() noexcept override
   {
@@ -37,9 +37,12 @@ public:
 
     const auto headerHeight = rawHeaderHeight * size;
     const auto headerBounds =
-      juce::Rectangle(bounds).removeFromTop(headerHeight);
-
+      juce::Rectangle(bounds).removeFromTop(headerHeight * 2.0f);
     header.setBounds(headerBounds);
+
+    const auto contentHeight = bounds.getHeight() - headerHeight;
+    const auto contentBounds =
+      juce::Rectangle(bounds).removeFromBottom(contentHeight);
     mainPanel.setBounds(contentBounds);
   }
 

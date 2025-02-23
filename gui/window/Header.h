@@ -64,7 +64,7 @@ public:
   void paint(juce::Graphics& g) override
   {
     // Paint the border
-    auto bounds = getLocalBounds();
+    auto bounds = getLocalBounds().removeFromTop(getHeight() * 0.5);
     g.setColour(borderColor);
     g.fillRect(bounds);
 
@@ -77,7 +77,7 @@ public:
 
   void resized() override
   {
-    auto bounds = getLocalBounds();
+    auto bounds = getLocalBounds().removeFromTop(getHeight() * 0.5);
     const auto titleOffset = rawTitleOffset * size;
     const auto titleButtonWidth = rawTitleButtonWidth * size;
     const auto titleBounds = bounds.withWidth(titleButtonWidth)
