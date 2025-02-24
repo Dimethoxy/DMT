@@ -60,15 +60,18 @@ public:
             Colours::white,
             juce::Justification::centred)
     , settingsButton("HeaderSettingsButton", "Settings")
+    , settingsExitButton("HeaderSettingsExitButton", "Back")
     , titleButton("HeaderTitleButton", "None")
   {
     addAndMakeVisible(outerShadow);
     addAndMakeVisible(innerShadow);
     addAndMakeVisible(title);
     addAndMakeVisible(settingsButton);
+    addAndMakeVisible(settingsExitButton);
     addAndMakeVisible(titleButton);
     title.setText(titleText);
     titleButton.setEnabled(false);
+    settingsExitButton.setVisible(false);
   };
 
   ~Header() override {}
@@ -118,6 +121,7 @@ public:
     const auto settingsButtonBounds =
       Rectangle(bounds).removeFromRight(rawHeaderButtonWidth * size);
     settingsButton.setBounds(settingsButtonBounds);
+    settingsExitButton.setBounds(settingsButtonBounds);
 
     // Set the bounds for the title button
     const auto titleButtonBounds =
@@ -126,6 +130,7 @@ public:
   }
 
   Button& getSettingsButton() noexcept { return settingsButton; }
+  Button& getSettingsExitButton() noexcept { return settingsExitButton; }
 
 private:
   Shadow outerShadow;
@@ -133,6 +138,7 @@ private:
   Label title;
   Fonts fonts;
   Button settingsButton;
+  Button settingsExitButton;
   Button titleButton;
 
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Header)

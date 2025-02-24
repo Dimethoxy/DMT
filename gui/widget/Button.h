@@ -102,7 +102,7 @@ public:
     hoverIconImageComponent.setVisible(true);
   }
 
-  void paintButton(juce::Graphics& g,
+  void paintButton(juce::Graphics& /*g*/,
                    bool /*isMouseOverButton*/,
                    bool /*isButtonDown*/) override
   {

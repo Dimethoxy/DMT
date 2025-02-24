@@ -25,6 +25,7 @@ public:
     addAndMakeVisible(header);
     addAndMakeVisible(mainPanel);
     header.getSettingsButton().onClick = [this] { showSettings(); };
+    header.getSettingsExitButton().onClick = [this] { closeSettings(); };
   }
 
   ~Compositor() noexcept override {}
@@ -50,6 +51,15 @@ public:
   {
     mainPanel.setVisible(false);
     header.getSettingsButton().setVisible(false);
+    header.getSettingsExitButton().setVisible(true);
+    repaint();
+  }
+
+  void closeSettings() noexcept
+  {
+    mainPanel.setVisible(true);
+    header.getSettingsButton().setVisible(true);
+    header.getSettingsExitButton().setVisible(false);
     repaint();
   }
 
