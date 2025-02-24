@@ -59,8 +59,6 @@ public:
     static inline Colour titleColour = Colours::font;
     static inline Colour buttonColour = Colours::solidDark;
     static inline Colour titleFontColour = Colours::font;
-    static inline Colour outerShadowColour = juce::Colours::red;
-    static inline Colour innerShadowColour = juce::Colours::green;
     static inline float titleFontSize = 34.0f;
     static inline float titleOffset = 2.5f;
     static inline float titleButtonWidth = 120.0f;
@@ -76,7 +74,8 @@ public:
     static inline Colour fontColour = Colours::font;
     static inline Colour hoverColour = Colours::primary;
     static inline Colour clickColour = Colours::font;
-    static inline float shadowRadius = 5.0f;
+    static inline float outerShadowRadius = 5.0f;
+    static inline float innerShadowRadius = 5.0f;
     static inline float cornerRadius = 10.0f;
     static inline float padding = 6.0f;
     static inline bool drawInnerShadow = true;

@@ -29,8 +29,8 @@ class Button : public juce::Button
   const Colour& clickColour = ButtonSettings::clickColour;
   const float& rawCornerRadius = ButtonSettings::cornerRadius;
   const float& rawButtonPadding = ButtonSettings::padding;
-  const float& outerShadowRadius = ButtonSettings::shadowRadius;
-  const float& innerShadowRadius = ButtonSettings::shadowRadius;
+  const float& outerShadowRadius = ButtonSettings::outerShadowRadius;
+  const float& innerShadowRadius = ButtonSettings::innerShadowRadius;
   const bool& drawOuterShadow = ButtonSettings::drawOuterShadow;
   const bool& drawInnerShadow = ButtonSettings::drawInnerShadow;
 

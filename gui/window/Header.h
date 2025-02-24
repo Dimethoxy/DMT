@@ -110,6 +110,7 @@ public:
     innerShadow.setPath(innerShadowPath);
     innerShadow.setBoundsRelative(0.0f, 0.0f, 1.0f, 1.0f);
 
+    // Set the bounds for the inner header
     const auto borderStrength = rawBorderStrength * size;
     bounds.removeFromBottom(borderStrength);
 
