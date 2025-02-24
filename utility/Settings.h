@@ -59,6 +59,8 @@ public:
     static inline Colour titleColour = Colours::font;
     static inline Colour buttonColour = Colours::solidDark;
     static inline Colour titleFontColour = Colours::font;
+    static inline Colour outerShadowColour = juce::Colours::red;
+    static inline Colour innerShadowColour = juce::Colours::green;
     static inline float titleFontSize = 34.0f;
     static inline float titleOffset = 2.5f;
     static inline float titleButtonWidth = 120.0f;

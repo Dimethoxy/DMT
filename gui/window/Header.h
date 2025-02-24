@@ -20,13 +20,20 @@ class Header : public juce::Component
   using Colour = juce::Colour;
   using Fonts = dmt::utility::Fonts;
   using HeaderSettings = dmt::Settings::Header;
+  using PanelSettings = dmt::Settings::Panel;
   using Shadow = dmt::gui::widget::Shadow;
 
   // Window
   const float& size = dmt::Settings::Window::size;
 
   // Panel
-  const float& rawBorderStrength = dmt::Settings::Panel::borderStrength;
+  const Colour& outerShadowColour = PanelSettings::outerShadowColour;
+  const Colour& innerShadowColour = PanelSettings::innerShadowColour;
+  const float& rawBorderStrength = PanelSettings::borderStrength;
+  const float& outerShadowRadius = PanelSettings::outerShadowRadius;
+  const float& innerShadowRadius = PanelSettings::innerShadowRadius;
+  const bool& drawOuterShadow = PanelSettings::drawOuterShadow;
+  const bool& drawInnerShadow = PanelSettings::drawInnerShadow;
 
   // Header
   const String name = ProjectInfo::projectName;
@@ -34,6 +41,7 @@ class Header : public juce::Component
   const Colour& borderColor = HeaderSettings::borderColor;
   const Colour& titleFontColour = HeaderSettings::titleFontColour;
   const Colour& buttonColour = HeaderSettings::buttonColour;
+
   const float& titleFontSize = HeaderSettings::titleFontSize;
   const float& rawTitleOffset = HeaderSettings::titleOffset;
   const float& rawTitleButtonWidth = HeaderSettings::titleButtonWidth;
@@ -44,7 +52,9 @@ class Header : public juce::Component
 
 public:
   Header(juce::String titleText)
-    : title(String("ProjectLabel"),
+    : outerShadow(drawOuterShadow, outerShadowColour, outerShadowRadius, false)
+    , innerShadow(drawInnerShadow, innerShadowColour, innerShadowRadius, true)
+    , title(String("ProjectLabel"),
             fonts.display,
             titleFontSize,
             Colours::white,
@@ -52,10 +62,12 @@ public:
     , settingsButton("HeaderSettingsButton", "Settings")
     , titleButton("HeaderTitleButton", "None")
   {
-    title.setText(titleText);
+    addAndMakeVisible(outerShadow);
+    addAndMakeVisible(innerShadow);
     addAndMakeVisible(title);
     addAndMakeVisible(settingsButton);
     addAndMakeVisible(titleButton);
+    title.setText(titleText);
     titleButton.setEnabled(false);
   };
 
@@ -86,12 +98,27 @@ public:
     title.setBounds(titleBounds);
     title.setAlwaysOnTop(true);
 
+    // Set the bounds for the outer shadow
+    juce::Path outerShadowPath;
+    outerShadowPath.addRectangle(bounds);
+    outerShadow.setPath(outerShadowPath);
+    outerShadow.setBoundsRelative(0.0f, 0.0f, 1.0f, 1.0f);
+
+    // Set the bounds for the inner shadow
+    juce::Path innerShadowPath;
+    innerShadowPath.addRectangle(bounds);
+    innerShadow.setPath(innerShadowPath);
+    innerShadow.setBoundsRelative(0.0f, 0.0f, 1.0f, 1.0f);
+
     const auto borderStrength = rawBorderStrength * size;
     bounds.removeFromBottom(borderStrength);
+
+    // Set the bounds for the settings button
     const auto settingsButtonBounds =
       Rectangle(bounds).removeFromRight(rawHeaderButtonWidth * size);
     settingsButton.setBounds(settingsButtonBounds);
 
+    // Set the bounds for the title button
     const auto titleButtonBounds =
       bounds.withWidth(titleButtonWidth).withCentre(bounds.getCentre());
     titleButton.setBounds(titleButtonBounds);
@@ -100,6 +127,8 @@ public:
   Button& getSettingsButton() noexcept { return settingsButton; }
 
 private:
+  Shadow outerShadow;
+  Shadow innerShadow;
   Label title;
   Fonts fonts;
   Button settingsButton;
