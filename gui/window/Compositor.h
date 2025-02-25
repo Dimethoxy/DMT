@@ -1,6 +1,7 @@
 #pragma once
 
 #include "gui/panel/AbstractPanel.h"
+#include "gui/panel/SettingsPanel.h"
 #include "gui/window/Header.h"
 #include <JuceHeader.h>
 
@@ -11,6 +12,7 @@ namespace window {
 class Compositor : public juce::Component
 {
   using AbstractPanel = dmt::gui::panel::AbstractPanel;
+  using SettingsPanel = dmt::gui::panel::SettingsPanel;
   using Header = dmt::gui::window::Header;
 
   // Window size
@@ -20,10 +22,13 @@ class Compositor : public juce::Component
 public:
   Compositor(juce::String _titleText, AbstractPanel& _mainPanel)
     : mainPanel(_mainPanel)
+    , settingsPanel()
     , header(_titleText)
   {
-    addAndMakeVisible(header);
     addAndMakeVisible(mainPanel);
+    addAndMakeVisible(settingsPanel);
+    addAndMakeVisible(header);
+    settingsPanel.setVisible(false);
     header.getSettingsButton().onClick = [this] { showSettings(); };
     header.getSettingsExitButton().onClick = [this] { closeSettings(); };
   }
@@ -45,11 +50,13 @@ public:
     const auto contentBounds =
       juce::Rectangle(bounds).removeFromBottom(contentHeight);
     mainPanel.setBounds(contentBounds);
+    settingsPanel.setBounds(contentBounds);
   }
 
   void showSettings() noexcept
   {
     mainPanel.setVisible(false);
+    settingsPanel.setVisible(true);
     header.getSettingsButton().setVisible(false);
     header.getSettingsExitButton().setVisible(true);
     repaint();
@@ -58,6 +65,7 @@ public:
   void closeSettings() noexcept
   {
     mainPanel.setVisible(true);
+    settingsPanel.setVisible(false);
     header.getSettingsButton().setVisible(true);
     header.getSettingsExitButton().setVisible(false);
     repaint();
@@ -65,6 +73,7 @@ public:
 
 private:
   AbstractPanel& mainPanel;
+  SettingsPanel settingsPanel;
   Header header;
 };
 } // namespace window
