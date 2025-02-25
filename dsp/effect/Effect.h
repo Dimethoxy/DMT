@@ -32,5 +32,6 @@
 
 #include "./DisfluxProcessor.h"
 #include "./Distortion.h"
+#include "./LowpassProcessor.h"
 
 //==============================================================================
