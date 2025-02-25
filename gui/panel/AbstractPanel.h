@@ -170,7 +170,7 @@ public:
     rightBounds.setCentre(rightBounds.getCentreX(), bounds.getCentreY());
     nextButton.setBounds(rightBounds.reduced(marginSize));
 
-    titleLabel.setBounds(bounds.reduced(padding));
+    titleLabel.setBounds(bounds.reduced(padding + marginSize));
 
     extendResize();
   }
