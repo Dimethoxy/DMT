@@ -23,4 +23,5 @@
 #include "./model/Model.h"
 #include "./theme/Theme.h"
 #include "./utility/Utility.h"
+#include "./version/Version.h"
 //==============================================================================
