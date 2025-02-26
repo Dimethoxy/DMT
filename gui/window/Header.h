@@ -72,12 +72,6 @@ public:
     title.setText(titleText);
     titleButton.setEnabled(false);
     settingsExitButton.setVisible(false);
-
-    auto url = juce::URL("https://api.dimethoxy.com/version?product=plasma");
-    juce::String responseString = url.readEntireTextStream();
-    std::cout << "Response: " << responseString.toStdString() << std::endl;
-
-    title.setText(responseString);
   };
 
   ~Header() override {}
