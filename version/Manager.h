@@ -1,10 +1,13 @@
 #pragma once
-
+//==============================================================================
 #include "dmt/version/Networking.h"
 #include <JuceHeader.h>
-
+//==============================================================================
 namespace dmt {
 namespace version {
+//==============================================================================
+constexpr auto SERVER_RECONNECT_INTERVAL = 10000;
+//==============================================================================
 class Manager : public juce::Thread
 {
 public:
@@ -26,7 +29,7 @@ protected:
       if (fetchLatestVersion()) {
         break;
       }
-      wait(1000);
+      wait(SERVER_RECONNECT_INTERVAL);
     }
   }
   //============================================================================
@@ -34,11 +37,12 @@ protected:
   {
     // TODO: Implement this method and return true if successful
     auto response = Networking::sendRequest("version?product=plasma");
-    std::cout << response << std::endl;
+    latestVersion = response;
     return false;
   }
   //============================================================================
 private:
+  juce::String latestVersion;
 };
 } // namespace version
 } // namespace dmt
