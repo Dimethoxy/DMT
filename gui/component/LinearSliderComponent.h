@@ -127,11 +127,12 @@ public:
     if (Settings::debugBounds)
       g.drawRect(bounds, 1);
 
+    float baseSvgPadding = 2.0f;
     if (svgTitle) {
       juce::Rectangle<float> iconArea =
         bounds.removeFromTop(slider.getY()).toFloat();
       iconArea = iconArea.withY(iconArea.getY() + 6.0f * size);
-      iconArea = iconArea.reduced(svgPadding * size);
+      iconArea = iconArea.reduced((svgPadding + baseSvgPadding) * size);
       titleIcon->drawWithin(
         g, iconArea, juce::RectanglePlacement::centred, 1.0f);
     }
