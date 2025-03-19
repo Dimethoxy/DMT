@@ -36,14 +36,33 @@ protected:
   //============================================================================
   bool fetchLatestVersion()
   {
-    // TODO: Implement this method and return true if successful
+    std::cout << "Fetching latest version" << std::endl;
     auto response = Networking::sendRequest("version?product=plasma");
     if (response.isEmpty()) {
-      dmt::Settings::latestVersion = "No connection";
       return false;
     }
-    dmt::Settings::latestVersion = response;
-    return false;
+    dmt::Settings::latestVersion = parseVersion(response);
+    return true;
+  }
+  //============================================================================
+  std::array<int, 3> parseVersion(const juce::String& version)
+  {
+
+    int start = version.indexOf("version") + 8;
+    auto secondHalf = version.substring(start);
+    auto tokens = juce::StringArray::fromTokens(secondHalf, "\"", "");
+    auto versionString = tokens[1];
+    auto versionArray = juce::StringArray::fromTokens(versionString, ".", "");
+    std::array<int, 3> result;
+    for (int i = 0; i < 3; i++) {
+      result[i] = versionArray[i].getIntValue();
+    }
+    std::cout << "Parsed version:" << std::endl;
+    std::cout << "- Version:" << versionString << std::endl;
+    std::cout << "- Major:" << result[0] << std::endl;
+    std::cout << "- Minor:" << result[1] << std::endl;
+    std::cout << "- Patch:" << result[2] << std::endl;
+    return result;
   }
   //============================================================================
 private:
