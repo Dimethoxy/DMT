@@ -29,7 +29,7 @@ public:
   static inline float unixFontScalingFactor = 0.9f;
   static inline bool debugBounds = false;
   static inline bool debugGrid = false;
-  static inline String latestVersion = "0.0.0";
+  static inline std::array<int, 3> latestVersion = { 0, 0, 0 };
 
 private:
   struct Colours
