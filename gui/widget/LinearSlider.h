@@ -108,18 +108,19 @@ public:
         return;
     }
 
-    // Debug draw railbounds
-    g.setColour(juce::Colours::red);
-    g.drawRect(railBounds, 1);
-
     // Anchor points
     const juce::Point<float> primaryPoint(primaryPointX, primaryPointY);
     const juce::Point<float> secondaryPoint(secondaryPointX, secondaryPointY);
 
-    // Debug draw achor points
-    g.setColour(juce::Colours::yellow);
-    g.fillEllipse(primaryPoint.getX() - 8, primaryPoint.getY() - 8, 16, 16);
-    g.fillEllipse(secondaryPoint.getX() - 8, secondaryPoint.getY() - 8, 16, 16);
+    // Debug draw achor points and rail bounds
+    if (Settings::debugBounds) {
+      g.setColour(juce::Colours::red);
+      g.drawRect(railBounds, 1);
+      g.setColour(juce::Colours::yellow);
+      g.fillEllipse(primaryPoint.getX() - 8, primaryPoint.getY() - 8, 16, 16);
+      g.fillEllipse(
+        secondaryPoint.getX() - 8, secondaryPoint.getY() - 8, 16, 16);
+    }
 
     // Draw lower rail
     const auto railWidth = rawRailWidth * size;
