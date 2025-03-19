@@ -62,11 +62,6 @@ public:
     , settingsButton("HeaderSettingsButton", "Settings")
     , settingsExitButton("HeaderSettingsExitButton", "Back")
     , titleButton("HeaderTitleButton", "None")
-    , debug(String("DebugLabel"),
-            fonts.regular,
-            titleFontSize,
-            Colours::white, // TODO: Change this to a debug colour
-            juce::Justification::centred)
   {
     addAndMakeVisible(outerShadow);
     addAndMakeVisible(innerShadow);
@@ -74,9 +69,7 @@ public:
     addAndMakeVisible(settingsButton);
     addAndMakeVisible(settingsExitButton);
     addAndMakeVisible(titleButton);
-    addAndMakeVisible(debug);
     title.setText(titleText);
-    debug.setText("Debug");
     titleButton.setEnabled(false);
     settingsExitButton.setVisible(false);
   };
@@ -134,11 +127,6 @@ public:
     const auto titleButtonBounds =
       bounds.withWidth(titleButtonWidth).withCentre(bounds.getCentre());
     titleButton.setBounds(titleButtonBounds);
-
-    // Set the bounds for the debug label at the left
-    const auto debugBounds = bounds.withWidth(180.0f * size).withX(0);
-    debug.setBounds(debugBounds);
-    debug.setText(dmt::Settings::latestVersion);
   }
 
   Button& getSettingsButton() noexcept { return settingsButton; }
@@ -148,7 +136,6 @@ private:
   Shadow outerShadow;
   Shadow innerShadow;
   Label title;
-  Label debug;
   Fonts fonts;
   Button settingsButton;
   Button settingsExitButton;
