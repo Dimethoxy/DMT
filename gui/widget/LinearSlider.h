@@ -82,7 +82,7 @@ public:
 
     // Calculate lower rail
     float thumbSize = rawThumbSize * size;
-    const auto railBounds = bounds.reduced((int)(thumbSize));
+    const auto railBounds = bounds.reduced((int)(thumbSize / 2.0f));
     float primaryPointX;
     float primaryPointY;
     float secondaryPointX;
@@ -108,9 +108,20 @@ public:
         return;
     }
 
+    // Debug draw railbounds
+    g.setColour(juce::Colours::red);
+    g.drawRect(railBounds, 1);
+
+    // Anchor points
     const juce::Point<float> primaryPoint(primaryPointX, primaryPointY);
     const juce::Point<float> secondaryPoint(secondaryPointX, secondaryPointY);
 
+    // Debug draw achor points
+    g.setColour(juce::Colours::yellow);
+    g.fillEllipse(primaryPoint.getX() - 8, primaryPoint.getY() - 8, 16, 16);
+    g.fillEllipse(secondaryPoint.getX() - 8, secondaryPoint.getY() - 8, 16, 16);
+
+    // Draw lower rail
     const auto railWidth = rawRailWidth * size;
     const auto jointStyle = StrokeType::curved;
     const auto lowerEndCapStyle = StrokeType::rounded;
@@ -119,8 +130,6 @@ public:
     auto lowerRailPath = juce::Path();
     lowerRailPath.startNewSubPath(primaryPoint);
     lowerRailPath.lineTo(secondaryPoint);
-
-    // Draw lower rail
     g.setColour(lowerRailColour);
     g.strokePath(lowerRailPath, lowerStrokeType);
 

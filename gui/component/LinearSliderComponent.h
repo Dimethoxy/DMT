@@ -132,7 +132,6 @@ public:
         bounds.removeFromTop(slider.getY()).toFloat();
       iconArea = iconArea.withY(iconArea.getY() + 6.0f * size);
       iconArea = iconArea.reduced(svgPadding * size);
-      iconArea = iconArea.withX(iconArea.getX() - 0.2f * size);
       titleIcon->drawWithin(
         g, iconArea, juce::RectanglePlacement::centred, 1.0f);
     }
