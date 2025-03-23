@@ -11,9 +11,7 @@ namespace gui {
 namespace panel {
 //==============================================================================
 template<typename SampleType>
-class OscilloscopePanel
-  : public dmt::gui::panel::AbstractPanel
-  , public juce::Slider::Listener
+class OscilloscopePanel : public dmt::gui::panel::AbstractPanel
 {
   using FifoAudioBuffer = dmt::dsp::data::FifoAudioBuffer<SampleType>;
   using OscilloscopeComponent =
@@ -33,7 +31,7 @@ public:
   OscilloscopePanel(FifoAudioBuffer& fifoBuffer,
                     juce::AudioProcessorValueTreeState& apvts)
     : AbstractPanel("Oscilloscope", false)
-    , oscilloscopeComponent(fifoBuffer)
+    , oscilloscopeComponent(fifoBuffer, apvts)
     , zoomSlider(apvts,
                  juce::String("Zoom"),
                  juce::String("OscilloscopeZoom"),
@@ -60,13 +58,6 @@ public:
     addAndMakeVisible(zoomSlider);
     addAndMakeVisible(thicknessSlider);
     addAndMakeVisible(heightSlider);
-    zoomSlider.getSlider().addListener(this);
-    thicknessSlider.getSlider().addListener(this);
-    heightSlider.getSlider().addListener(this);
-    sliderValueChanged(dynamic_cast<juce::Slider*>(&zoomSlider.getSlider()));
-    sliderValueChanged(
-      dynamic_cast<juce::Slider*>(&thicknessSlider.getSlider()));
-    sliderValueChanged(dynamic_cast<juce::Slider*>(&heightSlider.getSlider()));
   }
   //============================================================================
   void extendResize() noexcept override
@@ -91,18 +82,6 @@ public:
     heightSlider.setBounds(rightSliderBounds);
 
     oscilloscopeComponent.setBounds(bounds);
-  }
-  //============================================================================
-  void sliderValueChanged(juce::Slider* slider) override
-  {
-    if (slider == &zoomSlider.getSlider()) {
-      oscilloscopeComponent.setZoom(zoomSlider.getSlider().getValue());
-    } else if (slider == &thicknessSlider.getSlider()) {
-      oscilloscopeComponent.setThickness(
-        thicknessSlider.getSlider().getValue());
-    } else if (slider == &heightSlider.getSlider()) {
-      oscilloscopeComponent.setHeight(heightSlider.getSlider().getValue());
-    }
   }
   //============================================================================
 private:

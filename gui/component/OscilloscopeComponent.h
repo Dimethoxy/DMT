@@ -15,6 +15,7 @@ namespace component {
 template<typename SampleType>
 class OscilloscopeComponent
   : public juce::Component
+  , public juce::AudioProcessorValueTreeState::Listener
   , public dmt::utility::RepaintTimer
 {
   using Oscilloscope = dmt::gui::widget::Oscilloscope<SampleType>;
@@ -46,7 +47,8 @@ class OscilloscopeComponent
 
 public:
   //==============================================================================
-  OscilloscopeComponent(FifoAudioBuffer& fifoBuffer)
+  OscilloscopeComponent(FifoAudioBuffer& fifoBuffer,
+                        AudioProcessorValueTreeState& apvts)
     : ringBuffer(2, 4096)
     , fifoBuffer(fifoBuffer)
     , leftOscilloscope(ringBuffer, 0)
@@ -55,6 +57,9 @@ public:
     startRepaintTimer();
     addAndMakeVisible(outerShadow);
     addAndMakeVisible(innerShadow);
+    apvts.addParameterListener("OscilloscopeZoom", this);
+    apvts.addParameterListener("OscilloscopeThickness", this);
+    apvts.addParameterListener("OscilloscopeGain", this);
   }
   //==============================================================================
   void repaintTimerCallback() noexcept override
@@ -202,6 +207,19 @@ public:
     rightOscilloscope.setAmplitude(amplitude);
   }
   //==============================================================================
+  virtual void parameterChanged(const String& parameterID, float newValue)
+  {
+    if (parameterID == "OscilloscopeZoom") {
+      setZoom(newValue);
+    }
+    if (parameterID == "OscilloscopeThickness") {
+      setThickness(newValue);
+    }
+    if (parameterID == "OscilloscopeGain") {
+      setHeight(newValue);
+    }
+  }
+
 private:
   RingAudioBuffer ringBuffer;
   FifoAudioBuffer& fifoBuffer;
