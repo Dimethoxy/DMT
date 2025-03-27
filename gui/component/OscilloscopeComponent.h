@@ -82,53 +82,78 @@ public:
 
     const auto leftScopeBounds = leftOscilloscope.getBounds().toFloat();
     const auto rightScopeBounds = rightOscilloscope.getBounds().toFloat();
-    const int scopeX = leftScopeBounds.getX();
-    const float scopeWidth = leftScopeBounds.getWidth();
-    const float leftScopeY = leftScopeBounds.getY();
-    const float leftScopeHeight = leftScopeBounds.getHeight();
-    const float rightScopeY = rightScopeBounds.getY();
-    const float rightScopeHeight = rightScopeBounds.getHeight();
 
     g.setColour(backgroundColour.brighter(0.05));
 
-    const int numLines = getWidth() / (getHeight() / 4.0f);
-    const float lineSpacing = scopeWidth / numLines;
-    for (size_t i = 1; i < numLines; ++i) {
-      const float x = scopeX + lineSpacing * i;
-      g.drawLine(
-        juce::Line<float>(x, leftScopeY, x, leftScopeY + leftScopeHeight),
-        2.0f * size);
-      g.drawLine(
-        juce::Line<float>(x, rightScopeY, x, rightScopeY + rightScopeHeight),
-        2.0f * size);
-    }
-    float lineThicknessModifiers[7] = {
-      1.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.5f
-    };
+    // Draw vertical lines for both scopes
+    drawVerticalLines(g,
+                      leftScopeBounds.getX(),
+                      leftScopeBounds.getWidth(),
+                      leftScopeBounds.getY(),
+                      leftScopeBounds.getHeight());
+    drawVerticalLines(g,
+                      leftScopeBounds.getX(),
+                      leftScopeBounds.getWidth(),
+                      rightScopeBounds.getY(),
+                      rightScopeBounds.getHeight());
 
-    float brightnessValues[7] = { 0.15f, 0.05f, 0.05f, 0.05f,
-                                  0.05f, 0.05f, 0.15f };
+    // Draw horizontal lines for both scopes
+    drawHorizontalLines(g,
+                        leftScopeBounds.getX(),
+                        leftScopeBounds.getWidth(),
+                        leftScopeBounds.getY(),
+                        leftScopeBounds.getHeight());
+    drawHorizontalLines(g,
+                        leftScopeBounds.getX(),
+                        leftScopeBounds.getWidth(),
+                        rightScopeBounds.getY(),
+                        rightScopeBounds.getHeight());
 
-    for (size_t i = 0; i < 7; ++i) {
-      const float y = leftScopeY + (leftScopeHeight / 6) * i;
-      g.setColour(backgroundColour.brighter(brightnessValues[i]));
-      g.drawLine(juce::Line<float>(scopeX, y, scopeX + scopeWidth, y),
-                 3.0f * lineThicknessModifiers[i] * size);
-    }
-
-    for (size_t i = 0; i < 7; ++i) {
-      const float y = rightScopeY + (rightScopeHeight / 6) * i;
-      g.setColour(backgroundColour.brighter(brightnessValues[i]));
-      g.drawLine(juce::Line<float>(scopeX, y, scopeX + scopeWidth, y),
-                 3.0f * lineThicknessModifiers[i] * size);
-    }
-
+    // Draw oscilloscope images
     g.drawImageAt(leftOscilloscope.getImage(),
                   leftOscilloscope.getBounds().getX(),
                   leftOscilloscope.getBounds().getY());
     g.drawImageAt(rightOscilloscope.getImage(),
                   rightOscilloscope.getBounds().getX(),
                   rightOscilloscope.getBounds().getY());
+  }
+
+protected:
+  //==============================================================================
+  void drawVerticalLines(juce::Graphics& g,
+                         float scopeX,
+                         float scopeWidth,
+                         float scopeY,
+                         float scopeHeight) const
+  {
+    const int numLines = getWidth() / (getHeight() / 4.0f);
+    const float lineSpacing = scopeWidth / numLines;
+
+    for (size_t i = 1; i < numLines; ++i) {
+      const float x = scopeX + lineSpacing * i;
+      g.drawLine(juce::Line<float>(x, scopeY, x, scopeY + scopeHeight),
+                 2.0f * size);
+    }
+  }
+  //==============================================================================
+  void drawHorizontalLines(juce::Graphics& g,
+                           float scopeX,
+                           float scopeWidth,
+                           float scopeY,
+                           float scopeHeight) const
+  {
+    float lineThicknessModifiers[7] = {
+      1.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.5f
+    };
+    float brightnessValues[7] = { 0.15f, 0.05f, 0.05f, 0.05f,
+                                  0.05f, 0.05f, 0.15f };
+
+    for (size_t i = 0; i < 7; ++i) {
+      const float y = scopeY + (scopeHeight / 6) * i;
+      g.setColour(backgroundColour.brighter(brightnessValues[i]));
+      g.drawLine(juce::Line<float>(scopeX, y, scopeX + scopeWidth, y),
+                 3.0f * lineThicknessModifiers[i] * size);
+    }
   }
   //==============================================================================
   void prepareNextFrame() noexcept override
@@ -179,7 +204,7 @@ public:
       setHeight(_newValue);
     }
   }
-
+  //==============================================================================
 private:
   RingAudioBuffer ringBuffer;
   FifoAudioBuffer& fifoBuffer;
