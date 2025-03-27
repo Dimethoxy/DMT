@@ -79,6 +79,50 @@ public:
     const juce::Rectangle<int>& /*_displayBounds*/) const noexcept override
   {
     TRACER("OscilloscopeComponent::paintDisplay");
+
+    const auto leftScopeBounds = leftOscilloscope.getBounds().toFloat();
+    const auto rightScopeBounds = rightOscilloscope.getBounds().toFloat();
+    const int scopeX = leftScopeBounds.getX();
+    const float scopeWidth = leftScopeBounds.getWidth();
+    const float leftScopeY = leftScopeBounds.getY();
+    const float leftScopeHeight = leftScopeBounds.getHeight();
+    const float rightScopeY = rightScopeBounds.getY();
+    const float rightScopeHeight = rightScopeBounds.getHeight();
+
+    g.setColour(backgroundColour.brighter(0.05));
+
+    const int numLines = getWidth() / (getHeight() / 4.0f);
+    const float lineSpacing = scopeWidth / numLines;
+    for (size_t i = 1; i < numLines; ++i) {
+      const float x = scopeX + lineSpacing * i;
+      g.drawLine(
+        juce::Line<float>(x, leftScopeY, x, leftScopeY + leftScopeHeight),
+        2.0f * size);
+      g.drawLine(
+        juce::Line<float>(x, rightScopeY, x, rightScopeY + rightScopeHeight),
+        2.0f * size);
+    }
+    float lineThicknessModifiers[7] = {
+      1.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.5f
+    };
+
+    float brightnessValues[7] = { 0.15f, 0.05f, 0.05f, 0.05f,
+                                  0.05f, 0.05f, 0.15f };
+
+    for (size_t i = 0; i < 7; ++i) {
+      const float y = leftScopeY + (leftScopeHeight / 6) * i;
+      g.setColour(backgroundColour.brighter(brightnessValues[i]));
+      g.drawLine(juce::Line<float>(scopeX, y, scopeX + scopeWidth, y),
+                 3.0f * lineThicknessModifiers[i] * size);
+    }
+
+    for (size_t i = 0; i < 7; ++i) {
+      const float y = rightScopeY + (rightScopeHeight / 6) * i;
+      g.setColour(backgroundColour.brighter(brightnessValues[i]));
+      g.drawLine(juce::Line<float>(scopeX, y, scopeX + scopeWidth, y),
+                 3.0f * lineThicknessModifiers[i] * size);
+    }
+
     g.drawImageAt(leftOscilloscope.getImage(),
                   leftOscilloscope.getBounds().getX(),
                   leftOscilloscope.getBounds().getY());
