@@ -50,7 +50,7 @@ public:
   OscilloscopeComponent(FifoAudioBuffer& _fifoBuffer,
                         AudioProcessorValueTreeState& _apvts)
     : ringBuffer(2, 4096)
-    , fifoBuffer(fifoBuffer)
+    , fifoBuffer(_fifoBuffer)
     , leftOscilloscope(ringBuffer, 0)
     , rightOscilloscope(ringBuffer, 1)
   {
