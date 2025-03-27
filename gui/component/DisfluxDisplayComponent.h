@@ -60,11 +60,30 @@ public:
    * @param _g Graphics context used for drawing.
    * @param _displayBounds Bounds of the display area.
    */
-  forcedinline void repaintDisplay(
+  forcedinline void paintDisplay(
     juce::Graphics& _g,
     const juce::Rectangle<int>& _displayBounds) const noexcept override
   {
     TRACER("DisfluxDisplayComponent::repaintDisplay");
+  }
+
+  //============================================================================
+  /**
+   * @brief Prepares the next frame.
+   */
+  forcedinline void prepareNextFrame() noexcept override
+  {
+    TRACER("DisfluxDisplayComponent::prepareNextFrame");
+  }
+
+  //============================================================================
+  /**
+   * @brief Resizes the display.
+   */
+  forcedinline void extendResized(
+    const juce::Rectangle<int>& _displayBounds) noexcept override
+  {
+    TRACER("DisfluxDisplayComponent::extendResized");
   }
 
 private:

@@ -1,12 +1,10 @@
 //==============================================================================
-
 #pragma once
-
+//==============================================================================
 #include "gui/widget/Shadow.h"
 #include "utility/RepaintTimer.h"
 #include "utility/Settings.h"
 #include <JuceHeader.h>
-
 //==============================================================================
 namespace dmt {
 namespace gui {
@@ -40,8 +38,7 @@ class AbstractDisplayComponent
 public:
   //============================================================================
   AbstractDisplayComponent(/*juce::AudioProcessorValueTreeState& apvts*/)
-    : // apvts(apvts),
-    outerShadow(drawOuterShadow, outerShadowColour, outerShadowRadius, false)
+    : outerShadow(drawOuterShadow, outerShadowColour, outerShadowRadius, false)
     , innerShadow(drawInnerShadow, innerShadowColour, innerShadowRadius, true)
   {
     this->startRepaintTimer();
@@ -49,7 +46,7 @@ public:
     addAndMakeVisible(innerShadow);
   }
   //============================================================================
-  void paint(juce::Graphics& g) override
+  void paint(juce::Graphics& g) override final
   {
     // Precalculation
     const auto borderStrength = rawBorderStrength * size;
@@ -71,9 +68,15 @@ public:
       g.setColour(backgroundColour);
       g.fillRoundedRectangle(innerBounds.toFloat(), innerCornerSize);
     }
+
+    // Draw display
+    paintDisplay(g, innerBounds);
+
+    // Prepare next frame
+    prepareNextFrame();
   }
   //============================================================================
-  void resized() override
+  void resized() override final
   {
     TRACER("DisfluxDisplayComponent::resized");
 
@@ -99,14 +102,42 @@ public:
     innerShadow.setPath(innerShadowPath);
     innerShadow.setBoundsRelative(0.0f, 0.0f, 1.0f, 1.0f);
     innerShadow.toBack();
+
+    // Call the childs extendResized method
+    extendResized(drawBorder ? innerBounds : outerBounds);
   }
   //============================================================================
-  void repaintTimerCallback() noexcept override { this->repaint(); }
+protected:
   //============================================================================
-  virtual void repaintDisplay(
+  virtual void extendResized(
+    const juce::Rectangle<int>& displayBounds) noexcept = 0;
+  //============================================================================
+  /**
+   * @brief Repaints the display.
+   *
+   * @note Do the actual drawing in this method.
+   * @warning Do not call this method directly.
+   *
+   * @param g Graphics context used for drawing.
+   * @param displayBounds Bounds of the display area.
+   */
+  virtual void paintDisplay(
     juce::Graphics& g,
     const juce::Rectangle<int>& displayBounds) const noexcept = 0;
-
+  //============================================================================
+  /**
+   * @brief Prepares the next frame.
+   *
+   * @warning Do not draw anything or do any heavy calculations in this method.
+   *          Drawing should be done on another thread.
+   *          We really don't want to block this thread.
+   */
+  virtual void prepareNextFrame() noexcept = 0;
+  //============================================================================
+private:
+  //============================================================================
+  void repaintTimerCallback() noexcept override final { this->repaint(); }
+  //============================================================================
 private:
   juce::Rectangle<int> innerBounds;
   juce::Rectangle<int> outerBounds;
@@ -114,8 +145,6 @@ private:
     Shadow(drawOuterShadow, outerShadowColour, outerShadowRadius, false);
   Shadow innerShadow =
     Shadow(drawInnerShadow, innerShadowColour, innerShadowRadius, true);
-
-  // juce::AudioProcessorValueTreeState& apvts;
 };
 } // namespace components
 } // namespace gui
