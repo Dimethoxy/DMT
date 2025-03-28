@@ -1,5 +1,6 @@
 #pragma once
 //==============================================================================
+#include "dsp/data/FifoAudioBuffer.h"
 #include "gui/component/DisfluxDisplayComponent.h"
 #include "gui/component/LinearSliderComponent.h"
 #include "gui/component/RotarySliderComponent.h"
@@ -14,6 +15,7 @@ namespace panel {
 template<typename SampleType>
 class DisfluxPanel : public dmt::gui::panel::AbstractPanel
 {
+  using FifoAudioBuffer = dmt::dsp::data::FifoAudioBuffer<float>;
   using DisfluxDisplayComponent = dmt::gui::component::DisfluxDisplayComponent;
   using LinearSlider = dmt::gui::component::LinearSliderComponent;
   using LinearSliderType = dmt::gui::widget::LinearSlider::Type;
@@ -27,8 +29,10 @@ class DisfluxPanel : public dmt::gui::panel::AbstractPanel
 
 public:
   //============================================================================
-  DisfluxPanel(juce::AudioProcessorValueTreeState& apvts)
+  DisfluxPanel(juce::AudioProcessorValueTreeState& apvts,
+               FifoAudioBuffer& oscilloscopeBuffer)
     : AbstractPanel("Oscilloscope", false)
+    , display(oscilloscopeBuffer, apvts)
     , amountSlider(apvts,
                    juce::String("Amount"),
                    juce::String("DisfluxAmount"),

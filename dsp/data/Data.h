@@ -32,5 +32,6 @@
 
 #include "./FifoAudioBuffer.h"
 #include "./RingAudioBuffer.h"
+#include "./RingBufferInterface.h"
 
 //==============================================================================

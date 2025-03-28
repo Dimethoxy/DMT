@@ -28,7 +28,8 @@
 
 #pragma once
 
-#include "gui/component/AbstractDisplayComponent.h"
+#include "dsp/data/FifoAudioBuffer.h"
+#include "gui/component/OscilloscopeComponent.h"
 #include <JuceHeader.h>
 
 //==============================================================================
@@ -42,53 +43,16 @@ namespace component {
  * @brief Specialized display component inheriting from
  * AbstractDisplayComponent.
  */
-class alignas(64) DisfluxDisplayComponent : public AbstractDisplayComponent
+class alignas(64) DisfluxDisplayComponent
+  : public dmt::gui::component::OscilloscopeComponent<float>
 {
 public:
-  //============================================================================
-  /**
-   * @brief Constructor for DisfluxDisplayComponent.
-   */
-  inline DisfluxDisplayComponent() noexcept
-    : AbstractDisplayComponent()
+  using FifoAudioBuffer = dmt::dsp::data::FifoAudioBuffer<float>;
+  DisfluxDisplayComponent(FifoAudioBuffer& _fifoBuffer,
+                          AudioProcessorValueTreeState& _apvts)
+    : OscilloscopeComponent(_fifoBuffer, _apvts)
   {
   }
-
-  //============================================================================
-  /**
-   * @brief Repaints the display.
-   * @param _g Graphics context used for drawing.
-   * @param _displayBounds Bounds of the display area.
-   */
-  forcedinline void paintDisplay(
-    juce::Graphics& _g,
-    const juce::Rectangle<int>& _displayBounds) const noexcept override
-  {
-    TRACER("DisfluxDisplayComponent::repaintDisplay");
-  }
-
-  //============================================================================
-  /**
-   * @brief Prepares the next frame.
-   */
-  forcedinline void prepareNextFrame() noexcept override
-  {
-    TRACER("DisfluxDisplayComponent::prepareNextFrame");
-  }
-
-  //============================================================================
-  /**
-   * @brief Resizes the display.
-   */
-  forcedinline void extendResized(
-    const juce::Rectangle<int>& _displayBounds) noexcept override
-  {
-    TRACER("DisfluxDisplayComponent::extendResized");
-  }
-
-private:
-  //============================================================================
-  // Private members can be added here if needed
 };
 } // namespace component
 } // namespace gui
