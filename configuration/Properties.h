@@ -61,6 +61,28 @@ public:
     auto settings = file.getUserSettings();
     fallbackPropertySet = dmt::configuration::getPropertySet();
     settings->setFallbackPropertySet(&fallbackPropertySet);
+
+    bool newKeysAdded = false;
+
+    // Add missing keys from the fallback property set
+    const auto& fallbackKeys = fallbackPropertySet.getAllProperties();
+    for (const auto& key : fallbackKeys.getAllKeys()) {
+      if (!settings->containsKey(key)) {
+        settings->setValue(key, fallbackKeys[key]);
+        newKeysAdded = true; // Mark that new keys were added
+      }
+    }
+
+    // Remove the "initialized" flag if new keys were added
+    if (newKeysAdded && settings->containsKey("initialized")) {
+      settings->removeValue("initialized");
+    }
+
+    // Mark as initialized and save the settings
+    if (!settings->containsKey("initialized")) {
+      settings->setValue("initialized", true);
+    }
+    settings->saveIfNeeded();
   }
 
 private:
