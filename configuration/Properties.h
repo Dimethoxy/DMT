@@ -64,8 +64,8 @@ public:
   }
 
 private:
-  static juce::ApplicationProperties file;
-  static juce::PropertySet fallbackPropertySet;
+  juce::ApplicationProperties file;
+  juce::PropertySet fallbackPropertySet;
 };
 } // namespace configuration
 } // namespace dmt
