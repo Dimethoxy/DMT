@@ -68,9 +68,16 @@ public:
       g.setColour(backgroundColour);
       g.fillRoundedRectangle(innerBounds.toFloat(), innerCornerSize);
     }
-
     // Draw display
     paintDisplay(g, innerBounds);
+
+    // We need to draw the border again because drawing it once didn't cut it
+    if (drawBorder) {
+      g.setColour(borderColour);
+      const auto borderBounds = outerBounds.reduced(borderStrength / 2.0f);
+      g.drawRoundedRectangle(
+        borderBounds.toFloat(), outerCornerSize, borderStrength);
+    }
 
     // Prepare next frame
     prepareNextFrame();
