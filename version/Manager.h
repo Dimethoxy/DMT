@@ -57,15 +57,13 @@ protected:
     for (int i = 0; i < 3; i++) {
       result[i] = versionArray[i].getIntValue();
     }
-    std::cout << "Parsed version:" << std::endl;
-    std::cout << "- Version:" << versionString << std::endl;
+    std::cout << "Parsed Version: " << versionString << std::endl;
     std::cout << "- Major:" << result[0] << std::endl;
     std::cout << "- Minor:" << result[1] << std::endl;
     std::cout << "- Patch:" << result[2] << std::endl;
     return result;
   }
   //============================================================================
-private:
 };
 } // namespace version
 } // namespace dmt
