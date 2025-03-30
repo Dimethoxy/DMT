@@ -2,6 +2,7 @@
 #pragma once
 //==============================================================================
 #include "BinaryData.h"
+#include "configuration/Container.h"
 #include <JuceHeader.h>
 //==============================================================================
 #ifndef OS_IS_WINDOWS
@@ -25,10 +26,15 @@ public:
   Settings(const Settings& obj) = delete;
   ~Settings() = delete;
 
-  static inline int framerate = 30;
-  static inline float unixFontScalingFactor = 0.9f;
-  static inline bool debugBounds = false;
-  static inline bool debugGrid = false;
+  static inline dmt::configuration::Container container;
+
+  static inline auto framerate = container.add<int>("Framerate", 30);
+  static inline auto unixFontScalingFactor =
+    container.add<float>("UnixFontScalingFactor", 0.9f);
+  static inline auto debugBounds =
+    container.add<bool>("ShowDebugBounds", false);
+  static inline auto debugGrid = container.add<bool>("ShowDebugGrid", false);
+
   static inline std::array<int, 3> latestVersion = { 0, 0, 0 };
 
 private:
@@ -218,4 +224,5 @@ public:
     static inline float innerShadowRadius = 4.0f;
   };
 };
+
 } // namespace dmt

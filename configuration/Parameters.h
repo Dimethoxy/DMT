@@ -49,7 +49,8 @@ getPropertySet() noexcept -> juce::PropertySet
   juce::PropertySet set;
   set.setValue("Framerate", 30);
   set.setValue("UnixFontScalingFactor", 0.9f);
-  set.setValue("ShowDebugGrid", false);
+  set.setValue("ShowDebugGrid", true);
+  set.setValue("ShowDebugBounds", true);
   return set;
 }
 
