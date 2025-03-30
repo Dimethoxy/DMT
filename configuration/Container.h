@@ -85,13 +85,65 @@ public:
     return std::get<T>(settings[name]); // Return mutable reference.
   }
 
+  juce::PropertySet toPropertySet() const
+  {
+    juce::PropertySet propertySet;
+    for (const auto& [key, value] : settings) {
+      if (std::holds_alternative<juce::String>(value)) {
+        propertySet.setValue(key, std::get<juce::String>(value));
+      } else if (std::holds_alternative<juce::Colour>(value)) {
+        propertySet.setValue(key, std::get<juce::Colour>(value).toString());
+      } else if (std::holds_alternative<int>(value)) {
+        propertySet.setValue(key, std::get<int>(value));
+      } else if (std::holds_alternative<float>(value)) {
+        propertySet.setValue(key, std::get<float>(value));
+      } else if (std::holds_alternative<bool>(value)) {
+        propertySet.setValue(key, std::get<bool>(value));
+      }
+    }
+    return propertySet;
+  }
+
+  void applyPropertySet(juce::PropertySet& propertySet)
+  {
+    // Iterate over each setting in the settings map
+    for (auto& [key, storedValue] : settings) {
+      // Check if the setting exists in the propertySet
+      if (propertySet.containsKey(key)) {
+        // Retrieve the value from the propertySet
+        auto propValue = propertySet.getValue(key);
+
+        // Check the type of the stored value and apply the conversion
+        // accordingly
+        if (std::holds_alternative<juce::String>(storedValue)) {
+          // If the setting is a juce::String, update it with the string from
+          // the propertySet
+          settings[key] = propValue;
+        } else if (std::holds_alternative<juce::Colour>(storedValue)) {
+          // If the setting is a juce::Colour, convert the string to a Colour
+          settings[key] = juce::Colour::fromString(propValue);
+        } else if (std::holds_alternative<int>(storedValue)) {
+          // If the setting is an int, convert the string to an integer
+          settings[key] = propValue.getIntValue();
+        } else if (std::holds_alternative<float>(storedValue)) {
+          // If the setting is a float, convert the string to a float
+          settings[key] = propValue.getFloatValue();
+        } else if (std::holds_alternative<bool>(storedValue)) {
+          // If the setting is a bool, convert the string to a bool
+          auto boolValue = propValue.toLowerCase() == "true";
+          // settings[key] = propValue.getBoolValue();
+        }
+      }
+    }
+  }
+
 private:
   /**
    * @brief A map that stores settings by name.
    *
-   * The map uses the setting name as the key and stores the value in a variant
-   * type, allowing different types of settings to be stored in the same
-   * container.
+   * The map uses the setting name as the key and stores the value in a
+   * variant type, allowing different types of settings to be stored in the
+   * same container.
    */
   std::map<juce::String, SettingValue> settings;
 };
