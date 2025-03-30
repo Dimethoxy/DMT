@@ -104,34 +104,30 @@ public:
     return propertySet;
   }
 
-  void applyPropertySet(juce::PropertySet& propertySet)
+  void applyPropertySet(juce::PropertySet* propertySet)
   {
     // Iterate over each setting in the settings map
     for (auto& [key, storedValue] : settings) {
       // Check if the setting exists in the propertySet
-      if (propertySet.containsKey(key)) {
-        // Retrieve the value from the propertySet
-        auto propValue = propertySet.getValue(key);
-
+      if (propertySet->containsKey(key)) {
         // Check the type of the stored value and apply the conversion
         // accordingly
         if (std::holds_alternative<juce::String>(storedValue)) {
           // If the setting is a juce::String, update it with the string from
           // the propertySet
-          settings[key] = propValue;
+          settings[key] = propertySet->getValue(key);
         } else if (std::holds_alternative<juce::Colour>(storedValue)) {
           // If the setting is a juce::Colour, convert the string to a Colour
-          settings[key] = juce::Colour::fromString(propValue);
+          settings[key] = juce::Colour::fromString(propertySet->getValue(key));
         } else if (std::holds_alternative<int>(storedValue)) {
           // If the setting is an int, convert the string to an integer
-          settings[key] = propValue.getIntValue();
+          settings[key] = propertySet->getValue(key).getIntValue();
         } else if (std::holds_alternative<float>(storedValue)) {
           // If the setting is a float, convert the string to a float
-          settings[key] = propValue.getFloatValue();
+          settings[key] = propertySet->getValue(key).getFloatValue();
         } else if (std::holds_alternative<bool>(storedValue)) {
           // If the setting is a bool, convert the string to a bool
-          auto boolValue = propValue.toLowerCase() == "true";
-          // settings[key] = propValue.getBoolValue();
+          settings[key] = propertySet->getBoolValue(key);
         }
       }
     }

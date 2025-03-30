@@ -33,7 +33,6 @@
 
 #include <JuceHeader.h>
 #include <configuration/Options.h>
-#include <configuration/Parameters.h>
 
 //==============================================================================
 
@@ -57,14 +56,14 @@ public:
   {
     auto options = dmt::configuration::getOptions();
     file.setStorageParameters(options);
-
     auto settings = file.getUserSettings();
-    fallbackPropertySet = dmt::configuration::getPropertySet();
+
+    // Set the fallback property set by extracting it from the container
+    fallbackPropertySet = dmt::Settings::container.toPropertySet();
     settings->setFallbackPropertySet(&fallbackPropertySet);
 
-    bool newKeysAdded = false;
-
     // Add missing keys from the fallback property set
+    bool newKeysAdded = false;
     const auto& fallbackKeys = fallbackPropertySet.getAllProperties();
     for (const auto& key : fallbackKeys.getAllKeys()) {
       if (!settings->containsKey(key)) {
@@ -83,6 +82,9 @@ public:
       settings->setValue("initialized", true);
     }
     settings->saveIfNeeded();
+
+    // Now we apply the settings to the container
+    dmt::Settings::container.applyPropertySet(settings);
   }
 
 private:

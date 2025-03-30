@@ -26,7 +26,7 @@ class RotarySlider : public juce::Slider
   const float& railSize = Settings::Slider::railSize;
   // Thumb
   const juce::Colour& thumbInnerColour = Settings::Slider::thumbInnerColour;
-  const juce::Colour& thumOuterColour = Settings::Slider::thumOuterColour;
+  const juce::Colour& thumOuterColour = Settings::Slider::thumbOuterColour;
   const float& rawThumbSize = Settings::Slider::thumbSize;
   const float& rawThumbStrength = Settings::Slider::thumbStrength;
   // Selections

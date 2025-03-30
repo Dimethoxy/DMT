@@ -37,7 +37,7 @@ class Header : public juce::Component
 
   // Header
   const String name = ProjectInfo::projectName;
-  const Colour& backroundColour = HeaderSettings::backroundColour;
+  const Colour& backgroundColour = HeaderSettings::backgroundColour;
   const Colour& borderColor = HeaderSettings::borderColor;
   const Colour& titleFontColour = HeaderSettings::titleFontColour;
   const Colour& buttonColour = HeaderSettings::buttonColour;
@@ -86,7 +86,7 @@ public:
     // Paint the background
     const auto borderStrength = rawBorderStrength * size;
     bounds.removeFromBottom(borderStrength);
-    g.setColour(backroundColour);
+    g.setColour(backgroundColour);
     g.fillRect(bounds);
   }
 

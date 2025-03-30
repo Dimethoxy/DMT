@@ -41,6 +41,7 @@ namespace configuration {
 //==============================================================================
 /**
  * @brief Get the options for the properties file with predefined settings.
+ *        Set's the application name, folder name, and other options.
  *
  * @return A juce::PropertiesFile::Options object with default settings.
  */

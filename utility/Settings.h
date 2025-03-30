@@ -28,12 +28,12 @@ public:
 
   static inline dmt::configuration::Container container;
 
-  static inline auto framerate = container.add<int>("Framerate", 30);
-  static inline auto unixFontScalingFactor =
+  static inline auto& framerate = container.add<int>("Framerate", 30);
+  static inline auto& unixFontScalingFactor =
     container.add<float>("UnixFontScalingFactor", 0.9f);
-  static inline auto debugBounds =
+  static inline auto& debugBounds =
     container.add<bool>("ShowDebugBounds", false);
-  static inline auto debugGrid = container.add<bool>("ShowDebugGrid", false);
+  static inline auto& debugGrid = container.add<bool>("ShowDebugGrid", false);
 
   static inline std::array<int, 3> latestVersion = { 0, 0, 0 };
 
@@ -54,174 +54,284 @@ private:
 public:
   struct Window
   {
-    static inline float size = 1.0f;
-    static inline float margin = 10.0f;
-    static inline Colour backroundColour = Colours::background;
+    static inline auto& size = container.add<float>("Window.Size", 1.0f);
+    static inline auto& margin = container.add<float>("Window.Margin", 10.0f);
+    static inline auto& backgroundColour =
+      container.add<Colour>("Window.BackgroundColour", Colours::background);
   };
 
   struct Header
   {
-    static inline Colour backroundColour = Colours::solidMedium;
-    static inline Colour borderColor = Colours::solidDark;
-    static inline Colour titleColour = Colours::font;
-    static inline Colour buttonColour = Colours::solidDark;
-    static inline Colour titleFontColour = Colours::font;
-    static inline float titleFontSize = 34.0f;
-    static inline float titleOffset = 2.5f;
-    static inline float titleButtonWidth = 120.0f;
-    static inline float buttonWidth = 48.0f;
-    static inline int height = 50;
+    static inline auto& backgroundColour =
+      container.add<Colour>("Header.BackgroundColour", Colours::solidMedium);
+    static inline auto& borderColor =
+      container.add<Colour>("Header.BorderColour", Colours::solidDark);
+    static inline auto& titleColour =
+      container.add<Colour>("Header.TitleColour", Colours::font);
+    static inline auto& buttonColour =
+      container.add<Colour>("Header.ButtonColour", Colours::solidDark);
+    static inline auto& titleFontColour =
+      container.add<Colour>("Header.TitleFontColour", Colours::font);
+    static inline auto& titleFontSize =
+      container.add<float>("Header.TitleFontSize", 34.0f);
+    static inline auto& titleOffset =
+      container.add<float>("Header.TitleOffset", 2.5f);
+    static inline auto& titleButtonWidth =
+      container.add<float>("Header.TitleButtonWidth", 120.0f);
+    static inline auto& buttonWidth =
+      container.add<float>("Header.ButtonWidth", 48.0f);
+    static inline auto& height = container.add<int>("Header.Height", 50);
   };
 
   struct Button
   {
-    static inline Colour backgroundColour = Colours::solidDark;
-    static inline Colour outerShadowColour = Colours::shadow.withAlpha(0.5f);
-    static inline Colour innerShadowColour = Colours::shadow.withAlpha(0.5f);
-    static inline Colour fontColour = Colours::font;
-    static inline Colour hoverColour = Colours::primary;
-    static inline Colour clickColour = Colours::font;
-    static inline float outerShadowRadius = 5.0f;
-    static inline float innerShadowRadius = 5.0f;
-    static inline float cornerRadius = 10.0f;
-    static inline float padding = 6.0f;
-    static inline bool drawInnerShadow = true;
-    static inline bool drawOuterShadow = false;
+    static inline auto& backgroundColour =
+      container.add<Colour>("Button.BackgroundColour", Colours::solidDark);
+    static inline auto& outerShadowColour =
+      container.add<Colour>("Button.OuterShadowColour",
+                            Colours::shadow.withAlpha(0.5f));
+    static inline auto& innerShadowColour =
+      container.add<Colour>("Button.InnerShadowColour",
+                            Colours::shadow.withAlpha(0.5f));
+    static inline auto& fontColour =
+      container.add<Colour>("Button.FontColour", Colours::font);
+    static inline auto& hoverColour =
+      container.add<Colour>("Button.HoverColour", Colours::primary);
+    static inline auto& clickColour =
+      container.add<Colour>("Button.ClickColour", Colours::font);
+    static inline auto& outerShadowRadius =
+      container.add<float>("Button.OuterShadowRadius", 5.0f);
+    static inline auto& innerShadowRadius =
+      container.add<float>("Button.InnerShadowRadius", 5.0f);
+    static inline auto& cornerRadius =
+      container.add<float>("Button.CornerRadius", 10.0f);
+    static inline auto& padding = container.add<float>("Button.Padding", 6.0f);
+    static inline auto& drawInnerShadow =
+      container.add<bool>("Button.DrawInnerShadow", true);
+    static inline auto& drawOuterShadow =
+      container.add<bool>("Button.DrawOuterShadow", false);
   };
 
   struct Panel
   {
-    // General
-    static inline float padding = 10.0f;
-    static inline float cornerSize = 15.0f;
-    // Border
-    static inline bool drawBorder = true;
-    static inline Colour borderColour = Colours::solidDark;
-    static inline float borderStrength = 4.0f;
-    static inline juce::Colour backgroundColour = Colours::solidMedium;
-    // Shadows
-    static inline bool drawOuterShadow = true;
-    static inline bool drawInnerShadow = false;
-    static inline Colour outerShadowColour = Colours::shadow;
-    static inline Colour innerShadowColour = Colours::shadow;
-    static inline float outerShadowRadius = 10.0f;
-    static inline float innerShadowRadius = 10.0f;
-    // Text
-    static inline juce::Colour fontColor = Colours::font;
-    static inline float fontSize = 34.0f;
+    static inline auto& padding = container.add<float>("Panel.Padding", 10.0f);
+    static inline auto& cornerSize =
+      container.add<float>("Panel.CornerSize", 15.0f);
+    static inline auto& drawBorder =
+      container.add<bool>("Panel.DrawBorder", true);
+    static inline auto& borderColour =
+      container.add<Colour>("Panel.BorderColour", Colours::solidDark);
+    static inline auto& borderStrength =
+      container.add<float>("Panel.BorderStrength", 4.0f);
+    static inline auto& backgroundColour =
+      container.add<Colour>("Panel.BackgroundColour", Colours::solidMedium);
+    static inline auto& drawOuterShadow =
+      container.add<bool>("Panel.DrawOuterShadow", true);
+    static inline auto& drawInnerShadow =
+      container.add<bool>("Panel.DrawInnerShadow", false);
+    static inline auto& outerShadowColour =
+      container.add<Colour>("Panel.OuterShadowColour", Colours::shadow);
+    static inline auto& innerShadowColour =
+      container.add<Colour>("Panel.InnerShadowColour", Colours::shadow);
+    static inline auto& outerShadowRadius =
+      container.add<float>("Panel.OuterShadowRadius", 10.0f);
+    static inline auto& innerShadowRadius =
+      container.add<float>("Panel.InnerShadowRadius", 10.0f);
+    static inline auto& fontColor =
+      container.add<Colour>("Panel.FontColor", Colours::font);
+    static inline auto& fontSize =
+      container.add<float>("Panel.FontSize", 34.0f);
   };
 
   struct Carousel
   {
-    static inline float buttonWidth = 60.0f;
-    static inline float buttonHeight = 180.0f;
+    static inline auto& buttonWidth =
+      container.add<float>("Carousel.ButtonWidth", 60.0f);
+    static inline auto& buttonHeight =
+      container.add<float>("Carousel.ButtonHeight", 180.0f);
   };
 
   struct Slider
   {
     // General
-    static inline float padding = 8.0f;
-    static inline float baseWidth = 105.0f;
-    static inline float baseHeight = 119.0f;
-    static inline float sliderSize = 0.80f;
-    static inline float labelsSize = 0.32f;
+    static inline auto& padding = container.add<float>("Slider.Padding", 8.0f);
+    static inline auto& baseWidth =
+      container.add<float>("Slider.BaseWidth", 105.0f);
+    static inline auto& baseHeight =
+      container.add<float>("Slider.BaseHeight", 119.0f);
+    static inline auto& sliderSize =
+      container.add<float>("Slider.SliderSize", 0.80f);
+    static inline auto& labelsSize =
+      container.add<float>("Slider.LabelsSize", 0.32f);
     // Font
-    static inline Colour titleFontColour = Colours::font;
-    static inline Colour infoFontColour = Colours::font;
-    static inline float titleFontSize = 24.0f;
-    static inline float infoFontSize = 18.0f;
+    static inline auto& titleFontColour =
+      container.add<Colour>("Slider.TitleFontColour", Colours::font);
+    static inline auto& infoFontColour =
+      container.add<Colour>("Slider.InfoFontColour", Colours::font);
+    static inline auto& titleFontSize =
+      container.add<float>("Slider.TitleFontSize", 24.0f);
+    static inline auto& infoFontSize =
+      container.add<float>("Slider.InfoFontSize", 18.0f);
     // Shaft
-    static inline juce::Colour shaftColour = Colours::font;
-    static inline float shaftLineStrength = 3.0f;
-    static inline float shaftSize = 0.45f;
+    static inline auto& shaftColour =
+      container.add<Colour>("Slider.ShaftColour", Colours::font);
+    static inline auto& shaftLineStrength =
+      container.add<float>("Slider.ShaftLineStrength", 3.0f);
+    static inline auto& shaftSize =
+      container.add<float>("Slider.ShaftSize", 0.45f);
     // Rail
-    static inline juce::Colour lowerRailColour = Colours::solidDark;
-    static inline juce::Colour upperRailColour = Colours::primary;
-    static inline float railWidth = 8.0f;
-    static inline float railSize = 0.72f;
+    static inline auto& lowerRailColour =
+      container.add<Colour>("Slider.LowerRailColour", Colours::solidDark);
+    static inline auto& upperRailColour =
+      container.add<Colour>("Slider.UpperRailColour", Colours::primary);
+    static inline auto& railWidth =
+      container.add<float>("Slider.RailWidth", 8.0f);
+    static inline auto& railSize =
+      container.add<float>("Slider.RailSize", 0.72f);
     // Thumb
-    static inline juce::Colour thumbInnerColour = Colours::solidDark;
-    static inline juce::Colour thumOuterColour = Colours::font;
-    static inline float thumbSize = 22.0f;
-    static inline float thumbStrength = 3.0f;
+    static inline auto& thumbInnerColour =
+      container.add<Colour>("Slider.ThumbInnerColour", Colours::solidDark);
+    static inline auto& thumbOuterColour =
+      container.add<Colour>("Slider.ThumbOuterColour", Colours::font);
+    static inline auto& thumbSize =
+      container.add<float>("Slider.ThumbSize", 22.0f);
+    static inline auto& thumbStrength =
+      container.add<float>("Slider.ThumbStrength", 3.0f);
     // Selections
-    static inline juce::Colour selectionOuterColour = Colours::font;
-    static inline juce::Colour selectionInnerColour = Colours::solidDark;
-    static inline juce::Colour selectionActiveColour = Colours::primary;
-    static inline float selectionWidth = 2.0f;
-    static inline float selectionSize = 9.0f;
-    static inline float selectionActivePadding = 2.0f;
+    static inline auto& selectionOuterColour =
+      container.add<Colour>("Slider.SelectionOuterColour", Colours::font);
+    static inline auto& selectionInnerColour =
+      container.add<Colour>("Slider.SelectionInnerColour", Colours::solidDark);
+    static inline auto& selectionActiveColour =
+      container.add<Colour>("Slider.SelectionActiveColour", Colours::primary);
+    static inline auto& selectionWidth =
+      container.add<float>("Slider.SelectionWidth", 2.0f);
+    static inline auto& selectionSize =
+      container.add<float>("Slider.SelectionSize", 9.0f);
+    static inline auto& selectionActivePadding =
+      container.add<float>("Slider.SelectionActivePadding", 2.0f);
   };
+
   struct Display
   {
     // General
-    static inline Colour backgroundColour = Colours::background;
+    static inline auto& backgroundColour =
+      container.add<Colour>("Display.BackgroundColour", Colours::background);
     // Layout
-    static inline float padding = 10.0f;
-    static inline float cornerSize = 15.0f;
+    static inline auto& padding =
+      container.add<float>("Display.Padding", 10.0f);
+    static inline auto& cornerSize =
+      container.add<float>("Display.CornerSize", 15.0f);
     // Border
-    static inline bool drawBorder = true;
-    static inline Colour borderColour = Colours::solidDark;
-    static inline float borderStrength = 4.0f;
+    static inline auto& drawBorder =
+      container.add<bool>("Display.DrawBorder", true);
+    static inline auto& borderColour =
+      container.add<Colour>("Display.BorderColour", Colours::solidDark);
+    static inline auto& borderStrength =
+      container.add<float>("Display.BorderStrength", 4.0f);
     // Shadow
-    static inline bool drawOuterShadow = false;
-    static inline bool drawInnerShadow = true;
-    static inline Colour outerShadowColour = Colours::shadow;
-    static inline Colour innerShadowColour = Colours::shadow;
-    static inline float outerShadowRadius = 4.0f;
-    static inline float innerShadowRadius = 4.0f;
+    static inline auto& drawOuterShadow =
+      container.add<bool>("Display.DrawOuterShadow", false);
+    static inline auto& drawInnerShadow =
+      container.add<bool>("Display.DrawInnerShadow", true);
+    static inline auto& outerShadowColour =
+      container.add<Colour>("Display.OuterShadowColour", Colours::shadow);
+    static inline auto& innerShadowColour =
+      container.add<Colour>("Display.InnerShadowColour", Colours::shadow);
+    static inline auto& outerShadowRadius =
+      container.add<float>("Display.OuterShadowRadius", 4.0f);
+    static inline auto& innerShadowRadius =
+      container.add<float>("Display.InnerShadowRadius", 4.0f);
   };
 
   struct TriangleButton
   {
     // General
-    static inline Colour standbyColour = Colours::shadow.withAlpha(0.5f);
-    static inline Colour hoverColour = Colours::font;
-    static inline float margin = 15.0f;
-    static inline float toggleReduction = 0.9f;
+    static inline auto& standbyColour =
+      container.add<Colour>("TriangleButton.StandbyColour",
+                            Colours::shadow.withAlpha(0.5f));
+    static inline auto& hoverColour =
+      container.add<Colour>("TriangleButton.HoverColour", Colours::font);
+    static inline auto& margin =
+      container.add<float>("TriangleButton.Margin", 15.0f);
+    static inline auto& toggleReduction =
+      container.add<float>("TriangleButton.ToggleReduction", 0.9f);
     // Border
-    static inline bool drawBorder = true;
-    static inline Colour borderColour = Colours::primary;
-    static inline float borderStrength = 4.0f;
+    static inline auto& drawBorder =
+      container.add<bool>("TriangleButton.DrawBorder", true);
+    static inline auto& borderColour =
+      container.add<Colour>("TriangleButton.BorderColour", Colours::primary);
+    static inline auto& borderStrength =
+      container.add<float>("TriangleButton.BorderStrength", 4.0f);
     // Shadows
-    static inline bool drawOuterShadow = false;
-    static inline bool drawInnerShadow = true;
-    static inline Colour outerShadowColour = Colours::shadow;
-    static inline Colour innerShadowColour = Colours::primary;
-    static inline float outerShadowRadius = 4.0f;
-    static inline float innerShadowRadius = 4.0f;
+    static inline auto& drawOuterShadow =
+      container.add<bool>("TriangleButton.DrawOuterShadow", false);
+    static inline auto& drawInnerShadow =
+      container.add<bool>("TriangleButton.DrawInnerShadow", true);
+    static inline auto& outerShadowColour =
+      container.add<Colour>("TriangleButton.OuterShadowColour",
+                            Colours::shadow);
+    static inline auto& innerShadowColour =
+      container.add<Colour>("TriangleButton.InnerShadowColour",
+                            Colours::primary);
+    static inline auto& outerShadowRadius =
+      container.add<float>("TriangleButton.OuterShadowRadius", 4.0f);
+    static inline auto& innerShadowRadius =
+      container.add<float>("TriangleButton.InnerShadowRadius", 4.0f);
   };
 
   struct OscillatorDisplay
   {
     // General
-    static inline int resolution = 256;
+    static inline auto& resolution =
+      container.add<int>("OscillatorDisplay.Resolution", 256);
     // Shadow
-    static inline bool drawOuterShadow = false;
-    static inline bool drawInnerShadow = true;
-    static inline Colour outerShadowColour = Colours::shadow;
-    static inline Colour innerShadowColour = Colours::primary;
-    static inline float outerShadowRadius = 4.0f;
-    static inline float innerShadowRadius = 4.0f;
+    static inline auto& drawOuterShadow =
+      container.add<bool>("OscillatorDisplay.DrawOuterShadow", false);
+    static inline auto& drawInnerShadow =
+      container.add<bool>("OscillatorDisplay.DrawInnerShadow", true);
+    static inline auto& outerShadowColour =
+      container.add<Colour>("OscillatorDisplay.OuterShadowColour",
+                            Colours::shadow);
+    static inline auto& innerShadowColour =
+      container.add<Colour>("OscillatorDisplay.InnerShadowColour",
+                            Colours::primary);
+    static inline auto& outerShadowRadius =
+      container.add<float>("OscillatorDisplay.OuterShadowRadius", 4.0f);
+    static inline auto& innerShadowRadius =
+      container.add<float>("OscillatorDisplay.InnerShadowRadius", 4.0f);
   };
 
   struct Oscilloscope
   {
     // General
-    static inline Colour backgroundColour = Colours::background;
-    static inline float padding = 10.0f;
-    static inline float cornerSize = 15.0f;
+    static inline auto& backgroundColour =
+      container.add<Colour>("Oscilloscope.BackgroundColour",
+                            Colours::background);
+    static inline auto& padding =
+      container.add<float>("Oscilloscope.Padding", 10.0f);
+    static inline auto& cornerSize =
+      container.add<float>("Oscilloscope.CornerSize", 15.0f);
     // Border
-    static inline bool drawBorder = true;
-    static inline Colour borderColour = Colours::solidDark;
-    static inline float borderStrength = 4.0f;
+    static inline auto& drawBorder =
+      container.add<bool>("Oscilloscope.DrawBorder", true);
+    static inline auto& borderColour =
+      container.add<Colour>("Oscilloscope.BorderColour", Colours::solidDark);
+    static inline auto& borderStrength =
+      container.add<float>("Oscilloscope.BorderStrength", 4.0f);
     // Shadow
-    static inline bool drawOuterShadow = false;
-    static inline bool drawInnerShadow = true;
-    static inline Colour outerShadowColour = Colours::shadow;
-    static inline Colour innerShadowColour = Colours::shadow;
-    static inline float outerShadowRadius = 4.0f;
-    static inline float innerShadowRadius = 4.0f;
+    static inline auto& drawOuterShadow =
+      container.add<bool>("Oscilloscope.DrawOuterShadow", false);
+    static inline auto& drawInnerShadow =
+      container.add<bool>("Oscilloscope.DrawInnerShadow", true);
+    static inline auto& outerShadowColour =
+      container.add<Colour>("Oscilloscope.OuterShadowColour", Colours::shadow);
+    static inline auto& innerShadowColour =
+      container.add<Colour>("Oscilloscope.InnerShadowColour", Colours::shadow);
+    static inline auto& outerShadowRadius =
+      container.add<float>("Oscilloscope.OuterShadowRadius", 4.0f);
+    static inline auto& innerShadowRadius =
+      container.add<float>("Oscilloscope.InnerShadowRadius", 4.0f);
   };
 };
 
