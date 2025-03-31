@@ -31,6 +31,7 @@ public:
     settingsPanel.setVisible(false);
     header.getSettingsButton().onClick = [this] { showSettings(); };
     header.getSettingsExitButton().onClick = [this] { closeSettings(); };
+    header.getHideHeaderButton().onClick = [this] { hideHeader(); };
   }
 
   ~Compositor() noexcept override {}
@@ -69,6 +70,11 @@ public:
     header.getSettingsButton().setVisible(true);
     header.getSettingsExitButton().setVisible(false);
     repaint();
+  }
+
+  void hideHeader() noexcept {
+    header.setVisible(false);
+    resized();
   }
 
 private:
