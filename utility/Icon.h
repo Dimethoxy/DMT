@@ -24,6 +24,9 @@ getIcon(const juce::String iconName)
   if (iconName == "Back")
     return juce::Drawable::createFromImageData(BinaryData::back_svg,
                                                BinaryData::back_svgSize);
+  if (iconName == "HideHeader")
+    return juce::Drawable::createFromImageData(BinaryData::angles_up_svg,
+                                               BinaryData::angles_up_svgSize);
   return nullptr;
 };
 //==============================================================================
@@ -39,6 +42,8 @@ getPadding(const juce::String iconName)
   if (iconName == "Settings")
     return 5.0f;
   if (iconName == "Back")
+    return 5.0f;
+  if (iconName == "HideHeader")
     return 5.0f;
   return 0.0f;
 };

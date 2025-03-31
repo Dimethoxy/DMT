@@ -61,6 +61,7 @@ public:
             juce::Justification::centred)
     , settingsButton("HeaderSettingsButton", "Settings")
     , settingsExitButton("HeaderSettingsExitButton", "Back")
+    , hideHeaderButton("HeaderHideButton", "HideHeader")
     , titleButton("HeaderTitleButton", "None")
   {
     addAndMakeVisible(outerShadow);
@@ -68,6 +69,7 @@ public:
     addAndMakeVisible(title);
     addAndMakeVisible(settingsButton);
     addAndMakeVisible(settingsExitButton);
+    addAndMakeVisible(hideHeaderButton);
     addAndMakeVisible(titleButton);
     title.setText(titleText);
     titleButton.setEnabled(false);
@@ -123,6 +125,11 @@ public:
     settingsButton.setBounds(settingsButtonBounds);
     settingsExitButton.setBounds(settingsButtonBounds);
 
+    // Set the bounds for the hide header button
+    const auto hideHeaderButtonBounds =
+      Rectangle(settingsButtonBounds).withRightX(settingsButtonBounds.getX());
+    hideHeaderButton.setBounds(hideHeaderButtonBounds);
+
     // Set the bounds for the title button
     const auto titleButtonBounds =
       bounds.withWidth(titleButtonWidth).withCentre(bounds.getCentre());
@@ -131,6 +138,7 @@ public:
 
   Button& getSettingsButton() noexcept { return settingsButton; }
   Button& getSettingsExitButton() noexcept { return settingsExitButton; }
+  Button& getHideHeaderButton() noexcept { return hideHeaderButton; }
 
 private:
   Shadow outerShadow;
@@ -139,6 +147,7 @@ private:
   Fonts fonts;
   Button settingsButton;
   Button settingsExitButton;
+  Button hideHeaderButton;
   Button titleButton;
 
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Header)
