@@ -2,6 +2,7 @@
 
 #include "gui/panel/AbstractPanel.h"
 #include "gui/panel/SettingsPanel.h"
+#include "gui/widget/BorderButton.h" // Include the BorderButton header
 #include "gui/window/Header.h"
 #include <JuceHeader.h>
 
@@ -14,6 +15,7 @@ class Compositor : public juce::Component
   using AbstractPanel = dmt::gui::panel::AbstractPanel;
   using SettingsPanel = dmt::gui::panel::SettingsPanel;
   using Header = dmt::gui::window::Header;
+  using BorderButton = dmt::gui::widget::BorderButton;
 
   // Window size
   const float& size = dmt::Settings::Window::size;
@@ -24,14 +26,22 @@ public:
     : mainPanel(_mainPanel)
     , settingsPanel()
     , header(_titleText)
+    , borderButton()
   {
     addAndMakeVisible(mainPanel);
     addAndMakeVisible(settingsPanel);
     addAndMakeVisible(header);
+    addAndMakeVisible(borderButton); // Add the BorderButton to the hierarchy
+
     settingsPanel.setVisible(false);
+    borderButton.setVisible(false); // Initially hidden
+
     header.getSettingsButton().onClick = [this] { showSettings(); };
     header.getSettingsExitButton().onClick = [this] { closeSettings(); };
     header.getHideHeaderButton().onClick = [this] { hideHeader(); };
+
+    // Set the BorderButton's callback to show the header
+    borderButton.setButtonCallback([this]() { showHeader(); });
   }
 
   ~Compositor() noexcept override {}
@@ -53,10 +63,19 @@ public:
         juce::Rectangle(bounds).removeFromBottom(contentHeight);
       mainPanel.setBounds(contentBounds);
       settingsPanel.setBounds(contentBounds);
+
+      borderButton.setVisible(
+        false); // Hide the BorderButton when the header is visible
     } else {
       // If the header is hidden, the main panel takes the full bounds
       mainPanel.setBounds(bounds);
       settingsPanel.setBounds(bounds);
+
+      // Show the BorderButton at the top with half the height of the header
+      const auto borderButtonHeight = (rawHeaderHeight * size) / 2.0f;
+      borderButton.setBounds(
+        juce::Rectangle<int>(bounds).removeFromTop(borderButtonHeight));
+      borderButton.setVisible(true);
     }
   }
 
@@ -85,6 +104,7 @@ public:
     if (headerVisibilityCallback) {
       headerVisibilityCallback(false);
     }
+    borderButton.setOpacityToMax();
   }
 
   void showHeader() noexcept
@@ -108,6 +128,7 @@ private:
   AbstractPanel& mainPanel;
   SettingsPanel settingsPanel;
   Header header;
+  BorderButton borderButton; // Add the BorderButton as a member
 };
 } // namespace window
 } // namespace gui
