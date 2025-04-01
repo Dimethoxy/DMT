@@ -42,16 +42,22 @@ public:
   {
     const auto bounds = getLocalBounds();
 
-    const auto headerHeight = rawHeaderHeight * size;
-    const auto headerBounds =
-      juce::Rectangle(bounds).removeFromTop(headerHeight * 2.0f);
-    header.setBounds(headerBounds);
+    if (header.isVisible()) {
+      const auto headerHeight = rawHeaderHeight * size;
+      const auto headerBounds =
+        juce::Rectangle(bounds).removeFromTop(headerHeight * 2.0f);
+      header.setBounds(headerBounds);
 
-    const auto contentHeight = bounds.getHeight() - headerHeight;
-    const auto contentBounds =
-      juce::Rectangle(bounds).removeFromBottom(contentHeight);
-    mainPanel.setBounds(contentBounds);
-    settingsPanel.setBounds(contentBounds);
+      const auto contentHeight = bounds.getHeight() - headerHeight;
+      const auto contentBounds =
+        juce::Rectangle(bounds).removeFromBottom(contentHeight);
+      mainPanel.setBounds(contentBounds);
+      settingsPanel.setBounds(contentBounds);
+    } else {
+      // If the header is hidden, the main panel takes the full bounds
+      mainPanel.setBounds(bounds);
+      settingsPanel.setBounds(bounds);
+    }
   }
 
   void showSettings() noexcept
@@ -72,12 +78,33 @@ public:
     repaint();
   }
 
-  void hideHeader() noexcept {
+  void hideHeader() noexcept
+  {
     header.setVisible(false);
     resized();
+    if (headerVisibilityCallback) {
+      headerVisibilityCallback(false);
+    }
   }
 
+  void showHeader() noexcept
+  {
+    header.setVisible(true);
+    resized();
+    if (headerVisibilityCallback) {
+      headerVisibilityCallback(true);
+    }
+  }
+
+  void setHeaderVisibilityCallback(std::function<void(bool)> callback)
+  {
+    headerVisibilityCallback = std::move(callback);
+  }
+
+  bool isHeaderVisible() const noexcept { return header.isVisible(); }
+
 private:
+  std::function<void(bool)> headerVisibilityCallback;
   AbstractPanel& mainPanel;
   SettingsPanel settingsPanel;
   Header header;
