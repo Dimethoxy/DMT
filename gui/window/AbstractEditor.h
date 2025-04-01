@@ -16,12 +16,11 @@ class AbstractEditor : public juce::AudioProcessorEditor
 
 public:
   AbstractEditor(juce::String _name,
-                 PluginProcessor& _processor,
+                 juce::AudioProcessor& _processor,
                  AbstractPanel& _mainPanel,
                  int _baseWidth,
                  int _baseHeight)
     : AudioProcessorEditor(&_processor)
-    , processor(_processor)
     , compositor("DisFlux", _mainPanel)
     , baseWidth(_baseWidth)
     , baseHeight(_baseHeight)
@@ -109,7 +108,6 @@ protected:
 
 private:
   dmt::gui::window::Compositor compositor;
-  PluginProcessor& processor;
   int baseWidth = 0;
   int baseHeight = 0;
   juce::OpenGLContext openGLContext;
