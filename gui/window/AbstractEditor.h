@@ -20,8 +20,8 @@ public:
                  AbstractPanel& _mainPanel,
                  int _baseWidth,
                  int _baseHeight)
-    : AudioProcessorEditor(&_processor)
-    , compositor("DisFlux", _mainPanel)
+    : AudioProcessorEditor(_processor)
+    , compositor(_name, _mainPanel)
     , baseWidth(_baseWidth)
     , baseHeight(_baseHeight)
   {
