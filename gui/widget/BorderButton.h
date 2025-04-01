@@ -21,6 +21,11 @@ class BorderButton
   // General
   const float& size = Settings::Window::size;
 
+  // Header
+  const Colour& backgroundColour =
+    Settings::Header::borderButtonBackgroundColour;
+  const Colour& fontColour = Settings::Header::borderButtonFontColour;
+
   // Constants for opacity and raw fade speed
   static constexpr float MAX_OPACITY = 1.0f;    // Fully visible
   static constexpr float MIN_OPACITY = 0.0f;    // Semi-transparent
@@ -94,14 +99,12 @@ private:
 
     // Draw the image content
     g.fillAll(juce::Colours::transparentBlack); // Clear the image
-    g.setColour(juce::Colours::green);
-    g.fillRoundedRectangle(Rectangle(0, 0, getWidth(), getHeight()).toFloat(),
-                           5.0f);
+    g.fillAll(backgroundColour);
 
     // Add additional drawing logic here if needed
-    g.setColour(juce::Colours::white);
+    g.setColour(fontColour);
     g.drawText(
-      "Click to show Header", getLocalBounds(), juce::Justification::centred);
+      "Click to Show Header", getLocalBounds(), juce::Justification::centred);
   }
 
   void repaintTimerCallback() noexcept override

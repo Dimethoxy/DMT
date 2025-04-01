@@ -21,6 +21,9 @@ class Compositor : public juce::Component
   const float& size = dmt::Settings::Window::size;
   const int rawHeaderHeight = dmt::Settings::Header::height;
 
+  // Header
+  const int& rawBorderButtonHeight = Settings::Header::borderButtonHeight;
+
 public:
   Compositor(juce::String _titleText, AbstractPanel& _mainPanel)
     : mainPanel(_mainPanel)
@@ -72,7 +75,7 @@ public:
       settingsPanel.setBounds(bounds);
 
       // Show the BorderButton at the top with half the height of the header
-      const auto borderButtonHeight = (rawHeaderHeight * size) / 2.0f;
+      const auto borderButtonHeight = rawBorderButtonHeight * size;
       borderButton.setBounds(
         juce::Rectangle<int>(bounds).removeFromTop(borderButtonHeight));
       borderButton.setVisible(true);

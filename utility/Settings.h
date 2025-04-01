@@ -81,6 +81,15 @@ public:
     static inline auto& buttonWidth =
       container.add<float>("Header.ButtonWidth", 48.0f);
     static inline auto& height = container.add<int>("Header.Height", 50);
+
+    // New colors for BorderButton
+    static inline auto& borderButtonBackgroundColour =
+      container.add<Colour>("Header.BorderButtonBackgroundColour",
+                            Colours::primary);
+    static inline auto& borderButtonFontColour =
+      container.add<Colour>("Header.BorderButtonFontColour", Colours::shadow);
+    static inline auto& borderButtonHeight =
+      container.add<int>("Header.BorderButtonHeight", 25);
   };
 
   struct Button
