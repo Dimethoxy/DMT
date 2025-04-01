@@ -1,5 +1,6 @@
 #pragma once
 
+#include "gui/panel/AbstractPanel.h"
 #include "gui/window/Compositor.h"
 #include <JuceHeader.h>
 
@@ -7,26 +8,36 @@ namespace dmt {
 namespace gui {
 namespace window {
 
-template<typename PanelType>
 class AbstractEditor : public juce::AudioProcessorEditor
 {
-  using OpenGLContext = juce::OpenGLContext;
-
-protected:
-  // Window size
+  using AbstractPanel = dmt::gui::panel::AbstractPanel;
   float& size = dmt::Settings::Window::size;
-  const int baseWidth = 500;
-  const int baseHeight = 270;
-
-  // Window header
   const int& headerHeight = dmt::Settings::Header::height;
 
 public:
-  explicit AbstractEditor(juce::AudioProcessor& processor, PanelType& panel)
-    : juce::AudioProcessorEditor(&processor)
-    , compositor("DisFlux", panel)
+  AbstractEditor(juce::String _name,
+                 PluginProcessor& _processor,
+                 AbstractPanel& _mainPanel,
+                 int _baseWidth,
+                 int _baseHeight)
+    : AudioProcessorEditor(&_processor)
+    , processor(_processor)
+    , compositor("DisFlux", _mainPanel)
+    , baseWidth(_baseWidth)
+    , baseHeight(_baseHeight)
   {
-    if (OS_IS_WINDOWS || OS_IS_DARWIN || OS_IS_LINUX) {
+    if (OS_IS_WINDOWS) {
+      setResizable(true, true);
+    }
+
+    if (OS_IS_DARWIN) {
+      setResizable(true, true);
+    }
+
+    if (OS_IS_LINUX) {
+      openGLContext.setComponentPaintingEnabled(true);
+      openGLContext.setContinuousRepainting(false);
+      openGLContext.attachTo(*getTopLevelComponent());
       setResizable(true, true);
     }
 
@@ -43,14 +54,18 @@ public:
 
   ~AbstractEditor() override = default;
 
-  void paint(juce::Graphics& g) override
+  void paint(juce::Graphics& g)
   {
+    TRACER("PluginEditor::paint");
+
     // Just painting the background
     g.fillAll(dmt::Settings::Window::backgroundColour);
   }
 
   void resized() override
   {
+    TRACER("PluginEditor::resized");
+
     // Set the global size
     const int currentHeight = getHeight();
     const float newSize =
@@ -64,7 +79,7 @@ public:
 
     dmt::Settings::Window::size = newSize;
 
-    // Set the bounds of the compositor to the bounds of the AbstractEditor
+    // Set the bounds of the compositor to the bounds of the PluginEditor
     compositor.setBoundsRelative(0.0f, 0.0f, 1.0f, 1.0f);
   }
 
@@ -94,6 +109,10 @@ protected:
 
 private:
   dmt::gui::window::Compositor compositor;
+  PluginProcessor& processor;
+  int baseWidth = 0;
+  int baseHeight = 0;
+  juce::OpenGLContext openGLContext;
 };
 
 } // namespace window
