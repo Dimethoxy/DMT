@@ -63,6 +63,7 @@ public:
     , settingsExitButton("HeaderSettingsExitButton", "Back")
     , hideHeaderButton("HeaderHideButton", "HideHeader")
     , titleButton("HeaderTitleButton", "None")
+    , bypassButton("BypassButton", "Bypass")
   {
     addAndMakeVisible(outerShadow);
     addAndMakeVisible(innerShadow);
@@ -71,6 +72,7 @@ public:
     addAndMakeVisible(settingsExitButton);
     addAndMakeVisible(hideHeaderButton);
     addAndMakeVisible(titleButton);
+    addAndMakeVisible(bypassButton);
     title.setText(titleText);
     titleButton.setEnabled(false);
     settingsExitButton.setVisible(false);
@@ -135,10 +137,14 @@ public:
     settingsExitButton.setBounds(settingsButtonBounds);
 
     // Set the bounds for the hide header button
-    const int hideHeaderButtonX = settingsButtonBounds.getX();
     const auto hideHeaderButtonBounds =
       buttonAreaBounds.removeFromRight(rawHeaderButtonWidth * size);
     hideHeaderButton.setBounds(hideHeaderButtonBounds);
+
+    // Set the bounds for the bypass button
+    const auto bypassButtonBounds =
+      buttonAreaBounds.removeFromLeft(rawHeaderButtonWidth * size);
+    bypassButton.setBounds(bypassButtonBounds);
 
     // Set the bounds for the title button
     const auto titleButtonBounds =
@@ -159,6 +165,7 @@ private:
   Button settingsExitButton;
   Button hideHeaderButton;
   Button titleButton;
+  Button bypassButton;
 
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Header)
 };

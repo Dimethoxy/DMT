@@ -27,6 +27,10 @@ getIcon(const juce::String iconName)
   if (iconName == "HideHeader")
     return juce::Drawable::createFromImageData(BinaryData::angles_up_svg,
                                                BinaryData::angles_up_svgSize);
+
+  if (iconName == "Bypass")
+    return juce::Drawable::createFromImageData(BinaryData::bypass_svg,
+                                               BinaryData::bypass_svgSize);
   return nullptr;
 };
 //==============================================================================
@@ -44,6 +48,8 @@ getPadding(const juce::String iconName)
   if (iconName == "Back")
     return 5.0f;
   if (iconName == "HideHeader")
+    return 5.0f;
+  if (iconName == "Bypass")
     return 5.0f;
   return 0.0f;
 };
