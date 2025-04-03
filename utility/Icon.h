@@ -31,6 +31,10 @@ getIcon(const juce::String iconName)
   if (iconName == "Bypass")
     return juce::Drawable::createFromImageData(BinaryData::bypass_svg,
                                                BinaryData::bypass_svgSize);
+
+  if (iconName == "Download")
+    return juce::Drawable::createFromImageData(BinaryData::download_svg,
+                                               BinaryData::download_svgSize);
   return nullptr;
 };
 //==============================================================================
@@ -51,6 +55,9 @@ getPadding(const juce::String iconName)
     return 5.0f;
   if (iconName == "Bypass")
     return 5.0f;
+  if (iconName == "Download")
+    return 5.0f;
+
   return 0.0f;
 };
 //==============================================================================
