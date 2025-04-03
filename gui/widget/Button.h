@@ -1,5 +1,7 @@
 #pragma once
 //==============================================================================
+#include "gui/widget/Shadow.h"
+#include "utility/Icon.h"
 #include "utility/Settings.h"
 #include <JuceHeader.h>
 //==============================================================================
