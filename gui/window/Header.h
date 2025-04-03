@@ -65,6 +65,7 @@ public:
     , titleButton("HeaderTitleButton", "None")
     , updateButton("UpdateButton", "Download")
     , bypassButton("BypassButton", "Bypass")
+    , presetsButton("PresetsButton", "Presets")
   {
     addAndMakeVisible(outerShadow);
     addAndMakeVisible(innerShadow);
@@ -75,6 +76,7 @@ public:
     addAndMakeVisible(hideHeaderButton);
     addAndMakeVisible(updateButton);
     addAndMakeVisible(bypassButton);
+    addAndMakeVisible(presetsButton);
     title.setText(titleText);
     titleButton.setEnabled(false);
     settingsExitButton.setVisible(false);
@@ -153,6 +155,11 @@ public:
       buttonAreaBounds.removeFromLeft(rawHeaderButtonWidth * size);
     bypassButton.setBounds(bypassButtonBounds);
 
+    // Set the bounds for the presets button
+    const auto presetsButtonBounds =
+      buttonAreaBounds.removeFromLeft(rawHeaderButtonWidth * size);
+    presetsButton.setBounds(presetsButtonBounds);
+
     // Set the bounds for the title button
     const auto titleButtonBounds =
       bounds.withWidth(titleButtonWidth).withCentre(bounds.getCentre());
@@ -174,6 +181,7 @@ private:
   Button titleButton;
   Button updateButton;
   Button bypassButton;
+  Button presetsButton;
 
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Header)
 };
