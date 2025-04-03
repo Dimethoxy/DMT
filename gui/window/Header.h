@@ -119,15 +119,25 @@ public:
     const auto borderStrength = rawBorderStrength * size;
     bounds.removeFromBottom(borderStrength);
 
+    // Header Button Bounds
+    const int headerButtonAmount = 2;
+    const auto headerButtonAreaWidth =
+      rawHeaderButtonWidth * size * headerButtonAmount;
+    const auto buttonAreaPadding = 2.0 * rawButtonPadding * size;
+    auto buttonAreaBounds =
+      bounds.withWidth(bounds.getWidth() - buttonAreaPadding)
+        .withCentre(bounds.getCentre());
+
     // Set the bounds for the settings button
     const auto settingsButtonBounds =
-      Rectangle(bounds).removeFromRight(rawHeaderButtonWidth * size);
+      buttonAreaBounds.removeFromRight(rawHeaderButtonWidth * size);
     settingsButton.setBounds(settingsButtonBounds);
     settingsExitButton.setBounds(settingsButtonBounds);
 
     // Set the bounds for the hide header button
+    const int hideHeaderButtonX = settingsButtonBounds.getX();
     const auto hideHeaderButtonBounds =
-      Rectangle(settingsButtonBounds).withRightX(settingsButtonBounds.getX());
+      buttonAreaBounds.removeFromRight(rawHeaderButtonWidth * size);
     hideHeaderButton.setBounds(hideHeaderButtonBounds);
 
     // Set the bounds for the title button
