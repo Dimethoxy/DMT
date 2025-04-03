@@ -58,6 +58,8 @@ public:
     juce::Random rand;
     setValue(10.0f * rand.nextFloat());
     setSkewFactor(2.0);
+    setVelocityModeParameters(
+      1.0, 1, 0.0, true, juce::ModifierKeys::shiftModifier);
   }
   void paint(juce::Graphics& g) override
   {
@@ -71,7 +73,7 @@ public:
 
     drawSlider(g, bounds.reduced(padding));
   }
-  Type getType() { return type; };
+  Type getType() { return type; }
 
 protected:
   void drawSlider(juce::Graphics& g,
