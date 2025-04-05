@@ -67,19 +67,29 @@ public:
     , bypassButton("BypassButton", "Bypass")
     , presetsButton("PresetsButton", "Presets")
   {
+    // Shadows
     addAndMakeVisible(outerShadow);
     addAndMakeVisible(innerShadow);
+
+    // Title
     addAndMakeVisible(title);
     addAndMakeVisible(titleButton);
-    addAndMakeVisible(settingsButton);
-    addAndMakeVisible(settingsExitButton);
-    addAndMakeVisible(hideHeaderButton);
-    addAndMakeVisible(updateButton);
-    addAndMakeVisible(bypassButton);
-    addAndMakeVisible(presetsButton);
     title.setText(titleText);
     titleButton.setEnabled(false);
+
+    // Settings Button
+    addAndMakeVisible(settingsButton);
+    addAndMakeVisible(settingsExitButton);
     settingsExitButton.setVisible(false);
+    addAndMakeVisible(hideHeaderButton);
+
+    // These buttons are not done yet so we hide them for now
+    addAndMakeVisible(updateButton);
+    updateButton.setVisible(false);
+    addAndMakeVisible(bypassButton);
+    bypassButton.setVisible(false);
+    addAndMakeVisible(presetsButton);
+    presetsButton.setVisible(false);
   };
 
   ~Header() override {}
