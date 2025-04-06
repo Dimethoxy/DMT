@@ -1,6 +1,23 @@
-# Dimethoxy Library (Work in Progress)
-Welcome to the Dimethoxy Library – a repository of essential classes employed across various Dimethoxy projects. These files are primarily tailored for internal use within our repositories.
+# Dimethoxy Library (WIP)
+
+The Dimethoxy Library is the core engine behind all Dimethoxy plugins — a modular C++ codebase built for high-performance digital signal processing and plugin development.
+From custom DSP algorithms to GUI systems and utility wrappers, this library powers nearly every aspect of our audio tools.
+
+> [!WARNING]
+> This library is under active development and primarily intended for use within Dimethoxy projects. 
+> External use is unsupported.
+
+## Features
+- 🚀 High-performance DSP tailored for aggressive electronic music (Hardstyle, Hardcore, Uptempo, etc.)
+- 🎛️ Modular components for efficient plugin development
+- 🧱 Shared utilities, math, parameter handling, and UI helpers
+- 🧪 Designed for maintainability and extensibility across multiple projects
+
+## Used In
+- [Disflux](https://github.com/Dimethoxy/Disflux) — Work in Progress Transient Smearing Audio Plugin for Windows, MacOS and Linux 
+- [Oscilloscope](https://github.com/Dimethoxy/Oscilloscope) — Work in Progress Oscilloscope Audio Plugin for Windows, MacOS and Linux 
+
 
 ## License
-Using any code from this library requires strict adherence to the GPLv3 license. \
-It is mandatory to comply with this license for all projects using any code from this library.
+This project is licensed under GPLv3. \
+Any project using **any** part of this library **must** also be licensed under GPLv3 or a compatible open-source license.
