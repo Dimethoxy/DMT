@@ -9,7 +9,7 @@ namespace dmt {
 namespace gui {
 namespace widget {
 //==============================================================================
-class AbstractButton : public juce::Button
+class AbstractHeaderButton : public juce::Button
 {
   using Settings = dmt::Settings;
   using Colour = juce::Colour;
@@ -35,7 +35,7 @@ class AbstractButton : public juce::Button
   const bool& drawInnerShadow = ButtonSettings::drawInnerShadow;
 
 public:
-  AbstractButton(juce::String _name, juce::String _iconName)
+  AbstractHeaderButton(juce::String _name, juce::String _iconName)
     : juce::Button(_name)
     , rawSpecificSvgPadding(dmt::icons::getPadding(_iconName))
   {
@@ -52,7 +52,7 @@ public:
     addMouseListener(this, true);
   }
 
-  ~AbstractButton() override = default;
+  ~AbstractHeaderButton() override = default;
 
   void resized() override
   {

@@ -14,7 +14,7 @@ namespace window {
 class Header : public juce::Component
 {
   // Aliases
-  using Button = dmt::gui::widget::Button;
+  using CallbackHeaderButton = dmt::gui::widget::HeaderCallbackButton;
   using Label = dmt::gui::widget::Label;
   using String = juce::String;
   using Colour = juce::Colour;
@@ -176,22 +176,28 @@ public:
     titleButton.setBounds(titleButtonBounds);
   }
 
-  Button& getSettingsButton() noexcept { return settingsButton; }
-  Button& getSettingsExitButton() noexcept { return settingsExitButton; }
-  Button& getHideHeaderButton() noexcept { return hideHeaderButton; }
+  CallbackHeaderButton& getSettingsButton() noexcept { return settingsButton; }
+  CallbackHeaderButton& getSettingsExitButton() noexcept
+  {
+    return settingsExitButton;
+  }
+  CallbackHeaderButton& getHideHeaderButton() noexcept
+  {
+    return hideHeaderButton;
+  }
 
 private:
   Shadow outerShadow;
   Shadow innerShadow;
   Label title;
   Fonts fonts;
-  Button settingsButton;
-  Button settingsExitButton;
-  Button hideHeaderButton;
-  Button titleButton;
-  Button updateButton;
-  Button bypassButton;
-  Button presetsButton;
+  CallbackHeaderButton settingsButton;
+  CallbackHeaderButton settingsExitButton;
+  CallbackHeaderButton hideHeaderButton;
+  CallbackHeaderButton titleButton;
+  CallbackHeaderButton updateButton;
+  CallbackHeaderButton bypassButton;
+  CallbackHeaderButton presetsButton;
 
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Header)
 };
