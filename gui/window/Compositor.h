@@ -25,10 +25,12 @@ class Compositor : public juce::Component
   const int& rawBorderButtonHeight = Settings::Header::borderButtonHeight;
 
 public:
-  Compositor(juce::String _titleText, AbstractPanel& _mainPanel)
+  Compositor(juce::String _titleText,
+             AbstractPanel& _mainPanel,
+             AudioProcessorValueTreeState& _apvts)
     : mainPanel(_mainPanel)
     , settingsPanel()
-    , header(_titleText)
+    , header(_titleText, _apvts)
     , borderButton()
   {
     addAndMakeVisible(mainPanel);

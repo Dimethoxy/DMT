@@ -1,6 +1,7 @@
 #pragma once
 //==============================================================================
-#include "dmt/gui/widget/Button.h"
+#include "dmt/gui/widget/HeaderCallbackButton.h"
+#include "dmt/gui/widget/HeaderToggleButton.h"
 #include "dmt/gui/widget/Label.h"
 #include "dmt/gui/widget/Shadow.h"
 #include "dmt/utility/Fonts.h"
@@ -14,7 +15,8 @@ namespace window {
 class Header : public juce::Component
 {
   // Aliases
-  using CallbackHeaderButton = dmt::gui::widget::HeaderCallbackButton;
+  using HeaderCallbackButton = dmt::gui::widget::HeaderCallbackButton;
+  using HeaderToggleButton = dmt::gui::widget::HeaderToggleButton;
   using Label = dmt::gui::widget::Label;
   using String = juce::String;
   using Colour = juce::Colour;
@@ -51,20 +53,20 @@ class Header : public juce::Component
   const float& rawButtonPadding = dmt::Settings::Button::padding;
 
 public:
-  Header(juce::String titleText)
+  Header(juce::String titleText, AudioProcessorValueTreeState& _apvts)
     : outerShadow(drawOuterShadow, outerShadowColour, outerShadowRadius, false)
     , innerShadow(drawInnerShadow, innerShadowColour, innerShadowRadius, true)
     , title(String("ProjectLabel"),
             fonts.display,
             titleFontSize,
-            Colours::white, // TODO: Change this to a title colour
+            titleFontColour,
             juce::Justification::centred)
     , settingsButton("HeaderSettingsButton", "Settings")
     , settingsExitButton("HeaderSettingsExitButton", "Back")
     , hideHeaderButton("HeaderHideButton", "HideHeader")
     , titleButton("HeaderTitleButton", "None")
     , updateButton("UpdateButton", "Download")
-    , bypassButton("BypassButton", "Bypass")
+    , bypassButton("BypassButton", "Bypass", "Bypass", _apvts)
     , presetsButton("PresetsButton", "Presets")
   {
     // Shadows
@@ -176,12 +178,12 @@ public:
     titleButton.setBounds(titleButtonBounds);
   }
 
-  CallbackHeaderButton& getSettingsButton() noexcept { return settingsButton; }
-  CallbackHeaderButton& getSettingsExitButton() noexcept
+  HeaderCallbackButton& getSettingsButton() noexcept { return settingsButton; }
+  HeaderCallbackButton& getSettingsExitButton() noexcept
   {
     return settingsExitButton;
   }
-  CallbackHeaderButton& getHideHeaderButton() noexcept
+  HeaderCallbackButton& getHideHeaderButton() noexcept
   {
     return hideHeaderButton;
   }
@@ -191,13 +193,13 @@ private:
   Shadow innerShadow;
   Label title;
   Fonts fonts;
-  CallbackHeaderButton settingsButton;
-  CallbackHeaderButton settingsExitButton;
-  CallbackHeaderButton hideHeaderButton;
-  CallbackHeaderButton titleButton;
-  CallbackHeaderButton updateButton;
-  CallbackHeaderButton bypassButton;
-  CallbackHeaderButton presetsButton;
+  HeaderCallbackButton settingsButton;
+  HeaderCallbackButton settingsExitButton;
+  HeaderCallbackButton hideHeaderButton;
+  HeaderCallbackButton titleButton;
+  HeaderCallbackButton updateButton;
+  HeaderToggleButton bypassButton;
+  HeaderCallbackButton presetsButton;
 
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Header)
 };

@@ -1,6 +1,6 @@
 #pragma once
 //==============================================================================
-#include "gui/widget/AbstractButton.h"
+#include "gui/widget/AbstractHeaderButton.h"
 #include "gui/widget/Shadow.h"
 #include "utility/Icon.h"
 #include "utility/Settings.h"
@@ -12,11 +12,6 @@ namespace widget {
 //==============================================================================
 class HeaderCallbackButton : public dmt::gui::widget::AbstractHeaderButton
 {
-  using Settings = dmt::Settings;
-  using Colour = juce::Colour;
-  using Justification = juce::Justification;
-  using ButtonSettings = dmt::Settings::Button;
-  using String = juce::String;
   using AbstractButton = dmt::gui::widget::AbstractHeaderButton;
 
 public:

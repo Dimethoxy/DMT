@@ -21,7 +21,7 @@ public:
                  int _baseWidth,
                  int _baseHeight)
     : AudioProcessorEditor(_processor)
-    , compositor(_name, _mainPanel)
+    , compositor(_name, _mainPanel, _processor.apvts)
     , baseWidth(_baseWidth)
     , baseHeight(_baseHeight)
   {
