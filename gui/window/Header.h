@@ -66,7 +66,7 @@ public:
     , hideHeaderButton("HeaderHideButton", "HideHeader")
     , titleButton("HeaderTitleButton", "None")
     , updateButton("UpdateButton", "Download")
-    , bypassButton("BypassButton", "Bypass", "Bypass", _apvts)
+    , bypassButton("BypassButton", "Bypass", "GlobalBypass", _apvts)
     , presetsButton("PresetsButton", "Presets")
   {
     // Shadows
@@ -80,6 +80,7 @@ public:
     titleButton.setEnabled(false);
 
     // Settings Button
+    addAndMakeVisible(bypassButton);
     addAndMakeVisible(settingsButton);
     addAndMakeVisible(settingsExitButton);
     settingsExitButton.setVisible(false);
@@ -88,8 +89,6 @@ public:
     // These buttons are not done yet so we hide them for now
     addAndMakeVisible(updateButton);
     updateButton.setVisible(false);
-    addAndMakeVisible(bypassButton);
-    bypassButton.setVisible(false);
     addAndMakeVisible(presetsButton);
     presetsButton.setVisible(false);
   };

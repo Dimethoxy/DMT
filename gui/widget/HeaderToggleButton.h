@@ -37,6 +37,8 @@ public:
       } else {
         setClickedState();
       }
+    } else {
+      jassertfalse; // Parameter not found
     }
   }
 
