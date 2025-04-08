@@ -38,8 +38,12 @@ public:
   AbstractHeaderButton(juce::String _name, juce::String _iconName)
     : juce::Button(_name)
     , rawSpecificSvgPadding(dmt::icons::getPadding(_iconName))
+    , outerShadow(drawOuterShadow, outerShadowColour, outerShadowRadius, false)
+    , innerShadow(drawInnerShadow, innerShadowColour, innerShadowRadius, true)
   {
     icon = dmt::icons::getIcon(_iconName);
+    addAndMakeVisible(outerShadow);
+    addAndMakeVisible(innerShadow);
     addAndMakeVisible(backgroundImageComponent);
     addAndMakeVisible(hoverBackgroundImageComponent);
     addAndMakeVisible(clickedBackgroundImageComponent);
@@ -59,10 +63,11 @@ public:
     auto bounds = getLocalBounds();
     const auto buttonPadding = rawButtonPadding * size;
     auto innerBounds = bounds.reduced(buttonPadding);
+    const auto cornerRadius = rawCornerRadius * size;
 
+    setShadowBounds(innerBounds, cornerRadius);
     setBackgroundBounds(innerBounds);
     setIconBounds(innerBounds);
-
     drawBackground();
     drawIcon();
   }
@@ -101,6 +106,29 @@ public:
   }
 
 private:
+  void setShadowBounds(const juce::Rectangle<int>& innerBounds,
+                       float cornerRadius)
+  {
+    // Set the bounds for the outer shadow
+    juce::Path outerShadowPath;
+    outerShadowPath.addRoundedRectangle(innerBounds, cornerRadius);
+    outerShadow.setPath(outerShadowPath);
+    outerShadow.setBoundsRelative(0.0f, 0.0f, 1.0f, 1.0f);
+
+    // Set the bounds for the inner shadow
+    juce::Path innerShadowPath;
+    innerShadowPath.addRoundedRectangle(innerBounds, cornerRadius);
+    innerShadow.setPath(innerShadowPath);
+    innerShadow.setBoundsRelative(0.0f, 0.0f, 1.0f, 1.0f);
+
+    // Reorder the components
+    innerShadow.toBack();
+    outerShadow.toBack();
+    clickedBackgroundImageComponent.toBack();
+    hoverBackgroundImageComponent.toBack();
+    backgroundImageComponent.toBack();
+  }
+
   void setBackgroundBounds(const juce::Rectangle<int>& innerBounds)
   {
     backgroundImage =
@@ -180,7 +208,8 @@ private:
 
   const float rawSpecificSvgPadding;
   std::unique_ptr<juce::Drawable> icon;
-
+  Shadow outerShadow;
+  Shadow innerShadow;
   Image backgroundImage;
   ImageComponent backgroundImageComponent;
   Image hoverBackgroundImage;
