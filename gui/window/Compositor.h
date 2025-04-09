@@ -2,20 +2,24 @@
 
 #include "gui/panel/AbstractPanel.h"
 #include "gui/panel/SettingsPanel.h"
-#include "gui/widget/BorderButton.h" // Include the BorderButton header
+#include "gui/widget/BorderButton.h"
 #include "gui/window/Header.h"
+#include "gui/window/Popover.h"
 #include <JuceHeader.h>
 
 namespace dmt {
 namespace gui {
 namespace window {
 
-class Compositor : public juce::Component
+class Compositor
+  : public juce::Component
+  , public juce::Timer
 {
   using AbstractPanel = dmt::gui::panel::AbstractPanel;
   using SettingsPanel = dmt::gui::panel::SettingsPanel;
   using Header = dmt::gui::window::Header;
   using BorderButton = dmt::gui::widget::BorderButton;
+  using Popover = dmt::gui::window::Popover;
 
   // Window size
   const float& size = dmt::Settings::Window::size;
@@ -33,20 +37,27 @@ public:
     , header(_titleText, _apvts)
     , borderButton()
   {
-    addAndMakeVisible(mainPanel);
-    addAndMakeVisible(settingsPanel);
+    // Header
     addAndMakeVisible(header);
-    addAndMakeVisible(borderButton); // Add the BorderButton to the hierarchy
-
-    settingsPanel.setVisible(false);
-    borderButton.setVisible(false); // Initially hidden
-
     header.getSettingsButton().onClick = [this] { showSettings(); };
     header.getSettingsExitButton().onClick = [this] { closeSettings(); };
     header.getHideHeaderButton().onClick = [this] { hideHeader(); };
 
-    // Set the BorderButton's callback to show the header
+    // BorderButton
+    addAndMakeVisible(borderButton);
+    borderButton.setVisible(false);
     borderButton.setButtonCallback([this]() { showHeader(); });
+
+    // Popover
+    addAndMakeVisible(popover);
+
+    // Panels
+    addAndMakeVisible(mainPanel);
+    addAndMakeVisible(settingsPanel);
+    settingsPanel.setVisible(false);
+
+    // Start the timer to check if update is found
+    startTimer(1000); // Check every second
   }
 
   ~Compositor() noexcept override {}
@@ -82,6 +93,9 @@ public:
         juce::Rectangle<int>(bounds).removeFromTop(borderButtonHeight));
       borderButton.setVisible(true);
     }
+
+    // Popover
+    popover.setBounds(bounds);
   }
 
   void showSettings() noexcept
@@ -121,6 +135,28 @@ public:
     }
   }
 
+  void timerCallback() override
+  {
+    // Check for updates and show the popover if needed
+    if (true) // TODO: Check for updates
+    {
+      showUpdateButton();
+      stopTimer(); // Stop the timer after showing the popover
+    }
+  }
+
+  void showUpdateButton() noexcept
+  {
+    if (true) // TODO: Check if we already showed the popover before
+    {
+      const auto& updateButton = header.getUpdateButton();
+      const int x = updateButton.getBounds().getCentreX();
+      const int y = updateButton.getBounds().getBottom();
+      const auto popoverTagetPoint = juce::Point<int>(x, y);
+      popover.showMessage(popoverTagetPoint);
+    }
+  }
+
   void setHeaderVisibilityCallback(std::function<void(bool)> callback)
   {
     headerVisibilityCallback = std::move(callback);
@@ -130,6 +166,7 @@ public:
 
 private:
   std::function<void(bool)> headerVisibilityCallback;
+  Popover popover;
   AbstractPanel& mainPanel;
   SettingsPanel settingsPanel;
   Header header;

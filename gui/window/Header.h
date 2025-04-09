@@ -186,6 +186,7 @@ public:
   {
     return hideHeaderButton;
   }
+  HeaderCallbackButton& getUpdateButton() noexcept { return updateButton; }
 
 private:
   Shadow outerShadow;
