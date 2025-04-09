@@ -44,17 +44,15 @@ public:
     header.getHideHeaderButton().onClick = [this] { hideHeader(); };
 
     // BorderButton
-    addAndMakeVisible(borderButton);
-    borderButton.setVisible(false);
+    addChildComponent(borderButton);
     borderButton.setButtonCallback([this]() { showHeader(); });
 
     // Popover
-    addAndMakeVisible(popover);
+    addChildComponent(popover);
 
     // Panels
     addAndMakeVisible(mainPanel);
-    addAndMakeVisible(settingsPanel);
-    settingsPanel.setVisible(false);
+    addChildComponent(settingsPanel);
 
     // Start the timer to check if update is found
     startTimer(1000); // Check every second
