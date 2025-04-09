@@ -20,7 +20,8 @@ class Popover : public juce::Component
   const float& size = dmt::Settings::Window::size;
 
   // Popover
-  const float rawTipWidth = 20.0f;
+  const float rawSpikeWidth = 20.0f;
+  const float rawSpikeHeight = 20.0f;
   const int rawSurfaceWidth = 200;
   const int rawSurfaceHeight = 100;
 
@@ -56,7 +57,8 @@ protected:
     juce::Path path;
 
     // Calculate dimensions
-    const int tipWidth = rawTipWidth * size;
+    const int spikeWidth = rawSpikeWidth * size;
+    const int spikeHeight = rawSpikeHeight * size;
     const int surfaceWidth = rawSurfaceWidth * size;
     const int surfaceHeight = rawSurfaceHeight * size;
 
@@ -64,12 +66,33 @@ protected:
     Rectangle messageBounds;
     const auto anchor = getAnchor();
     messageBounds.setSize(surfaceWidth, surfaceHeight);
-    messageBounds.setCentre(anchor);
-    messageBounds.setTop(anchor.y + tipWidth);
+    const auto messageBoundsOffsetY = surfaceHeight / 2 + spikeHeight;
+    const auto messageBoundsCentreX = anchor.x;
+    const auto messageBoundsCentreY = anchor.y + messageBoundsOffsetY;
+    messageBounds.setCentre(messageBoundsCentreX, messageBoundsCentreY);
+
+    // Calculate spike points
+    const auto spikeTipX = anchor.x;
+    const auto spikeTipY = anchor.y;
+    const auto spikeBaseLeftX = anchor.x - spikeWidth / 2;
+    const auto spikeBaseLeftY = anchor.y + spikeHeight;
+    const auto spikeBaseRightX = anchor.x + spikeWidth / 2;
+    const auto spikeBaseRightY = anchor.y + spikeHeight;
+    const auto spikeTip = juce::Point<float>(spikeTipX, spikeTipY);
+    const auto spikeBaseLeft =
+      juce::Point<float>(spikeBaseLeftX, spikeBaseLeftY);
+    const auto spikeBaseRight =
+      juce::Point<float>(spikeBaseRightX, spikeBaseRightY);
 
     // Create path
-    path.addRectangle(messageBounds);
-
+    path.startNewSubPath(spikeBaseLeft);
+    path.lineTo(spikeTip);
+    path.lineTo(spikeBaseRight);
+    path.lineTo(messageBounds.getTopRight().toFloat());
+    path.lineTo(messageBounds.getBottomRight().toFloat());
+    path.lineTo(messageBounds.getBottomLeft().toFloat());
+    path.lineTo(messageBounds.getTopLeft().toFloat());
+    path.closeSubPath();
     return path;
   }
 
