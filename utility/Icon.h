@@ -39,6 +39,9 @@ getIcon(const juce::String iconName)
   if (iconName == "Presets")
     return juce::Drawable::createFromImageData(BinaryData::presets_svg,
                                                BinaryData::presets_svgSize);
+  if (iconName == "Close")
+    return juce::Drawable::createFromImageData(BinaryData::close_svg,
+                                               BinaryData::close_svgSize);
   return nullptr;
 };
 //==============================================================================
@@ -63,7 +66,8 @@ getPadding(const juce::String iconName)
     return 5.0f;
   if (iconName == "Presets")
     return 5.0f;
-
+  if (iconName == "Close")
+    return 0.0f;
   return 0.0f;
 };
 //==============================================================================

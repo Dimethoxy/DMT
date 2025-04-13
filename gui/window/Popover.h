@@ -2,6 +2,7 @@
 #pragma once
 //==============================================================================
 #include "utility/Settings.h"
+#include "gui/widget/CallbackButton.h"
 #include <JuceHeader.h>
 //==============================================================================
 namespace dmt {
@@ -10,6 +11,7 @@ namespace window {
 //==============================================================================
 class Popover : public juce::Component
 {
+  using CallbackButton = dmt::gui::widget::CallbackButton;
   using String = juce::String;
   using Rectangle = juce::Rectangle<int>;
   using Colour = juce::Colour;
@@ -33,12 +35,17 @@ class Popover : public juce::Component
   const int rawBorderWidth = PopoverSettings::rawBorderWidth;
   const float rawSpikeWidth = 20.0f;
   const float rawSpikeHeight = 20.0f;
-  
+  const int rawCloseButtonSize = 35;
 public:
   Popover()
   {
     setAlwaysOnTop(true);
-    setInterceptsMouseClicks(false, false);
+    setInterceptsMouseClicks(false, true);
+
+    addAndMakeVisible(closeButton);
+    closeButton.onClick = [this] {
+      hideMessage();
+    };
   }
   ~Popover() override { setVisible(false); }
 
@@ -50,19 +57,25 @@ public:
 
     // Draw the border
     g.setColour(borderColour);
-    g.fillPath(getOuterPath());
+    g.fillPath(createPath(true));
 
     // Draw the background
     g.setColour(backgroundColour);
-    g.fillPath(getInnerPath());
+    g.fillPath(createPath(false));
   }
 
-  void resized() override {}
+  void resized() override {
+    auto messageBounds = createMessageBounds(false);
+    const auto closeButtonSize = rawCloseButtonSize * size;
+    closeButton.setBounds(
+      messageBounds.removeFromTop(closeButtonSize).removeFromRight(closeButtonSize));
+  }
 
   void showMessage(Point<int> _anchor)
   {
     this->setNormalizedAnchor(_anchor);
     this->setVisible(true);
+    resized();
     repaint();
   }
   
@@ -73,193 +86,123 @@ public:
   }
   
 protected:
-  juce::Path getOuterPath()
-  {
-    juce::Path path;
+juce::Path createPath(bool isOuter = true)
+{
+  juce::Path path;
 
-    // Calculate dimensions
-    const int spikeWidth = rawSpikeWidth * size;
-    const int spikeHeight = rawSpikeHeight * size;
-    const int surfaceWidth = rawSurfaceWidth * size;
-    const int surfaceHeight = rawSurfaceHeight * size;
+  const auto messageBounds = createMessageBounds(isOuter);
+  const auto spikePoints = calculateSpikePoints(isOuter);
 
-    // Configure message bounds
-    Rectangle messageBounds;
-    const auto anchor = getAnchor();
-    messageBounds.setSize(surfaceWidth, surfaceHeight);
-    const auto messageBoundsOffsetY = surfaceHeight / 2 + spikeHeight;
-    const auto messageBoundsCentreX = anchor.x;
-    const auto messageBoundsCentreY = anchor.y + messageBoundsOffsetY;
-    messageBounds.setCentre(messageBoundsCentreX, messageBoundsCentreY);
+  addSpikeToPath(path, spikePoints);
+  addRoundedRectangleToPath(path, messageBounds, isOuter);
 
-    // Calculate spike points
-    const auto spikeTipX = anchor.x;
-    const auto spikeTipY = anchor.y;
-    const auto spikeBaseLeftX = anchor.x - spikeWidth / 2;
-    const auto spikeBaseLeftY = anchor.y + spikeHeight;
-    const auto spikeBaseRightX = anchor.x + spikeWidth / 2;
-    const auto spikeBaseRightY = anchor.y + spikeHeight;
-    const auto spikeTip = juce::Point<float>(spikeTipX, spikeTipY);
-    const auto spikeBaseLeft =
-      juce::Point<float>(spikeBaseLeftX, spikeBaseLeftY);
-    const auto spikeBaseRight =
-      juce::Point<float>(spikeBaseRightX, spikeBaseRightY);
+  path.closeSubPath();
+  return path;
+}
 
-    // Add the rounded rectangle manually using arcs
-    const auto topLeft = messageBounds.getTopLeft().toFloat();
-    const auto topRight = messageBounds.getTopRight().toFloat();
-    const auto bottomLeft = messageBounds.getBottomLeft().toFloat();
-    const auto bottomRight = messageBounds.getBottomRight().toFloat();
+Rectangle createMessageBounds(bool isOuter) const
+{
+  const int surfaceWidth = rawSurfaceWidth * size;
+  const int surfaceHeight = rawSurfaceHeight * size;
+  const float borderWidth = isOuter ? 0.0f : rawBorderWidth * size;
 
-    const auto cornerRadius = rawCornerRadius * size;
+  Rectangle messageBounds;
+  const auto anchor = getAnchor();
+  messageBounds.setSize(surfaceWidth, surfaceHeight);
+  const auto messageBoundsOffsetY = surfaceHeight / 2 + rawSpikeHeight * size;
+  const auto messageBoundsCentreX = anchor.x;
+  const auto messageBoundsCentreY = anchor.y + messageBoundsOffsetY;
+  messageBounds.setCentre(messageBoundsCentreX, messageBoundsCentreY);
 
-    // Start the path with the spike
-    path.startNewSubPath(spikeBaseLeft);
-    path.lineTo(spikeTip);
-    path.lineTo(spikeBaseRight);
-
-    // Top flat edge
-    path.lineTo(topRight.x - cornerRadius, topRight.y);
-
-    // Top right corner
-    path.addArc(topRight.x - cornerRadius,
-                topRight.y,
-                cornerRadius,
-                cornerRadius,
-                0.0f,
-                juce::MathConstants<float>::halfPi);
-
-    // Right flat edge
-    path.lineTo(bottomRight.x, bottomRight.y - cornerRadius);
-
-    // Bottom right corner
-    path.addArc(bottomRight.x - cornerRadius,
-                bottomRight.y - cornerRadius,
-                cornerRadius,
-                cornerRadius,
-                juce::MathConstants<float>::halfPi,
-                juce::MathConstants<float>::halfPi * 2.0f);
-
-    // Bottom flat edge
-    path.lineTo(bottomLeft.x + cornerRadius, bottomLeft.y);
-
-    // Bottom left corner
-    path.addArc(bottomLeft.x,
-                bottomLeft.y - cornerRadius,
-                cornerRadius,
-                cornerRadius,
-                juce::MathConstants<float>::halfPi * 2.0f,
-                juce::MathConstants<float>::halfPi * 3.0f);
-
-    // Left flat edge
-    path.lineTo(topLeft.x, topLeft.y + cornerRadius);
-
-    // Top left corner
-    path.addArc(topLeft.x,
-                topLeft.y,
-                cornerRadius,
-                cornerRadius,
-                juce::MathConstants<float>::halfPi * 3.0f,
-                juce::MathConstants<float>::halfPi * 4.0f);
-
-    path.closeSubPath();
-    return path;
-  }
-
-  juce::Path getInnerPath()
-  {
-    juce::Path path;
-
-    // Calculate dimensions
-    const int spikeWidth = rawSpikeWidth * size;
-    const int spikeHeight = rawSpikeHeight * size;
-    const int surfaceWidth = rawSurfaceWidth * size;
-    const int surfaceHeight = rawSurfaceHeight * size;
-    const float borderWidth = rawBorderWidth * size;
-
-    // Configure message bounds
-    Rectangle messageBounds;
-    const auto anchor = getAnchor();
-    messageBounds.setSize(surfaceWidth, surfaceHeight);
-    const auto messageBoundsOffsetY = surfaceHeight / 2 + spikeHeight;
-    const auto messageBoundsCentreX = anchor.x;
-    const auto messageBoundsCentreY = anchor.y + messageBoundsOffsetY;
-    messageBounds.setCentre(messageBoundsCentreX, messageBoundsCentreY);
+  if (!isOuter)
     messageBounds = messageBounds.reduced(borderWidth);
 
-    // Calculate spike points
-    const auto spikeTipX = anchor.x;
-    const auto spikeTipY = anchor.y + (borderWidth * 2.3f);
-    const auto spikeBaseLeftX = anchor.x - spikeWidth / 2 + (borderWidth * 0.9f);
-    const auto spikeBaseLeftY = anchor.y + spikeHeight + borderWidth;
-    const auto spikeBaseRightX = anchor.x + spikeWidth / 2 - (borderWidth * 0.9f);
-    const auto spikeBaseRightY = anchor.y + spikeHeight + borderWidth;
-    const auto spikeTip = juce::Point<float>(spikeTipX, spikeTipY);
-    const auto spikeBaseLeft =
-      juce::Point<float>(spikeBaseLeftX, spikeBaseLeftY);
-    const auto spikeBaseRight =
-      juce::Point<float>(spikeBaseRightX, spikeBaseRightY);
+  return messageBounds;
+}
 
-    // Add the rounded rectangle manually using arcs
-    const auto topLeft = messageBounds.getTopLeft().toFloat();
-    const auto topRight = messageBounds.getTopRight().toFloat();
-    const auto bottomLeft = messageBounds.getBottomLeft().toFloat();
-    const auto bottomRight = messageBounds.getBottomRight().toFloat();
+std::tuple<juce::Point<float>, juce::Point<float>, juce::Point<float>> calculateSpikePoints(bool isOuter) const
+{
+  const int spikeWidth = rawSpikeWidth * size;
+  const int spikeHeight = rawSpikeHeight * size;
+  const float borderWidth = isOuter ? 0.0f : rawBorderWidth * size;
 
-    const auto cornerRadius = (rawCornerRadius - rawBorderWidth) * size;
+  const auto anchor = getAnchor();
+  const auto spikeTipX = anchor.x;
+  const auto spikeTipY = anchor.y + (isOuter ? 0.0f : borderWidth * 2.3f);
+  const auto spikeBaseLeftX = anchor.x - spikeWidth / 2 + (isOuter ? 0.0f : borderWidth * 0.9f);
+  const auto spikeBaseLeftY = anchor.y + spikeHeight + (isOuter ? 0.0f : borderWidth);
+  const auto spikeBaseRightX = anchor.x + spikeWidth / 2 - (isOuter ? 0.0f : borderWidth * 0.9f);
+  const auto spikeBaseRightY = anchor.y + spikeHeight + (isOuter ? 0.0f : borderWidth);
 
-    // Start the path with the spike
-    path.startNewSubPath(spikeBaseLeft);
-    path.lineTo(spikeTip);
-    path.lineTo(spikeBaseRight);
+  return {
+    juce::Point<float>(spikeTipX, spikeTipY),
+    juce::Point<float>(spikeBaseLeftX, spikeBaseLeftY),
+    juce::Point<float>(spikeBaseRightX, spikeBaseRightY)
+  };
+}
 
-    // Top flat edge
-    path.lineTo(topRight.x - cornerRadius, topRight.y);
+void addSpikeToPath(juce::Path& path, const std::tuple<juce::Point<float>, juce::Point<float>, juce::Point<float>>& spikePoints) const
+{
+  const auto& [spikeTip, spikeBaseLeft, spikeBaseRight] = spikePoints;
 
-    // Top right corner
-    path.addArc(topRight.x - cornerRadius,
-                topRight.y,
-                cornerRadius,
-                cornerRadius,
-                0.0f,
-                juce::MathConstants<float>::halfPi);
+  path.startNewSubPath(spikeBaseLeft);
+  path.lineTo(spikeTip);
+  path.lineTo(spikeBaseRight);
+}
 
-    // Right flat edge
-    path.lineTo(bottomRight.x, bottomRight.y - cornerRadius);
+void addRoundedRectangleToPath(juce::Path& path, const Rectangle& messageBounds, bool isOuter) const
+{
+  const auto topLeft = messageBounds.getTopLeft().toFloat();
+  const auto topRight = messageBounds.getTopRight().toFloat();
+  const auto bottomLeft = messageBounds.getBottomLeft().toFloat();
+  const auto bottomRight = messageBounds.getBottomRight().toFloat();
 
-    // Bottom right corner
-    path.addArc(bottomRight.x - cornerRadius,
-                bottomRight.y - cornerRadius,
-                cornerRadius,
-                cornerRadius,
-                juce::MathConstants<float>::halfPi,
-                juce::MathConstants<float>::halfPi * 2.0f);
+  const auto cornerRadius = (rawCornerRadius - (isOuter ? 0.0f : rawBorderWidth)) * size;
 
-    // Bottom flat edge
-    path.lineTo(bottomLeft.x + cornerRadius, bottomLeft.y);
+  // Top flat edge
+  path.lineTo(topRight.x - cornerRadius, topRight.y);
 
-    // Bottom left corner
-    path.addArc(bottomLeft.x,
-                bottomLeft.y - cornerRadius,
-                cornerRadius,
-                cornerRadius,
-                juce::MathConstants<float>::halfPi * 2.0f,
-                juce::MathConstants<float>::halfPi * 3.0f);
+  // Top right corner
+  path.addArc(topRight.x - cornerRadius,
+        topRight.y,
+        cornerRadius,
+        cornerRadius,
+        0.0f,
+        juce::MathConstants<float>::halfPi);
 
-    // Left flat edge
-    path.lineTo(topLeft.x, topLeft.y + cornerRadius);
+  // Right flat edge
+  path.lineTo(bottomRight.x, bottomRight.y - cornerRadius);
 
-    // Top left corner
-    path.addArc(topLeft.x,
-                topLeft.y,
-                cornerRadius,
-                cornerRadius,
-                juce::MathConstants<float>::halfPi * 3.0f,
-                juce::MathConstants<float>::halfPi * 4.0f);
+  // Bottom right corner
+  path.addArc(bottomRight.x - cornerRadius,
+        bottomRight.y - cornerRadius,
+        cornerRadius,
+        cornerRadius,
+        juce::MathConstants<float>::halfPi,
+        juce::MathConstants<float>::halfPi * 2.0f);
 
-    path.closeSubPath();
-    return path;
-  }
+  // Bottom flat edge
+  path.lineTo(bottomLeft.x + cornerRadius, bottomLeft.y);
+
+  // Bottom left corner
+  path.addArc(bottomLeft.x,
+        bottomLeft.y - cornerRadius,
+        cornerRadius,
+        cornerRadius,
+        juce::MathConstants<float>::halfPi * 2.0f,
+        juce::MathConstants<float>::halfPi * 3.0f);
+
+  // Left flat edge
+  path.lineTo(topLeft.x, topLeft.y + cornerRadius);
+
+  // Top left corner
+  path.addArc(topLeft.x,
+        topLeft.y,
+        cornerRadius,
+        cornerRadius,
+        juce::MathConstants<float>::halfPi * 3.0f,
+        juce::MathConstants<float>::halfPi * 4.0f);
+}
 
   void setNormalizedAnchor(const juce::Point<int>& _anchor)
   {
@@ -285,6 +228,7 @@ protected:
   }
 
 private:
+  CallbackButton closeButton{"CloseButton", "Close", "Close", false, false, false};
   std::unique_ptr<juce::Point<float>> normalizedAnchor;
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Popover)
 };
