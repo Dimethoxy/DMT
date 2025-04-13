@@ -57,7 +57,7 @@ public:
     addChildComponent(settingsPanel);
 
     // Start the timer to check if update is found
-    startTimer(1000); // Check every second
+    //startTimer(1000); // Commented out until Popover is done
 
     // Tooltips
     addAndMakeVisible(tooltipWindow);
