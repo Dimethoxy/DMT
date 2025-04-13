@@ -12,6 +12,7 @@ class Popover : public juce::Component
 {
   using String = juce::String;
   using Rectangle = juce::Rectangle<int>;
+  using Colour = juce::Colour;
 
   using Settings = dmt::Settings;
   using Layout = dmt::Settings::Window;
@@ -20,6 +21,11 @@ class Popover : public juce::Component
   const float& size = dmt::Settings::Window::size;
 
   // Popover
+  const Colour backgroundColour = juce::Colours::green;
+  const Colour borderColour = juce::Colours::red;
+  const Colour textColour = juce::Colours::black;
+  const Colour innerShadowColour = juce::Colours::black;
+  const Colour outerShadowColour = juce::Colours::black;
   const float rawSpikeWidth = 20.0f;
   const float rawSpikeHeight = 20.0f;
   const int rawSurfaceWidth = 200;
@@ -35,12 +41,12 @@ public:
 
   void paint(juce::Graphics& g) override
   {
-    g.fillAll(juce::Colours::green.withAlpha(0.2f));
-
     // Draw the surface
     const auto surfacePath = getSurfacePath();
-    g.setColour(juce::Colours::red);
+    g.setColour(backgroundColour);
     g.fillPath(surfacePath);
+    g.setColour(borderColour);
+    g.strokePath(surfacePath, juce::PathStrokeType(4.0f));
   }
   void resized() override {}
 
@@ -84,14 +90,63 @@ protected:
     const auto spikeBaseRight =
       juce::Point<float>(spikeBaseRightX, spikeBaseRightY);
 
-    // Create path
+    // Add the rounded rectangle manually using arcs
+    const auto topLeft = messageBounds.getTopLeft().toFloat();
+    const auto topRight = messageBounds.getTopRight().toFloat();
+    const auto bottomLeft = messageBounds.getBottomLeft().toFloat();
+    const auto bottomRight = messageBounds.getBottomRight().toFloat();
+
+    const auto cornerRadius = 20.0f * size;
+
+    // Start the path with the spike
     path.startNewSubPath(spikeBaseLeft);
     path.lineTo(spikeTip);
     path.lineTo(spikeBaseRight);
-    path.lineTo(messageBounds.getTopRight().toFloat());
-    path.lineTo(messageBounds.getBottomRight().toFloat());
-    path.lineTo(messageBounds.getBottomLeft().toFloat());
-    path.lineTo(messageBounds.getTopLeft().toFloat());
+
+    // Top flat edge
+    path.lineTo(topRight.x - cornerRadius, topRight.y);
+
+    // Top right corner
+    path.addArc(topRight.x - cornerRadius,
+                topRight.y,
+                cornerRadius,
+                cornerRadius,
+                0.0f,
+                juce::MathConstants<float>::halfPi);
+
+    // Right flat edge
+    path.lineTo(bottomRight.x, bottomRight.y - cornerRadius);
+
+    // Bottom right corner
+    path.addArc(bottomRight.x - cornerRadius,
+                bottomRight.y - cornerRadius,
+                cornerRadius,
+                cornerRadius,
+                juce::MathConstants<float>::halfPi,
+                juce::MathConstants<float>::halfPi * 2.0f);
+
+    // Bottom flat edge
+    path.lineTo(bottomLeft.x + cornerRadius, bottomLeft.y);
+
+    // Bottom left corner
+    path.addArc(bottomLeft.x,
+                bottomLeft.y - cornerRadius,
+                cornerRadius,
+                cornerRadius,
+                juce::MathConstants<float>::halfPi * 2.0f,
+                juce::MathConstants<float>::halfPi * 3.0f);
+
+    // Left flat edge
+    path.lineTo(topLeft.x, topLeft.y + cornerRadius);
+
+    // Top left corner
+    path.addArc(topLeft.x,
+                topLeft.y,
+                cornerRadius,
+                cornerRadius,
+                juce::MathConstants<float>::halfPi * 3.0f,
+                juce::MathConstants<float>::halfPi * 4.0f);
+
     path.closeSubPath();
     return path;
   }

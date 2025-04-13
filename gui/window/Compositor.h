@@ -152,6 +152,7 @@ public:
       const int y = updateButton.getBounds().getBottom();
       const auto popoverTagetPoint = juce::Point<int>(x, y);
       popover.showMessage(popoverTagetPoint);
+      header.getUpdateButton().setVisible(true);
     }
   }
 
