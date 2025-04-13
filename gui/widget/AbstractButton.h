@@ -9,7 +9,7 @@ namespace dmt {
 namespace gui {
 namespace widget {
 //==============================================================================
-class AbstractHeaderButton : public juce::Button
+class AbstractButton : public juce::Button
 {
   using Settings = dmt::Settings;
   using Colour = juce::Colour;
@@ -35,28 +35,42 @@ class AbstractHeaderButton : public juce::Button
   const bool& drawInnerShadow = ButtonSettings::drawInnerShadow;
 
 public:
-  AbstractHeaderButton(juce::String _name, juce::String _iconName)
+  AbstractButton(juce::String _name,
+                 juce::String _iconName,
+                 bool _shouldDrawBorder = true,
+                 bool _shouldDrawBackground = true,
+                 bool _shouldDrawShadow = true)
     : juce::Button(_name)
+    , shouldDrawBorder(_shouldDrawBorder)
+    , shouldDrawBackground(_shouldDrawBackground)
+    , shouldDrawShadows(_shouldDrawShadow)
     , rawSpecificSvgPadding(dmt::icons::getPadding(_iconName))
     , outerShadow(drawOuterShadow, outerShadowColour, outerShadowRadius, false)
     , innerShadow(drawInnerShadow, innerShadowColour, innerShadowRadius, true)
   {
     icon = dmt::icons::getIcon(_iconName);
-    addAndMakeVisible(outerShadow);
-    addAndMakeVisible(innerShadow);
-    addAndMakeVisible(backgroundImageComponent);
-    addAndMakeVisible(hoverBackgroundImageComponent);
-    addAndMakeVisible(clickedBackgroundImageComponent);
+
+    if (shouldDrawShadows) {
+      addAndMakeVisible(outerShadow);
+      addAndMakeVisible(innerShadow);
+    }
+
+    if (shouldDrawBackground) {
+      addAndMakeVisible(backgroundImageComponent);
+      addAndMakeVisible(hoverBackgroundImageComponent);
+      addAndMakeVisible(clickedBackgroundImageComponent);
+      hoverBackgroundImageComponent.setVisible(false);
+      clickedBackgroundImageComponent.setVisible(false);
+    }
+
     addAndMakeVisible(iconImageComponent);
     addAndMakeVisible(hoverIconImageComponent);
-
-    hoverBackgroundImageComponent.setVisible(false);
-    clickedBackgroundImageComponent.setVisible(false);
     hoverIconImageComponent.setVisible(false);
+
     addMouseListener(this, true);
   }
 
-  ~AbstractHeaderButton() override = default;
+  ~AbstractButton() override = default;
 
   void resized() override
   {
@@ -74,27 +88,33 @@ public:
 
   void setPassiveState()
   {
-    backgroundImageComponent.setVisible(true);
-    hoverBackgroundImageComponent.setVisible(false);
-    clickedBackgroundImageComponent.setVisible(false);
+    if (shouldDrawBackground) {
+      backgroundImageComponent.setVisible(true);
+      hoverBackgroundImageComponent.setVisible(false);
+      clickedBackgroundImageComponent.setVisible(false);
+    }
     iconImageComponent.setVisible(true);
     hoverIconImageComponent.setVisible(false);
   }
 
   void setHoverState()
   {
-    backgroundImageComponent.setVisible(false);
-    hoverBackgroundImageComponent.setVisible(true);
-    clickedBackgroundImageComponent.setVisible(false);
+    if (shouldDrawBackground) {
+      backgroundImageComponent.setVisible(false);
+      hoverBackgroundImageComponent.setVisible(true);
+      clickedBackgroundImageComponent.setVisible(false);
+    }
     iconImageComponent.setVisible(false);
     hoverIconImageComponent.setVisible(true);
   }
 
   void setClickedState()
   {
-    backgroundImageComponent.setVisible(false);
-    hoverBackgroundImageComponent.setVisible(false);
-    clickedBackgroundImageComponent.setVisible(true);
+    if (shouldDrawBackground) {
+      backgroundImageComponent.setVisible(false);
+      hoverBackgroundImageComponent.setVisible(false);
+      clickedBackgroundImageComponent.setVisible(true);
+    }
     iconImageComponent.setVisible(false);
     hoverIconImageComponent.setVisible(true);
   }
@@ -109,6 +129,9 @@ private:
   void setShadowBounds(const juce::Rectangle<int>& innerBounds,
                        float cornerRadius)
   {
+    if (!shouldDrawShadows)
+      return;
+
     // Set the bounds for the outer shadow
     juce::Path outerShadowPath;
     outerShadowPath.addRoundedRectangle(innerBounds, cornerRadius);
@@ -131,6 +154,9 @@ private:
 
   void setBackgroundBounds(const juce::Rectangle<int>& innerBounds)
   {
+    if (!shouldDrawBackground)
+      return;
+
     backgroundImage =
       Image(Image::ARGB, innerBounds.getWidth(), innerBounds.getHeight(), true);
     backgroundImageComponent.setBounds(innerBounds);
@@ -160,6 +186,9 @@ private:
 
   void drawBackground()
   {
+    if (!shouldDrawBackground)
+      return;
+
     const auto cornerRadius = rawCornerRadius * size;
     const auto backgroundArea = backgroundImage.getBounds().toFloat();
 
@@ -206,6 +235,10 @@ private:
     }
   }
 
+private:
+  bool shouldDrawBorder;
+  bool shouldDrawBackground;
+  bool shouldDrawShadows;
   const float rawSpecificSvgPadding;
   std::unique_ptr<juce::Drawable> icon;
   Shadow outerShadow;

@@ -1,6 +1,6 @@
 #pragma once
 //==============================================================================
-#include "gui/widget/AbstractHeaderButton.h"
+#include "gui/widget/AbstractButton.h"
 #include "gui/widget/Shadow.h"
 #include "utility/Icon.h"
 #include "utility/Settings.h"
@@ -10,13 +10,13 @@ namespace dmt {
 namespace gui {
 namespace widget {
 //==============================================================================
-class HeaderCallbackButton : public dmt::gui::widget::AbstractHeaderButton
+class HeaderCallbackButton : public dmt::gui::widget::AbstractButton
 {
-  using AbstractButton = dmt::gui::widget::AbstractHeaderButton;
+  using AbstractButton = dmt::gui::widget::AbstractButton;
 
 public:
   HeaderCallbackButton(juce::String _name, juce::String _iconName)
-    : AbstractHeaderButton(_name, _iconName)
+    : AbstractButton(_name, _iconName)
   {
     setPassiveState(); // Set initial state
   }

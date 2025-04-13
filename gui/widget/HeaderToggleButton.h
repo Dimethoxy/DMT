@@ -1,6 +1,6 @@
 #pragma once
 //==============================================================================
-#include "gui/widget/AbstractHeaderButton.h"
+#include "gui/widget/AbstractButton.h"
 #include "gui/widget/Shadow.h"
 #include "utility/Icon.h"
 #include "utility/Settings.h"
@@ -11,17 +11,17 @@ namespace gui {
 namespace widget {
 //==============================================================================
 class HeaderToggleButton
-  : public dmt::gui::widget::AbstractHeaderButton
+  : public dmt::gui::widget::AbstractButton
   , public juce::AudioProcessorValueTreeState::Listener
 {
-  using AbstractButton = dmt::gui::widget::AbstractHeaderButton;
+  using AbstractButton = dmt::gui::widget::AbstractButton;
 
 public:
   HeaderToggleButton(juce::String _name,
                      juce::String _iconName,
                      juce::String _parameterID,
                      AudioProcessorValueTreeState& _apvts)
-    : AbstractHeaderButton(_name, _iconName)
+    : AbstractButton(_name, _iconName)
     , parameterID(_parameterID)
     , apvts(_apvts)
   {
