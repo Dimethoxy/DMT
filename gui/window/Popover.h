@@ -66,7 +66,13 @@ public:
     this->setVisible(true);
     repaint();
   }
-
+  
+  void hideMessage()
+  {
+    normalizedAnchor.reset();
+    this->setVisible(false);
+  }
+  
 protected:
   juce::Path getSurfacePath()
   {

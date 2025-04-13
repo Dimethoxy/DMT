@@ -66,6 +66,9 @@ public:
   {
     const auto bounds = getLocalBounds();
 
+    //Popover
+    popover.setBounds(bounds);
+    
     if (header.isVisible()) {
       const auto headerHeight = rawHeaderHeight * size;
       const auto headerBounds =
@@ -90,10 +93,10 @@ public:
       borderButton.setBounds(
         juce::Rectangle<int>(bounds).removeFromTop(borderButtonHeight));
       borderButton.setVisible(true);
+      borderButton.setAlwaysOnTop(true);
     }
 
-    // Popover
-    popover.setBounds(bounds);
+
   }
 
   void showSettings() noexcept
@@ -122,6 +125,7 @@ public:
       headerVisibilityCallback(false);
     }
     borderButton.setOpacityToMax();
+    popover.hideMessage();
   }
 
   void showHeader() noexcept
