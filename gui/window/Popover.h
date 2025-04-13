@@ -16,23 +16,24 @@ class Popover : public juce::Component
 
   using Settings = dmt::Settings;
   using Layout = dmt::Settings::Window;
+  using PopoverSettings = Settings::Popover;
 
   // Window
   const float& size = dmt::Settings::Window::size;
 
   // Popover
-  const Colour backgroundColour = juce::Colours::green;
-  const Colour borderColour = juce::Colours::red;
-  const Colour textColour = juce::Colours::black;
-  const Colour innerShadowColour = juce::Colours::black;
-  const Colour outerShadowColour = juce::Colours::black;
+  const Colour backgroundColour = PopoverSettings::backgroundColour;
+  const Colour borderColour = PopoverSettings::borderColour;
+  const Colour textColour = PopoverSettings::textColour;
+  const Colour innerShadowColour = PopoverSettings::innerShadowColour;
+  const Colour outerShadowColour = PopoverSettings::outerShadowColour;
+  const int rawSurfaceWidth = PopoverSettings::rawSurfaceWidth;
+  const int rawSurfaceHeight = PopoverSettings::rawSurfaceHeight;
+  const int rawCornerRadius = PopoverSettings::rawCornerRadius;
+  const int rawBorderWidth = PopoverSettings::rawBorderWidth;
   const float rawSpikeWidth = 20.0f;
   const float rawSpikeHeight = 20.0f;
-  const int rawSurfaceWidth = 200;
-  const int rawSurfaceHeight = 100;
-  const int rawCornerRadius = 20;
-  const int rawBorderWidth = 4;
-
+  
 public:
   Popover()
   {
@@ -47,15 +48,13 @@ public:
     if (normalizedAnchor == nullptr)
       return;
 
-    // Draw the surface
-    const auto surfacePath = getSurfacePath();
-    g.setColour(backgroundColour);
-    g.fillPath(surfacePath);
-
     // Draw the border
-    const float borderWidth = rawBorderWidth * size;
     g.setColour(borderColour);
-    g.strokePath(surfacePath, juce::PathStrokeType(borderWidth));
+    g.fillPath(getOuterPath());
+
+    // Draw the background
+    g.setColour(backgroundColour);
+    g.fillPath(getInnerPath());
   }
 
   void resized() override {}
@@ -74,7 +73,7 @@ public:
   }
   
 protected:
-  juce::Path getSurfacePath()
+  juce::Path getOuterPath()
   {
     juce::Path path;
 
@@ -113,6 +112,101 @@ protected:
     const auto bottomRight = messageBounds.getBottomRight().toFloat();
 
     const auto cornerRadius = rawCornerRadius * size;
+
+    // Start the path with the spike
+    path.startNewSubPath(spikeBaseLeft);
+    path.lineTo(spikeTip);
+    path.lineTo(spikeBaseRight);
+
+    // Top flat edge
+    path.lineTo(topRight.x - cornerRadius, topRight.y);
+
+    // Top right corner
+    path.addArc(topRight.x - cornerRadius,
+                topRight.y,
+                cornerRadius,
+                cornerRadius,
+                0.0f,
+                juce::MathConstants<float>::halfPi);
+
+    // Right flat edge
+    path.lineTo(bottomRight.x, bottomRight.y - cornerRadius);
+
+    // Bottom right corner
+    path.addArc(bottomRight.x - cornerRadius,
+                bottomRight.y - cornerRadius,
+                cornerRadius,
+                cornerRadius,
+                juce::MathConstants<float>::halfPi,
+                juce::MathConstants<float>::halfPi * 2.0f);
+
+    // Bottom flat edge
+    path.lineTo(bottomLeft.x + cornerRadius, bottomLeft.y);
+
+    // Bottom left corner
+    path.addArc(bottomLeft.x,
+                bottomLeft.y - cornerRadius,
+                cornerRadius,
+                cornerRadius,
+                juce::MathConstants<float>::halfPi * 2.0f,
+                juce::MathConstants<float>::halfPi * 3.0f);
+
+    // Left flat edge
+    path.lineTo(topLeft.x, topLeft.y + cornerRadius);
+
+    // Top left corner
+    path.addArc(topLeft.x,
+                topLeft.y,
+                cornerRadius,
+                cornerRadius,
+                juce::MathConstants<float>::halfPi * 3.0f,
+                juce::MathConstants<float>::halfPi * 4.0f);
+
+    path.closeSubPath();
+    return path;
+  }
+
+  juce::Path getInnerPath()
+  {
+    juce::Path path;
+
+    // Calculate dimensions
+    const int spikeWidth = rawSpikeWidth * size;
+    const int spikeHeight = rawSpikeHeight * size;
+    const int surfaceWidth = rawSurfaceWidth * size;
+    const int surfaceHeight = rawSurfaceHeight * size;
+    const float borderWidth = rawBorderWidth * size;
+
+    // Configure message bounds
+    Rectangle messageBounds;
+    const auto anchor = getAnchor();
+    messageBounds.setSize(surfaceWidth, surfaceHeight);
+    const auto messageBoundsOffsetY = surfaceHeight / 2 + spikeHeight;
+    const auto messageBoundsCentreX = anchor.x;
+    const auto messageBoundsCentreY = anchor.y + messageBoundsOffsetY;
+    messageBounds.setCentre(messageBoundsCentreX, messageBoundsCentreY);
+    messageBounds = messageBounds.reduced(borderWidth);
+
+    // Calculate spike points
+    const auto spikeTipX = anchor.x;
+    const auto spikeTipY = anchor.y + (borderWidth * 2.3f);
+    const auto spikeBaseLeftX = anchor.x - spikeWidth / 2 + (borderWidth * 0.9f);
+    const auto spikeBaseLeftY = anchor.y + spikeHeight + borderWidth;
+    const auto spikeBaseRightX = anchor.x + spikeWidth / 2 - (borderWidth * 0.9f);
+    const auto spikeBaseRightY = anchor.y + spikeHeight + borderWidth;
+    const auto spikeTip = juce::Point<float>(spikeTipX, spikeTipY);
+    const auto spikeBaseLeft =
+      juce::Point<float>(spikeBaseLeftX, spikeBaseLeftY);
+    const auto spikeBaseRight =
+      juce::Point<float>(spikeBaseRightX, spikeBaseRightY);
+
+    // Add the rounded rectangle manually using arcs
+    const auto topLeft = messageBounds.getTopLeft().toFloat();
+    const auto topRight = messageBounds.getTopRight().toFloat();
+    const auto bottomLeft = messageBounds.getBottomLeft().toFloat();
+    const auto bottomRight = messageBounds.getBottomRight().toFloat();
+
+    const auto cornerRadius = (rawCornerRadius - rawBorderWidth) * size;
 
     // Start the path with the spike
     path.startNewSubPath(spikeBaseLeft);

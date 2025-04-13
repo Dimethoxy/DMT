@@ -81,8 +81,6 @@ public:
     static inline auto& buttonWidth =
       container.add<float>("Header.ButtonWidth", 48.0f);
     static inline auto& height = container.add<int>("Header.Height", 50);
-
-    // New colors for BorderButton
     static inline auto& borderButtonBackgroundColour =
       container.add<Colour>("Header.BorderButtonBackgroundColour",
                             Colours::primary);
@@ -90,6 +88,28 @@ public:
       container.add<Colour>("Header.BorderButtonFontColour", Colours::shadow);
     static inline auto& borderButtonHeight =
       container.add<int>("Header.BorderButtonHeight", 25);
+  };
+
+  struct Popover
+  {
+    static inline auto& backgroundColour =
+      container.add<Colour>("Popover.BackgroundColour", Colours::solidDark);
+    static inline auto& borderColour =
+      container.add<Colour>("Popover.BorderColour", Colours::font);
+    static inline auto& textColour = 
+      container.add<Colour>("Popover.TextColour", Colours::font);
+    static inline auto& innerShadowColour = 
+      container.add<Colour>("Popover.InnerShadowColour", Colours::shadow);
+    static inline auto& outerShadowColour =
+      container.add<Colour>("Popover.OuterShadowColour", Colours::shadow);
+    static inline auto& rawSurfaceWidth =
+      container.add<float>("Popover.SurfaceWidth", 200.0f);
+    static inline auto& rawSurfaceHeight =
+      container.add<float>("Popover.SurfaceHeight", 100.0f);
+    static inline auto& rawCornerRadius =
+      container.add<float>("Popover.CornerRadius", 10.0f);
+    static inline auto& rawBorderWidth =
+      container.add<float>("Popover.BorderWidth", 2.0f);
   };
 
   struct Button
