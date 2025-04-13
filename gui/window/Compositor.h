@@ -20,6 +20,7 @@ class Compositor
   using Header = dmt::gui::window::Header;
   using BorderButton = dmt::gui::widget::BorderButton;
   using Popover = dmt::gui::window::Popover;
+  using TooltipWindow = juce::TooltipWindow;
 
   // Window size
   const float& size = dmt::Settings::Window::size;
@@ -36,6 +37,7 @@ public:
     , settingsPanel()
     , header(_titleText, _apvts)
     , borderButton()
+    , tooltipWindow(this, 700)
   {
     // Header
     addAndMakeVisible(header);
@@ -56,6 +58,9 @@ public:
 
     // Start the timer to check if update is found
     startTimer(1000); // Check every second
+
+    // Tooltips
+    addAndMakeVisible(tooltipWindow);
   }
 
   ~Compositor() noexcept override {}
@@ -168,6 +173,7 @@ public:
   bool isHeaderVisible() const noexcept { return header.isVisible(); }
 
 private:
+  TooltipWindow tooltipWindow;
   std::function<void(bool)> headerVisibilityCallback;
   Popover popover;
   AbstractPanel& mainPanel;
