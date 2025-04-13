@@ -9,7 +9,7 @@ namespace dmt {
 namespace gui {
 namespace widget {
 //==============================================================================
-class AbstractButton : public juce::Button
+class AbstractButton : public juce::Button, public juce::TooltipClient
 {
   using Settings = dmt::Settings;
   using Colour = juce::Colour;
@@ -37,10 +37,12 @@ class AbstractButton : public juce::Button
 public:
   AbstractButton(juce::String _name,
                  juce::String _iconName,
+                 juce::String _tooltip = "",
                  bool _shouldDrawBorder = true,
                  bool _shouldDrawBackground = true,
                  bool _shouldDrawShadow = true)
     : juce::Button(_name)
+    , tooltip(_tooltip)
     , shouldDrawBorder(_shouldDrawBorder)
     , shouldDrawBackground(_shouldDrawBackground)
     , shouldDrawShadows(_shouldDrawShadow)
@@ -84,6 +86,11 @@ public:
     setIconBounds(innerBounds);
     drawBackground();
     drawIcon();
+  }
+
+  String getTooltip() override
+  {
+      return tooltip;
   }
 
   void setPassiveState()
@@ -241,6 +248,7 @@ private:
   bool shouldDrawShadows;
   const float rawSpecificSvgPadding;
   std::unique_ptr<juce::Drawable> icon;
+  juce::String tooltip;
   Shadow outerShadow;
   Shadow innerShadow;
   Image backgroundImage;
