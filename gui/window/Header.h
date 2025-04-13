@@ -15,7 +15,7 @@ namespace window {
 class Header : public juce::Component
 {
   // Aliases
-  using HeaderCallbackButton = dmt::gui::widget::HeaderCallbackButton;
+  using CallbackButton = dmt::gui::widget::CallbackButton;
   using HeaderToggleButton = dmt::gui::widget::HeaderToggleButton;
   using Label = dmt::gui::widget::Label;
   using String = juce::String;
@@ -177,29 +177,26 @@ public:
     titleButton.setBounds(titleButtonBounds);
   }
 
-  HeaderCallbackButton& getSettingsButton() noexcept { return settingsButton; }
-  HeaderCallbackButton& getSettingsExitButton() noexcept
+  CallbackButton& getSettingsButton() noexcept { return settingsButton; }
+  CallbackButton& getSettingsExitButton() noexcept
   {
     return settingsExitButton;
   }
-  HeaderCallbackButton& getHideHeaderButton() noexcept
-  {
-    return hideHeaderButton;
-  }
-  HeaderCallbackButton& getUpdateButton() noexcept { return updateButton; }
+  CallbackButton& getHideHeaderButton() noexcept { return hideHeaderButton; }
+  CallbackButton& getUpdateButton() noexcept { return updateButton; }
 
 private:
   Shadow outerShadow;
   Shadow innerShadow;
   Label title;
   Fonts fonts;
-  HeaderCallbackButton settingsButton;
-  HeaderCallbackButton settingsExitButton;
-  HeaderCallbackButton hideHeaderButton;
-  HeaderCallbackButton titleButton;
-  HeaderCallbackButton updateButton;
+  CallbackButton settingsButton;
+  CallbackButton settingsExitButton;
+  CallbackButton hideHeaderButton;
+  CallbackButton titleButton;
+  CallbackButton updateButton;
   HeaderToggleButton bypassButton;
-  HeaderCallbackButton presetsButton;
+  CallbackButton presetsButton;
 
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Header)
 };

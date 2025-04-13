@@ -10,18 +10,23 @@ namespace dmt {
 namespace gui {
 namespace widget {
 //==============================================================================
-class HeaderCallbackButton : public dmt::gui::widget::AbstractButton
+class CallbackButton : public dmt::gui::widget::AbstractButton
 {
   using AbstractButton = dmt::gui::widget::AbstractButton;
 
 public:
-  HeaderCallbackButton(juce::String _name, juce::String _iconName)
+  CallbackButton(juce::String _name,
+                 juce::String _iconName,
+                 juce::String _tooltip = "",
+                 bool shouldDrawBorder = true,
+                 bool shouldDrawBackground = true,
+                 bool shouldDrawShadow = true)
     : AbstractButton(_name, _iconName)
   {
     setPassiveState(); // Set initial state
   }
 
-  ~HeaderCallbackButton() override = default;
+  ~CallbackButton() override = default;
 
   void mouseEnter(const juce::MouseEvent& /*event*/) override
   {
