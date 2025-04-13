@@ -21,7 +21,12 @@ public:
                  bool shouldDrawBorder = true,
                  bool shouldDrawBackground = true,
                  bool shouldDrawShadow = true)
-    : AbstractButton(_name, _iconName)
+    : AbstractButton(_name,
+                     _iconName,
+                     _tooltip,
+                     shouldDrawBorder,
+                     shouldDrawBackground,
+                     shouldDrawShadow)
   {
     setPassiveState(); // Set initial state
   }

@@ -10,17 +10,17 @@ namespace dmt {
 namespace gui {
 namespace widget {
 //==============================================================================
-class HeaderToggleButton
+class ToggleButton
   : public dmt::gui::widget::AbstractButton
   , public juce::AudioProcessorValueTreeState::Listener
 {
   using AbstractButton = dmt::gui::widget::AbstractButton;
 
 public:
-  HeaderToggleButton(juce::String _name,
-                     juce::String _iconName,
-                     juce::String _parameterID,
-                     AudioProcessorValueTreeState& _apvts)
+  ToggleButton(juce::String _name,
+               juce::String _iconName,
+               juce::String _parameterID,
+               AudioProcessorValueTreeState& _apvts)
     : AbstractButton(_name, _iconName)
     , parameterID(_parameterID)
     , apvts(_apvts)
@@ -42,10 +42,7 @@ public:
     }
   }
 
-  ~HeaderToggleButton() override
-  {
-    apvts.removeParameterListener(parameterID, this);
-  }
+  ~ToggleButton() override { apvts.removeParameterListener(parameterID, this); }
 
   void mouseEnter(const juce::MouseEvent& /*event*/) override
   {

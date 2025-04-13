@@ -1,9 +1,9 @@
 #pragma once
 //==============================================================================
-#include "dmt/gui/widget/HeaderCallbackButton.h"
-#include "dmt/gui/widget/HeaderToggleButton.h"
+#include "dmt/gui/widget/CallbackButton.h"
 #include "dmt/gui/widget/Label.h"
 #include "dmt/gui/widget/Shadow.h"
+#include "dmt/gui/widget/ToggleButton.h"
 #include "dmt/utility/Fonts.h"
 #include "dmt/utility/Settings.h"
 #include <JuceHeader.h>
@@ -16,7 +16,7 @@ class Header : public juce::Component
 {
   // Aliases
   using CallbackButton = dmt::gui::widget::CallbackButton;
-  using HeaderToggleButton = dmt::gui::widget::HeaderToggleButton;
+  using ToggleButton = dmt::gui::widget::ToggleButton;
   using Label = dmt::gui::widget::Label;
   using String = juce::String;
   using Colour = juce::Colour;
@@ -195,7 +195,7 @@ private:
   CallbackButton hideHeaderButton;
   CallbackButton titleButton;
   CallbackButton updateButton;
-  HeaderToggleButton bypassButton;
+  ToggleButton bypassButton;
   CallbackButton presetsButton;
 
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Header)
