@@ -30,6 +30,8 @@ class Popover : public juce::Component
   const float rawSpikeHeight = 20.0f;
   const int rawSurfaceWidth = 200;
   const int rawSurfaceHeight = 100;
+  const int rawCornerRadius = 20;
+  const int rawBorderWidth = 4;
 
 public:
   Popover()
@@ -45,8 +47,11 @@ public:
     const auto surfacePath = getSurfacePath();
     g.setColour(backgroundColour);
     g.fillPath(surfacePath);
+
+    // Draw the border
+    const float borderWidth = rawBorderWidth * size;
     g.setColour(borderColour);
-    g.strokePath(surfacePath, juce::PathStrokeType(4.0f));
+    g.strokePath(surfacePath, juce::PathStrokeType(borderWidth));
   }
   void resized() override {}
 
@@ -96,7 +101,7 @@ protected:
     const auto bottomLeft = messageBounds.getBottomLeft().toFloat();
     const auto bottomRight = messageBounds.getBottomRight().toFloat();
 
-    const auto cornerRadius = 20.0f * size;
+    const auto cornerRadius = rawCornerRadius * size;
 
     // Start the path with the spike
     path.startNewSubPath(spikeBaseLeft);
