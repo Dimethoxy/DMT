@@ -43,6 +43,10 @@ public:
 
   void paint(juce::Graphics& g) override
   {
+    // Skip drawing if the anchor is null
+    if (normalizedAnchor == nullptr)
+      return;
+
     // Draw the surface
     const auto surfacePath = getSurfacePath();
     g.setColour(backgroundColour);
@@ -53,6 +57,7 @@ public:
     g.setColour(borderColour);
     g.strokePath(surfacePath, juce::PathStrokeType(borderWidth));
   }
+
   void resized() override {}
 
   void showMessage(Point<int> _anchor)
@@ -181,7 +186,6 @@ protected:
 
 private:
   std::unique_ptr<juce::Point<float>> normalizedAnchor;
-
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Popover)
 };
 //==============================================================================
