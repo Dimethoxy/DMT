@@ -18,17 +18,17 @@ public:
   CallbackButton(juce::String _name,
                  juce::String _iconName,
                  juce::String _tooltip = "",
-                 bool shouldDrawBorder = true,
-                 bool shouldDrawBackground = true,
-                 bool shouldDrawShadow = true,
-                 bool alternativeIconHover = false)
+                 bool _shouldDrawBorder = true,
+                 bool _shouldDrawBackground = true,
+                 bool _shouldDrawShadow = true,
+                 bool _alternativeIconHover = false)
     : AbstractButton(_name,
                      _iconName,
                      _tooltip,
-                     shouldDrawBorder,
-                     shouldDrawBackground,
-                     shouldDrawShadow,
-                     alternativeIconHover)
+                     _shouldDrawBorder,
+                     _shouldDrawBackground,
+                     _shouldDrawShadow,
+                     _alternativeIconHover)
   {
     setPassiveState(); // Set initial state
   }
