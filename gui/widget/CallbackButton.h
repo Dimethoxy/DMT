@@ -20,13 +20,15 @@ public:
                  juce::String _tooltip = "",
                  bool shouldDrawBorder = true,
                  bool shouldDrawBackground = true,
-                 bool shouldDrawShadow = true)
+                 bool shouldDrawShadow = true,
+                 bool alternativeIconHover = false)
     : AbstractButton(_name,
                      _iconName,
                      _tooltip,
                      shouldDrawBorder,
                      shouldDrawBackground,
-                     shouldDrawShadow)
+                     shouldDrawShadow,
+                     alternativeIconHover)
   {
     setPassiveState(); // Set initial state
   }

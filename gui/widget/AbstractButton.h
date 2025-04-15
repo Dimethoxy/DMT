@@ -9,7 +9,9 @@ namespace dmt {
 namespace gui {
 namespace widget {
 //==============================================================================
-class AbstractButton : public juce::Button, public juce::TooltipClient
+class AbstractButton
+  : public juce::Button
+  , public juce::TooltipClient
 {
   using Settings = dmt::Settings;
   using Colour = juce::Colour;
@@ -40,12 +42,14 @@ public:
                  juce::String _tooltip = "",
                  bool _shouldDrawBorder = true,
                  bool _shouldDrawBackground = true,
-                 bool _shouldDrawShadow = true)
+                 bool _shouldDrawShadow = true,
+                 bool _alternativeIconHover = false)
     : juce::Button(_name)
     , tooltip(_tooltip)
     , shouldDrawBorder(_shouldDrawBorder)
     , shouldDrawBackground(_shouldDrawBackground)
     , shouldDrawShadows(_shouldDrawShadow)
+    , alternativeIconHover(_alternativeIconHover)
     , rawSpecificSvgPadding(dmt::icons::getPadding(_iconName))
     , outerShadow(drawOuterShadow, outerShadowColour, outerShadowRadius, false)
     , innerShadow(drawInnerShadow, innerShadowColour, innerShadowRadius, true)
@@ -88,10 +92,7 @@ public:
     drawIcon();
   }
 
-  String getTooltip() override
-  {
-      return tooltip;
-  }
+  String getTooltip() override { return tooltip; }
 
   void setPassiveState()
   {
@@ -234,8 +235,9 @@ private:
       hoverIconGraphics.fillAll(juce::Colours::transparentBlack);
       hoverIconGraphics.setColour(hoverColour);
       const auto clonedHoverIcon = icon->createCopy();
-      clonedHoverIcon->replaceColour(juce::Colours::black,
-                                     juce::Colours::black);
+      clonedHoverIcon->replaceColour(
+        juce::Colours::black,
+        (alternativeIconHover) ? hoverColour : juce::Colours::black);
       clonedHoverIcon->drawWithin(
         hoverIconGraphics, iconArea, juce::RectanglePlacement::centred, 1.0f);
       hoverIconImageComponent.setImage(hoverIconImage);
@@ -246,6 +248,7 @@ private:
   bool shouldDrawBorder;
   bool shouldDrawBackground;
   bool shouldDrawShadows;
+  bool alternativeIconHover;
   const float rawSpecificSvgPadding;
   std::unique_ptr<juce::Drawable> icon;
   juce::String tooltip;

@@ -80,6 +80,7 @@ public:
     const auto closeButtonSize = rawCloseButtonSize * size;
     closeButton.setBounds(messageBounds.removeFromTop(closeButtonSize)
                             .removeFromRight(closeButtonSize));
+    closeButton.setAlwaysOnTop(true);
 
     outerShadow.setBoundsRelative(0.0f, 0.0f, 1.0f, 1.0f);
     outerShadow.setPath(createPath(true));
@@ -291,8 +292,8 @@ protected:
   }
 
 private:
-  CallbackButton closeButton{ "CloseButton", "Close", "Close",
-                              false,         false,   false };
+  CallbackButton closeButton{ "CloseButton", "Close", "Close", false,
+                              false,         false,   true };
   Shadow outerShadow;
   Shadow innerShadow;
 
