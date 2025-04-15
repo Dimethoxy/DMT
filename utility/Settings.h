@@ -96,20 +96,28 @@ public:
       container.add<Colour>("Popover.BackgroundColour", Colours::solidDark);
     static inline auto& borderColour =
       container.add<Colour>("Popover.BorderColour", Colours::font);
-    static inline auto& textColour = 
+    static inline auto& textColour =
       container.add<Colour>("Popover.TextColour", Colours::font);
-    static inline auto& innerShadowColour = 
+    static inline auto& innerShadowColour =
       container.add<Colour>("Popover.InnerShadowColour", Colours::shadow);
     static inline auto& outerShadowColour =
       container.add<Colour>("Popover.OuterShadowColour", Colours::shadow);
     static inline auto& rawSurfaceWidth =
       container.add<float>("Popover.SurfaceWidth", 200.0f);
+    static inline auto& innerShadowRadius =
+      container.add<float>("Popover.InnerShadowRadius", 10.0f);
+    static inline auto& outerShadowRadius =
+      container.add<float>("Popover.OuterShadowRadius", 10.0f);
     static inline auto& rawSurfaceHeight =
       container.add<float>("Popover.SurfaceHeight", 100.0f);
     static inline auto& rawCornerRadius =
       container.add<float>("Popover.CornerRadius", 10.0f);
     static inline auto& rawBorderWidth =
       container.add<float>("Popover.BorderWidth", 2.0f);
+    static inline auto& drawOuterShadow =
+      container.add<bool>("Popover.DrawOuterShadow", true);
+    static inline auto& drawInnerShadow =
+      container.add<bool>("Popover.DrawInnerShadow", true);
   };
 
   struct Button

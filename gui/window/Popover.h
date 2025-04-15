@@ -16,6 +16,7 @@ class Popover : public juce::Component
   using String = juce::String;
   using Rectangle = juce::Rectangle<int>;
   using Colour = juce::Colour;
+  using Shadow = dmt::gui::widget::Shadow;
 
   using Settings = dmt::Settings;
   using Layout = dmt::Settings::Window;
@@ -34,18 +35,27 @@ class Popover : public juce::Component
   const int rawSurfaceHeight = PopoverSettings::rawSurfaceHeight;
   const int rawCornerRadius = PopoverSettings::rawCornerRadius;
   const int rawBorderWidth = PopoverSettings::rawBorderWidth;
+  const float innerShadowRadius = PopoverSettings::innerShadowRadius;
+  const float outerShadowRadius = PopoverSettings::outerShadowRadius;
+  const bool drawOuterShadow = PopoverSettings::drawOuterShadow;
+  const bool drawInnerShadow = PopoverSettings::drawInnerShadow;
   const float rawSpikeWidth = 20.0f;
   const float rawSpikeHeight = 20.0f;
   const int rawCloseButtonSize = 35;
 
 public:
   Popover()
+    : outerShadow(drawOuterShadow, outerShadowColour, outerShadowRadius, false)
+    , innerShadow(drawInnerShadow, innerShadowColour, innerShadowRadius, true)
   {
     setAlwaysOnTop(true);
     setInterceptsMouseClicks(false, true);
 
     addAndMakeVisible(closeButton);
     closeButton.onClick = [this] { hideMessage(); };
+
+    addAndMakeVisible(outerShadow);
+    addAndMakeVisible(innerShadow);
   }
   ~Popover() override { setVisible(false); }
 
@@ -70,6 +80,11 @@ public:
     const auto closeButtonSize = rawCloseButtonSize * size;
     closeButton.setBounds(messageBounds.removeFromTop(closeButtonSize)
                             .removeFromRight(closeButtonSize));
+
+    outerShadow.setBoundsRelative(0.0f, 0.0f, 1.0f, 1.0f);
+    outerShadow.setPath(createPath(true));
+    innerShadow.setBoundsRelative(0.0f, 0.0f, 1.0f, 1.0f);
+    innerShadow.setPath(createPath(false));
   }
 
   void showMessage(Point<int> _anchor)
@@ -278,6 +293,9 @@ protected:
 private:
   CallbackButton closeButton{ "CloseButton", "Close", "Close",
                               false,         false,   false };
+  Shadow outerShadow;
+  Shadow innerShadow;
+
   std::unique_ptr<juce::Point<float>> normalizedAnchor;
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Popover)
 };
