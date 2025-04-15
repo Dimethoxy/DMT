@@ -165,6 +165,102 @@ marchPoint(const juce::Point<CoordType>& origin,
   return { origin.x + dx, origin.y + dy };
 }
 
+/**
+ * Projects a point along a line defined by an origin and angle in radians
+ * until it reaches a specific Y-coordinate.
+ *
+ * @param origin    The starting point of the line.
+ * @param angleRad  The direction of the line in radians.
+ * @param yTarget   The Y-coordinate to project the point to.
+ * @return A new point lying on the line at the specified Y-coordinate,
+ *         or std::nullopt if the angle is horizontal (no intersection).
+ *
+ * @tparam CoordType The floating-point type used for point coordinates.
+ *
+ * @note Assumes a standard coordinate system where positive Y is down.
+ *       If the angle represents a horizontal line and yTarget differs from
+ *       origin.y, the result is undefined (returns std::nullopt).
+ *
+ * @example
+ * auto projected = projectPointToY<float>(origin, angle,
+ * targetY).value_or(origin);
+ */
+template<typename CoordType>
+[[nodiscard]] static inline std::optional<juce::Point<CoordType>>
+projectPointToY(const juce::Point<CoordType>& origin,
+                CoordType angleRad,
+                CoordType yTarget) noexcept
+{
+  static_assert(std::is_floating_point_v<CoordType>,
+                "CoordType must be a floating-point type.");
+
+  const CoordType deltaY = yTarget - origin.y;
+  const CoordType tanAngle = std::tan(angleRad);
+
+  // Avoid division by zero or near-zero slope (horizontal line)
+  if (juce::approximatelyEqual(tanAngle, CoordType{ 0 })) {
+    jassertfalse; // No X change possible — can't project to different Y
+    return std::nullopt;
+  }
+
+  const CoordType deltaX = deltaY / tanAngle;
+  const CoordType xTarget = origin.x + deltaX;
+
+  return juce::Point<CoordType>{ xTarget, yTarget };
+}
+
+/**
+ * Calculates the intersection point of two infinite lines defined by two points
+ * each.
+ *
+ * This function finds where two infinitely extended lines intersect,
+ * regardless of whether the points define overlapping segments.
+ *
+ * @param a1 The first point of the first line.
+ * @param a2 The second point of the first line.
+ * @param b1 The first point of the second line.
+ * @param b2 The second point of the second line.
+ * @return An optional point representing the intersection. Returns std::nullopt
+ * if lines are parallel or coincident.
+ *
+ * @tparam CoordType The floating-point type used for point coordinates.
+ *
+ * @note This operates on *infinite* lines, not bounded segments.
+ *
+ * @example
+ * auto intersection = intersectInfiniteLines<float>(a1, a2, b1, b2);
+ */
+template<typename CoordType>
+[[nodiscard]] static inline std::optional<juce::Point<CoordType>>
+intersectInfiniteLines(const juce::Point<CoordType>& a1,
+                       const juce::Point<CoordType>& a2,
+                       const juce::Point<CoordType>& b1,
+                       const juce::Point<CoordType>& b2) noexcept
+{
+  static_assert(std::is_floating_point_v<CoordType>,
+                "CoordType must be a floating-point type.");
+
+  const CoordType x1 = a1.x, y1 = a1.y;
+  const CoordType x2 = a2.x, y2 = a2.y;
+  const CoordType x3 = b1.x, y3 = b1.y;
+  const CoordType x4 = b2.x, y4 = b2.y;
+
+  const CoordType denominator = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
+
+  if (juce::approximatelyEqual(denominator, CoordType{ 0 })) {
+    jassertfalse; // Lines are parallel or coincident
+    return std::nullopt;
+  }
+
+  const CoordType detA = x1 * y2 - y1 * x2;
+  const CoordType detB = x3 * y4 - y3 * x4;
+
+  const CoordType ix = (detA * (x3 - x4) - (x1 - x2) * detB) / denominator;
+  const CoordType iy = (detA * (y3 - y4) - (y1 - y2) * detB) / denominator;
+
+  return juce::Point<CoordType>{ ix, iy };
+}
+
 static inline float
 linearToExponent(float value) noexcept
 {
