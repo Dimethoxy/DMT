@@ -17,6 +17,8 @@ class Popover : public juce::Component
   using Rectangle = juce::Rectangle<int>;
   using Colour = juce::Colour;
   using Shadow = dmt::gui::widget::Shadow;
+  using Label = dmt::gui::widget::Label;
+  using Fonts = dmt::utility::Fonts;
 
   using Settings = dmt::Settings;
   using Layout = dmt::Settings::Window;
@@ -31,6 +33,8 @@ class Popover : public juce::Component
   const Colour textColour = PopoverSettings::textColour;
   const Colour innerShadowColour = PopoverSettings::innerShadowColour;
   const Colour outerShadowColour = PopoverSettings::outerShadowColour;
+  const Colour titleFontColour = PopoverSettings::titleFontColour;
+  const Colour messageFontColour = PopoverSettings::messageFontColour;
   const int rawSurfaceWidth = PopoverSettings::rawSurfaceWidth;
   const int rawSurfaceHeight = PopoverSettings::rawSurfaceHeight;
   const int rawCornerRadius = PopoverSettings::rawCornerRadius;
@@ -39,6 +43,9 @@ class Popover : public juce::Component
   const float outerShadowRadius = PopoverSettings::outerShadowRadius;
   const bool drawOuterShadow = PopoverSettings::drawOuterShadow;
   const bool drawInnerShadow = PopoverSettings::drawInnerShadow;
+  const float& titleFontSize = PopoverSettings::titleFontSize;
+  const float& messageFontSize = PopoverSettings::messageFontSize;
+
   const float rawSpikeWidth = 20.0f;
   const float rawSpikeHeight = 20.0f;
   const int rawCloseButtonSize = 35;
@@ -47,6 +54,16 @@ public:
   Popover()
     : outerShadow(drawOuterShadow, outerShadowColour, outerShadowRadius, false)
     , innerShadow(drawInnerShadow, innerShadowColour, innerShadowRadius, true)
+    , titleLabel("Update Available",
+                 fonts.medium,
+                 titleFontSize,
+                 titleFontColour,
+                 juce::Justification::topLeft)
+    , messageLabel("Click here to get the latest version of this plugin.",
+                   fonts.light,
+                   messageFontSize,
+                   messageFontColour,
+                   juce::Justification::topLeft)
   {
     setAlwaysOnTop(true);
     setInterceptsMouseClicks(false, true);
@@ -56,6 +73,8 @@ public:
 
     addAndMakeVisible(outerShadow);
     addAndMakeVisible(innerShadow);
+    addAndMakeVisible(titleLabel);
+    addAndMakeVisible(messageLabel);
   }
   ~Popover() override { setVisible(false); }
 
@@ -78,7 +97,8 @@ public:
   {
     auto messageBounds = createMessageBounds(false);
     const auto closeButtonSize = rawCloseButtonSize * size;
-    closeButton.setBounds(messageBounds.removeFromTop(closeButtonSize)
+    closeButton.setBounds(juce::Rectangle<int>(messageBounds)
+                            .removeFromTop(closeButtonSize)
                             .removeFromRight(closeButtonSize));
     closeButton.setAlwaysOnTop(true);
 
@@ -86,6 +106,11 @@ public:
     outerShadow.setPath(createPath(true));
     innerShadow.setBoundsRelative(0.0f, 0.0f, 1.0f, 1.0f);
     innerShadow.setPath(createPath(false));
+
+    messageBounds = messageBounds.reduced(10.0f * size);
+    const auto titleBounds = messageBounds.removeFromTop(titleFontSize * size);
+    titleLabel.setBounds(titleBounds);
+    messageLabel.setBounds(messageBounds);
   }
 
   void showMessage(Point<int> _anchor)
@@ -296,7 +321,9 @@ private:
                               false,         false,   true };
   Shadow outerShadow;
   Shadow innerShadow;
-
+  Label titleLabel;
+  Label messageLabel;
+  Fonts fonts;
   std::unique_ptr<juce::Point<float>> normalizedAnchor;
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Popover)
 };

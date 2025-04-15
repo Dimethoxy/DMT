@@ -102,6 +102,10 @@ public:
       container.add<Colour>("Popover.InnerShadowColour", Colours::shadow);
     static inline auto& outerShadowColour =
       container.add<Colour>("Popover.OuterShadowColour", Colours::shadow);
+    static inline auto& titleFontColour =
+      container.add<Colour>("Popover.TitleFontColour", Colours::font);
+    static inline auto& messageFontColour =
+      container.add<Colour>("Popover.MessageFontColour", Colours::font);
     static inline auto& rawSurfaceWidth =
       container.add<float>("Popover.SurfaceWidth", 200.0f);
     static inline auto& innerShadowRadius =
@@ -114,6 +118,10 @@ public:
       container.add<float>("Popover.CornerRadius", 10.0f);
     static inline auto& rawBorderWidth =
       container.add<float>("Popover.BorderWidth", 2.0f);
+    static inline auto& titleFontSize =
+      container.add<float>("Popover.TitleFontSize", 24.0f);
+    static inline auto& messageFontSize =
+      container.add<float>("Popover.MessageFontSize", 18.0f);
     static inline auto& drawOuterShadow =
       container.add<bool>("Popover.DrawOuterShadow", true);
     static inline auto& drawInnerShadow =
