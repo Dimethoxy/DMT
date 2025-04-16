@@ -101,7 +101,16 @@ public:
       g.drawRect(titleLabel.getBounds(), 1);
       g.setColour(juce::Colours::green);
       g.drawRect(messageLabel.getBounds(), 1);
+      g.setColour(juce::Colours::blue.withAlpha(0.2f));
+      g.drawRect(getLocalBounds(), 1);
     }
+  }
+
+  bool hitTest(int x, int y) override
+  {
+    const auto messageBounds = createMessageBounds(false);
+    return messageBounds.contains(
+      x, y); // Only allow clicks inside the messageBounds
   }
 
   void resized() override
