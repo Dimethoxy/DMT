@@ -35,17 +35,19 @@ class Popover : public juce::Component
   const Colour outerShadowColour = PopoverSettings::outerShadowColour;
   const Colour titleFontColour = PopoverSettings::titleFontColour;
   const Colour messageFontColour = PopoverSettings::messageFontColour;
-  const int rawSurfaceWidth = PopoverSettings::rawSurfaceWidth;
-  const int rawSurfaceHeight = PopoverSettings::rawSurfaceHeight;
-  const int rawCornerRadius = PopoverSettings::rawCornerRadius;
-  const int rawBorderWidth = PopoverSettings::rawBorderWidth;
-  const float innerShadowRadius = PopoverSettings::innerShadowRadius;
-  const float outerShadowRadius = PopoverSettings::outerShadowRadius;
-  const bool drawOuterShadow = PopoverSettings::drawOuterShadow;
-  const bool drawInnerShadow = PopoverSettings::drawInnerShadow;
+
+  const float& rawCornerRadius = PopoverSettings::rawCornerRadius;
+  const float& rawBorderWidth = PopoverSettings::rawBorderWidth;
+  const float& innerShadowRadius = PopoverSettings::innerShadowRadius;
+  const float& outerShadowRadius = PopoverSettings::outerShadowRadius;
   const float& titleFontSize = PopoverSettings::titleFontSize;
   const float& messageFontSize = PopoverSettings::messageFontSize;
+  const bool& drawOuterShadow = PopoverSettings::drawOuterShadow;
+  const bool& drawInnerShadow = PopoverSettings::drawInnerShadow;
 
+  // TODO: This shouldn't be like this
+  const int rawSurfaceWidth = 200;
+  const int rawSurfaceHeight = 95;
   const float rawSpikeWidth = 20.0f;
   const float rawSpikeHeight = 20.0f;
   const int rawCloseButtonSize = 35;
@@ -54,16 +56,17 @@ public:
   Popover()
     : outerShadow(drawOuterShadow, outerShadowColour, outerShadowRadius, false)
     , innerShadow(drawInnerShadow, innerShadowColour, innerShadowRadius, true)
-    , titleLabel("Update Available",
+    , titleLabel("Title",
                  fonts.medium,
                  titleFontSize,
                  titleFontColour,
                  juce::Justification::topLeft)
-    , messageLabel("Click here to get the latest version of this plugin.",
+    , messageLabel("Message",
                    fonts.light,
                    messageFontSize,
                    messageFontColour,
-                   juce::Justification::topLeft)
+                   juce::Justification::topLeft,
+                   true)
   {
     setAlwaysOnTop(true);
     setInterceptsMouseClicks(false, true);
@@ -91,6 +94,14 @@ public:
     // Draw the background
     g.setColour(backgroundColour);
     g.fillPath(createPath(false));
+
+    // Debug draw box around title and message labels
+    if (dmt::Settings::debugBounds) {
+      g.setColour(juce::Colours::red);
+      g.drawRect(titleLabel.getBounds(), 1);
+      g.setColour(juce::Colours::green);
+      g.drawRect(messageLabel.getBounds(), 1);
+    }
   }
 
   void resized() override
@@ -113,11 +124,15 @@ public:
     messageLabel.setBounds(messageBounds);
   }
 
-  void showMessage(Point<int> _anchor)
+  void showMessage(Point<int> _anchor,
+                   juce::String _title,
+                   juce::String _message)
   {
     this->setNormalizedAnchor(_anchor);
     this->setVisible(true);
     resized();
+    titleLabel.setText(_title);
+    messageLabel.setText(_message);
     repaint();
   }
 

@@ -19,13 +19,15 @@ public:
         const juce::Font& font,
         const float& fontSize,
         const juce::Colour& colour,
-        const Justification justification = Justification::centredTop)
+        const Justification justification = Justification::centredTop,
+        const bool multiline = false)
     : juce::Component()
     , text(text)
     , font(font)
     , fontSize(fontSize)
     , colour(colour)
     , justification(justification)
+    , multiline(multiline)
   {
   }
   void paint(juce::Graphics& g)
@@ -46,14 +48,24 @@ public:
     }
 
     // Draw text
-    g.setColour(colour);
-    g.drawText(text, this->getLocalBounds(), justification, true);
+    if (!multiline) {
+      g.setColour(colour);
+      g.drawText(text, this->getLocalBounds(), justification, true);
+    } else {
+      const int startX = bounds.getX();
+      const int baselineY = bounds.getY() + g.getCurrentFont().getAscent();
+      const int maximumLineWidth = bounds.getWidth();
+      g.setColour(colour);
+      g.drawMultiLineText(
+        text, startX, baselineY, maximumLineWidth, justification, 0.0f);
+    }
   }
 
   inline void setText(const juce::String& newText) { this->text = newText; }
   inline juce::String getText() const { return this->text; }
 
 private:
+  bool multiline;
   juce::String text;
   const juce::Font& font;
   const float& fontSize;

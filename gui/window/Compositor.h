@@ -57,7 +57,7 @@ public:
     addChildComponent(settingsPanel);
 
     // Start the timer to check if update is found
-    //startTimer(1000); // Commented out until Popover is done
+    startTimer(1000); // Commented out until Popover is done
 
     // Tooltips
     addAndMakeVisible(tooltipWindow);
@@ -71,9 +71,9 @@ public:
   {
     const auto bounds = getLocalBounds();
 
-    //Popover
+    // Popover
     popover.setBounds(bounds);
-    
+
     if (header.isVisible()) {
       const auto headerHeight = rawHeaderHeight * size;
       const auto headerBounds =
@@ -100,8 +100,6 @@ public:
       borderButton.setVisible(true);
       borderButton.setAlwaysOnTop(true);
     }
-
-
   }
 
   void showSettings() noexcept
@@ -160,7 +158,11 @@ public:
       const int x = updateButton.getBounds().getCentreX();
       const int y = updateButton.getBounds().getBottom();
       const auto popoverTagetPoint = juce::Point<int>(x, y);
-      popover.showMessage(popoverTagetPoint);
+      String title = "Update Available!";
+      String message;
+      message << "A new update is available! \n"
+              << "Click here to download the latest version. ";
+      popover.showMessage(popoverTagetPoint, title, message);
       header.getUpdateButton().setVisible(true);
     }
   }

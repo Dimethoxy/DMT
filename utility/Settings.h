@@ -106,14 +106,10 @@ public:
       container.add<Colour>("Popover.TitleFontColour", Colours::font);
     static inline auto& messageFontColour =
       container.add<Colour>("Popover.MessageFontColour", Colours::font);
-    static inline auto& rawSurfaceWidth =
-      container.add<float>("Popover.SurfaceWidth", 200.0f);
     static inline auto& innerShadowRadius =
       container.add<float>("Popover.InnerShadowRadius", 10.0f);
     static inline auto& outerShadowRadius =
       container.add<float>("Popover.OuterShadowRadius", 10.0f);
-    static inline auto& rawSurfaceHeight =
-      container.add<float>("Popover.SurfaceHeight", 100.0f);
     static inline auto& rawCornerRadius =
       container.add<float>("Popover.CornerRadius", 10.0f);
     static inline auto& rawBorderWidth =
