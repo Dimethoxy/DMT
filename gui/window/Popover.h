@@ -108,16 +108,17 @@ public:
 
   bool hitTest(int x, int y) override
   {
-    const auto messageBounds = createMessageBounds(false);
-    return messageBounds.contains(
-      x, y); // Only allow clicks inside the messageBounds
+    // We do this to make sure the close button can be clicked while passing
+    // through other mouse click events
+    return cachedMessageBounds.contains(x, y);
   }
 
   void resized() override
   {
-    auto messageBounds = createMessageBounds(false);
+    cachedMessageBounds = createMessageBounds(false);
+
     const auto closeButtonSize = rawCloseButtonSize * size;
-    closeButton.setBounds(juce::Rectangle<int>(messageBounds)
+    closeButton.setBounds(juce::Rectangle<int>(cachedMessageBounds)
                             .reduced(2.0f * size)
                             .removeFromTop(closeButtonSize)
                             .removeFromRight(closeButtonSize));
@@ -128,20 +129,21 @@ public:
     innerShadow.setBoundsRelative(0.0f, 0.0f, 1.0f, 1.0f);
     innerShadow.setPath(createPath(false));
 
-    messageBounds = messageBounds.reduced(10.0f * size);
-    messageBounds.setY(messageBounds.getY() - 4.0f * size);
-    messageBounds.setHeight(messageBounds.getHeight() + 8.0f * size);
-    const auto titleBounds = messageBounds.removeFromTop(titleFontSize * size);
+    auto adjustedBounds = cachedMessageBounds.reduced(10.0f * size);
+    adjustedBounds.setY(adjustedBounds.getY() - 4.0f * size);
+    adjustedBounds.setHeight(adjustedBounds.getHeight() + 8.0f * size);
+    const auto titleBounds = adjustedBounds.removeFromTop(titleFontSize * size);
     titleLabel.setBounds(titleBounds);
-    messageLabel.setBounds(messageBounds);
+    messageLabel.setBounds(adjustedBounds);
   }
 
   void showMessage(Point<int> _anchor,
                    juce::String _title,
                    juce::String _message)
   {
-    this->setNormalizedAnchor(_anchor);
-    this->setVisible(true);
+    setNormalizedAnchor(_anchor);
+    cachedMessageBounds = createMessageBounds(false); // Update cached bounds
+    setVisible(true);
     resized();
     titleLabel.setText(_title);
     messageLabel.setText(_message);
@@ -352,6 +354,7 @@ private:
   Label messageLabel;
   Fonts fonts;
   std::unique_ptr<juce::Point<float>> normalizedAnchor;
+  Rectangle cachedMessageBounds;
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Popover)
 };
 //==============================================================================
