@@ -119,7 +119,6 @@ public:
 
     const auto closeButtonSize = rawCloseButtonSize * size;
     closeButton.setBounds(juce::Rectangle<int>(cachedMessageBounds)
-                            .reduced(2.0f * size)
                             .removeFromTop(closeButtonSize)
                             .removeFromRight(closeButtonSize));
     closeButton.setAlwaysOnTop(true);
