@@ -47,7 +47,7 @@ class Popover : public juce::Component
 
   // TODO: This shouldn't be like this
   const int rawSurfaceWidth = 200;
-  const int rawSurfaceHeight = 95;
+  const int rawSurfaceHeight = 88;
   const float rawSpikeWidth = 20.0f;
   const float rawSpikeHeight = 20.0f;
   const int rawCloseButtonSize = 35;
@@ -109,6 +109,7 @@ public:
     auto messageBounds = createMessageBounds(false);
     const auto closeButtonSize = rawCloseButtonSize * size;
     closeButton.setBounds(juce::Rectangle<int>(messageBounds)
+                            .reduced(2.0f * size)
                             .removeFromTop(closeButtonSize)
                             .removeFromRight(closeButtonSize));
     closeButton.setAlwaysOnTop(true);
@@ -119,6 +120,8 @@ public:
     innerShadow.setPath(createPath(false));
 
     messageBounds = messageBounds.reduced(10.0f * size);
+    messageBounds.setY(messageBounds.getY() - 4.0f * size);
+    messageBounds.setHeight(messageBounds.getHeight() + 8.0f * size);
     const auto titleBounds = messageBounds.removeFromTop(titleFontSize * size);
     titleLabel.setBounds(titleBounds);
     messageLabel.setBounds(messageBounds);

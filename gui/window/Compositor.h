@@ -156,7 +156,8 @@ public:
     {
       const auto& updateButton = header.getUpdateButton();
       const int x = updateButton.getBounds().getCentreX();
-      const int y = updateButton.getBounds().getBottom();
+      const int yOffset = -10.0f * size;
+      const int y = updateButton.getBounds().getBottom() + yOffset;
       const auto popoverTagetPoint = juce::Point<int>(x, y);
       String title = "Update Available!";
       String message;
