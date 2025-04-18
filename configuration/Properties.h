@@ -42,7 +42,7 @@ namespace configuration {
 //==============================================================================
 /**
  * @class Properties
- * @brief Singleton class to manage application properties with optimized
+ * @brief Class to manage application properties with optimized
  * performance.
  */
 class Properties
@@ -85,6 +85,10 @@ public:
 
     // Now we apply the settings to the container
     dmt::Settings::container.applyPropertySet(settings);
+
+    // Set the app name
+    auto appName = options.applicationName;
+    dmt::Settings::appName = appName;
   }
 
 private:
