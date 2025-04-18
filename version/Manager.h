@@ -7,6 +7,7 @@
 namespace dmt {
 namespace version {
 //==============================================================================
+constexpr auto SERVER_WAIT_FOR_INITIALIZATION_TIMEOUT = 100;
 constexpr auto SERVER_RECONNECT_INTERVAL = 10000;
 //==============================================================================
 class Manager : public juce::Thread
@@ -26,10 +27,18 @@ protected:
   //============================================================================
   void run() override
   {
+    // Wait for the the plugin to be initialized
+    wait(SERVER_WAIT_FOR_INITIALIZATION_TIMEOUT);
+
+    // Continuously try to fetch the latest version
     while (!threadShouldExit()) {
-      if (fetchLatestVersion()) {
-        break;
+      // Check if the app name is initialized before proceeding
+      const auto isInitialized = !dmt::Settings::appName.isEmpty();
+      if (isInitialized) {
+        if (fetchLatestVersion())
+          break; // Exit the loop if the version is fetched successfully
       }
+      // If we couldn't fetch the version, wait for a while before trying again
       wait(SERVER_RECONNECT_INTERVAL);
     }
   }
@@ -37,7 +46,9 @@ protected:
   bool fetchLatestVersion()
   {
     std::cout << "Fetching latest version" << std::endl;
-    auto response = Networking::sendRequest("version?product=plasma");
+    const auto appName = dmt::Settings::appName.toLowerCase();
+    const auto url = juce::String("version?product=" + appName);
+    const auto response = Networking::sendRequest(url);
     if (response.isEmpty()) {
       return false;
     }

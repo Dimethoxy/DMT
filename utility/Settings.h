@@ -28,7 +28,7 @@ public:
 
   static inline dmt::configuration::Container container;
 
-  static inline auto appName = juce::String("DMT");
+  static inline auto appName = juce::String("");
   static inline auto& framerate = container.add<int>("Framerate", 30);
   static inline auto& unixFontScalingFactor =
     container.add<float>("UnixFontScalingFactor", 0.9f);
