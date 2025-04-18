@@ -52,21 +52,28 @@ protected:
     if (response.isEmpty()) {
       return false;
     }
-    dmt::Settings::latestVersion = parseVersion(response);
+    const auto versionString = parseResponseToVersionString(response);
+    dmt::Settings::latestVersion = parseVersionStringToArray(versionString);
     return true;
   }
   //============================================================================
-  std::array<int, 3> parseVersion(const juce::String& version)
+  juce::String parseResponseToVersionString(const juce::String& response)
   {
-
-    int start = version.indexOf("version") + 8;
-    auto secondHalf = version.substring(start);
+    int start = response.indexOf("version") + 8;
+    auto secondHalf = response.substring(start);
     auto tokens = juce::StringArray::fromTokens(secondHalf, "\"", "");
     auto versionString = tokens[1];
+    std::cout << "Extracted Version String: " << versionString << std::endl;
+    return versionString;
+  }
+  //============================================================================
+  std::array<int, 3> parseVersionStringToArray(
+    const juce::String& versionString)
+  {
     auto versionArray = juce::StringArray::fromTokens(versionString, ".", "");
     std::array<int, 3> result;
     for (int i = 0; i < 3; i++) {
-      result[i] = versionArray[i].getIntValue();
+      result[static_cast<std::size_t>(i)] = versionArray[i].getIntValue();
     }
     std::cout << "Parsed Version: " << versionString << std::endl;
     std::cout << "- Major:" << result[0] << std::endl;
