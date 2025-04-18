@@ -62,10 +62,14 @@ public:
             titleFontColour,
             juce::Justification::centred)
     , settingsButton("HeaderSettingsButton", "Settings", "Open settings")
-    , settingsExitButton("HeaderSettingsExitButton", "Back", "Return to main view")
+    , settingsExitButton("HeaderSettingsExitButton",
+                         "Back",
+                         "Return to main view")
     , hideHeaderButton("HeaderHideButton", "HideHeader", "Hide header bar")
     , titleButton("HeaderTitleButton", "None", "Made by Dimethoxy")
-    , updateButton("UpdateButton", "Download", "Update available – click to install")
+    , updateButton("UpdateButton",
+                   "Download",
+                   "Update available - click to install")
     , bypassButton("BypassButton", "Bypass", "GlobalBypass", _apvts)
     , presetsButton("PresetsButton", "Presets", "Browse presets")
   {
