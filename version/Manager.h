@@ -63,7 +63,7 @@ protected:
     auto secondHalf = response.substring(start);
     auto tokens = juce::StringArray::fromTokens(secondHalf, "\"", "");
     auto versionString = tokens[1];
-    std::cout << "Extracted Version String: " << versionString << std::endl;
+    std::cout << "Version String: " << versionString << std::endl;
     return versionString;
   }
   //============================================================================
@@ -75,7 +75,6 @@ protected:
     for (int i = 0; i < 3; i++) {
       result[static_cast<std::size_t>(i)] = versionArray[i].getIntValue();
     }
-    std::cout << "Parsed Version: " << versionString << std::endl;
     std::cout << "- Major:" << result[0] << std::endl;
     std::cout << "- Minor:" << result[1] << std::endl;
     std::cout << "- Patch:" << result[2] << std::endl;
