@@ -17,6 +17,18 @@ public:
   Manager()
     : juce::Thread("VersionManager")
   {
+    // Debugging
+    std::cout << "Version Manager Initialized" << std::endl;
+    std::cout << "Parsing current version..." << std::endl;
+
+    // Parse the current version into settings
+    const auto versionString = ProjectInfo::versionString;
+    std::cout << "Version String: " << versionString << std::endl;
+
+    // Parse the version string into an array
+    const auto versionArray = parseVersionStringToArray(versionString);
+
+    // Start the thread to fetch the latest version
     startThread();
   }
   //============================================================================
@@ -45,7 +57,7 @@ protected:
   //============================================================================
   bool fetchLatestVersion()
   {
-    std::cout << "Fetching latest version" << std::endl;
+    std::cout << "Fetching latest version..." << std::endl;
     const auto appName = dmt::Settings::appName.toLowerCase();
     const auto url = juce::String("version?product=" + appName);
     const auto response = Networking::sendRequest(url);
