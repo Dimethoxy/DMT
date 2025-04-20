@@ -36,8 +36,6 @@ public:
     container.add<bool>("ShowDebugBounds", false);
   static inline auto& debugGrid = container.add<bool>("ShowDebugGrid", false);
 
-  static inline std::array<int, 3> latestVersion = { 0, 0, 0 };
-
 private:
   struct Colours
   {
