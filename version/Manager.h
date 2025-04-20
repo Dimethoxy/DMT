@@ -12,6 +12,8 @@ constexpr auto SERVER_RECONNECT_INTERVAL = 10000;
 //==============================================================================
 class Manager : public juce::Thread
 {
+  using VersionArray = std::array<int, 3>;
+
 public:
   //============================================================================
   Manager()
@@ -27,6 +29,7 @@ public:
 
     // Parse the version string into an array
     const auto versionArray = parseVersionStringToArray(versionString);
+    currentVersion = std::make_unique<VersionArray>(versionArray);
 
     // Start the thread to fetch the latest version
     startThread();
@@ -65,7 +68,8 @@ protected:
       return false;
     }
     const auto versionString = parseResponseToVersionString(response);
-    dmt::Settings::latestVersion = parseVersionStringToArray(versionString);
+    const auto versionArray = parseVersionStringToArray(versionString);
+    latestVersion = std::make_unique<VersionArray>(versionArray);
     return true;
   }
   //============================================================================
@@ -79,11 +83,10 @@ protected:
     return versionString;
   }
   //============================================================================
-  std::array<int, 3> parseVersionStringToArray(
-    const juce::String& versionString)
+  VersionArray parseVersionStringToArray(const juce::String& versionString)
   {
     auto versionArray = juce::StringArray::fromTokens(versionString, ".", "");
-    std::array<int, 3> result;
+    VersionArray result;
     for (int i = 0; i < 3; i++) {
       result[static_cast<std::size_t>(i)] = versionArray[i].getIntValue();
     }
@@ -93,8 +96,8 @@ protected:
     return result;
   }
   //===========================================================================
-  int inline compareVersions(const std::array<int, 3>& version1,
-                             const std::array<int, 3>& version2)
+  int inline compareVersions(const VersionArray& version1,
+                             const VersionArray& version2)
   {
     for (std::size_t i = 0; i < version1.size(); ++i) {
       if (version1[i] < version2[i])
@@ -104,6 +107,10 @@ protected:
     }
     return 0; // Both versions are equal
   }
+
+  //============================================================================
+  static inline std::unique_ptr<VersionArray> latestVersion;
+  static inline std::unique_ptr<VersionArray> currentVersion;
 };
 } // namespace version
 } // namespace dmt
