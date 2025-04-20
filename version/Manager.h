@@ -92,7 +92,18 @@ protected:
     std::cout << "- Patch:" << result[2] << std::endl;
     return result;
   }
-  //============================================================================
+  //===========================================================================
+  int inline compareVersions(const std::array<int, 3>& version1,
+                             const std::array<int, 3>& version2)
+  {
+    for (std::size_t i = 0; i < version1.size(); ++i) {
+      if (version1[i] < version2[i])
+        return 2; // version2 is greater than version1
+      else if (version1[i] > version2[i])
+        return 1; // version1 is greater than version2
+    }
+    return 0; // Both versions are equal
+  }
 };
 } // namespace version
 } // namespace dmt
