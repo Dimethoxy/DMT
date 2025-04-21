@@ -1,5 +1,34 @@
-#pragma once
 //==============================================================================
+/**
+
+ * ██████  ██ ███    ███ ███████ ████████ ██   ██  ██████  ██   ██ ██    ██
+ * ██   ██ ██ ████  ████ ██         ██    ██   ██ ██    ██  ██ ██   ██  ██
+ * ██   ██ ██ ██ ████ ██ █████      ██    ███████ ██    ██   ███     ████
+ * ██   ██ ██ ██  ██  ██ ██         ██    ██   ██ ██    ██  ██ ██     ██
+ * ██████  ██ ██      ██ ███████    ██    ██   ██  ██████  ██   ██    ██
+ *
+ * Copyright (C) 2024 Dimethoxy Audio (https://dimethoxy.com)
+ *
+ * This file is part of the Dimethoxy Library, a collection of essential
+ * classes used across various Dimethoxy projects.
+ * These files are primarily designed for internal use within our repositories.
+ *
+ * License:
+ * This code is licensed under the GPLv3 license. You are permitted to use and
+ * modify this code under the terms of this license.
+ * You must adhere GPLv3 license for any project using this code or parts of it.
+ * Your are not allowed to use this code in any closed-source project.
+ *
+ * Description:
+ * The `Header` class manages the header section of the application window.
+ * The header includes a title and several buttons for user interaction.
+ *
+ * Authors:
+ * Lunix-420 (Primary Author)
+ */
+//==============================================================================
+
+#pragma once
 #include "dmt/gui/widget/CallbackButton.h"
 #include "dmt/gui/widget/Label.h"
 #include "dmt/gui/widget/Shadow.h"
@@ -7,13 +36,23 @@
 #include "dmt/utility/Fonts.h"
 #include "dmt/utility/Settings.h"
 #include <JuceHeader.h>
+
 //==============================================================================
 namespace dmt {
 namespace gui {
 namespace window {
+
 //==============================================================================
+/**
+ * @brief Represents the header section of the application window.
+ *
+ * The `Header` class is responsible for managing the layout, appearance,
+ * and functionality of the header section, including buttons, shadows,
+ * and the title. It ensures a responsive and visually appealing design.
+ */
 class Header : public juce::Component
 {
+  //==============================================================================
   // Aliases
   using CallbackButton = dmt::gui::widget::CallbackButton;
   using ToggleButton = dmt::gui::widget::ToggleButton;
@@ -25,6 +64,7 @@ class Header : public juce::Component
   using PanelSettings = dmt::Settings::Panel;
   using Shadow = dmt::gui::widget::Shadow;
 
+  //==============================================================================
   // Window
   const float& size = dmt::Settings::Window::size;
 
@@ -53,7 +93,15 @@ class Header : public juce::Component
   const float& rawButtonPadding = dmt::Settings::Button::padding;
 
 public:
-  Header(juce::String titleText, AudioProcessorValueTreeState& _apvts)
+  //==============================================================================
+  /**
+   * @brief Constructs a `Header` instance.
+   *
+   * @param _titleText The title text to display in the header.
+   * @param _apvts The audio processor value tree state for parameter
+   * management.
+   */
+  Header(juce::String _titleText, AudioProcessorValueTreeState& _apvts) noexcept
     : outerShadow(drawOuterShadow, outerShadowColour, outerShadowRadius, false)
     , innerShadow(drawInnerShadow, innerShadowColour, innerShadowRadius, true)
     , title(String("ProjectLabel"),
@@ -80,7 +128,7 @@ public:
     // Title
     addAndMakeVisible(title);
     addAndMakeVisible(titleButton);
-    title.setText(titleText);
+    title.setText(_titleText);
     titleButton.setEnabled(false);
 
     // Settings Button
@@ -95,32 +143,50 @@ public:
     updateButton.setVisible(false);
     addAndMakeVisible(presetsButton);
     presetsButton.setVisible(false);
-  };
+  }
 
-  ~Header() override {}
+  //==============================================================================
+  /** @brief Destructor for `Header`. */
+  ~Header() noexcept override = default;
 
-  void paint(juce::Graphics& g) override
+  //==============================================================================
+  /**
+   * @brief Paints the header component.
+   *
+   * This method draws the border and background of the header.
+   *
+   * @param _g The graphics context used for painting.
+   */
+  void paint(juce::Graphics& _g) noexcept override
   {
     // Paint the border
     auto bounds = getLocalBounds().removeFromTop(getHeight() * 0.5);
-    g.setColour(borderColor);
-    g.fillRect(bounds);
+    _g.setColour(borderColor);
+    _g.fillRect(bounds);
 
     // Paint the background
     const auto borderStrength = rawBorderStrength * size;
-    bounds.removeFromBottom(borderStrength);
-    g.setColour(backgroundColour);
-    g.fillRect(bounds);
+    bounds.removeFromBottom(static_cast<int>(borderStrength));
+    _g.setColour(backgroundColour);
+    _g.fillRect(bounds);
   }
 
-  void resized() override
+  //==============================================================================
+  /**
+   * @brief Resizes the header and its child components.
+   *
+   * Dynamically adjusts the layout of the title, buttons, and shadows
+   * based on the current size of the header.
+   */
+  void resized() noexcept override
   {
     auto bounds = getLocalBounds().removeFromTop(getHeight() * 0.5);
     const auto titleOffset = rawTitleOffset * size;
     const auto titleButtonWidth = rawTitleButtonWidth * size;
-    const auto titleBounds = bounds.withWidth(titleButtonWidth)
-                               .withCentre(bounds.getCentre())
-                               .withY(titleOffset);
+    const auto titleBounds =
+      bounds.withWidth(static_cast<int>(titleButtonWidth))
+        .withCentre(bounds.getCentre())
+        .withY(static_cast<int>(titleOffset));
     title.setBounds(titleBounds);
     title.setAlwaysOnTop(true);
 
@@ -138,7 +204,7 @@ public:
 
     // Set the bounds for the inner header
     const auto borderStrength = rawBorderStrength * size;
-    bounds.removeFromBottom(borderStrength);
+    bounds.removeFromBottom(static_cast<int>(borderStrength));
 
     // Header Button Bounds
     const int headerButtonAmount = 2;
@@ -146,50 +212,70 @@ public:
       rawHeaderButtonWidth * size * headerButtonAmount;
     const auto buttonAreaPadding = 2.0 * rawButtonPadding * size;
     auto buttonAreaBounds =
-      bounds.withWidth(bounds.getWidth() - buttonAreaPadding)
+      bounds.withWidth(bounds.getWidth() - static_cast<int>(buttonAreaPadding))
         .withCentre(bounds.getCentre());
 
     // Set the bounds for the settings button
-    const auto settingsButtonBounds =
-      buttonAreaBounds.removeFromRight(rawHeaderButtonWidth * size);
+    const auto settingsButtonBounds = buttonAreaBounds.removeFromRight(
+      static_cast<int>(rawHeaderButtonWidth * size));
     settingsButton.setBounds(settingsButtonBounds);
     settingsExitButton.setBounds(settingsButtonBounds);
 
     // Set the bounds for the hide header button
-    const auto hideHeaderButtonBounds =
-      buttonAreaBounds.removeFromRight(rawHeaderButtonWidth * size);
+    const auto hideHeaderButtonBounds = buttonAreaBounds.removeFromRight(
+      static_cast<int>(rawHeaderButtonWidth * size));
     hideHeaderButton.setBounds(hideHeaderButtonBounds);
 
     // Set the bounds for the update download button
-    const auto updateButtonBounds =
-      buttonAreaBounds.removeFromRight(rawHeaderButtonWidth * size);
+    const auto updateButtonBounds = buttonAreaBounds.removeFromRight(
+      static_cast<int>(rawHeaderButtonWidth * size));
     updateButton.setBounds(updateButtonBounds);
 
     // Set the bounds for the bypass button
-    const auto bypassButtonBounds =
-      buttonAreaBounds.removeFromLeft(rawHeaderButtonWidth * size);
+    const auto bypassButtonBounds = buttonAreaBounds.removeFromLeft(
+      static_cast<int>(rawHeaderButtonWidth * size));
     bypassButton.setBounds(bypassButtonBounds);
 
     // Set the bounds for the presets button
-    const auto presetsButtonBounds =
-      buttonAreaBounds.removeFromLeft(rawHeaderButtonWidth * size);
+    const auto presetsButtonBounds = buttonAreaBounds.removeFromLeft(
+      static_cast<int>(rawHeaderButtonWidth * size));
     presetsButton.setBounds(presetsButtonBounds);
 
     // Set the bounds for the title button
     const auto titleButtonBounds =
-      bounds.withWidth(titleButtonWidth).withCentre(bounds.getCentre());
+      bounds.withWidth(static_cast<int>(titleButtonWidth))
+        .withCentre(bounds.getCentre());
     titleButton.setBounds(titleButtonBounds);
   }
 
-  CallbackButton& getSettingsButton() noexcept { return settingsButton; }
-  CallbackButton& getSettingsExitButton() noexcept
+  //==============================================================================
+  /** @brief Returns the settings button. */
+  [[nodiscard]] CallbackButton& getSettingsButton() noexcept
+  {
+    return settingsButton;
+  }
+
+  /** @brief Returns the settings exit button. */
+  [[nodiscard]] CallbackButton& getSettingsExitButton() noexcept
   {
     return settingsExitButton;
   }
-  CallbackButton& getHideHeaderButton() noexcept { return hideHeaderButton; }
-  CallbackButton& getUpdateButton() noexcept { return updateButton; }
+
+  /** @brief Returns the hide header button. */
+  [[nodiscard]] CallbackButton& getHideHeaderButton() noexcept
+  {
+    return hideHeaderButton;
+  }
+
+  /** @brief Returns the update button. */
+  [[nodiscard]] CallbackButton& getUpdateButton() noexcept
+  {
+    return updateButton;
+  }
 
 private:
+  //==============================================================================
+  // Members initialized in the initializer list
   Shadow outerShadow;
   Shadow innerShadow;
   Label title;
@@ -202,8 +288,10 @@ private:
   ToggleButton bypassButton;
   CallbackButton presetsButton;
 
+  //==============================================================================
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Header)
 };
-} // namespace component
+
+} // namespace window
 } // namespace gui
 } // namespace dmt
