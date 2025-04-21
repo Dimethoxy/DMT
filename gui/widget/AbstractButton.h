@@ -95,7 +95,8 @@ public:
    * @param _shouldDrawBorder Whether to draw a border around the button.
    * @param _shouldDrawBackground Whether to draw a background for the button.
    * @param _shouldDrawShadow Whether to draw shadows for the button.
-   * @param _alternativeIconHover Whether to use an alternative hover icon.
+   * @param _alternativeIconHover Whether to use hoverColour or black for the
+   *                              icons hover state.
    *
    * @details The constructor initializes all visual and interactive states,
    * including icon, shadow, and background components. All members are
