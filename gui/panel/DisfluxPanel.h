@@ -1,5 +1,36 @@
-#pragma once
 //==============================================================================
+/*
+ * ██████  ██ ███    ███ ███████ ████████ ██   ██  ██████  ██   ██ ██    ██
+ * ██   ██ ██ ████  ████ ██         ██    ██   ██ ██    ██  ██ ██   ██  ██
+ * ██   ██ ██ ██ ████ ██ █████      ██    ███████ ██    ██   ███     ████
+ * ██   ██ ██ ██  ██  ██ ██         ██    ██   ██ ██    ██  ██ ██     ██
+ * ██████  ██ ██      ██ ███████    ██    ██   ██  ██████  ██   ██    ██
+ *
+ * Copyright (C) 2024 Dimethoxy Audio (https://dimethoxy.com)
+ *
+ * This file is part of the Dimethoxy Library, a collection of essential
+ * classes used across various Dimethoxy projects.
+ * These files are primarily designed for internal use within our repositories.
+ *
+ * License:
+ * This code is licensed under the GPLv3 license. You are permitted to use and
+ * modify this code under the terms of this license.
+ * You must adhere GPLv3 license for any project using this code or parts of it.
+ * Your are not allowed to use this code in any closed-source project.
+ *
+ * Description:
+ * DisfluxPanel is the main panel for the Disflux effect.
+ * It also comes with an oscilloscope display.
+ *
+ * Authors:
+ * Lunix-420 (Primary Author)
+ */
+//==============================================================================
+
+#pragma once
+
+//==============================================================================
+
 #include "dsp/data/FifoAudioBuffer.h"
 #include "gui/component/DisfluxDisplayComponent.h"
 #include "gui/component/LinearSliderComponent.h"
@@ -7,11 +38,24 @@
 #include "gui/panel/AbstractPanel.h"
 #include "utility/Unit.h"
 #include <JuceHeader.h>
+
 //==============================================================================
+
 namespace dmt {
 namespace gui {
 namespace panel {
+
 //==============================================================================
+/**
+ * @brief Panel for Disflux oscilloscope display and parameter controls.
+ *
+ * @tparam SampleType The floating-point sample type for audio data.
+ *
+ * @details
+ * This class provides a GUI panel for the Disflux effect, including an
+ * oscilloscope display and various parameter sliders. It inherits from
+ * AbstractPanel and uses a grid layout for positioning components.
+ */
 template<typename SampleType>
 class DisfluxPanel : public dmt::gui::panel::AbstractPanel
 {
@@ -28,33 +72,44 @@ class DisfluxPanel : public dmt::gui::panel::AbstractPanel
   const float& rawPadding = Settings::Panel::padding;
 
 public:
-  //============================================================================
-  DisfluxPanel(juce::AudioProcessorValueTreeState& apvts,
-               FifoAudioBuffer& oscilloscopeBuffer)
+  //==============================================================================
+  /**
+   * @brief Constructs a DisfluxPanel.
+   *
+   * @param _apvts The AudioProcessorValueTreeState for parameter binding.
+   * @param _oscilloscopeBuffer The FIFO buffer for oscilloscope display.
+   *
+   * @details
+   * Initializes all display and slider components, sets up the grid layout,
+   * and adds all subcomponents to the panel.
+   */
+  constexpr inline explicit DisfluxPanel(
+    juce::AudioProcessorValueTreeState& _apvts,
+    FifoAudioBuffer& _oscilloscopeBuffer) noexcept
     : AbstractPanel("Oscilloscope", false)
-    , display(oscilloscopeBuffer, apvts)
-    , amountSlider(apvts,
+    , display(_oscilloscopeBuffer, _apvts)
+    , amountSlider(_apvts,
                    juce::String("Amount"),
                    juce::String("DisfluxAmount"),
                    Unit::Type::DisfluxAmount,
                    RotarySliderType::Positive)
-    , spreadSlider(apvts,
+    , spreadSlider(_apvts,
                    juce::String("Spread"),
                    juce::String("DisfluxSpread"),
                    Unit::Type::DisfluxSpread,
                    RotarySliderType::Positive)
-    , fequencySlider(apvts,
+    , fequencySlider(_apvts,
                      juce::String("Frequency"),
                      juce::String("DisfluxFrequency"),
                      Unit::Type::DisfluxFrequency,
                      LinearSliderType::Positive,
                      LinearSliderOrientation::Horizontal)
-    , pinchSlider(apvts,
+    , pinchSlider(_apvts,
                   juce::String("Pinch"),
                   juce::String("DisfluxPinch"),
                   Unit::Type::DisfluxPinch,
                   RotarySliderType::Positive)
-    , mixSlider(apvts,
+    , mixSlider(_apvts,
                 juce::String("Mix"),
                 juce::String("DisfluxMix"),
                 Unit::Type::DisfluxMix,
@@ -70,8 +125,16 @@ public:
     addAndMakeVisible(mixSlider);
   }
 
-  //============================================================================
-  void extendResize() noexcept override
+  //==============================================================================
+  /**
+   * @brief Handles resizing and layout of all subcomponents.
+   *
+   * @details
+   * Positions the oscilloscope display and all sliders using grid points,
+   * ensuring consistent layout regardless of panel size.
+   * Override from AbstractPanel.
+   */
+  inline void extendResize() noexcept override
   {
     auto bounds = getLocalBounds();
 
@@ -116,14 +179,22 @@ public:
       this->getGridPoint(bounds, pinchSliderCol, upperRotarySliderRow);
     mixSlider.setSizeAndCentre(mixSliderPoint);
   }
-  //============================================================================
+  //==============================================================================
+
 private:
+  //==============================================================================
+  // Members initialized in the initializer list
   DisfluxDisplayComponent display;
   RotarySlider amountSlider;
   RotarySlider spreadSlider;
   LinearSlider fequencySlider;
   RotarySlider pinchSlider;
   RotarySlider mixSlider;
+
+  //==============================================================================
+  // Other members
+
+  //==============================================================================
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(DisfluxPanel)
 };
 
