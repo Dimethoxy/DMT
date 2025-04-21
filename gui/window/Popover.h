@@ -1,17 +1,65 @@
 //==============================================================================
-#pragma once
+/**
+
+ * ██████  ██ ███    ███ ███████ ████████ ██   ██  ██████  ██   ██ ██    ██
+ * ██   ██ ██ ████  ████ ██         ██    ██   ██ ██    ██  ██ ██   ██  ██
+ * ██   ██ ██ ██ ████ ██ █████      ██    ███████ ██    ██   ███     ████
+ * ██   ██ ██ ██  ██  ██ ██         ██    ██   ██ ██    ██  ██ ██     ██
+ * ██████  ██ ██      ██ ███████    ██    ██   ██  ██████  ██   ██    ██
+ *
+ * Copyright (C) 2024 Dimethoxy Audio (https://dimethoxy.com)
+ *
+ * This file is part of the Dimethoxy Library, a collection of essential
+ * classes used across various Dimethoxy projects.
+ * These files are primarily designed for internal use within our repositories.
+ *
+ * License:
+ * This code is licensed under the GPLv3 license. You are permitted to use and
+ * modify this code under the terms of this license.
+ * You must adhere GPLv3 license for any project using this code or parts of it.
+ * Your are not allowed to use this code in any closed-source project.
+ *
+ * Description:
+ * The `Popover` class provides a UI component for displaying contextual
+ * messages with a spike pointing to an anchor. It supports shadows, rounded
+ * corners, and dynamic resizing.
+ *
+ * Authors:
+ * Lunix-420 (Primary Author)
+ */
 //==============================================================================
+
+#pragma once
+
+//==============================================================================
+
 #include "gui/widget/CallbackButton.h"
 #include "utility/Math.h"
 #include "utility/Settings.h"
 #include <JuceHeader.h>
+
 //==============================================================================
+
 namespace dmt {
 namespace gui {
 namespace window {
+
 //==============================================================================
+/**
+ * @brief A UI component for displaying contextual messages with a spike.
+ *
+ * The `Popover` class is used to display messages anchored to a specific
+ * point on the screen. It supports customizable shadows, rounded corners,
+ * and dynamic resizing based on its content.
+ *
+ * @note This component should be set to the entire windows size as it will pass
+ * mouse clicks through to the components below it if the mouse doesn't hover
+ * over the actual popover part.
+ */
 class Popover : public juce::Component
 {
+  //==============================================================================
+  // Aliases
   using CallbackButton = dmt::gui::widget::CallbackButton;
   using String = juce::String;
   using Rectangle = juce::Rectangle<int>;
@@ -24,6 +72,7 @@ class Popover : public juce::Component
   using Layout = dmt::Settings::Window;
   using PopoverSettings = Settings::Popover;
 
+  //==============================================================================
   // Window
   const float& size = dmt::Settings::Window::size;
 
@@ -53,7 +102,14 @@ class Popover : public juce::Component
   const int rawCloseButtonSize = 35;
 
 public:
-  Popover()
+  //==============================================================================
+  /**
+   * @brief Constructs a `Popover` instance.
+   *
+   * Initializes the popover with default settings, including shadows,
+   * labels, and a close button.
+   */
+  Popover() noexcept
     : outerShadow(drawOuterShadow, outerShadowColour, outerShadowRadius, false)
     , innerShadow(drawInnerShadow, innerShadowColour, innerShadowRadius, true)
     , titleLabel("Title",
@@ -79,45 +135,73 @@ public:
     addAndMakeVisible(titleLabel);
     addAndMakeVisible(messageLabel);
   }
-  ~Popover() override { setVisible(false); }
 
-  void paint(juce::Graphics& g) override
+  //==============================================================================
+  /** @brief Destructor for `Popover`. */
+  ~Popover() noexcept override { setVisible(false); }
+
+  //==============================================================================
+  /**
+   * @brief Paints the popover component.
+   *
+   * Draws the border, background, and optionally debug bounds for the
+   * title and message labels.
+   *
+   * @param _g The graphics context used for painting.
+   */
+  void paint(juce::Graphics& _g) noexcept override
   {
     // Skip drawing if the anchor is null
     if (normalizedAnchor == nullptr)
       return;
 
     // Draw the border
-    g.setColour(borderColour);
-    g.fillPath(createPath(true));
+    _g.setColour(borderColour);
+    _g.fillPath(createPath(true));
 
     // Draw the background
-    g.setColour(backgroundColour);
-    g.fillPath(createPath(false));
+    _g.setColour(backgroundColour);
+    _g.fillPath(createPath(false));
 
     // Debug draw box around title and message labels
     if (dmt::Settings::debugBounds) {
-      g.setColour(juce::Colours::red);
-      g.drawRect(titleLabel.getBounds(), 1);
-      g.setColour(juce::Colours::green);
-      g.drawRect(messageLabel.getBounds(), 1);
-      g.setColour(juce::Colours::blue.withAlpha(0.2f));
-      g.drawRect(getLocalBounds(), 1);
+      _g.setColour(juce::Colours::red);
+      _g.drawRect(titleLabel.getBounds(), 1);
+      _g.setColour(juce::Colours::green);
+      _g.drawRect(messageLabel.getBounds(), 1);
+      _g.setColour(juce::Colours::blue.withAlpha(0.2f));
+      _g.drawRect(getLocalBounds(), 1);
     }
   }
 
-  bool hitTest(int x, int y) override
+  //==============================================================================
+  /**
+   * @brief Handles mouse hit testing for the popover.
+   *
+   * Ensures that the close button can be clicked while passing through
+   * other mouse click events.
+   *
+   * @param _x The x-coordinate of the mouse click.
+   * @param _y The y-coordinate of the mouse click.
+   * @return `true` if the click is within the cached message bounds.
+   */
+  [[nodiscard]] bool hitTest(int _x, int _y) noexcept override
   {
-    // We do this to make sure the close button can be clicked while passing
-    // through other mouse click events
-    return cachedMessageBounds.contains(x, y);
+    return cachedMessageBounds.contains(_x, _y);
   }
 
-  void resized() override
+  //==============================================================================
+  /**
+   * @brief Resizes the popover and its child components.
+   *
+   * Dynamically adjusts the layout of the close button, shadows, and
+   * labels based on the current size of the popover.
+   */
+  void resized() noexcept override
   {
     cachedMessageBounds = createMessageBounds(false);
 
-    const auto closeButtonSize = rawCloseButtonSize * size;
+    const auto closeButtonSize = static_cast<int>(rawCloseButtonSize * size);
     closeButton.setBounds(juce::Rectangle<int>(cachedMessageBounds)
                             .removeFromTop(closeButtonSize)
                             .removeFromRight(closeButtonSize));
@@ -128,17 +212,28 @@ public:
     innerShadow.setBoundsRelative(0.0f, 0.0f, 1.0f, 1.0f);
     innerShadow.setPath(createPath(false));
 
-    auto adjustedBounds = cachedMessageBounds.reduced(10.0f * size);
-    adjustedBounds.setY(adjustedBounds.getY() - 4.0f * size);
-    adjustedBounds.setHeight(adjustedBounds.getHeight() + 8.0f * size);
-    const auto titleBounds = adjustedBounds.removeFromTop(titleFontSize * size);
+    auto adjustedBounds =
+      cachedMessageBounds.reduced(static_cast<int>(10.0f * size));
+    adjustedBounds.setY(adjustedBounds.getY() - static_cast<int>(4.0f * size));
+    adjustedBounds.setHeight(adjustedBounds.getHeight() +
+                             static_cast<int>(8.0f * size));
+    const auto titleBounds =
+      adjustedBounds.removeFromTop(static_cast<int>(titleFontSize * size));
     titleLabel.setBounds(titleBounds);
     messageLabel.setBounds(adjustedBounds);
   }
 
+  //==============================================================================
+  /**
+   * @brief Displays a message in the popover.
+   *
+   * @param _anchor The anchor point for the popover spike.
+   * @param _title The title text to display.
+   * @param _message The message text to display.
+   */
   void showMessage(Point<int> _anchor,
                    juce::String _title,
-                   juce::String _message)
+                   juce::String _message) noexcept
   {
     setNormalizedAnchor(_anchor);
     cachedMessageBounds = createMessageBounds(false); // Update cached bounds
@@ -149,14 +244,26 @@ public:
     repaint();
   }
 
-  void hideMessage()
+  //==============================================================================
+  /** @brief Hides the popover message. */
+  void hideMessage() noexcept
   {
     normalizedAnchor.reset();
     this->setVisible(false);
   }
 
 protected:
-  juce::Path createPath(bool isOuter = true)
+  //==============================================================================
+  /**
+   * @brief Creates the path for the popover.
+   *
+   * Generates the path for the popover, including its spike and rounded
+   * rectangle.
+   *
+   * @param isOuter Whether the path is for the outer shadow.
+   * @return The generated path.
+   */
+  [[nodiscard]] juce::Path createPath(bool isOuter = true) const noexcept
   {
     juce::Path path;
 
@@ -170,31 +277,53 @@ protected:
     return path;
   }
 
-  Rectangle createMessageBounds(bool isOuter) const
+  //==============================================================================
+  /**
+   * @brief Creates the bounds for the popover message.
+   *
+   * Calculates the bounds for the popover message, including adjustments
+   * for the border width.
+   *
+   * @param isOuter Whether the bounds are for the outer shadow.
+   * @return The calculated bounds.
+   */
+  [[nodiscard]] Rectangle createMessageBounds(bool isOuter) const noexcept
   {
-    const int surfaceWidth = rawSurfaceWidth * size;
-    const int surfaceHeight = rawSurfaceHeight * size;
+    const int surfaceWidth = static_cast<int>(rawSurfaceWidth * size);
+    const int surfaceHeight = static_cast<int>(rawSurfaceHeight * size);
     const float borderWidth = isOuter ? 0.0f : rawBorderWidth * size;
 
     Rectangle messageBounds;
     const auto anchor = getAnchor();
     messageBounds.setSize(surfaceWidth, surfaceHeight);
-    const auto messageBoundsOffsetY = surfaceHeight / 2 + rawSpikeHeight * size;
+    const auto messageBoundsOffsetY =
+      surfaceHeight / 2 + static_cast<int>(rawSpikeHeight * size);
     const auto messageBoundsCentreX = anchor.x;
     const auto messageBoundsCentreY = anchor.y + messageBoundsOffsetY;
     messageBounds.setCentre(messageBoundsCentreX, messageBoundsCentreY);
 
     if (!isOuter)
-      messageBounds = messageBounds.reduced(borderWidth);
+      messageBounds = messageBounds.reduced(static_cast<int>(borderWidth));
 
     return messageBounds;
   }
 
-  std::tuple<juce::Point<float>, juce::Point<float>, juce::Point<float>>
-  calculateSpikePoints(bool isOuter) const
+  //==============================================================================
+  /**
+   * @brief Calculates the points for the popover spike.
+   *
+   * Determines the points for the spike, including adjustments for the
+   * border width.
+   *
+   * @param isOuter Whether the points are for the outer shadow.
+   * @return A tuple containing the spike tip, base left, and base right points.
+   */
+  [[nodiscard]] std::
+    tuple<juce::Point<float>, juce::Point<float>, juce::Point<float>>
+    calculateSpikePoints(bool isOuter) const noexcept
   {
-    const int spikeWidth = rawSpikeWidth * size;
-    const int spikeHeight = rawSpikeHeight * size;
+    const int spikeWidth = static_cast<int>(rawSpikeWidth * size);
+    const int spikeHeight = static_cast<int>(rawSpikeHeight * size);
     const float borderWidth = isOuter ? 0.0f : rawBorderWidth * size;
 
     const auto anchor = getAnchor();
@@ -252,10 +381,20 @@ protected:
     return { intersection, leftBaseProjection, rightBaseProjection };
   }
 
-  void addSpikeToPath(juce::Path& path,
-                      const std::tuple<juce::Point<float>,
-                                       juce::Point<float>,
-                                       juce::Point<float>>& spikePoints) const
+  //==============================================================================
+  /**
+   * @brief Adds the spike to the popover path.
+   *
+   * Appends the spike to the given path using the provided spike points.
+   *
+   * @param path The path to append the spike to.
+   * @param spikePoints The points defining the spike.
+   */
+  void addSpikeToPath(
+    juce::Path& path,
+    const std::tuple<juce::Point<float>,
+                     juce::Point<float>,
+                     juce::Point<float>>& spikePoints) const noexcept
   {
     const auto& [spikeTip, spikeBaseLeft, spikeBaseRight] = spikePoints;
 
@@ -264,9 +403,20 @@ protected:
     path.lineTo(spikeBaseRight);
   }
 
+  //==============================================================================
+  /**
+   * @brief Adds a rounded rectangle to the popover path.
+   *
+   * Appends a rounded rectangle to the given path using the provided
+   * message bounds.
+   *
+   * @param path The path to append the rectangle to.
+   * @param messageBounds The bounds of the rectangle.
+   * @param isOuter Whether the rectangle is for the outer shadow.
+   */
   void addRoundedRectangleToPath(juce::Path& path,
                                  const Rectangle& messageBounds,
-                                 bool isOuter) const
+                                 bool isOuter) const noexcept
   {
     const auto topLeft = messageBounds.getTopLeft().toFloat();
     const auto topRight = messageBounds.getTopRight().toFloat();
@@ -321,7 +471,16 @@ protected:
                 juce::MathConstants<float>::halfPi * 4.0f);
   }
 
-  void setNormalizedAnchor(const juce::Point<int>& _anchor)
+  //==============================================================================
+  /**
+   * @brief Sets the normalized anchor point for the popover.
+   *
+   * Converts the given anchor point to normalized coordinates based on
+   * the popover's dimensions.
+   *
+   * @param _anchor The anchor point to normalize.
+   */
+  void setNormalizedAnchor(const juce::Point<int>& _anchor) noexcept
   {
     if (getWidth() == 0 || getHeight() == 0)
       return;
@@ -332,7 +491,16 @@ protected:
       std::make_unique<juce::Point<float>>(normalizedX, normalizedY);
   }
 
-  juce::Point<int> getAnchor() const
+  //==============================================================================
+  /**
+   * @brief Gets the anchor point for the popover.
+   *
+   * Converts the normalized anchor point to denormalized coordinates
+   * based on the popover's dimensions.
+   *
+   * @return The denormalized anchor point.
+   */
+  [[nodiscard]] juce::Point<int> getAnchor() const noexcept
   {
     if (normalizedAnchor == nullptr)
       return juce::Point<int>(0, 0);
@@ -345,18 +513,25 @@ protected:
   }
 
 private:
-  CallbackButton closeButton{ "CloseButton", "Close", "Close", false,
-                              false,         false,   true };
+  //==============================================================================
+  // Members initialized in the initializer list
   Shadow outerShadow;
   Shadow innerShadow;
   Label titleLabel;
   Label messageLabel;
+
+  //==============================================================================
+  // Other members
   Fonts fonts;
   std::unique_ptr<juce::Point<float>> normalizedAnchor;
   Rectangle cachedMessageBounds;
+  CallbackButton closeButton{ "CloseButton", "Close", "Close", false,
+                              false,         false,   true };
+
+  //==============================================================================
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Popover)
 };
-//==============================================================================
-} // namespace components
+
+} // namespace window
 } // namespace gui
 } // namespace dmt
