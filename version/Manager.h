@@ -106,6 +106,10 @@ private:
     const auto versionString = parseResponseToVersionString(response);
     const auto versionArray = parseVersionStringToArray(versionString);
     dmt::version::Info::latest = std::make_unique<VersionArray>(versionArray);
+
+    // Let's also find the download link
+    const auto donwload = fetchLatestDownloadLink();
+
     return true;
   }
   //============================================================================
@@ -142,6 +146,63 @@ private:
         return 1; // version1 is greater than version2
     }
     return 0; // Both versions are equal
+  }
+  //============================================================================
+  juce::String fetchLatestDownloadLink()
+  {
+    // Debugging
+    std::cout << "Fetching latest download link..." << std::endl;
+
+    // Find app name
+    const auto appName = dmt::Settings::appName.toLowerCase();
+
+    // Determine the OS
+    String osName = "unknown";
+    if (OS_IS_WINDOWS)
+      osName = "windows";
+    else if (OS_IS_DARWIN)
+      osName = "macos";
+    else if (OS_IS_LINUX)
+      osName = "linux";
+
+    // If the OS is still unknown, return an empty string
+    if (osName == "unknown") {
+      std::cerr << "Unknown Operating System. Cannot fetch download link."
+                << std::endl;
+      return {};
+    }
+
+    const auto url =
+      juce::String("download?product=" + appName + "&os=" + osName);
+    const auto response = Networking::sendRequest(url);
+    if (response.isEmpty()) {
+      std::cerr << "Failed to fetch download link." << std::endl;
+      return {};
+    }
+    std::cout << "Response: " << response << std::endl;
+
+    // Let's parse the response as JSON
+    auto jsonResponse = juce::JSON::parse(response);
+
+    // Let's parse the JSON response
+    if (jsonResponse.isObject()) {
+      auto downloadUrl = jsonResponse.getProperty("download_url", "");
+      const auto downloadUrlString = downloadUrl.toString();
+      if (!downloadUrlString.isEmpty()) {
+        const juce::URL downloadUrl(downloadUrlString);
+        // Check if the download URL is valid
+        if (downloadUrl.isWellFormed()) {
+          std::cout << "Download URL is valid." << std::endl;
+          return downloadUrlString; // Successfully fetched download URL
+        } else {
+          std::cerr << "Download URL is not valid." << std::endl;
+        }
+      }
+    }
+
+    // If we landed here, it means we couldn't find the download URL
+    std::cerr << "Couldn't find download URL in the response." << std::endl;
+    return {};
   }
 };
 } // namespace version
