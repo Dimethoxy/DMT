@@ -1,5 +1,5 @@
 #pragma once
-
+//==============================================================================
 #include "dmt/version/Info.h"
 #include "gui/panel/AbstractPanel.h"
 #include "gui/panel/SettingsPanel.h"
@@ -7,11 +7,11 @@
 #include "gui/window/Header.h"
 #include "gui/window/Popover.h"
 #include <JuceHeader.h>
-
+//==============================================================================
 namespace dmt {
 namespace gui {
 namespace window {
-
+//==============================================================================
 class Compositor
   : public juce::Component
   , public juce::Timer
@@ -31,6 +31,7 @@ class Compositor
   const int& rawBorderButtonHeight = Settings::Header::borderButtonHeight;
 
 public:
+  //============================================================================
   Compositor(juce::String _titleText,
              AbstractPanel& _mainPanel,
              AudioProcessorValueTreeState& _apvts)
@@ -63,11 +64,11 @@ public:
     // Tooltips
     addAndMakeVisible(tooltipWindow);
   }
-
+  //============================================================================
   ~Compositor() noexcept override {}
-
+  //============================================================================
   void paint(juce::Graphics& /*_g*/) noexcept override {}
-
+  //============================================================================
   void resized() noexcept override
   {
     const auto bounds = getLocalBounds();
@@ -102,7 +103,7 @@ public:
       borderButton.setAlwaysOnTop(true);
     }
   }
-
+  //============================================================================
   void showSettings() noexcept
   {
     mainPanel.setVisible(false);
@@ -111,7 +112,7 @@ public:
     header.getSettingsExitButton().setVisible(true);
     repaint();
   }
-
+  //============================================================================
   void closeSettings() noexcept
   {
     mainPanel.setVisible(true);
@@ -120,7 +121,7 @@ public:
     header.getSettingsExitButton().setVisible(false);
     repaint();
   }
-
+  //============================================================================
   void hideHeader() noexcept
   {
     header.setVisible(false);
@@ -131,7 +132,7 @@ public:
     borderButton.setOpacityToMax();
     popover.hideMessage();
   }
-
+  //============================================================================
   void showHeader() noexcept
   {
     header.setVisible(true);
@@ -140,42 +141,48 @@ public:
       headerVisibilityCallback(true);
     }
   }
-
+  //============================================================================
   void timerCallback() override
   {
     if (dmt::version::Info::isLatest != nullptr &&
         !(*dmt::version::Info::isLatest)) {
+      showUpdatePopover();
       showUpdateButton();
       stopTimer();
     }
   }
-
-  void showUpdateButton() noexcept
+  //============================================================================
+  void showUpdatePopover() noexcept
   {
     if (!dmt::version::Info::wasPopoverShown) {
       const auto& updateButton = header.getUpdateButton();
       const int x = updateButton.getBounds().getCentreX();
       const int yOffset = -10.0f * size;
       const int y = updateButton.getBounds().getBottom() + yOffset;
-      const auto popoverTagetPoint = juce::Point<int>(x, y);
+      const auto popoverTargetPoint = juce::Point<int>(x, y);
       String title = "Update Available!";
       String message;
       message << "A new update is available! \n"
               << "Click here to download the latest version. ";
-      popover.showMessage(popoverTagetPoint, title, message);
-      header.getUpdateButton().setVisible(true);
+      popover.showMessage(popoverTargetPoint, title, message);
       dmt::version::Info::wasPopoverShown = true;
     }
   }
-
+  //============================================================================
+  void showUpdateButton() noexcept
+  {
+    header.getUpdateButton().setVisible(true);
+  }
+  //============================================================================
   void setHeaderVisibilityCallback(std::function<void(bool)> callback)
   {
     headerVisibilityCallback = std::move(callback);
   }
-
+  //============================================================================
   bool isHeaderVisible() const noexcept { return header.isVisible(); }
-
+  //============================================================================
 private:
+  //============================================================================
   TooltipWindow tooltipWindow;
   std::function<void(bool)> headerVisibilityCallback;
   Popover popover;
