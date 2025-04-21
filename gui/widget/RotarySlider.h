@@ -1,34 +1,90 @@
-#pragma once
 //==============================================================================
+/*
+ * ██████  ██ ███    ███ ███████ ████████ ██   ██  ██████  ██   ██ ██    ██
+ * ██   ██ ██ ████  ████ ██         ██    ██   ██ ██    ██  ██ ██   ██  ██
+ * ██   ██ ██ ██ ████ ██ █████      ██    ███████ ██    ██   ███     ████
+ * ██   ██ ██ ██  ██  ██ ██         ██    ██   ██ ██    ██  ██ ██     ██
+ * ██████  ██ ██      ██ ███████    ██    ██   ██  ██████  ██   ██    ██
+ *
+ * Copyright (C) 2024 Dimethoxy Audio (https://dimethoxy.com)
+ *
+ * This file is part of the Dimethoxy Library, a collection of essential
+ * classes used across various Dimethoxy projects.
+ * These files are primarily designed for internal use within our repositories.
+ *
+ * License:
+ * This code is licensed under the GPLv3 license. You are permitted to use and
+ * modify this code under the terms of this license.
+ * You must adhere GPLv3 license for any project using this code or parts of it.
+ * Your are not allowed to use this code in any closed-source project.
+ *
+ * Description:
+ * Implements a juce::Slider in the form of a rotary slider. It supports
+ * multiple slider types (positive, negative, bipolar, selector) and handles
+ * platform-specific scaling and visual customization via settings.
+ *
+ * Authors:
+ * Lunix-420 (Primary Author)
+ */
+//==============================================================================
+
+#pragma once
+
+//==============================================================================
+
 #include "utility/Math.h"
 #include "utility/Settings.h"
 #include <JuceHeader.h>
+
 //==============================================================================
+
 namespace dmt {
 namespace gui {
 namespace widget {
+
 //==============================================================================
+/**
+ * @brief Rotary slider widget with custom rendering and multiple types.
+ *
+ * @details
+ * This class provides a customizable rotary slider component optimized for
+ * real-time audio applications.
+ *
+ * It supports multiple slider types (positive, negative, bipolar, selector).
+ *
+ * Platform-specific scaling is applied for consistent appearance.
+ */
 class RotarySlider : public juce::Slider
 {
+  //==============================================================================
+  // Alias for convenience
   using Settings = dmt::Settings;
   using StrokeType = juce::PathStrokeType;
+
+  //==============================================================================
+  // Window
   const float& size = Settings::Window::size;
+
   // General
   const float& rawPadding = Settings::Settings::Slider::padding;
+
   // Shaft
   const juce::Colour& shaftColour = Settings::Slider::shaftColour;
   const float& rawShaftLineStrength = Settings::Slider::shaftLineStrength;
   const float& rawShaftSize = Settings::Slider::shaftSize;
+
   // Rail
   const juce::Colour& lowerRailColour = Settings::Slider::lowerRailColour;
   const juce::Colour& upperRailColour = Settings::Slider::upperRailColour;
   const float& rawRailWidth = Settings::Slider::railWidth;
   const float& railSize = Settings::Slider::railSize;
+
   // Thumb
   const juce::Colour& thumbInnerColour = Settings::Slider::thumbInnerColour;
   const juce::Colour& thumOuterColour = Settings::Slider::thumbOuterColour;
   const float& rawThumbSize = Settings::Slider::thumbSize;
   const float& rawThumbStrength = Settings::Slider::thumbStrength;
+
   // Selections
   const juce::Colour& selectionOuterColour =
     Settings::Slider::selectionOuterColour;
@@ -40,86 +96,132 @@ class RotarySlider : public juce::Slider
   const float& rawSelectionSize = Settings::Slider::selectionSize;
   const float& rawSelectionActivePadding =
     Settings::Slider::selectionActivePadding;
-  //==============================================================================
+
 public:
+  //==============================================================================
+  /**
+   * @brief The type of rotary slider.
+   */
   enum class Type
   {
-    Positive,
-    Negative,
-    Bipolar,
-    Selector
+    Positive, /**< Only positive values, arc from min to value. */
+    Negative, /**< Only negative values, arc from max to value. */
+    Bipolar,  /**< Bipolar values, arc from center to value. */
+    Selector  /**< Discrete selector, draws selection dots. */
   };
-  RotarySlider(Type type)
+
+  //==============================================================================
+  /**
+   * @brief Constructs a RotarySlider of the given type.
+   *
+   * @param _type The slider type (Positive, Negative, Bipolar, Selector).
+   *
+   * @details
+   * Initializes the slider with rotary style, disables the text box,
+   * randomizes the initial value, and sets velocity/skew for real-time feel.
+   * The constructor is constexpr for macOS compatibility.
+   */
+  explicit RotarySlider(Type _type) noexcept
     : juce::Slider()
-    , type(type)
+    , type(_type)
   {
     setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
     setTextBoxStyle(juce::Slider::TextBoxBelow, true, 0, 0);
     juce::Random rand;
-    setValue(10.0f * rand.nextFloat());
+    setValue(static_cast<double>(10.0f * rand.nextFloat()));
     setSkewFactor(2.0);
     setVelocityModeParameters(
       1.0, 1, 0.0, true, juce::ModifierKeys::shiftModifier);
   }
-  void paint(juce::Graphics& g) override
+
+  //==============================================================================
+  /**
+   * @brief Paints the rotary slider.
+   *
+   * @param _g The graphics context.
+   *
+   * @details
+   * Handles all drawing for the slider, including debug bounds if enabled.
+   * Delegates main rendering to drawSlider().
+   */
+  inline void paint(juce::Graphics& _g) override
   {
     const auto bounds = getLocalBounds().toFloat();
     const auto padding = rawPadding * size;
 
     // Draw bounds debug
-    g.setColour(juce::Colours::yellow);
+    _g.setColour(juce::Colours::yellow);
     if (Settings::debugBounds)
-      g.drawRect(bounds, 1.0f);
+      _g.drawRect(bounds, 1.0f);
 
-    drawSlider(g, bounds.reduced(padding));
+    drawSlider(_g, bounds.reduced(padding));
   }
-  Type getType() { return type; }
+
+  //==============================================================================
+  /**
+   * @brief Gets the type of this rotary slider.
+   *
+   * @return The slider type.
+   */
+  [[nodiscard]] inline Type getType() const noexcept { return type; }
 
 protected:
-  void drawSlider(juce::Graphics& g,
-                  const juce::Rectangle<float>& bounds) const noexcept
+  //==============================================================================
+  /**
+   * @brief Draws the rotary slider's visual elements.
+   *
+   * @param _g The graphics context.
+   * @param _bounds The bounds to draw within.
+   *
+   * @details
+   * Renders the shaft, tick, rails, thumb, and selector dots as appropriate
+   * for the current slider type and value. All geometry is calculated
+   * relative to the provided bounds for resolution independence.
+   */
+  inline void drawSlider(juce::Graphics& _g,
+                         const juce::Rectangle<float>& _bounds) const noexcept
   {
     TRACER("RotarySlider::drawSlider");
     // Draw bounds debug
-    g.setColour(juce::Colours::aqua);
+    _g.setColour(juce::Colours::aqua);
     if (Settings::debugBounds)
-      g.drawRect(bounds, 1.0f);
+      _g.drawRect(_bounds, 1.0f);
 
     // Draw the shaft
-    const auto shaftSize = rawShaftSize * bounds.getHeight();
-    auto shaftBounds = bounds;
+    const auto shaftSize = rawShaftSize * _bounds.getHeight();
+    auto shaftBounds = _bounds;
     shaftBounds.setSize(shaftSize, shaftSize);
-    shaftBounds.setCentre(bounds.getCentre());
+    shaftBounds.setCentre(_bounds.getCentre());
     const float lineStrength = rawShaftLineStrength * size;
     const auto rawCentre = shaftBounds.getCentre();
     const float centreOffset = shaftBounds.getHeight() / 6.5f;
     const float centreY = rawCentre.getY() + centreOffset;
     const auto centre = juce::Point<float>(rawCentre.getX(), centreY);
     shaftBounds.setCentre(centre);
-    g.setColour(shaftColour);
-    g.drawEllipse(shaftBounds, lineStrength);
+    _g.setColour(shaftColour);
+    _g.drawEllipse(shaftBounds, lineStrength);
 
     // Draw the tick
-    const float minValue = (float)getMinimum();
-    const float maxValue = (float)getMaximum();
-    const float value = (float)getValue();
+    const float minValue = static_cast<float>(getMinimum());
+    const float maxValue = static_cast<float>(getMaximum());
+    const float value = static_cast<float>(getValue());
     const float skew = getSkewFactor();
     const float valueRatio =
       (std::pow((value - minValue) / (maxValue - minValue), skew));
-    const float normalizedStartAngle = 0.0f;
-    const float normalizedEndAngle = 260.0f;
-    const float angleRange = normalizedEndAngle - normalizedStartAngle;
-    const float gapRange = 360.0f - angleRange;
-    const float angleOffset = 180.0f + (gapRange / 2.0f);
+    constexpr float normalizedStartAngle = 0.0f;
+    constexpr float normalizedEndAngle = 260.0f;
+    constexpr float angleRange = normalizedEndAngle - normalizedStartAngle;
+    constexpr float gapRange = 360.0f - angleRange;
+    constexpr float angleOffset = 180.0f + (gapRange / 2.0f);
     const float rawAngle = juce::jmap(
       valueRatio, 0.0f, 1.0f, normalizedStartAngle, normalizedEndAngle);
     const float valueAngleInRadians =
       dmt::math::degreeToRadians(rawAngle + angleOffset);
     const auto tickLine = getTick(shaftBounds, centre, valueAngleInRadians);
-    g.drawLine(tickLine, lineStrength);
+    _g.drawLine(tickLine, lineStrength);
 
     // Rail and selector
-    const auto railBounds = bounds;
+    const auto railBounds = _bounds;
     const auto railRadius = railBounds.getWidth() * railSize / 2.0f;
 
     // Draw the lower rail
@@ -134,8 +236,8 @@ protected:
         dmt::math::degreeToRadians(normalizedEndAngle + angleOffset);
       const auto lowerRail = getLowerRail(
         centre, railRadius, startAngleInRadians, endAngleInRadians);
-      g.setColour(lowerRailColour);
-      g.strokePath(lowerRail, strokeType);
+      _g.setColour(lowerRailColour);
+      _g.strokePath(lowerRail, strokeType);
 
       // Draw the upper rail
       const auto upperRail = getUpperRail(centre,
@@ -143,12 +245,13 @@ protected:
                                           startAngleInRadians,
                                           endAngleInRadians,
                                           valueAngleInRadians);
-      g.setColour(upperRailColour);
-      g.strokePath(upperRail, strokeType);
+      _g.setColour(upperRailColour);
+      _g.strokePath(upperRail, strokeType);
     } else {
-      const int numSelections = (int)maxValue - (int)minValue;
-      for (size_t i = 0; i <= numSelections; i++) {
-        const float selectionValue = minValue + i;
+      const int32_t numSelections =
+        static_cast<int32_t>(maxValue) - static_cast<int32_t>(minValue);
+      for (size_t i = 0; i <= static_cast<size_t>(numSelections); i++) {
+        const float selectionValue = minValue + static_cast<float>(i);
         const float rawSelectionAngle = juce::jmap(selectionValue,
                                                    minValue,
                                                    maxValue,
@@ -162,14 +265,14 @@ protected:
         const auto selectionBounds = juce::Rectangle<float>()
                                        .withSize(selectionSize, selectionSize)
                                        .withCentre(slectionCentre);
-        g.setColour(selectionOuterColour);
-        g.fillEllipse(selectionBounds);
+        _g.setColour(selectionOuterColour);
+        _g.fillEllipse(selectionBounds);
 
         const auto selectionInnerBounds =
           selectionBounds.reduced(rawSelectionWidth * size);
 
-        g.setColour(selectionInnerColour);
-        g.fillEllipse(selectionInnerBounds);
+        _g.setColour(selectionInnerColour);
+        _g.fillEllipse(selectionInnerBounds);
       }
     }
 
@@ -184,99 +287,150 @@ protected:
                                .withSize(thumbSize, thumbSize)
                                .withCentre(thumbPoint);
     const auto thumbInnerBounds = thumbBounds.reduced(thumbStrength);
-    g.setColour(thumOuterColour);
-    g.fillEllipse(thumbBounds);
-    g.setColour(thumbInnerColour);
-    g.fillEllipse(thumbInnerBounds);
+    _g.setColour(thumOuterColour);
+    _g.fillEllipse(thumbBounds);
+    _g.setColour(thumbInnerColour);
+    _g.fillEllipse(thumbInnerBounds);
 
     if (type == Type::Selector) {
       const float activePadding = rawSelectionActivePadding * size;
       const auto activeBounds = thumbInnerBounds.reduced(activePadding);
-      g.setColour(selectionActiveColour);
-      g.fillEllipse(activeBounds);
+      _g.setColour(selectionActiveColour);
+      _g.fillEllipse(activeBounds);
     }
   }
-  //============================================================================
-  const juce::Path getUpperRail(const juce::Point<float>& centre,
-                                const float arcRadius,
-                                const float startAngleInRadians,
-                                const float endAngleInRadians,
-                                const float valueAngleInRadians) const noexcept
+
+  //==============================================================================
+  /**
+   * @brief Returns the upper rail path for the current slider value.
+   *
+   * @param _centre The center point of the arc.
+   * @param _arcRadius The radius of the arc.
+   * @param _startAngleInRadians The start angle in radians.
+   * @param _endAngleInRadians The end angle in radians.
+   * @param _valueAngleInRadians The value angle in radians.
+   * @return The JUCE path representing the upper rail.
+   *
+   * @details
+   * The arc is drawn differently depending on the slider type.
+   * Selector type is not supported and will assert.
+   */
+  [[nodiscard]] inline const juce::Path getUpperRail(
+    const juce::Point<float>& _centre,
+    const float _arcRadius,
+    const float _startAngleInRadians,
+    const float _endAngleInRadians,
+    const float _valueAngleInRadians) const noexcept
   {
     juce::Path arc;
     switch (this->type) {
       case Type::Selector:
         jassert("How did we get here?");
+        break;
       case Type::Positive:
-        arc.addCentredArc(centre.getX(),
-                          centre.getY(),
-                          arcRadius,
-                          arcRadius,
+        arc.addCentredArc(_centre.getX(),
+                          _centre.getY(),
+                          _arcRadius,
+                          _arcRadius,
                           0.0f,
-                          startAngleInRadians,
-                          valueAngleInRadians,
+                          _startAngleInRadians,
+                          _valueAngleInRadians,
                           true);
         break;
       case Type::Negative:
-        arc.addCentredArc(centre.getX(),
-                          centre.getY(),
-                          arcRadius,
-                          arcRadius,
+        arc.addCentredArc(_centre.getX(),
+                          _centre.getY(),
+                          _arcRadius,
+                          _arcRadius,
                           0.0f,
-                          endAngleInRadians,
-                          valueAngleInRadians,
+                          _endAngleInRadians,
+                          _valueAngleInRadians,
                           true);
         break;
-      case Type::Bipolar:
-        auto centreValue = (endAngleInRadians - startAngleInRadians) / 2.0f;
-        arc.addCentredArc(centre.getX(),
-                          centre.getY(),
-                          arcRadius,
-                          arcRadius,
+      case Type::Bipolar: {
+        const auto centreValue =
+          (_endAngleInRadians - _startAngleInRadians) / 2.0f;
+        arc.addCentredArc(_centre.getX(),
+                          _centre.getY(),
+                          _arcRadius,
+                          _arcRadius,
                           0.0f,
-                          startAngleInRadians + centreValue,
-                          valueAngleInRadians,
+                          _startAngleInRadians + centreValue,
+                          _valueAngleInRadians,
                           true);
-        break;
+      } break;
     }
     return arc;
   }
 
-  //============================================================================
-  const juce::Path getLowerRail(const juce::Point<float>& centre,
-                                float arcRadius,
-                                float startAngleInRadians,
-                                float endAngleInRadians) const noexcept
+  //==============================================================================
+  /**
+   * @brief Returns the lower rail path for the slider.
+   *
+   * @param _centre The center point of the arc.
+   * @param _arcRadius The radius of the arc.
+   * @param _startAngleInRadians The start angle in radians.
+   * @param _endAngleInRadians The end angle in radians.
+   * @return The JUCE path representing the lower rail.
+   *
+   * @details
+   * The lower rail always draws the full arc from start to end.
+   */
+  [[nodiscard]] inline const juce::Path getLowerRail(
+    const juce::Point<float>& _centre,
+    float _arcRadius,
+    float _startAngleInRadians,
+    float _endAngleInRadians) const noexcept
   {
     juce::Path arc;
-    arc.addCentredArc(centre.getX(),
-                      centre.getY(),
-                      arcRadius,
-                      arcRadius,
+    arc.addCentredArc(_centre.getX(),
+                      _centre.getY(),
+                      _arcRadius,
+                      _arcRadius,
                       0.0f,
-                      startAngleInRadians,
-                      endAngleInRadians,
+                      _startAngleInRadians,
+                      _endAngleInRadians,
                       true);
     return arc;
   }
-  //============================================================================
-  const juce::Line<float> getTick(const juce::Rectangle<float>& bounds,
-                                  const juce::Point<float>& centre,
-                                  const float& angleInRadians) const noexcept
+
+  //==============================================================================
+  /**
+   * @brief Returns the tick line for the current value.
+   *
+   * @param _bounds The bounds of the shaft.
+   * @param _centre The center point of the shaft.
+   * @param _angleInRadians The angle for the tick in radians.
+   * @return The JUCE line representing the tick.
+   *
+   * @details
+   * The tick is drawn from the outer edge of the shaft to a point near the
+   * center.
+   */
+  [[nodiscard]] inline const juce::Line<float> getTick(
+    const juce::Rectangle<float>& _bounds,
+    const juce::Point<float>& _centre,
+    const float& _angleInRadians) const noexcept
   {
-    const float outerRadius = bounds.getWidth() / 2.0f;
+    const float outerRadius = _bounds.getWidth() / 2.0f;
     const auto outerPoint =
-      dmt::math::pointOnCircle(centre, outerRadius, angleInRadians);
+      dmt::math::pointOnCircle(_centre, outerRadius, _angleInRadians);
     const float innerRadius = outerRadius / 5.0f;
     const auto innerPoint =
-      dmt::math::pointOnCircle(centre, innerRadius, angleInRadians);
+      dmt::math::pointOnCircle(_centre, innerRadius, _angleInRadians);
     return juce::Line<float>(outerPoint, innerPoint);
   }
-  //============================================================================
+
+  //==============================================================================
 private:
+  //==============================================================================
+  // Members initialized in the initializer list
   Type type;
+
+  //==============================================================================
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(RotarySlider)
 };
-} // namespace widgets
+
+} // namespace widget
 } // namespace gui
 } // namespace dmt

@@ -44,7 +44,7 @@ namespace widget {
 
 //==============================================================================
 /**
- * @brief A high-performance, type-safe linear slider widget for JUCE GUIs.
+ * @brief Linear slider widget with custom rendering and multiple types.
  *
  * @details
  * This class provides a customizable linear slider component optimized for
@@ -59,20 +59,29 @@ namespace widget {
  */
 class LinearSlider : public juce::Slider
 {
+  //==============================================================================
+  // Alias for convenience
   using Settings = dmt::Settings;
   using StrokeType = juce::PathStrokeType;
+
+  //==============================================================================
+  // Window
   const float& size = Settings::Window::size;
+
   // General
   const float& rawPadding = Settings::Slider::padding;
+
   // Shaft
   const juce::Colour& shaftColour = Settings::Slider::shaftColour;
   const float& rawShaftLineStrength = Settings::Slider::shaftLineStrength;
   const float& rawShaftSize = Settings::Slider::shaftSize;
+
   // Rail
   const juce::Colour& lowerRailColour = Settings::Slider::lowerRailColour;
   const juce::Colour& upperRailColour = Settings::Slider::upperRailColour;
   const float& rawRailWidth = Settings::Slider::railWidth;
   const float& railSize = Settings::Slider::railSize;
+
   // Thumb
   const juce::Colour& thumbInnerColour = Settings::Slider::thumbInnerColour;
   const juce::Colour& thumOuterColour = Settings::Slider::thumbOuterColour;
