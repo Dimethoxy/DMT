@@ -46,8 +46,8 @@ namespace widget {
 //==============================================================================
 /**
  * @brief
- *   A callback-enabled button with customizable icon, tooltip, and visual
- * states.
+ *  A callback-enabled button with customizable icon, tooltip, and visual
+ *  states.
  *
  * @details
  *  This class extends AbstractButton to provide a button that triggers a
