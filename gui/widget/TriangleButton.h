@@ -1,18 +1,58 @@
 //==============================================================================
+/*
+ * ██████  ██ ███    ███ ███████ ████████ ██   ██  ██████  ██   ██ ██    ██
+ * ██   ██ ██ ████  ████ ██         ██    ██   ██ ██    ██  ██ ██   ██  ██
+ * ██   ██ ██ ██ ████ ██ █████      ██    ███████ ██    ██   ███     ████
+ * ██   ██ ██ ██  ██  ██ ██         ██    ██   ██ ██    ██  ██ ██     ██
+ * ██████  ██ ██      ██ ███████    ██    ██   ██  ██████  ██   ██    ██
+ *
+ * Copyright (C) 2024 Dimethoxy Audio (https://dimethoxy.com)
+ *
+ * This file is part of the Dimethoxy Library, a collection of essential
+ * classes used across various Dimethoxy projects.
+ * These files are primarily designed for internal use within our repositories.
+ *
+ * License:
+ * This code is licensed under the GPLv3 license. You are permitted to use and
+ * modify this code under the terms of this license.
+ * You must adhere GPLv3 license for any project using this code or parts of it.
+ * Your are not allowed to use this code in any closed-source project.
+ *
+ * Description:
+ * Triangle shaped button used for carousel to switch between panels.
+ * Not really designed for general use.
+ *
+ * Authors:
+ * Lunix-420 (Primary Author)
+ */
+//==============================================================================
+
 #pragma once
+
 //==============================================================================
-#include "../../utility/Settings.h"
+
+#include "utility/Settings.h"
 #include <JuceHeader.h>
+
 //==============================================================================
+
 namespace dmt {
 namespace gui {
 namespace widget {
+
 //==============================================================================
+/**
+ * @brief
+ *   A triangle-shaped button with optional border and shadow effects.
+ *
+ * @details
+ * Triangle shaped button used for carousel to switch between panels.
+ * Not really designed for general use.
+ */
 class TriangleButton : public juce::Button
 {
+  //==============================================================================
   using Shadow = dmt::gui::widget::Shadow;
-
-  // Global
   using Settings = dmt::Settings;
   const float& size = Settings::Window::size;
   const float& margin = Settings::Window::margin;
@@ -36,7 +76,11 @@ class TriangleButton : public juce::Button
   const float& innerShadowRadius = Settings::TriangleButton::innerShadowRadius;
 
 public:
-  //============================================================================
+  //==============================================================================
+  /**
+   * @brief
+   *   The direction of the triangle.
+   */
   enum Direction
   {
     Left,
@@ -44,28 +88,50 @@ public:
     Top,
     Down
   };
-  //============================================================================
-  TriangleButton(Direction d)
-    : direction(d)
-    , juce::Button("TriangleButton")
+
+  //==============================================================================
+  /**
+   * @brief
+   *   Constructs a TriangleButton in the given direction.
+   *
+   * @param _d The direction for the triangle.
+   *
+   * @details
+   *   The constructor is constexpr for macOS compatibility. Shadow and border
+   *   settings are taken from Settings. Shadows are added as child components.
+   */
+  inline TriangleButton(Direction _d) noexcept
+    : juce::Button("TriangleButton")
+    , direction(_d)
     , outerShadow(drawOuterShadow, outerShadowColour, outerShadowRadius, false)
     , innerShadow(drawInnerShadow, innerShadowColour, innerShadowRadius, true)
-
   {
     addAndMakeVisible(outerShadow);
     addAndMakeVisible(innerShadow);
   }
 
 protected:
-  juce::Path getPath(juce::Rectangle<int> bounds)
+  //==============================================================================
+  /**
+   * @brief
+   *   Returns a path representing the triangle in the current direction.
+   *
+   * @param _bounds The bounds to use for the triangle.
+   * @return The triangle path.
+   *
+   * @details
+   *   The triangle is constructed based on the direction and the provided
+   * bounds.
+   */
+  [[nodiscard]] inline juce::Path getPath(juce::Rectangle<int> _bounds)
   {
     juce::Path path;
-    const float left = (float)bounds.getX();
-    const float right = (float)bounds.getRight();
-    const float top = (float)bounds.getY();
-    const float bottom = (float)bounds.getBottom();
-    const float centreX = (float)bounds.getCentreX();
-    const float centreY = (float)bounds.getCentreY();
+    const float left = static_cast<float>(_bounds.getX());
+    const float right = static_cast<float>(_bounds.getRight());
+    const float top = static_cast<float>(_bounds.getY());
+    const float bottom = static_cast<float>(_bounds.getBottom());
+    const float centreX = static_cast<float>(_bounds.getCentreX());
+    const float centreY = static_cast<float>(_bounds.getCentreY());
     switch (direction) {
       case Direction::Left: {
         juce::Point<float> p1(left, centreY);
@@ -98,30 +164,66 @@ protected:
     }
     return path;
   }
-  juce::Path getTnnerTrianglePath(juce::Rectangle<int> origin)
+
+  //==============================================================================
+  /**
+   * @brief
+   *   Returns a path for the inner triangle, reduced for border rendering.
+   *
+   * @param _origin The bounds to use for the inner triangle.
+   * @return The inner triangle path, or an empty path if border is disabled.
+   *
+   * @details
+   *   The inner triangle is reduced in size based on the border strength and
+   *   aspect ratio, and is centered within the original bounds.
+   */
+  [[nodiscard]] inline juce::Path getTnnerTrianglePath(
+    juce::Rectangle<int> _origin)
   {
     if (drawBorder) {
-      auto bounds = origin;
-      float width = (float)bounds.getWidth();
-      float height = (float)bounds.getHeight();
+      auto bounds = _origin;
+      float width = static_cast<float>(bounds.getWidth());
+      float height = static_cast<float>(bounds.getHeight());
       float ratio = width / height;
       float borderStrength = rawBorderStrength * size;
-      int reducedWidth = (int)(bounds.getWidth() - borderStrength);
-      int reducedHeight = (int)(bounds.getHeight() - (borderStrength / ratio));
+      int reducedWidth = static_cast<int>(bounds.getWidth() - borderStrength);
+      int reducedHeight =
+        static_cast<int>(bounds.getHeight() - (borderStrength / ratio));
       bounds.setSize(reducedWidth, reducedHeight);
-      bounds.setCentre(origin.getCentre());
+      bounds.setCentre(_origin.getCentre());
       return getPath(bounds);
     } else
       return juce::Path();
   }
 
-  void buttonStateChanged() { repaint(); }
-  void paintButton(juce::Graphics& g,
-                   bool /*shouldDrawButtonAsHighlighted*/,
-                   bool /*shouldDrawButtonAsDown*/) override
+  //==============================================================================
+  /**
+   * @brief
+   *   Called when the button's state changes. Triggers a repaint.
+   */
+  inline void buttonStateChanged() override { repaint(); }
+
+  //==============================================================================
+  /**
+   * @brief
+   *   Paints the triangle button, including border and fill.
+   *
+   * @param _g The graphics context.
+   * @param _shouldDrawButtonAsHighlighted Indicates if the button should be
+   * drawn as highlighted.
+   * @param _shouldDrawButtonAsDown Indicates if the button should be drawn as
+   * pressed.
+   *
+   * @details
+   *   The triangle is drawn in two sizes depending on the mouse state. Border
+   * and fill colors are set according to hover/click state and settings.
+   */
+  inline void paintButton(juce::Graphics& _g,
+                          bool /*_shouldDrawButtonAsHighlighted*/,
+                          bool /*_shouldDrawButtonAsDown*/) override
   {
     const auto bounds = this->getLocalBounds();
-    const int bigBoundsPadding = (int)(buttonMargin * size);
+    const int bigBoundsPadding = static_cast<int>(buttonMargin * size);
     const auto bigBounds = bounds.reduced(bigBoundsPadding);
     juce::Path outerTrianglePath;
     juce::Path innerTrianglePath;
@@ -133,9 +235,11 @@ protected:
       innerTrianglePath = getTnnerTrianglePath(bigBounds);
     } else {
       auto smallBounds = bigBounds;
-      const int smallWeight = (int)(smallBounds.getWidth() * toggleReduction);
+      const int smallWeight =
+        static_cast<int>(smallBounds.getWidth() * toggleReduction);
       smallBounds.setWidth(smallWeight);
-      const int smallHeight = (int)(smallBounds.getHeight() * toggleReduction);
+      const int smallHeight =
+        static_cast<int>(smallBounds.getHeight() * toggleReduction);
       smallBounds.setHeight(smallHeight);
       smallBounds.setCentre(bigBounds.getCentre());
       outerTrianglePath = getPath(smallBounds);
@@ -144,29 +248,32 @@ protected:
 
     // Draw Border
     if (drawBorder) {
-      g.setColour(borderColour);
-      g.fillPath(outerTrianglePath);
+      _g.setColour(borderColour);
+      _g.fillPath(outerTrianglePath);
       trianglePath = innerTrianglePath;
     }
 
     // Set triangle fill color
     if (isMouseOver() && !isMouseButtonDown())
-      g.setColour(hoverColour);
+      _g.setColour(hoverColour);
     else
-      g.setColour(standbyColour);
+      _g.setColour(standbyColour);
 
     // Fill triangle
-    g.fillPath(trianglePath);
+    _g.fillPath(trianglePath);
   }
-  //============================================================================
+
 private:
+  //==============================================================================
+  // Members initialized in the initializer list
   Direction direction;
   Shadow outerShadow;
   Shadow innerShadow;
 
+  //==============================================================================
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(TriangleButton)
 };
 //==============================================================================
-} // namespace widgets
+} // namespace widget
 } // namespace gui
 } // namespace dmt
