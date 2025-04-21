@@ -1,5 +1,6 @@
 #pragma once
 
+#include "dmt/version/Info.h"
 #include "gui/panel/AbstractPanel.h"
 #include "gui/panel/SettingsPanel.h"
 #include "gui/widget/BorderButton.h"
@@ -142,11 +143,10 @@ public:
 
   void timerCallback() override
   {
-    // Check for updates and show the popover if needed
-    if (true) // TODO: Check for updates
-    {
+    if (dmt::version::Info::isLatest != nullptr &&
+        !(*dmt::version::Info::isLatest)) {
       showUpdateButton();
-      stopTimer(); // Stop the timer after showing the popover
+      stopTimer();
     }
   }
 
