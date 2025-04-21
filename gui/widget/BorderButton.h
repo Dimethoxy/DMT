@@ -1,13 +1,54 @@
-#pragma once
 //==============================================================================
+/*
+ * ██████  ██ ███    ███ ███████ ████████ ██   ██  ██████  ██   ██ ██    ██
+ * ██   ██ ██ ████  ████ ██         ██    ██   ██ ██    ██  ██ ██   ██  ██
+ * ██   ██ ██ ██ ████ ██ █████      ██    ███████ ██    ██   ███     ████
+ * ██   ██ ██ ██  ██  ██ ██         ██    ██   ██ ██    ██  ██ ██     ██
+ * ██████  ██ ██      ██ ███████    ██    ██   ██  ██████  ██   ██    ██
+ *
+ * Copyright (C) 2024 Dimethoxy Audio (https://dimethoxy.com)
+ *
+ * This file is part of the Dimethoxy Library, a collection of essential
+ * classes used across various Dimethoxy projects.
+ * These files are primarily designed for internal use within our repositories.
+ *
+ * License:
+ * This code is licensed under the GPLv3 license. You are permitted to use and
+ * modify this code under the terms of this license.
+ * You must adhere GPLv3 license for any project using this code or parts of it.
+ * Your are not allowed to use this code in any closed-source project.
+ *
+ * Description:
+ * This class implements a buttom to bring back the header when it is hidden.
+ * It uses a fade-in/out effect for the button's opacity.
+ *
+ * Authors:
+ * Lunix-420 (Primary Author)
+ */
+//==============================================================================
+
+#pragma once
+
+//==============================================================================
+
 #include "utility/RepaintTimer.h"
 #include "utility/Settings.h"
 #include <JuceHeader.h>
+
 //==============================================================================
+
 namespace dmt {
 namespace gui {
 namespace widget {
+
 //==============================================================================
+/**
+ * @brief A custom button with fade-in/out effects and border styling.
+ *
+ * @details This class implements a buttom to bring back the header when it is
+ *          hidden.
+ *          It uses a fade-in/out effect for the button's opacity.
+ */
 class BorderButton
   : public juce::Button
   , private dmt::utility::RepaintTimer
@@ -34,7 +75,14 @@ class BorderButton
 public:
   using ButtonCallback = std::function<void()>;
 
-  BorderButton()
+  //==============================================================================
+  /**
+   * @brief Constructs a BorderButton instance.
+   *
+   * @details Initializes the button with semi-transparency and starts the
+   * repaint timer for fade-in/out effects.
+   */
+  BorderButton() noexcept
     : juce::Button("BorderButton")
     , currentOpacity(MIN_OPACITY) // Start with semi-transparency
     , isHovered(false)
@@ -43,89 +91,158 @@ public:
     startRepaintTimer(); // Start the timer in the constructor
   }
 
-  ~BorderButton() override {}
+  //==============================================================================
+  /**
+   * @brief Destructor for BorderButton.
+   */
+  ~BorderButton() override = default;
 
-  void resized() override
+  //==============================================================================
+  /**
+   * @brief Handles resizing of the button.
+   *
+   * @details Updates the cached image whenever the button is resized to ensure
+   * proper rendering.
+   */
+  void resized() override { updateCachedImage(); }
+
+  //==============================================================================
+  /**
+   * @brief Paints the button with the current opacity.
+   *
+   * @param _g The graphics context.
+   * @param _isMouseOverButton Unused parameter.
+   * @param _isButtonDown Unused parameter.
+   *
+   * @details Draws the cached image with the current opacity level for
+   * optimized rendering.
+   */
+  inline void paintButton(Graphics& _g,
+                          bool /*_isMouseOverButton*/,
+                          bool /*_isButtonDown*/) override
   {
-    // Update the cached image when resized
-    updateCachedImage();
+    _g.setOpacity(currentOpacity);
+    _g.drawImageAt(cachedImage, 0, 0);
   }
 
-  void paintButton(Graphics& g,
-                   bool /*isMouseOverButton*/,
-                   bool /*isButtonDown*/) override
+  //==============================================================================
+  /**
+   * @brief Handles mouse enter events.
+   *
+   * @param _event The mouse event.
+   *
+   * @details Instantly sets the button to maximum opacity when hovered.
+   */
+  inline void mouseEnter(const juce::MouseEvent& /*_event*/) override
   {
-    // Draw the cached image with the current opacity
-    g.setOpacity(currentOpacity);
-    g.drawImageAt(cachedImage, 0, 0);
+    isHovered = true;
+    currentOpacity = MAX_OPACITY;
+    repaint();
   }
 
-  void mouseEnter(const juce::MouseEvent&) override
+  //==============================================================================
+  /**
+   * @brief Handles mouse exit events.
+   *
+   * @param _event The mouse event.
+   *
+   * @details Stops the hover effect when the mouse leaves the button.
+   */
+  inline void mouseExit(const juce::MouseEvent& /*_event*/) override
   {
-    isHovered = true;             // Set hover state to true
-    currentOpacity = MAX_OPACITY; // Instantly set to max opacity
-    repaint(); // Trigger a repaint to reflect the change immediately
+    isHovered = false;
   }
 
-  void mouseExit(const juce::MouseEvent&) override
-  {
-    isHovered = false; // Set hover state to false
-  }
-
-  void setOpacityToMax()
+  //==============================================================================
+  /**
+   * @brief Sets the button's opacity to maximum.
+   *
+   * @details This method is useful for programmatically forcing the button to
+   * appear fully visible.
+   */
+  inline void setOpacityToMax() noexcept
   {
     currentOpacity = MAX_OPACITY;
-    repaint(); // Trigger a repaint to reflect the change immediately
+    repaint();
   }
 
-  void setButtonCallback(ButtonCallback callback)
+  //==============================================================================
+  /**
+   * @brief Sets the callback to be invoked when the button is clicked.
+   *
+   * @param _callback The callback function.
+   */
+  inline void setButtonCallback(ButtonCallback _callback) noexcept
   {
-    buttonCallback = std::move(callback);
+    buttonCallback = std::move(_callback);
   }
 
-  void clicked() override
+  //==============================================================================
+  /**
+   * @brief Handles button click events.
+   *
+   * @details Invokes the user-defined callback function if it is set.
+   */
+  inline void clicked() override
   {
     if (buttonCallback) {
-      buttonCallback(); // Invoke the callback when the button is clicked
+      buttonCallback();
     }
   }
 
-private:
+protected:
+  //==============================================================================
+  /**
+   * @brief Updates the cached image for optimized rendering.
+   *
+   * @details This method is called whenever the button is resized to ensure
+   * the cached image matches the new dimensions.
+   */
   void updateCachedImage()
   {
-    // Create or update the cached image
     cachedImage = Image(juce::Image::ARGB, getWidth(), getHeight(), true);
     Graphics g(cachedImage);
 
-    // Draw the image content
-    g.fillAll(juce::Colours::transparentBlack); // Clear the image
+    g.fillAll(juce::Colours::transparentBlack);
     g.fillAll(backgroundColour);
 
-    // Add additional drawing logic here if needed
     g.setColour(fontColour);
     g.drawText(
       "Click to Show Header", getLocalBounds(), juce::Justification::centred);
   }
 
+  //==============================================================================
+  /**
+   * @brief Callback for the repaint timer.
+   *
+   * @details Adjusts the button's opacity based on hover state and triggers a
+   * repaint if necessary.
+   */
   void repaintTimerCallback() noexcept override
   {
-    // Calculate fade speed dynamically based on frame rate
     const float fadeSpeed =
       RAW_FADE_SPEED / static_cast<float>(Settings::framerate);
 
-    // Adjust opacity based on hover state
-    if (!isHovered) { // Only fade out when not hovered
-      currentOpacity =
-        std::max(MIN_OPACITY, currentOpacity - fadeSpeed); // Fade out
-      repaint(); // Trigger a repaint to update the button
+    if (!isHovered) {
+      currentOpacity = std::max(MIN_OPACITY, currentOpacity - fadeSpeed);
+      repaint();
     }
   }
 
-  Image cachedImage;             // Cached image for optimized rendering
+private:
+  //==============================================================================
+  // Members initialized in the initializer list
+  ButtonCallback buttonCallback; // Callback to be invoked on click
   float currentOpacity;          // Current transparency level
   bool isHovered;                // Whether the button is hovered
-  ButtonCallback buttonCallback; // Callback to be invoked on click
+
+  //==============================================================================
+  // Other members
+  Image cachedImage; // Cached image for optimized rendering
+
+  //==============================================================================
+  JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(BorderButton)
 };
 } // namespace widget
-} // namespace dmt
 } // namespace gui
+} // namespace dmt
