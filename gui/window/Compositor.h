@@ -58,6 +58,15 @@ class Compositor
   : public juce::Component
   , public juce::Timer
 {
+  //============================================================================
+  // Feature flag for update notification
+#ifdef DMT_DISABLE_UPDATE_NOTIFICATION
+  static constexpr bool updateNotificationEnabled = false;
+#else
+  static constexpr bool updateNotificationEnabled = true;
+#endif
+  //============================================================================
+  // Aliases for convenience
   using AbstractPanel = dmt::gui::panel::AbstractPanel;
   using SettingsPanel = dmt::gui::panel::SettingsPanel;
   using Header = dmt::gui::window::Header;
@@ -65,7 +74,7 @@ class Compositor
   using Popover = dmt::gui::window::Popover;
   using TooltipWindow = juce::TooltipWindow;
 
-  //==============================================================================
+  //============================================================================
   // Window size
   const float& size = dmt::Settings::Window::size;
   const int rawHeaderHeight = dmt::Settings::Header::height;
@@ -74,7 +83,7 @@ class Compositor
   const int& rawBorderButtonHeight = Settings::Header::borderButtonHeight;
 
 public:
-  //==============================================================================
+  //============================================================================
   /**
    * @brief Constructs a `Compositor` instance.
    *
@@ -110,21 +119,22 @@ public:
     addChildComponent(settingsPanel);
 
     // Start the timer to check if update is found
-    startTimer(1000); // Commented out until Popover is done
+    if (updateNotificationEnabled)
+      startTimer(1000); // Commented out until Popover is done
 
     // Tooltips
     addAndMakeVisible(tooltipWindow);
   }
 
-  //==============================================================================
+  //============================================================================
   /** @brief Destructor for `Compositor`. */
   ~Compositor() noexcept override = default;
 
-  //==============================================================================
+  //============================================================================
   /** @brief Paints the component. */
   void paint(juce::Graphics& /*_g*/) noexcept override {}
 
-  //==============================================================================
+  //============================================================================
   /**
    * @brief Handles resizing of the component and its children.
    *
@@ -220,6 +230,9 @@ public:
    */
   void timerCallback() override
   {
+    if (!updateNotificationEnabled)
+      return;
+
     if (dmt::version::Info::isLatest != nullptr &&
         !(*dmt::version::Info::isLatest)) {
       showUpdatePopover();
@@ -232,6 +245,9 @@ public:
   /** @brief Displays the update popover with a message. */
   void showUpdatePopover() noexcept
   {
+    if (!updateNotificationEnabled)
+      return;
+
     if (!dmt::version::Info::wasPopoverShown) {
       const auto& updateButton = header.getUpdateButton();
       const int x = updateButton.getBounds().getCentreX();
@@ -251,6 +267,9 @@ public:
   /** @brief Makes the update button visible. */
   void showUpdateButton() noexcept
   {
+    if (!updateNotificationEnabled)
+      return;
+
     header.getUpdateButton().setVisible(true);
   }
 
