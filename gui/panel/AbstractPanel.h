@@ -1,22 +1,67 @@
 //==============================================================================
-#pragma once
+/*
+ * ██████  ██ ███    ███ ███████ ████████ ██   ██  ██████  ██   ██ ██    ██
+ * ██   ██ ██ ████  ████ ██         ██    ██   ██ ██    ██  ██ ██   ██  ██
+ * ██   ██ ██ ██ ████ ██ █████      ██    ███████ ██    ██   ███     ████
+ * ██   ██ ██ ██  ██  ██ ██         ██    ██   ██ ██    ██  ██ ██     ██
+ * ██████  ██ ██      ██ ███████    ██    ██   ██  ██████  ██   ██    ██
+ *
+ * Copyright (C) 2024 Dimethoxy Audio (https://dimethoxy.com)
+ *
+ * This file is part of the Dimethoxy Library, a collection of essential
+ * classes used across various Dimethoxy projects.
+ * These files are primarily designed for internal use within our repositories.
+ *
+ * License:
+ * This code is licensed under the GPLv3 license. You are permitted to use and
+ * modify this code under the terms of this license.
+ * You must adhere GPLv3 license for any project using this code or parts of it.
+ * Your are not allowed to use this code in any closed-source project.
+ *
+ * Description:
+ * AbstractPanel provides a base class for all panel components in the GUI,
+ * encapsulating layout, grid, border, shadow, and navigation logic.
+ *
+ * Authors:
+ * Lunix-420 (Primary Author)
+ */
 //==============================================================================
+
+#pragma once
+
+//==============================================================================
+
 #include "gui/widget/Label.h"
 #include "gui/widget/Shadow.h"
 #include "gui/widget/TriangleButton.h"
 #include "utility/Fonts.h"
 #include "utility/Settings.h"
 #include <JuceHeader.h>
+
 //==============================================================================
+
 namespace dmt {
 namespace gui {
 namespace panel {
+
 //==============================================================================
+/**
+ * @brief Abstract base class for GUI panels with grid layout, navigation, and
+ * shadow/border rendering.
+ *
+ * @details
+ * This class provides a flexible foundation for all panels in the GUI,
+ * supporting grid-based layouts, navigation buttons, and customizable
+ * appearance (shadows, borders, etc). Designed for real-time performance and
+ * extensibility. Subclasses should override extendResize() and getName() for
+ * custom behavior.
+ */
 class AbstractPanel
   : public juce::Component
   , public juce::Button::Listener
 {
 public:
+  //==============================================================================
   using Grid = std::vector<std::vector<juce::Point<float>>>;
   using TriangleButton = dmt::gui::widget::TriangleButton;
   using Shadow = dmt::gui::widget::Shadow;
@@ -27,6 +72,7 @@ public:
   using LibrarySettings = dmt::Settings;
   using Settings = LibrarySettings::Panel;
   using Carousel = LibrarySettings::Carousel;
+
   // Layout
   const float& size = LibrarySettings::Window::size;
   const float& margin = LibrarySettings::Window::margin;
@@ -52,17 +98,34 @@ public:
   const bool& debugBounds = LibrarySettings::debugBounds;
   const bool& debugGrid = LibrarySettings::debugGrid;
 
+  //==============================================================================
+  /**
+   * @brief Structure representing the grid layout (columns and rows).
+   */
   struct Layout
   {
     int cols;
     int rows;
   };
 
-  AbstractPanel(const juce::String name, const bool displayName = true) noexcept
+  //==============================================================================
+  /**
+   * @brief Constructs an AbstractPanel.
+   *
+   * @param _name The panel's name (used for the title label).
+   * @param _displayName If true, displays the title label.
+   *
+   * @details
+   * Initializes layout, grid, title label, navigation buttons, and shadows.
+   * The constructor is constexpr for maximum compile-time optimization.
+   */
+  constexpr inline explicit AbstractPanel(
+    const juce::String _name,
+    const bool _displayName = true) noexcept
     : layout({ 1, 1 })
-    , rawGridOffsetY(40 * static_cast<int>(displayName))
-    , name(name)
-    , titleLabel(name, fonts.bold, fontSize, juce::Colours::white)
+    , rawGridOffsetY(40 * static_cast<int>(_displayName))
+    , name(_name)
+    , titleLabel(_name, fonts.bold, fontSize, juce::Colours::white)
     , nextCallback([]() {})
     , prevCallback([]() {})
     , nextButton(dmt::gui::widget::TriangleButton::Right)
@@ -70,7 +133,7 @@ public:
     , outerShadow(drawOuterShadow, outerShadowColour, outerShadowRadius, false)
     , innerShadow(drawInnerShadow, outerShadowColour, outerShadowRadius, true)
   {
-    if (displayName) {
+    if (_displayName) {
       addAndMakeVisible(titleLabel);
     }
     setLayout(layout);
@@ -78,7 +141,18 @@ public:
     addAndMakeVisible(innerShadow);
   }
 
-  void paint(juce::Graphics& g) noexcept override
+  //==============================================================================
+  /**
+   * @brief Paints the panel, including background, border, and debug overlays.
+   *
+   * @param _g The graphics context.
+   *
+   * @details
+   * Draws the panel's background, border, and optional debug grid/bounds.
+   * Uses settings for appearance. All drawing is performed in local
+   * coordinates.
+   */
+  inline void paint(juce::Graphics& _g) noexcept override
   {
     TRACER("AbstractPanel:paint");
     // Precalculation
@@ -90,47 +164,57 @@ public:
       outerCornerSize - (borderStrength * size * 0.5f), 0.0f, outerCornerSize);
 
     // draw debug bounds
-    g.setColour(juce::Colours::aqua);
+    _g.setColour(juce::Colours::aqua);
     if (debugBounds)
-      g.drawRect(bounds, 1.0f);
+      _g.drawRect(bounds, 1.0f);
 
     // Draw background if border is disabled
     if (!drawBorder) {
-      g.setColour(backgroundColour);
-      g.fillRoundedRectangle(outerBounds, outerCornerSize);
+      _g.setColour(backgroundColour);
+      _g.fillRoundedRectangle(outerBounds, outerCornerSize);
     }
 
     // Draw background and border if border is enabled
     if (drawBorder) {
-      g.setColour(borderColour);
-      g.fillRoundedRectangle(outerBounds, outerCornerSize);
-      g.setColour(backgroundColour);
-      g.fillRoundedRectangle(innerBounds, innerCornerSize);
+      _g.setColour(borderColour);
+      _g.fillRoundedRectangle(outerBounds, outerCornerSize);
+      _g.setColour(backgroundColour);
+      _g.fillRoundedRectangle(innerBounds, innerCornerSize);
     }
 
     // draw debug line grid
     if (debugGrid) {
-      g.setColour(juce::Colours::red);
+      _g.setColour(juce::Colours::red);
       for (size_t col = 0; col < grid.size(); col++) {
-        const auto firstPoint = getGridPoint(bounds.toNearestInt(), col, 0);
-        const auto endPoint =
-          juce::Point<int>(firstPoint.getX(), (int)bounds.getHeight() - 1);
+        const auto firstPoint =
+          getGridPoint(bounds.toNearestInt(), static_cast<int>(col), 0);
+        const auto endPoint = juce::Point<int>(
+          firstPoint.getX(), static_cast<int>(bounds.getHeight()) - 1);
         const auto line =
           juce::Line<float>(firstPoint.toFloat(), endPoint.toFloat());
-        g.drawLine(line, 1.0f);
+        _g.drawLine(line, 1.0f);
       }
       for (size_t row = 0; row < grid[0].size(); row++) {
-        const auto firstPoint = getGridPoint(bounds.toNearestInt(), 0, row);
-        const auto endPoint =
-          juce::Point<int>((int)bounds.getWidth() - 1, firstPoint.getY());
+        const auto firstPoint =
+          getGridPoint(bounds.toNearestInt(), 0, static_cast<int>(row));
+        const auto endPoint = juce::Point<int>(
+          static_cast<int>(bounds.getWidth()) - 1, firstPoint.getY());
         const auto line =
           juce::Line<float>(firstPoint.toFloat(), endPoint.toFloat());
-        g.drawLine(line, 1.0f);
+        _g.drawLine(line, 1.0f);
       }
     }
   }
 
-  void resized() noexcept override
+  //==============================================================================
+  /**
+   * @brief Handles resizing of the panel and its subcomponents.
+   *
+   * @details
+   * Updates bounds for shadows, navigation buttons, and the title label.
+   * Calls extendResize() for subclass-specific resizing.
+   */
+  inline void resized() noexcept override
   {
     TRACER("AbstractPanel:resized");
     const auto bounds = getLocalBounds();
@@ -152,10 +236,10 @@ public:
     innerShadow.setBoundsRelative(0.0f, 0.0f, 1.0f, 1.0f);
     innerShadow.toBack();
 
-    const int buttonWidth = (int)(Carousel::buttonWidth * size);
-    const int buttonHeight = (int)(Carousel::buttonHeight * size);
-    const int marginSize = (int)(size * margin);
-    const int padding = (int)(rawPadding * size);
+    const int buttonWidth = static_cast<int>(Carousel::buttonWidth * size);
+    const int buttonHeight = static_cast<int>(Carousel::buttonHeight * size);
+    const int marginSize = static_cast<int>(size * margin);
+    const int padding = static_cast<int>(rawPadding * size);
 
     auto leftBounds = bounds;
     auto rightBounds = bounds;
@@ -175,79 +259,186 @@ public:
     extendResize();
   }
 
-  virtual void extendResize() noexcept {}
+  //==============================================================================
+  /**
+   * @brief Extension point for subclasses to handle additional resizing logic.
+   *
+   * @details
+   * Override in subclasses to resize custom subcomponents.
+   */
+  virtual inline void extendResize() noexcept {}
+
+  //==============================================================================
+  /**
+   * @brief Returns the panel's name.
+   *
+   * @return The name of the panel.
+   *
+   * @details
+   * Override in subclasses to provide a custom name.
+   */
   virtual inline const juce::String getName() noexcept { return "Panel"; }
 
-  void setCallbacks(std::function<void()> next, std::function<void()> prev)
+  //==============================================================================
+  /**
+   * @brief Sets the callbacks for navigation buttons.
+   *
+   * @param _next Callback for the "next" button.
+   * @param _prev Callback for the "previous" button.
+   *
+   * @details
+   * Registers the callbacks and makes the navigation buttons visible.
+   */
+  inline void setCallbacks(std::function<void()> _next,
+                           std::function<void()> _prev)
   {
-    nextCallback = next;
-    prevCallback = prev;
+    nextCallback = _next;
+    prevCallback = _prev;
     addAndMakeVisible(nextButton);
     addAndMakeVisible(prevButton);
     nextButton.addListener(this);
     prevButton.addListener(this);
   }
 
-  void next() { nextCallback(); }
-  void prev() { prevCallback(); }
-  void buttonClicked(juce::Button* button) override
+  //==============================================================================
+  /**
+   * @brief Invokes the "next" callback.
+   */
+  inline void next() { nextCallback(); }
+
+  //==============================================================================
+  /**
+   * @brief Invokes the "previous" callback.
+   */
+  inline void prev() { prevCallback(); }
+
+  //==============================================================================
+  /**
+   * @brief Handles button click events for navigation.
+   *
+   * @param _button The button that was clicked.
+   *
+   * @details
+   * Invokes the appropriate callback based on which navigation button was
+   * pressed.
+   */
+  inline void buttonClicked(juce::Button* _button) override
   {
-    if (button == &nextButton) {
+    if (_button == &nextButton) {
       nextCallback();
-    } else if (button == &prevButton) {
+    } else if (_button == &prevButton) {
       prevCallback();
     }
   }
 
 protected:
-  inline const Layout getLayout() noexcept { return layout; }
-  void setLayout(const Layout layoutToUse) noexcept
+  //==============================================================================
+  /**
+   * @brief Returns the current grid layout.
+   *
+   * @return The current Layout struct.
+   */
+  [[nodiscard]] inline const Layout getLayout() noexcept { return layout; }
+
+  //==============================================================================
+  /**
+   * @brief Sets the grid layout and recalculates grid points.
+   *
+   * @param _layoutToUse The desired layout (columns and rows).
+   *
+   * @details
+   * Recomputes the grid for the new layout, ensuring all points are updated.
+   */
+  inline void setLayout(const Layout _layoutToUse) noexcept
   {
     TRACER("AbstractPanel:setLayout");
-    const int cols = layoutToUse.cols;
-    const int rows = layoutToUse.rows;
-    const float colSpacing = 1.0f / (float)(cols + 1);
-    const float rowSpacing = 1.0f / (float)(rows + 1);
-    Grid newGrid(cols + 2, std::vector<juce::Point<float>>(rows + 2));
+    const int cols = _layoutToUse.cols;
+    const int rows = _layoutToUse.rows;
+    const float colSpacing = 1.0f / static_cast<float>(cols + 1);
+    const float rowSpacing = 1.0f / static_cast<float>(rows + 1);
+    Grid newGrid(
+      static_cast<size_t>(cols + 2),
+      std::vector<juce::Point<float>>(static_cast<size_t>(rows + 2)));
 
-    for (size_t col = 0; col <= (layoutToUse.cols + 1); col++) {
-      for (size_t row = 0; row <= (layoutToUse.rows + 1); row++) {
-        const float x = (float)col * colSpacing;
-        const float y = (float)row * rowSpacing;
+    for (size_t col = 0; col <= static_cast<size_t>(_layoutToUse.cols + 1);
+         col++) {
+      for (size_t row = 0; row <= static_cast<size_t>(_layoutToUse.rows + 1);
+           row++) {
+        const float x = static_cast<float>(col) * colSpacing;
+        const float y = static_cast<float>(row) * rowSpacing;
         const auto point = juce::Point<float>(x, y);
         newGrid[col][row] = point;
       }
     }
     this->grid = newGrid;
-    this->layout = layoutToUse;
+    this->layout = _layoutToUse;
   }
-  inline const juce::Point<int> getGridPoint(const juce::Rectangle<int> bounds,
-                                             const int col,
-                                             const int row) noexcept
+
+  //==============================================================================
+  /**
+   * @brief Returns the pixel position of a grid point within the given bounds.
+   *
+   * @param _bounds The bounding rectangle.
+   * @param _col The column index.
+   * @param _row The row index.
+   * @return The pixel position as a juce::Point<int>.
+   *
+   * @details
+   * Computes the position of a grid point, accounting for grid offset and
+   * scaling. Asserts if indices are out of bounds.
+   */
+  [[nodiscard]] inline const juce::Point<int> getGridPoint(
+    const juce::Rectangle<int> _bounds,
+    const int _col,
+    const int _row) noexcept
   {
     TRACER("AbstractPanel:getGridPoint");
     // assert if col and row are out of bounds
-    jassert(col >= 0 && col < grid.size());
-    jassert(row >= 0 && row < grid[col].size());
+    jassert(_col >= 0 && static_cast<size_t>(_col) < grid.size());
+    jassert(_row >= 0 &&
+            static_cast<size_t>(_row) < grid[static_cast<size_t>(_col)].size());
 
-    auto rawPoint = grid[col][row];
-    const auto x = rawPoint.getX() * (float)bounds.getWidth();
+    auto rawPoint = grid[static_cast<size_t>(_col)][static_cast<size_t>(_row)];
+    const auto x = rawPoint.getX() * static_cast<float>(_bounds.getWidth());
 
-    const float gridOffsetY = (float)rawGridOffsetY * size;
-    const float offsetBoundsHeight = bounds.getHeight() - gridOffsetY;
+    const float gridOffsetY = static_cast<float>(rawGridOffsetY) * size;
+    const float offsetBoundsHeight =
+      static_cast<float>(_bounds.getHeight()) - gridOffsetY;
     const auto y = rawPoint.getY() * offsetBoundsHeight + gridOffsetY;
 
     juce::Point<float> point(x, y);
     return point.toInt();
   }
 
-  void setRawGridOffset(const int offset) noexcept { rawGridOffsetY = offset; }
-  const inline int getRawGridOffset() const noexcept { return rawGridOffsetY; }
+  //==============================================================================
+  /**
+   * @brief Sets the raw Y offset for the grid.
+   *
+   * @param _offset The offset in pixels.
+   *
+   * @details
+   * Used to vertically shift the grid, e.g., to make space for a title.
+   */
+  inline void setRawGridOffset(const int _offset) noexcept
+  {
+    rawGridOffsetY = _offset;
+  }
+
+  //==============================================================================
+  /**
+   * @brief Returns the current raw grid Y offset.
+   *
+   * @return The raw grid Y offset in pixels.
+   */
+  [[nodiscard]] inline const int getRawGridOffset() const noexcept
+  {
+    return rawGridOffsetY;
+  }
 
 private:
-  Fonts fonts;
+  //==============================================================================
+  // Members initialized in the initializer list
   Layout layout;
-  Grid grid;
   int rawGridOffsetY;
   const juce::String name;
   Label titleLabel;
@@ -257,9 +448,16 @@ private:
   TriangleButton prevButton;
   Shadow outerShadow;
   Shadow innerShadow;
-  //============================================================================
+
+  //==============================================================================
+  // Other members
+  Grid grid;
+  Fonts fonts;
+
+  //==============================================================================
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(AbstractPanel)
 };
+
 } // namespace panel
 } // namespace gui
 } // namespace dmt
