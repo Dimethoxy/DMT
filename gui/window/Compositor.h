@@ -152,8 +152,7 @@ public:
 
   void showUpdateButton() noexcept
   {
-    if (true) // TODO: Check if we already showed the popover before
-    {
+    if (!dmt::version::Info::wasPopoverShown) {
       const auto& updateButton = header.getUpdateButton();
       const int x = updateButton.getBounds().getCentreX();
       const int yOffset = -10.0f * size;
@@ -165,6 +164,7 @@ public:
               << "Click here to download the latest version. ";
       popover.showMessage(popoverTagetPoint, title, message);
       header.getUpdateButton().setVisible(true);
+      dmt::version::Info::wasPopoverShown = true;
     }
   }
 
