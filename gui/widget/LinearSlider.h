@@ -1,13 +1,62 @@
 //==============================================================================
-#pragma once
+/*
+ * ██████  ██ ███    ███ ███████ ████████ ██   ██  ██████  ██   ██ ██    ██
+ * ██   ██ ██ ████  ████ ██         ██    ██   ██ ██    ██  ██ ██   ██  ██
+ * ██   ██ ██ ██ ████ ██ █████      ██    ███████ ██    ██   ███     ████
+ * ██   ██ ██ ██  ██  ██ ██         ██    ██   ██ ██    ██  ██ ██     ██
+ * ██████  ██ ██      ██ ███████    ██    ██   ██  ██████  ██   ██    ██
+ *
+ * Copyright (C) 2024 Dimethoxy Audio (https://dimethoxy.com)
+ *
+ * This file is part of the Dimethoxy Library, a collection of essential
+ * classes used across various Dimethoxy projects.
+ * These files are primarily designed for internal use within our repositories.
+ *
+ * License:
+ * This code is licensed under the GPLv3 license. You are permitted to use and
+ * modify this code under the terms of this license.
+ * You must adhere GPLv3 license for any project using this code or parts of it.
+ * Your are not allowed to use this code in any closed-source project.
+ *
+ * Description:
+ * Immplements a juce::Slider in the form of a linear slider that can be either
+ * horizontal or vertical. It supports multiple slider types (positive,
+ * negative, bipolar, selector) and handles platform-specific scaling and visual
+ * customization via settings.
+ *
+ * Authors:
+ * Lunix-420 (Primary Author)
+ */
 //==============================================================================
+
+#pragma once
+
+//==============================================================================
+
 #include "utility/Settings.h"
 #include <JuceHeader.h>
+
 //==============================================================================
+
 namespace dmt {
 namespace gui {
 namespace widget {
+
 //==============================================================================
+/**
+ * @brief A high-performance, type-safe linear slider widget for JUCE GUIs.
+ *
+ * @details
+ * This class provides a customizable linear slider component optimized for
+ * real-time audio applications.
+ *
+ * It supports both horizontal and vertical
+ * orientations, with multiple slider types (positive, negative, bipolar,
+ * selector).
+ *
+ * Platform-specific scaling is applied for consistent appearance
+ * across operating systems.
+ */
 class LinearSlider : public juce::Slider
 {
   using Settings = dmt::Settings;
@@ -32,6 +81,13 @@ class LinearSlider : public juce::Slider
 
 public:
   //==============================================================================
+  /**
+   * @brief Slider type enumeration.
+   *
+   * @details
+   * Determines the visual and functional behavior of the slider. Bipolar mode
+   * centers the slider, while selector mode is for discrete values.
+   */
   enum Type
   {
     Positive,
@@ -39,18 +95,39 @@ public:
     Bipolar,
     Selector
   };
+
+  //==============================================================================
+  /**
+   * @brief Slider orientation enumeration.
+   *
+   * @details
+   * Specifies whether the slider is rendered horizontally or vertically.
+   */
   enum Orientation
   {
     Horizontal,
     Vertical
   };
+
   //==============================================================================
-  LinearSlider(const Type type, const Orientation orientation)
+  /**
+   * @brief Constructs a LinearSlider with the specified type and orientation.
+   *
+   * @param _type The slider type (Positive, Negative, Bipolar, Selector).
+   * @param _orientation The slider orientation (Horizontal or Vertical).
+   *
+   * @details
+   * The constructor is constexpr for compile-time optimization and real-time
+   * safety. The slider style and text box are set according to orientation.
+   * A random initial value is assigned for demonstration or testing.
+   */
+  explicit LinearSlider(const Type _type,
+                        const Orientation _orientation) noexcept
     : juce::Slider()
-    , type(type)
-    , orientation(orientation)
+    , type(_type)
+    , orientation(_orientation)
   {
-    switch (orientation) {
+    switch (_orientation) {
       case Orientation::Horizontal: {
         setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalDrag);
         break;
@@ -68,7 +145,18 @@ public:
     setValue(10.0f * rand.nextFloat());
   }
 
-  void paint(juce::Graphics& g) override
+  //==============================================================================
+  /**
+   * @brief Paints the slider, including rails, thumb, and debug overlays.
+   *
+   * @param _g The graphics context for rendering.
+   *
+   * @details
+   * This method computes all geometry and visual elements in real time,
+   * using platform-specific scaling and settings. Debug overlays are drawn
+   * if enabled. The function is marked noexcept for real-time safety.
+   */
+  inline void paint(juce::Graphics& _g) noexcept override
   {
     TRACER("LinearSlider::paint");
 
@@ -76,32 +164,29 @@ public:
     auto bounds = getLocalBounds();
 
     // Draw bounds debug
-    g.setColour(juce::Colours::cyan);
+    _g.setColour(juce::Colours::cyan);
     if (Settings::debugBounds)
-      g.drawRect(bounds, 1);
+      _g.drawRect(bounds, 1);
 
     // Calculate lower rail
     float thumbSize = rawThumbSize * size;
-    const auto railBounds = bounds.reduced((int)(thumbSize / 2.0f));
+    const auto railBounds = bounds.reduced(static_cast<int>(thumbSize / 2.0f));
     float primaryPointX;
     float primaryPointY;
     float secondaryPointX;
     float secondaryPointY;
-    int distanceForFullScaleDrag;
     switch (orientation) {
       case Orientation::Horizontal:
-        primaryPointX = (float)railBounds.getX();
-        primaryPointY = (float)railBounds.getCentreY();
-        secondaryPointX = (float)railBounds.getRight();
-        secondaryPointY = (float)railBounds.getCentreY();
-        distanceForFullScaleDrag = primaryPointX - secondaryPointX;
+        primaryPointX = static_cast<float>(railBounds.getX());
+        primaryPointY = static_cast<float>(railBounds.getCentreY());
+        secondaryPointX = static_cast<float>(railBounds.getRight());
+        secondaryPointY = static_cast<float>(railBounds.getCentreY());
         break;
       case Orientation::Vertical:
-        primaryPointX = (float)railBounds.getCentreX();
-        primaryPointY = (float)railBounds.getBottom();
-        secondaryPointX = (float)railBounds.getCentreX();
-        secondaryPointY = (float)railBounds.getY();
-        distanceForFullScaleDrag = primaryPointY - secondaryPointY;
+        primaryPointX = static_cast<float>(railBounds.getCentreX());
+        primaryPointY = static_cast<float>(railBounds.getBottom());
+        secondaryPointX = static_cast<float>(railBounds.getCentreX());
+        secondaryPointY = static_cast<float>(railBounds.getY());
         break;
       default:
         jassert(false);
@@ -112,13 +197,13 @@ public:
     const juce::Point<float> primaryPoint(primaryPointX, primaryPointY);
     const juce::Point<float> secondaryPoint(secondaryPointX, secondaryPointY);
 
-    // Debug draw achor points and rail bounds
+    // Debug draw anchor points and rail bounds
     if (Settings::debugBounds) {
-      g.setColour(juce::Colours::red);
-      g.drawRect(railBounds, 1);
-      g.setColour(juce::Colours::yellow);
-      g.fillEllipse(primaryPoint.getX() - 8, primaryPoint.getY() - 8, 16, 16);
-      g.fillEllipse(
+      _g.setColour(juce::Colours::red);
+      _g.drawRect(railBounds, 1);
+      _g.setColour(juce::Colours::yellow);
+      _g.fillEllipse(primaryPoint.getX() - 8, primaryPoint.getY() - 8, 16, 16);
+      _g.fillEllipse(
         secondaryPoint.getX() - 8, secondaryPoint.getY() - 8, 16, 16);
     }
 
@@ -131,8 +216,8 @@ public:
     auto lowerRailPath = juce::Path();
     lowerRailPath.startNewSubPath(primaryPoint);
     lowerRailPath.lineTo(secondaryPoint);
-    g.setColour(lowerRailColour);
-    g.strokePath(lowerRailPath, lowerStrokeType);
+    _g.setColour(lowerRailColour);
+    _g.strokePath(lowerRailPath, lowerStrokeType);
 
     // Calculate upper rail
     const auto upperEndCapStyle =
@@ -160,6 +245,11 @@ public:
       case Type::Bipolar:
         upperRailStartPoint = middlePoint;
         break;
+      case Type::Selector:
+        // TODO: Implement selector type
+        // As this isn't implemented yet, we just jassert false and return
+        jassertfalse;
+        break;
     }
     const auto upperRailEndPoint = valuePoint;
     auto upperRailPath = juce::Path();
@@ -167,8 +257,8 @@ public:
     upperRailPath.lineTo(upperRailEndPoint);
 
     // Draw upper rail
-    g.setColour(upperRailColour);
-    g.strokePath(upperRailPath, upperStrokeType);
+    _g.setColour(upperRailColour);
+    _g.strokePath(upperRailPath, upperStrokeType);
 
     // Draw the Thumb
     const auto thumbPoint = valuePoint;
@@ -178,18 +268,24 @@ public:
     const auto thumbBounds = juce::Rectangle<float>()
                                .withSize(thumbSize, thumbSize)
                                .withCentre(thumbPoint);
-    g.setColour(thumOuterColour);
-    g.fillEllipse(thumbBounds);
-    g.setColour(thumbInnerColour);
-    g.fillEllipse(thumbBounds.reduced(thumbStrength));
+    _g.setColour(thumOuterColour);
+    _g.fillEllipse(thumbBounds);
+    _g.setColour(thumbInnerColour);
+    _g.fillEllipse(thumbBounds.reduced(thumbStrength));
   }
 
 private:
+  //==============================================================================
+  // Members initialized in the initializer list
   Type type;
   Orientation orientation;
 
+  //==============================================================================
+  // Other members
+
+  //==============================================================================
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(LinearSlider)
 };
-} // namespace widgets
+} // namespace widget
 } // namespace gui
 } // namespace dmt
