@@ -1,6 +1,7 @@
 #pragma once
 //==============================================================================
 #include "dmt/utility/Settings.h"
+#include "dmt/version/Info.h"
 #include "dmt/version/Networking.h"
 #include <JuceHeader.h>
 //==============================================================================
@@ -9,6 +10,7 @@ namespace version {
 //==============================================================================
 constexpr auto SERVER_WAIT_FOR_INITIALIZATION_TIMEOUT = 100;
 constexpr auto SERVER_RECONNECT_INTERVAL = 10000;
+constexpr auto THREAD_TIMEOUT = 1000;
 //==============================================================================
 class Manager : public juce::Thread
 {
@@ -29,7 +31,7 @@ public:
 
     // Parse the version string into an array
     const auto versionArray = parseVersionStringToArray(versionString);
-    currentVersion = std::make_unique<VersionArray>(versionArray);
+    dmt::version::Info::current = std::make_unique<VersionArray>(versionArray);
 
     // Start the thread to fetch the latest version
     startThread();
@@ -42,19 +44,53 @@ protected:
   //============================================================================
   void run() override
   {
-    // Wait for the the plugin to be initialized
+    // Wait for the plugin to be initialized
     wait(SERVER_WAIT_FOR_INITIALIZATION_TIMEOUT);
 
     // Continuously try to fetch the latest version
     while (!threadShouldExit()) {
-      // Check if the app name is initialized before proceeding
-      const auto isInitialized = !dmt::Settings::appName.isEmpty();
-      if (isInitialized) {
-        if (fetchLatestVersion())
-          break; // Exit the loop if the version is fetched successfully
+      if (!dmt::Settings::appName.isEmpty()) {
+        if (fetchLatestVersion()) {
+          handleVersionComparison();
+          break; // Exit the loop if fetching the version is successful
+        }
       }
-      // If we couldn't fetch the version, wait for a while before trying again
+      // Wait before retrying if fetching the version fails
       wait(SERVER_RECONNECT_INTERVAL);
+    }
+  }
+
+private:
+  void handleVersionComparison()
+  {
+    // Make sure both versions are available or if they are nullptr
+    if (!dmt::version::Info::current || !dmt::version::Info::latest) {
+      std::cerr << "Version comparison failed: one of the versions is null."
+                << std::endl;
+      return;
+    }
+
+    // Compare the current version with the latest version
+    const int comparisonResult = compareVersions(*dmt::version::Info::current,
+                                                 *dmt::version::Info::latest);
+
+    // Process the result of the comparison
+    switch (comparisonResult) {
+      case 0:
+        std::cout << "You are using the latest version." << std::endl;
+        dmt::version::Info::isLatest = std::make_unique<bool>(true);
+        break;
+      case 1:
+        std::cout << "Newer version available." << std::endl;
+        dmt::version::Info::isLatest = std::make_unique<bool>(false);
+        break;
+      case 2:
+        std::cout << "This is a future version." << std::endl;
+        dmt::version::Info::isLatest = std::make_unique<bool>(true);
+        break;
+      default:
+        std::cerr << "Unexpected version comparison result." << std::endl;
+        break;
     }
   }
   //============================================================================
@@ -69,7 +105,7 @@ protected:
     }
     const auto versionString = parseResponseToVersionString(response);
     const auto versionArray = parseVersionStringToArray(versionString);
-    latestVersion = std::make_unique<VersionArray>(versionArray);
+    dmt::version::Info::latest = std::make_unique<VersionArray>(versionArray);
     return true;
   }
   //============================================================================
@@ -107,10 +143,6 @@ protected:
     }
     return 0; // Both versions are equal
   }
-
-  //============================================================================
-  static inline std::unique_ptr<VersionArray> latestVersion;
-  static inline std::unique_ptr<VersionArray> currentVersion;
 };
 } // namespace version
 } // namespace dmt

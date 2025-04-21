@@ -1,18 +1,14 @@
-// #pragma once
-// //==============================================================================
-// namespace dmt {
-// namespace version {
-// //==============================================================================
-// class Info
-// {
-// public:
-//   //============================================================================
-//   Info() = delete;
-//   //============================================================================
-//   Info(const Info& obj) = delete;
-//   //============================================================================
-//   ~Info() {}
-//   //============================================================================
-// };
-// } // namespace version
-// } // namespace dmt
+#pragma once
+//==============================================================================
+namespace dmt {
+namespace version {
+//==============================================================================
+struct Info
+{
+  using VersionArray = std::array<int, 3>;
+  static inline std::unique_ptr<VersionArray> latest;
+  static inline std::unique_ptr<VersionArray> current;
+  static inline std::unique_ptr<bool> isLatest;
+};
+} // namespace version
+} // namespace dmt
