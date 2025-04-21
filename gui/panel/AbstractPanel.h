@@ -76,7 +76,6 @@ public:
     setLayout(layout);
     addAndMakeVisible(outerShadow);
     addAndMakeVisible(innerShadow);
-    setOpaque(true);
   }
 
   void paint(juce::Graphics& g) noexcept override
