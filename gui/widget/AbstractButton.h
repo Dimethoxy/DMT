@@ -1,24 +1,72 @@
-#pragma once
 //==============================================================================
+/*
+ * ██████  ██ ███    ███ ███████ ████████ ██   ██  ██████  ██   ██ ██    ██
+ * ██   ██ ██ ████  ████ ██         ██    ██   ██ ██    ██  ██ ██   ██  ██
+ * ██   ██ ██ ██ ████ ██ █████      ██    ███████ ██    ██   ███     ████
+ * ██   ██ ██ ██  ██  ██ ██         ██    ██   ██ ██    ██  ██ ██     ██
+ * ██████  ██ ██      ██ ███████    ██    ██   ██  ██████  ██   ██    ██
+ *
+ * Copyright (C) 2024 Dimethoxy Audio (https://dimethoxy.com)
+ *
+ * This file is part of the Dimethoxy Library, a collection of essential
+ * classes used across various Dimethoxy projects.
+ * These files are primarily designed for internal use within our repositories.
+ *
+ * License:
+ * This code is licensed under the GPLv3 license. You are permitted to use and
+ * modify this code under the terms of this license.
+ * You must adhere GPLv3 license for any project using this code or parts of it.
+ * Your are not allowed to use this code in any closed-source project.
+ *
+ * Description:
+ * AbstractButton is a customizable button class that supports shadows, icons,
+ * and tooltips. It is optimized for real-time performance and designed for
+ * use in GUI applications.
+ *
+ * Authors:
+ * Lunix-420 (Primary Author)
+ */
+//==============================================================================
+
+#pragma once
+
+//==============================================================================
+
 #include "gui/widget/Shadow.h"
 #include "utility/Icon.h"
 #include "utility/Settings.h"
 #include <JuceHeader.h>
+
 //==============================================================================
+
 namespace dmt {
 namespace gui {
 namespace widget {
+
 //==============================================================================
-class AbstractButton
-  : public juce::Button
-  , public juce::TooltipClient
+/**
+ * @class AbstractButton
+ * @brief A customizable button class with support for shadows, icons, and
+ * tooltips.
+ *
+ * AbstractButton extends the JUCE Button class and provides additional
+ * functionality for rendering shadows, icons, and background states.
+ *
+ * @details This class is designed for GUI applications requiring visually
+ * appealing and interactive buttons. It supports hover and click states,
+ * customizable colors, and tooltips. The rationale for this design is to
+ * centralize button appearance logic and maximize real-time GUI performance.
+ */
+class AbstractButton : public juce::Button
 {
+  using String = juce::String;
   using Settings = dmt::Settings;
   using Colour = juce::Colour;
   using Image = juce::Image;
   using ImageComponent = juce::ImageComponent;
   using ButtonSettings = dmt::Settings::Button;
 
+  //==============================================================================
   // General
   const float& size = Settings::Window::size;
 
@@ -37,13 +85,30 @@ class AbstractButton
   const bool& drawInnerShadow = ButtonSettings::drawInnerShadow;
 
 public:
-  AbstractButton(juce::String _name,
-                 juce::String _iconName,
-                 juce::String _tooltip = "",
-                 bool _shouldDrawBorder = true,
-                 bool _shouldDrawBackground = true,
-                 bool _shouldDrawShadow = true,
-                 bool _alternativeIconHover = false)
+  //==============================================================================
+  /**
+   * @brief Constructs an AbstractButton instance.
+   *
+   * @param _name The name of the button.
+   * @param _iconName The name of the icon to display on the button.
+   * @param _tooltip The tooltip text for the button.
+   * @param _shouldDrawBorder Whether to draw a border around the button.
+   * @param _shouldDrawBackground Whether to draw a background for the button.
+   * @param _shouldDrawShadow Whether to draw shadows for the button.
+   * @param _alternativeIconHover Whether to use an alternative hover icon.
+   *
+   * @details The constructor initializes all visual and interactive states,
+   * including icon, shadow, and background components. All members are
+   * initialized in the order they appear in the initializer list for
+   * performance and clarity.
+   */
+  inline AbstractButton(String _name,
+                        String _iconName,
+                        String _tooltip = "",
+                        bool _shouldDrawBorder = true,
+                        bool _shouldDrawBackground = true,
+                        bool _shouldDrawShadow = true,
+                        bool _alternativeIconHover = false) noexcept
     : juce::Button(_name)
     , tooltip(_tooltip)
     , shouldDrawBorder(_shouldDrawBorder)
@@ -76,9 +141,24 @@ public:
     addMouseListener(this, true);
   }
 
-  ~AbstractButton() override = default;
+  //==============================================================================
+  /**
+   * @brief Destructor for AbstractButton.
+   *
+   * @details Virtual and defaulted for safe polymorphic destruction.
+   */
+  inline ~AbstractButton() override = default;
 
-  void resized() override
+  //==============================================================================
+  /**
+   * @brief Resizes the button and its components.
+   *
+   * @details This method recalculates the bounds for shadows, background, and
+   * icons based on the button's size and padding. It is called by the JUCE
+   * framework when the component is resized, ensuring all visuals remain
+   * pixel-perfect and performant.
+   */
+  inline void resized() override
   {
     auto bounds = getLocalBounds();
     const auto buttonPadding = rawButtonPadding * size;
@@ -92,9 +172,23 @@ public:
     drawIcon();
   }
 
-  String getTooltip() override { return tooltip; }
+  //==============================================================================
+  /**
+   * @brief Retrieves the tooltip text for the button.
+   * @return The tooltip text as a String.
+   *
+   * @details Used by JUCE's tooltip system to display contextual help.
+   */
+  [[nodiscard]] inline String getTooltip() override { return tooltip; }
 
-  void setPassiveState()
+  //==============================================================================
+  /**
+   * @brief Sets the button to its passive (default) state.
+   *
+   * @details This method is called to visually reset the button to its
+   * non-hover, non-clicked state. Used for consistent state management.
+   */
+  inline void setPassiveState()
   {
     if (shouldDrawBackground) {
       backgroundImageComponent.setVisible(true);
@@ -105,7 +199,14 @@ public:
     hoverIconImageComponent.setVisible(false);
   }
 
-  void setHoverState()
+  //==============================================================================
+  /**
+   * @brief Sets the button to its hover state.
+   *
+   * @details Called when the mouse hovers over the button, updating visuals
+   * for immediate user feedback.
+   */
+  inline void setHoverState()
   {
     if (shouldDrawBackground) {
       backgroundImageComponent.setVisible(false);
@@ -116,7 +217,14 @@ public:
     hoverIconImageComponent.setVisible(true);
   }
 
-  void setClickedState()
+  //==============================================================================
+  /**
+   * @brief Sets the button to its clicked state.
+   *
+   * @details Called when the button is pressed, updating visuals for
+   * immediate user feedback.
+   */
+  inline void setClickedState()
   {
     if (shouldDrawBackground) {
       backgroundImageComponent.setVisible(false);
@@ -127,28 +235,50 @@ public:
     hoverIconImageComponent.setVisible(true);
   }
 
-  void paintButton(juce::Graphics& /*g*/,
-                   bool /*isMouseOverButton*/,
-                   bool /*isButtonDown*/) override
+  //==============================================================================
+  /**
+   * @brief Paints the button. This method is intentionally left empty.
+   *
+   * @param g The graphics context.
+   * @param isMouseOverButton Whether the mouse is over the button.
+   * @param isButtonDown Whether the button is pressed.
+   *
+   * @details All painting is handled by subcomponents for maximum flexibility
+   * and performance. This override is required by JUCE.
+   */
+  inline void paintButton(juce::Graphics& /*_g*/,
+                          bool /*_isMouseOverButton*/,
+                          bool /*_isButtonDown*/) override
   {
   }
 
 private:
-  void setShadowBounds(const juce::Rectangle<int>& innerBounds,
-                       float cornerRadius)
+  //==============================================================================
+  /**
+   * @brief Sets the bounds for the shadows.
+   *
+   * @param _innerBounds The inner bounds of the button.
+   * @param _cornerRadius The corner radius for the shadows.
+   *
+   * @details This method ensures that both inner and outer shadows are
+   * correctly sized and layered for visual consistency. Uses explicit
+   * casting for type safety.
+   */
+  inline void setShadowBounds(const juce::Rectangle<int>& _innerBounds,
+                              float _cornerRadius)
   {
     if (!shouldDrawShadows)
       return;
 
     // Set the bounds for the outer shadow
     juce::Path outerShadowPath;
-    outerShadowPath.addRoundedRectangle(innerBounds, cornerRadius);
+    outerShadowPath.addRoundedRectangle(_innerBounds, _cornerRadius);
     outerShadow.setPath(outerShadowPath);
     outerShadow.setBoundsRelative(0.0f, 0.0f, 1.0f, 1.0f);
 
     // Set the bounds for the inner shadow
     juce::Path innerShadowPath;
-    innerShadowPath.addRoundedRectangle(innerBounds, cornerRadius);
+    innerShadowPath.addRoundedRectangle(_innerBounds, _cornerRadius);
     innerShadow.setPath(innerShadowPath);
     innerShadow.setBoundsRelative(0.0f, 0.0f, 1.0f, 1.0f);
 
@@ -160,29 +290,47 @@ private:
     backgroundImageComponent.toBack();
   }
 
-  void setBackgroundBounds(const juce::Rectangle<int>& innerBounds)
+  //==============================================================================
+  /**
+   * @brief Sets the bounds for the background components.
+   *
+   * @param _innerBounds The inner bounds of the button.
+   *
+   * @details Ensures that all background images are sized to match the
+   * button's inner area for pixel-perfect rendering.
+   */
+  inline void setBackgroundBounds(const juce::Rectangle<int>& _innerBounds)
   {
     if (!shouldDrawBackground)
       return;
 
-    backgroundImage =
-      Image(Image::ARGB, innerBounds.getWidth(), innerBounds.getHeight(), true);
-    backgroundImageComponent.setBounds(innerBounds);
-    hoverBackgroundImage =
-      Image(Image::ARGB, innerBounds.getWidth(), innerBounds.getHeight(), true);
-    hoverBackgroundImageComponent.setBounds(innerBounds);
-    clickedBackgroundImage =
-      Image(Image::ARGB, innerBounds.getWidth(), innerBounds.getHeight(), true);
-    clickedBackgroundImageComponent.setBounds(innerBounds);
+    backgroundImage = Image(
+      Image::ARGB, _innerBounds.getWidth(), _innerBounds.getHeight(), true);
+    backgroundImageComponent.setBounds(_innerBounds);
+    hoverBackgroundImage = Image(
+      Image::ARGB, _innerBounds.getWidth(), _innerBounds.getHeight(), true);
+    hoverBackgroundImageComponent.setBounds(_innerBounds);
+    clickedBackgroundImage = Image(
+      Image::ARGB, _innerBounds.getWidth(), _innerBounds.getHeight(), true);
+    clickedBackgroundImageComponent.setBounds(_innerBounds);
   }
 
-  void setIconBounds(const juce::Rectangle<int>& innerBounds)
+  //==============================================================================
+  /**
+   * @brief Sets the bounds for the icon components.
+   *
+   * @param _innerBounds The inner bounds of the button.
+   *
+   * @details Calculates icon area using both global and icon-specific
+   * padding, ensuring icons are always centered and visually balanced.
+   */
+  inline void setIconBounds(const juce::Rectangle<int>& _innerBounds)
   {
     const auto specificSvgPadding = rawSpecificSvgPadding * size;
     const auto globalSvgPadding = 2.5f * size;
     const auto svgPadding = specificSvgPadding + globalSvgPadding;
 
-    const auto iconArea = innerBounds.reduced(svgPadding);
+    const auto iconArea = _innerBounds.reduced(svgPadding);
     iconImage = juce::Image(
       juce::Image::ARGB, iconArea.getWidth(), iconArea.getHeight(), true);
     iconImageComponent.setBounds(iconArea);
@@ -192,7 +340,14 @@ private:
     hoverIconImageComponent.setBounds(iconArea);
   }
 
-  void drawBackground()
+  //==============================================================================
+  /**
+   * @brief Draws the background components.
+   *
+   * @details Fills each background image with the appropriate color and
+   * rounded rectangle, using explicit casting for type safety.
+   */
+  inline void drawBackground()
   {
     if (!shouldDrawBackground)
       return;
@@ -219,7 +374,14 @@ private:
     clickedBackgroundImageComponent.setImage(clickedBackgroundImage);
   }
 
-  void drawIcon()
+  //==============================================================================
+  /**
+   * @brief Draws the icon components.
+   *
+   * @details Handles icon color replacement and placement for both normal
+   * and hover states, using explicit color replacement for clarity.
+   */
+  inline void drawIcon()
   {
     if (icon != nullptr) {
       juce::Graphics iconGraphics(iconImage);
@@ -244,16 +406,20 @@ private:
     }
   }
 
-private:
+  //==============================================================================
+  // Members initialized in the initializer list
+  String tooltip;
   bool shouldDrawBorder;
   bool shouldDrawBackground;
   bool shouldDrawShadows;
   bool alternativeIconHover;
   const float rawSpecificSvgPadding;
-  std::unique_ptr<juce::Drawable> icon;
-  juce::String tooltip;
   Shadow outerShadow;
   Shadow innerShadow;
+
+  //==============================================================================
+  // Other members
+  std::unique_ptr<juce::Drawable> icon;
   Image backgroundImage;
   ImageComponent backgroundImageComponent;
   Image hoverBackgroundImage;
@@ -264,7 +430,11 @@ private:
   ImageComponent iconImageComponent;
   Image hoverIconImage;
   ImageComponent hoverIconImageComponent;
+
+  //==============================================================================
+  JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(AbstractButton)
 };
+
 } // namespace widget
-} // namespace dmt
 } // namespace gui
+} // namespace dmt
