@@ -278,13 +278,14 @@ public:
 
 private:
   //==============================================================================
-  // Initilizer list members
+  // Members initialized in the initializer list
   AbstractPanel& mainPanel;
   SettingsPanel settingsPanel;
   Header header;
   BorderButton borderButton;
   TooltipWindow tooltipWindow;
 
+  //==============================================================================
   // Other members
   std::function<void(bool)> headerVisibilityCallback;
   Popover popover;
