@@ -146,8 +146,11 @@ protected:
         handleThreadExit();
       }
       // Wait before retrying if fetching the version fails
-      wait(SERVER_RECONNECT_INTERVAL);
+      if (!threadShouldExit()) {
+        wait(SERVER_RECONNECT_INTERVAL);
+      }
     }
+    std::cout << "Version Manager thread exiting..." << std::endl;
   }
 
 private:
@@ -259,7 +262,6 @@ private:
     if (osName == "unknown") {
       std::cerr << "Unknown Operating System. Cannot fetch download link."
                 << std::endl;
-      std::cout << "Version Manager exiting..." << std::endl;
       threadShouldExit();
       return;
     }
@@ -311,24 +313,29 @@ private:
    */
   inline void handleThreadExit() noexcept
   {
+    // Check if we should exit the thread
     if (threadShouldExit())
       return;
 
+    // If we don't know if we are on lastest version return early
     if (!dmt::version::Info::isLatest)
-      return;
+      return; // Can't stop the thread yet
 
+    // So we know if we are on the latest version, if we are we can exit
     if (*dmt::version::Info::isLatest) {
-      std::cout << "Version Manager exiting..." << std::endl;
-      signalThreadShouldExit();
+      // On latest version we don't even need to check the download url
+      signalThreadShouldExit(); // Request thread exit, don't call stopThread()
       return;
     }
 
+    // So we are not on the latest version, let's check the download url
     if (dmt::version::Info::downloadLink == nullptr) {
-      return;
+      // Something went wrong, we don't have a download link.
+      return; // So we exit without stopping the thread.
     }
 
-    std::cout << "Version Manager exiting..." << std::endl;
-    signalThreadShouldExit();
+    // Download link is fine, so we can exit the thread
+    signalThreadShouldExit(); // Request thread exit, don't call stopThread()
   }
 
   //==============================================================================
