@@ -88,8 +88,8 @@ public:
    * The rendering thread is started immediately. The oscilloscope will read
    * from the provided ring buffer and visualize the specified channel.
    */
-  constexpr explicit Oscilloscope(RingBuffer& _ringBuffer,
-                                  const int32_t _channel) noexcept
+  explicit Oscilloscope(RingBuffer& _ringBuffer,
+                        const int32_t _channel) noexcept
     : Thread(String("Oscilloscope" + juce::String(_channel)))
     , ringBuffer(_ringBuffer)
     , channel(_channel)

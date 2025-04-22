@@ -119,9 +119,8 @@ public:
    * Initializes layout, grid, title label, navigation buttons, and shadows.
    * The constructor is constexpr for maximum compile-time optimization.
    */
-  constexpr inline explicit AbstractPanel(
-    const juce::String _name,
-    const bool _displayName = true) noexcept
+  explicit AbstractPanel(const juce::String _name,
+                         const bool _displayName = true) noexcept
     : layout({ 1, 1 })
     , rawGridOffsetY(40 * static_cast<int>(_displayName))
     , name(_name)
