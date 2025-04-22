@@ -103,13 +103,13 @@ public:
    * initialized in the order they appear in the initializer list for
    * performance and clarity.
    */
-  inline AbstractButton(String _name,
-                        String _iconName,
-                        String _tooltip = "",
-                        bool _shouldDrawBorder = true,
-                        bool _shouldDrawBackground = true,
-                        bool _shouldDrawShadow = true,
-                        bool _alternativeIconHover = false) noexcept
+  explicit AbstractButton(String _name,
+                          String _iconName,
+                          String _tooltip = "",
+                          bool _shouldDrawBorder = true,
+                          bool _shouldDrawBackground = true,
+                          bool _shouldDrawShadow = true,
+                          bool _alternativeIconHover = false) noexcept
     : juce::Button(_name)
     , tooltip(_tooltip)
     , shouldDrawBorder(_shouldDrawBorder)

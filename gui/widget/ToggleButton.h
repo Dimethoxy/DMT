@@ -79,10 +79,10 @@ public:
    *   and sets the initial visual state based on the parameter's value.
    *   The constructor is constexpr for macOS compatibility.
    */
-  constexpr inline ToggleButton(juce::String _name,
-                                juce::String _iconName,
-                                juce::String _parameterID,
-                                AudioProcessorValueTreeState& _apvts) noexcept
+  explicit ToggleButton(juce::String _name,
+                        juce::String _iconName,
+                        juce::String _parameterID,
+                        AudioProcessorValueTreeState& _apvts) noexcept
     : AbstractButton(_name, _iconName)
     , parameterID(_parameterID)
     , apvts(_apvts)

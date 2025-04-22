@@ -82,13 +82,13 @@ public:
    *   The constructor initializes the button and sets its initial state to
    *   passive for visual consistency. All visual options are configurable.
    */
-  constexpr inline CallbackButton(juce::String _name,
-                                  juce::String _iconName,
-                                  juce::String _tooltip = "",
-                                  bool _shouldDrawBorder = true,
-                                  bool _shouldDrawBackground = true,
-                                  bool _shouldDrawShadow = true,
-                                  bool _alternativeIconHover = false) noexcept
+  explicit CallbackButton(juce::String _name,
+                          juce::String _iconName,
+                          juce::String _tooltip = "",
+                          bool _shouldDrawBorder = true,
+                          bool _shouldDrawBackground = true,
+                          bool _shouldDrawShadow = true,
+                          bool _alternativeIconHover = false) noexcept
     : AbstractButton(static_cast<juce::String>(_name),
                      static_cast<juce::String>(_iconName),
                      static_cast<juce::String>(_tooltip),
