@@ -48,7 +48,7 @@
  * mutations are reflected in real time. Call rebuild() if settings are
  * added or removed after construction.
  */
-class SettingsTreeAdapter
+class TreeAdapter
 {
   using Container = dmt::configuration::Container;
 
@@ -92,7 +92,7 @@ public:
    * are reflected in the adapter. Call rebuild() if the set of settings
    * changes after construction.
    */
-  inline explicit SettingsTreeAdapter(Container& _containerRef) noexcept
+  inline explicit TreeAdapter(Container& _containerRef) noexcept
     : container(_containerRef)
   {
     buildTree();
@@ -161,5 +161,5 @@ private:
   }
 
   //==============================================================================
-  JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SettingsTreeAdapter)
+  JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(TreeAdapter)
 };
