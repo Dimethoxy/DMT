@@ -34,8 +34,11 @@ public:
     dmt::version::Info::current = std::make_unique<VersionArray>(versionArray);
 
     // Exit early if update notifications are disabled
-    if (DMT_DISABLE_UPDATE_NOTIFICATION)
+    if (DMT_DISABLE_UPDATE_NOTIFICATION) {
+      std::cout << "Update notifications are disabled." << std::endl;
+      std::cout << "Version Manager exiting early..." << std::endl;
       return;
+    }
 
     // Start the thread to fetch the latest version
     startThread();
