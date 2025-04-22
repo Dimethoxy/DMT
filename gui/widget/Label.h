@@ -77,17 +77,16 @@ public:
    * @param _multiline Whether to enable multi-line rendering (default: false).
    *
    * @details
-   * The constructor is constexpr for maximum compile-time optimization and
+   * The constructor is noexcept for maximum compile-time optimization and
    * real-time safety. Font scaling is handled internally for platform
    * consistency.
    */
-  constexpr explicit Label(
-    const String _text,
-    const juce::Font& _font,
-    const float& _fontSize,
-    const juce::Colour& _colour,
-    const Justification _justification = Justification::centredTop,
-    const bool _multiline = false) noexcept
+  explicit Label(const String _text,
+                 const juce::Font& _font,
+                 const float& _fontSize,
+                 const juce::Colour& _colour,
+                 const Justification _justification = Justification::centredTop,
+                 const bool _multiline = false) noexcept
     : juce::Component()
     , text(_text)
     , font(_font)
