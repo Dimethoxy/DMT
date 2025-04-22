@@ -161,7 +161,7 @@ private:
     if (OS_IS_WINDOWS)
       osName = "windows";
     else if (OS_IS_DARWIN)
-      osName = "macos";
+      osName = "mac";
     else if (OS_IS_LINUX)
       osName = "linux";
 
