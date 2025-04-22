@@ -179,15 +179,16 @@ private:
       std::cerr << "Failed to fetch download link." << std::endl;
       return {};
     }
-    std::cout << "Response: " << response << std::endl;
+    // std::cout << "Response: " << response << std::endl;
 
     // Let's parse the response as JSON
     auto jsonResponse = juce::JSON::parse(response);
 
     // Let's parse the JSON response
     if (jsonResponse.isObject()) {
-      auto downloadUrl = jsonResponse.getProperty("download_url", "");
-      const auto downloadUrlString = downloadUrl.toString();
+      auto rawDownloadUrl = jsonResponse.getProperty("download_url", "");
+      const auto downloadUrlString = rawDownloadUrl.toString();
+      std::cout << "Download URL: " << downloadUrlString << std::endl;
       if (!downloadUrlString.isEmpty()) {
         const juce::URL downloadUrl(downloadUrlString);
         // Check if the download URL is valid
