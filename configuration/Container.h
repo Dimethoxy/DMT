@@ -1,91 +1,142 @@
+//==============================================================================
+/*
+ * ██████  ██ ███    ███ ███████ ████████ ██   ██  ██████  ██   ██ ██    ██
+ * ██   ██ ██ ████  ████ ██         ██    ██   ██ ██    ██  ██ ██   ██  ██
+ * ██   ██ ██ ██ ████ ██ █████      ██    ███████ ██    ██   ███     ████
+ * ██   ██ ██ ██  ██  ██ ██         ██    ██   ██ ██    ██  ██ ██     ██
+ * ██████  ██ ██      ██ ███████    ██    ██   ██  ██████  ██   ██    ██
+ *
+ * Copyright (C) 2024 Dimethoxy Audio (https://dimethoxy.com)
+ *
+ * This file is part of the Dimethoxy Library, a collection of essential
+ * classes used across various Dimethoxy projects.
+ * These files are primarily designed for internal use within our repositories.
+ *
+ * License:
+ * This code is licensed under the GPLv3 license. You are permitted to use and
+ * modify this code under the terms of this license.
+ * You must adhere GPLv3 license for any project using this code or parts of it.
+ * Your are not allowed to use this code in any closed-source project.
+ *
+ * Description:
+ * Type-safe settings container for Dimethoxy Audio applications.
+ * Provides runtime-checked, variant-based storage for configuration values.
+ *
+ * Authors:
+ * Lunix-420 (Primary Author)
+ */
+//==============================================================================
+
 #pragma once
 
+//==============================================================================
+
 #include <JuceHeader.h>
+
+//==============================================================================
 
 namespace dmt {
 namespace configuration {
 
+//==============================================================================
 /**
- * @class Container
- * @brief A class for managing a collection of settings with type safety.
+ * @brief A type-safe container for application settings.
  *
- * This class allows adding and retrieving settings with different types. It
- * ensures that the types of the settings are consistent, and provides type-safe
- * access to the values.
+ * @details
+ * This class allows adding and retrieving settings with different types.
+ * It ensures that the types of the settings are consistent, and provides
+ * type-safe access to the values. All access is checked at runtime.
  */
 class Container
 {
+  //==============================================================================
   /**
-   * @brief A variant type that can store values of different types.
+   * @brief Variant type for storing heterogeneous settings.
    *
+   * @details
    * The possible types are: juce::String, juce::Colour, int, float, and bool.
+   * Used for type-safe, runtime-checked configuration storage.
    */
   using SettingValue =
     std::variant<juce::String, juce::Colour, int, float, bool>;
 
 public:
+  //==============================================================================
   /**
    * @brief Retrieves a setting by its name with type safety.
    *
    * @tparam T The type of the setting to retrieve.
-   * @param name The name of the setting.
+   * @param _name The name of the setting.
    * @return A mutable reference to the setting value of type T.
    *
    * @throws std::runtime_error If the setting is not found or the type does not
-   *         match.
+   * match.
+   *
+   * @details
+   * Throws if the type does not match or the setting does not exist.
+   * Use for real-time safe, type-checked access to configuration.
    */
   template<typename T>
-  T& get(const juce::String name)
+  inline T& get(const juce::String _name)
   {
-    auto it = settings.find(name);
+    auto it = settings.find(_name);
     if (it != settings.end()) {
       if (std::holds_alternative<T>(it->second)) {
-        return std::get<T>(
-          it->second); // Return mutable reference if types match.
+        return std::get<T>(it->second);
       } else {
-        jassertfalse; // Assertion for type mismatch, debugging aid.
+        jassertfalse;
         throw std::runtime_error("Type mismatch for setting: " +
-                                 name.toStdString());
+                                 _name.toStdString());
       }
     } else {
-      jassertfalse; // Assertion if setting is not found, debugging aid.
-      throw std::runtime_error("Setting not found: " + name.toStdString());
+      jassertfalse;
+      throw std::runtime_error("Setting not found: " + _name.toStdString());
     }
   }
 
+  //==============================================================================
   /**
    * @brief Adds a new setting or ensures consistency for an existing one.
    *
-   * If the setting already exists, the type must match the stored type.
-   * If it doesn't match, an error is thrown.
-   * If the setting doesn't exist, it is added to the collection.
-   *
    * @tparam T The type of the setting to add.
-   * @param name The name of the setting.
-   * @param value The value to associate with the setting.
+   * @param _name The name of the setting.
+   * @param _value The value to associate with the setting.
+   * @return A mutable reference to the setting value of type T.
    *
    * @throws std::runtime_error If there is a type mismatch when adding an
-   *         existing setting.
+   * existing setting.
+   *
+   * @details
+   * If the setting already exists, the type must match the stored type.
+   * If it doesn't match, an error is thrown. If the setting doesn't exist,
+   * it is added to the collection.
    */
   template<typename T>
-  T& add(const juce::String name, const T value)
+  inline T& add(const juce::String _name, const T _value)
   {
-    auto it = settings.find(name);
+    auto it = settings.find(_name);
     if (it != settings.end()) {
       if (!std::holds_alternative<T>(it->second)) {
-        jassertfalse; // Assertion for type mismatch on existing setting,
-                      // debugging aid.
+        jassertfalse;
         throw std::runtime_error("Type mismatch for setting: " +
-                                 name.toStdString());
+                                 _name.toStdString());
       }
     } else {
-      settings[name] = value; // Add new setting if not already present.
+      settings[_name] = _value;
     }
-
-    return std::get<T>(settings[name]); // Return mutable reference.
+    return std::get<T>(settings[_name]);
   }
 
-  juce::PropertySet toPropertySet() const
+  //==============================================================================
+  /**
+   * @brief Converts all settings to a juce::PropertySet.
+   *
+   * @return A juce::PropertySet containing all settings as string values.
+   *
+   * @details
+   * Used for serialization or export of settings to JUCE property sets.
+   */
+  inline juce::PropertySet toPropertySet() const
   {
     juce::PropertySet propertySet;
     for (const auto& [key, value] : settings) {
@@ -104,43 +155,42 @@ public:
     return propertySet;
   }
 
-  void applyPropertySet(juce::PropertySet* propertySet)
+  //==============================================================================
+  /**
+   * @brief Applies a juce::PropertySet to the settings container.
+   *
+   * @param _propertySet Pointer to the property set to apply.
+   *
+   * @details
+   * Updates all settings from the property set, converting types as needed.
+   * Only updates settings that already exist in the container.
+   */
+  inline void applyPropertySet(juce::PropertySet* _propertySet)
   {
-    // Iterate over each setting in the settings map
     for (auto& [key, storedValue] : settings) {
-      // Check if the setting exists in the propertySet
-      if (propertySet->containsKey(key)) {
-        // Check the type of the stored value and apply the conversion
-        // accordingly
+      if (_propertySet->containsKey(key)) {
         if (std::holds_alternative<juce::String>(storedValue)) {
-          // If the setting is a juce::String, update it with the string from
-          // the propertySet
-          settings[key] = propertySet->getValue(key);
+          settings[key] = _propertySet->getValue(key);
         } else if (std::holds_alternative<juce::Colour>(storedValue)) {
-          // If the setting is a juce::Colour, convert the string to a Colour
-          settings[key] = juce::Colour::fromString(propertySet->getValue(key));
+          settings[key] = juce::Colour::fromString(_propertySet->getValue(key));
         } else if (std::holds_alternative<int>(storedValue)) {
-          // If the setting is an int, convert the string to an integer
-          settings[key] = propertySet->getValue(key).getIntValue();
+          settings[key] = _propertySet->getValue(key).getIntValue();
         } else if (std::holds_alternative<float>(storedValue)) {
-          // If the setting is a float, convert the string to a float
-          settings[key] = propertySet->getValue(key).getFloatValue();
+          settings[key] = _propertySet->getValue(key).getFloatValue();
         } else if (std::holds_alternative<bool>(storedValue)) {
-          // If the setting is a bool, convert the string to a bool
-          settings[key] = propertySet->getBoolValue(key);
+          settings[key] = _propertySet->getBoolValue(key);
         }
       }
     }
   }
 
 private:
-  /**
-   * @brief A map that stores settings by name.
-   *
-   * The map uses the setting name as the key and stores the value in a
-   * variant type, allowing different types of settings to be stored in the
-   * same container.
-   */
+  //==============================================================================
+  // Members initialized in the initializer list
+  // (none for this class)
+
+  //==============================================================================
+  // Other members
   std::map<juce::String, SettingValue> settings;
 };
 
