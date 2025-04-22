@@ -7,6 +7,7 @@
 #include "dmt/configuration/TreeAdapter.h"
 #include "dmt/gui/component/AbstractDisplayComponent.h"
 #include "dmt/gui/widget/TextEditor.h"
+#include "dmt/gui/widget/ValueEditorList.h"
 #include "dmt/utility/Settings.h"
 #include <JuceHeader.h>
 
@@ -23,6 +24,7 @@ class SettingsEditorDisplayComponent
   using Settings = dmt::Settings;
   using TreeAdapter = dmt::configuration::TreeAdapter;
   using TextEditor = dmt::gui::widget::TextEditor;
+  using ValueEditorList = dmt::gui::component::ValueEditorList;
 
   const float& size = Settings::Window::size;
 
@@ -32,6 +34,7 @@ public:
     , searchEditor("TestEditor")
   {
     addAndMakeVisible(searchEditor);
+    addAndMakeVisible(valueEditorList);
   }
 
   ~SettingsEditorDisplayComponent() override = default;
@@ -39,9 +42,11 @@ public:
   void extendResized(
     const juce::Rectangle<int>& _displayBounds) noexcept override
   {
-    auto bounds = _displayBounds;
+    auto bounds = _displayBounds.reduced(5.0f * size);
     const auto testBounds = bounds.removeFromTop(24 * size);
     searchEditor.setBounds(testBounds);
+    const auto editorBounds = bounds;
+    valueEditorList.setBounds(editorBounds);
   }
 
   void paintDisplay(juce::Graphics& _g,
@@ -57,6 +62,7 @@ public:
 private:
   TreeAdapter treeAdapter;
   TextEditor searchEditor;
+  ValueEditorList valueEditorList;
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SettingsEditorDisplayComponent)
 };
 
