@@ -217,12 +217,12 @@ private:
         dmt::version::Info::isLatest = std::make_unique<bool>(true);
         break;
       case 1:
-        std::cout << "Newer version available." << std::endl;
-        dmt::version::Info::isLatest = std::make_unique<bool>(false);
-        break;
-      case 2:
         std::cout << "This is a future version." << std::endl;
         dmt::version::Info::isLatest = std::make_unique<bool>(true);
+        break;
+      case 2:
+        std::cout << "Newer version available." << std::endl;
+        dmt::version::Info::isLatest = std::make_unique<bool>(false);
         break;
       default:
         std::cerr << "Unexpected version comparison result." << std::endl;
