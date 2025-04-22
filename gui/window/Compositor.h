@@ -53,6 +53,9 @@ namespace window {
  * and interaction logic for the header, panels, and popovers. It ensures
  * that the UI remains responsive and intuitive while adhering to real-time
  * performance constraints.
+ *
+ * @note This class is designed to be used as a top-level component within a
+ *       DMT-based application.
  */
 class Compositor
   : public juce::Component
@@ -130,8 +133,8 @@ public:
   /**
    * @brief Handles resizing of the component and its children.
    *
-   * Dynamically adjusts the bounds of the header, panels, and buttons
-   * based on the visibility state of the header.
+   * @details This function is called whenever the component is resized.
+   *          It adjusts the layout of header and panels.
    */
   void resized() noexcept override
   {
@@ -169,9 +172,21 @@ public:
   }
 
   //==============================================================================
-  /** @brief Shows the settings panel and hides the main panel. */
+  /**
+   * @brief Callback function for the settings button.
+   *
+   * @details This function is called when the settings button is clicked.
+   *          It hides the main panel and shows the settings panel.
+   *          The settings button is hidden and the exit button is shown.
+   *
+   * @note This function is only enabled if the settings panel is not
+   *       currently visible.
+   */
   void showSettings() noexcept
   {
+    if (settingsPanel.isVisible())
+      return;
+
     mainPanel.setVisible(false);
     settingsPanel.setVisible(true);
     header.getSettingsButton().setVisible(false);
@@ -180,9 +195,20 @@ public:
   }
 
   //==============================================================================
-  /** @brief Closes the settings panel and shows the main panel. */
+  /**
+   * @brief Callback function for the close settings button.
+   *
+   * @details This function is called when the close settings button is clicked.
+   *          It hides the settings panel and shows the main panel.
+   *
+   * @note This function is only enabled if the settings panel is currently
+   *       visible.
+   */
   void closeSettings() noexcept
   {
+    if (!settingsPanel.isVisible())
+      return;
+
     mainPanel.setVisible(true);
     settingsPanel.setVisible(false);
     header.getSettingsButton().setVisible(true);
@@ -191,9 +217,40 @@ public:
   }
 
   //==============================================================================
-  /** @brief Hides the header and adjusts the layout accordingly. */
+  /**
+   * @brief Callback function for the update button.
+   *
+   * @details This function is called when the update button is clicked.
+   *          It launches the download link in the default web browser.
+   *
+   * @note This function is only enabled if the update notification is not
+   *       disabled (DMT_DISABLE_UPDATE_NOTIFICATION is not set).
+   *       If the download link is not available, this function does nothing.
+   */
+  void downloadUpdate() noexcept
+  {
+    if (DMT_DISABLE_UPDATE_NOTIFICATION)
+      return;
+
+    if (dmt::version::Info::downloadLink != nullptr) {
+      juce::URL(*dmt::version::Info::downloadLink).launchInDefaultBrowser();
+    }
+  }
+
+  //==============================================================================
+  /**
+   * @brief Hides the header and adjusts the layout accordingly.
+   *
+   * @details This function is called when the hide header button is clicked.
+   *          It hides the header and shows the border button.
+   *
+   * @note This function is only enabled if the header is currently visible.
+   */
   void hideHeader() noexcept
   {
+    if (!header.isVisible())
+      return;
+
     header.setVisible(false);
     resized();
     if (headerVisibilityCallback) {
@@ -204,9 +261,19 @@ public:
   }
 
   //==============================================================================
-  /** @brief Shows the header and adjusts the layout accordingly. */
+  /**
+   * @brief Shows the header and adjusts the layout accordingly.
+   *
+   * @details This function is called when the border button is clicked.
+   *          It shows the header and hides the border button.
+   *
+   * @note This function is only enabled if the header is currently hidden.
+   */
   void showHeader() noexcept
   {
+    if (header.isVisible())
+      return;
+
     header.setVisible(true);
     resized();
     if (headerVisibilityCallback) {
@@ -218,7 +285,12 @@ public:
   /**
    * @brief Timer callback to check for updates.
    *
-   * If an update is available, it shows the update popover and button.
+   * @details This function is called periodically to check if an update
+   *          is available. If an update is found, it shows the update popover
+   *          and the update button.
+   *
+   * @note This function is only enabled if the update notification is not
+   *       disabled (DMT_DISABLE_UPDATE_NOTIFICATION is not set).
    */
   void timerCallback() override
   {
@@ -236,7 +308,17 @@ public:
   }
 
   //==============================================================================
-  /** @brief Displays the update popover with a message. */
+  /**
+   * @brief Shows the update popover.
+   *
+   * @details This function is called when an update is available.
+   *          It displays a popover message informing the user about the update.
+   *          We track if the popover was shown to avoid showing it multiple
+   * times if the user closes the editor and reopens it.
+   *
+   * @note This function is only enabled if the update notification is not
+   *       disabled (DMT_DISABLE_UPDATE_NOTIFICATION is not set).
+   */
   void showUpdatePopover() noexcept
   {
     if (DMT_DISABLE_UPDATE_NOTIFICATION)
@@ -258,7 +340,15 @@ public:
   }
 
   //==============================================================================
-  /** @brief Makes the update button visible. */
+  /**
+   * @brief Shows the update button in the header.
+   *
+   * @details This function is called when an update is available.
+   *          It makes the update button visible in the header.
+   *
+   * @note This function is only enabled if the update notification is not
+   *       disabled (DMT_DISABLE_UPDATE_NOTIFICATION is not set).
+   */
   void showUpdateButton() noexcept
   {
     if (DMT_DISABLE_UPDATE_NOTIFICATION)
@@ -271,9 +361,22 @@ public:
   /**
    * @brief Sets a callback for header visibility changes.
    *
+   * @details This function allows you to set a callback that will be called
+   *          whenever the header visibility changes.
+   *          This needs to be set by the parent component to handle the window
+   *          resizing.
+   *
    * @param callback A function to call when the header visibility changes.
+   *
+   * @example
+   * setHeaderVisibilityCallback([this](bool isHeaderVisible) {
+   *   const int adjustedHeight = isHeaderVisible ? (baseHeight + headerHeight)
+   *                                              : baseHeight;
+   *   setConstraints(baseWidth, adjustedHeight);
+   *   setSize(baseWidth * size, adjustedHeight * size);
+   * });
    */
-  void setHeaderVisibilityCallback(std::function<void(bool)> callback)
+  void setHeaderVisibilityCallback(std::function<void(bool)> callback) noexcept
   {
     headerVisibilityCallback = std::move(callback);
   }

@@ -115,7 +115,8 @@ private:
     dmt::version::Info::latest = std::make_unique<VersionArray>(versionArray);
 
     // Let's also find the download link
-    const auto donwload = fetchLatestDownloadLink();
+    const auto downloadUrl = fetchLatestDownloadLink();
+    dmt::version::Info::downloadLink = std::make_unique<String>(downloadUrl);
 
     return true;
   }
