@@ -171,14 +171,15 @@ public:
    *
    * @details
    *   On mouse release, if the button is enabled, it transitions to the hover
-   *   state and triggers the onClick callback. This ensures the action is only
-   *   performed on mouse up, following standard UI conventions.
+   *   state and triggers the onClick callback if set. This ensures the action
+   * is only performed on mouse up, following standard UI conventions.
    */
   inline void mouseUp(const juce::MouseEvent& /*_event*/) override
   {
     if (isEnabled()) {
       setHoverState();
-      onClick(); // Trigger the button's click action
+      if (onClick)
+        onClick(); // Trigger the button's click action if set
     }
   }
 
