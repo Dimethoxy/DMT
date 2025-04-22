@@ -6,6 +6,7 @@
 
 #include "dmt/configuration/TreeAdapter.h"
 #include "dmt/gui/component/AbstractDisplayComponent.h"
+#include "dmt/gui/widget/TextEditor.h"
 #include "dmt/utility/Settings.h"
 #include <JuceHeader.h>
 
@@ -15,34 +16,37 @@ namespace dmt {
 namespace gui {
 namespace component {
 //==============================================================================
-class SettingsEditorComponent
+class SettingsEditorDisplayComponent
   : public dmt::gui::component::AbstractDisplayComponent
 {
   using Image = juce::Image;
   using Settings = dmt::Settings;
   using TreeAdapter = dmt::configuration::TreeAdapter;
+  using TextEditor = dmt::gui::widget::TextEditor;
+
+  const float& size = Settings::Window::size;
 
 public:
-  SettingsEditorComponent()
+  SettingsEditorDisplayComponent()
     : treeAdapter(Settings::container)
-    , nextFrame(Image::ARGB, 1, 1, true)
+    , searchEditor("TestEditor")
   {
-    // Minimal constructor
+    addAndMakeVisible(searchEditor);
   }
 
-  ~SettingsEditorComponent() override = default;
+  ~SettingsEditorDisplayComponent() override = default;
 
   void extendResized(
     const juce::Rectangle<int>& _displayBounds) noexcept override
   {
-    // Implement resizing logic here
+    auto bounds = _displayBounds;
+    const auto testBounds = bounds.removeFromTop(24 * size);
+    searchEditor.setBounds(testBounds);
   }
 
   void paintDisplay(juce::Graphics& _g,
                     const juce::Rectangle<int>& _displayBounds) const noexcept
   {
-    // Implement painting logic here
-    //_g.fillAll(juce::Colours::green);
   }
 
   void prepareNextFrame() noexcept override
@@ -52,9 +56,8 @@ public:
 
 private:
   TreeAdapter treeAdapter;
-  Image nextFrame;
-
-  JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SettingsEditorComponent)
+  TextEditor searchEditor;
+  JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SettingsEditorDisplayComponent)
 };
 
 } // namespace component
