@@ -36,6 +36,7 @@
 #include "gui/component/LinearSliderComponent.h"
 #include "gui/component/RotarySliderComponent.h"
 #include "gui/panel/AbstractPanel.h"
+#include "utility/Settings.h"
 #include "utility/Unit.h"
 #include <JuceHeader.h>
 

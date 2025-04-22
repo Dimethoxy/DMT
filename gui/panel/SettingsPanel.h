@@ -3,8 +3,10 @@
 //==============================================================================
 #include "gui/component/LinearSliderComponent.h"
 #include "gui/component/RotarySliderComponent.h"
+#include "gui/component/SettingsEditorComponent.h"
 #include "gui/panel/AbstractPanel.h"
-#include "utility/Unit.h"
+#include "utility/Settings.h"
+#include "utility/Unit.h" 1
 #include <JuceHeader.h>
 //==============================================================================
 namespace dmt {
@@ -18,14 +20,40 @@ class SettingsPanel : public dmt::gui::panel::AbstractPanel
   using RotarySliderType = dmt::gui::widget::RotarySlider::Type;
   using LinearSliderType = dmt::gui::widget::LinearSlider::Type;
   using Unit = dmt::utility::Unit;
+  using SettingsEditorComponent = dmt::gui::component::SettingsEditorComponent;
+  using Settings = dmt::Settings;
+
+  const float& size = Settings::Window::size;
+  const float& rawPadding = Settings::Panel::padding;
 
 public:
   SettingsPanel(/*juce::AudioProcessorValueTreeState& apvts*/)
     : AbstractPanel("Work in Progress")
   {
-    setLayout({ 3, 3 });
+    setLayout({ 22, 60 });
+    addAndMakeVisible(settingsEditor);
   }
-  void extendResize() noexcept override {}
+
+  ~SettingsPanel() override = default;
+
+  void extendResize() noexcept override
+  {
+    auto bounds = getLocalBounds();
+
+    const float padding = rawPadding * size;
+    auto editorBounds = bounds.reduced(padding);
+    const float editorHorizontalPadding = 100.0f;
+    const float editorTopPadding = 35.0f;
+    const float editorBottomPadding = 15.0f;
+    editorBounds.removeFromTop(editorTopPadding * size);
+    editorBounds.removeFromBottom(editorBottomPadding * size);
+    editorBounds.removeFromLeft(editorHorizontalPadding * size);
+    editorBounds.removeFromRight(editorHorizontalPadding * size);
+    settingsEditor.setBounds(editorBounds);
+  }
+
+private:
+  SettingsEditorComponent settingsEditor;
 
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SettingsPanel)
 };
