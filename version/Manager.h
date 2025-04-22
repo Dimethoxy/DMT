@@ -1,4 +1,31 @@
-//============================================================================
+//==============================================================================
+/*
+ * ██████  ██ ███    ███ ███████ ████████ ██   ██  ██████  ██   ██ ██    ██
+ * ██   ██ ██ ████  ████ ██         ██    ██   ██ ██    ██  ██ ██   ██  ██
+ * ██   ██ ██ ██ ████ ██ █████      ██    ███████ ██    ██   ███     ████
+ * ██   ██ ██ ██  ██  ██ ██         ██    ██   ██ ██    ██  ██ ██     ██
+ * ██████  ██ ██      ██ ███████    ██    ██   ██  ██████  ██   ██    ██
+ *
+ * Copyright (C) 2024 Dimethoxy Audio (https://dimethoxy.com)
+ *
+ * This file is part of the Dimethoxy Library, a collection of essential
+ * classes used across various Dimethoxy projects.
+ * These files are primarily designed for internal use within our repositories.
+ *
+ * License:
+ * This code is licensed under the GPLv3 license. You are permitted to use and
+ * modify this code under the terms of this license.
+ * You must adhere GPLv3 license for any project using this code or parts of it.
+ * Your are not allowed to use this code in any closed-source project.
+ *
+ * Description:
+ * This class implements a thread that handles fetching the latest version and
+ * comparing it with the current version.
+ *
+ * Authors:
+ * Lunix-420 (Primary Author)
+ */
+//==============================================================================
 
 #pragma once
 
@@ -16,21 +43,45 @@ namespace dmt {
 namespace version {
 
 //==============================================================================
-
-constexpr auto SERVER_WAIT_FOR_INITIALIZATION_TIMEOUT = 100;
-constexpr auto SERVER_RECONNECT_INTERVAL = 10000;
-constexpr auto THREAD_TIMEOUT = 1000;
-
-//==============================================================================
-
+/**
+ * @brief Manages the version checking and update notification process.
+ *
+ * @details
+ * This class is responsible for fetching the latest version from the server,
+ * comparing it with the current version, and determining if an update is
+ * available.
+ *
+ * It runs in a background thread to avoid blocking the main application
+ * thread. The thread will exit if the current version is the latest or if the
+ * update notifications are disabled.
+ *
+ * @note This class is designed to be used as a single instance within the audio
+ *       thread of the application.
+ */
 class Manager : public juce::Thread
 {
+  //==============================================================================
+  // Alias for convenience
   using VersionArray = std::array<int, 3>;
   using Utility = dmt::version::Utility;
 
+  //==============================================================================
+  // Constants for thread management
+  static constexpr int SERVER_WAIT_FOR_INITIALIZATION_TIMEOUT = 100;
+  static constexpr int SERVER_RECONNECT_INTERVAL = 10000;
+  static constexpr int THREAD_TIMEOUT = 1000;
+
 public:
-  //============================================================================
-  Manager()
+  //==============================================================================
+  /**
+   * @brief Constructs the Version Manager and starts the background thread.
+   *
+   * @details
+   * Initializes the current version from ProjectInfo, and if update
+   * notifications are enabled, starts the thread to check for updates.
+   * Exits early if update notifications are disabled.
+   */
+  inline explicit Manager() noexcept
     : juce::Thread("VersionManager")
   {
     // Debugging
@@ -55,8 +106,15 @@ public:
     // Start the thread to fetch the latest version
     startThread();
   }
-  //============================================================================
-  ~Manager()
+
+  //==============================================================================
+  /**
+   * @brief Destructor for Version Manager.
+   *
+   * @details
+   * Ensures the background thread is stopped safely on destruction.
+   */
+  inline ~Manager() noexcept override
   {
     if (isThreadRunning()) {
       std::cout << "Aborting Version Manager thread..." << std::endl;
@@ -65,9 +123,18 @@ public:
   }
 
 protected:
-  //============================================================================
-  void run() override
-  { // Wait for the plugin to be initialized
+  //==============================================================================
+  /**
+   * @brief Main thread loop for version checking and update logic.
+   *
+   * @details
+   * Waits for initialization, then repeatedly fetches the latest version,
+   * compares it, fetches the download link, and determines if the thread
+   * should exit. Designed for real-time safety and robust update logic.
+   */
+  inline void run() noexcept override
+  {
+    // Wait for the plugin to be initialized
     wait(SERVER_WAIT_FOR_INITIALIZATION_TIMEOUT);
 
     // Continuously try to fetch the latest version
@@ -84,72 +151,66 @@ protected:
   }
 
 private:
-  //============================================================================
+  //==============================================================================
   /**
    * @brief Fetches the latest version from the server.
    *
-   * @details This function sends a request to the server to fetch the latest
-   *          version of the application. It parses the response and stores
-   * the latest version in the Info struct.
+   * @details
+   * Sends a request to the server to fetch the latest version of the
+   * application. Parses the response and stores the latest version in the Info
+   * struct. Returns early if the thread should exit or if the latest version is
+   * already fetched.
    */
-  void fetchLatestVersion() noexcept
+  inline void fetchLatestVersion() noexcept
   {
-    // Check if we should exit the thread
     if (threadShouldExit())
       return;
 
-    // If the latest version is already fetched, return early
     if (dmt::version::Info::latest != nullptr) {
       std::cout << "Latest version already fetched." << std::endl;
       return;
     }
 
-    // Attempt to fetch the latest version from the server
     std::cout << "Fetching latest version..." << std::endl;
     const auto appName = dmt::Settings::appName.toLowerCase();
     const auto url = juce::String("version?product=" + appName);
     const auto response = Networking::sendRequest(url);
 
-    // Check if the response is empty
     if (response.isEmpty()) {
       std::cerr << "Failed to fetch latest version: Response was empty."
                 << std::endl;
       return;
     }
 
-    // Parse the response to extract the version string
     const auto versionString = Utility::parseResponseToVersionString(response);
     const auto versionArray = Utility::parseVersionStringToArray(versionString);
 
-    // Store the latest version in the Info struct
     dmt::version::Info::latest = std::make_unique<VersionArray>(versionArray);
   }
-  //============================================================================
+
+  //==============================================================================
   /**
    * @brief Compares the current version with the latest version.
    *
-   * @details This function compares the current version with the latest
-   *          version fetched from the server. It updates the isLatest flag
-   *          accordingly.
+   * @details
+   * Compares the current version with the latest version fetched from the
+   * server. Updates the isLatest flag accordingly. Returns early if thread
+   * should exit or if either version is missing.
    */
-  void handleVersionComparison() noexcept
+  inline void handleVersionComparison() noexcept
   {
-    // Check if we should exit the thread
     if (threadShouldExit())
       return;
 
-    // Make sure both versions are available
     if (!dmt::version::Info::current || !dmt::version::Info::latest) {
       std::cerr << "Version comparison failed: one of the versions is null."
                 << std::endl;
       return;
     }
 
-    // Compare the current version with the latest version
     const int comparisonResult = Utility::compareVersions(
       *dmt::version::Info::current, *dmt::version::Info::latest);
 
-    // Process the result of the comparison
     switch (comparisonResult) {
       case 0:
         std::cout << "You are using the latest version." << std::endl;
@@ -168,27 +229,25 @@ private:
         break;
     }
   }
-  //============================================================================
+
+  //==============================================================================
   /**
    * @brief Fetches the latest download link from the server.
    *
-   * @details This function sends a request to the server to fetch the latest
-   *          download link for the application. It parses the response and
-   *          stores the download link in the Info struct.
+   * @details
+   * Sends a request to the server to fetch the latest download link for the
+   * application. Parses the response and stores the download link in the Info
+   * struct. Returns early if the thread should exit or if the OS is unknown.
    */
-  void fetchLatestDownloadLink() noexcept
+  inline void fetchLatestDownloadLink() noexcept
   {
-    // Check if we should exit the thread
     if (threadShouldExit())
       return;
 
-    // Debugging
     std::cout << "Fetching latest download link..." << std::endl;
 
-    // Find app name
     const auto appName = dmt::Settings::appName.toLowerCase();
 
-    // Determine the OS
     String osName = "unknown";
     if (OS_IS_WINDOWS)
       osName = "windows";
@@ -197,96 +256,85 @@ private:
     else if (OS_IS_LINUX)
       osName = "linux";
 
-    // If the OS is still unknown, return an empty string
     if (osName == "unknown") {
       std::cerr << "Unknown Operating System. Cannot fetch download link."
                 << std::endl;
-      // If we land here, continueing makes no sense and we should sto
       std::cout << "Version Manager exiting..." << std::endl;
       threadShouldExit();
       return;
     }
 
-    // Attempt to fetch the download link from the server
     const auto url =
       juce::String("download?product=" + appName + "&os=" + osName);
     const auto response = Networking::sendRequest(url);
 
-    // Check if the response is empty
     if (response.isEmpty()) {
       std::cerr << "Failed to fetch download link." << std::endl;
       return;
     }
 
-    // Let's parse the response as JSON
     auto jsonResponse = juce::JSON::parse(response);
 
-    // Let's parse the JSON response
     if (!jsonResponse.isObject()) {
       std::cerr << "Failed to parse JSON response." << std::endl;
       return;
     }
 
-    // Check if the JSON response contains the "download_url" property
     auto rawDownloadUrl = jsonResponse.getProperty("download_url", "");
     const auto downloadUrlString = rawDownloadUrl.toString();
     std::cout << "Download URL: " << downloadUrlString << std::endl;
 
-    // Check if the download URL is empty
     if (downloadUrlString.isEmpty()) {
       std::cerr << "Download URL is empty." << std::endl;
       return;
     }
 
-    // Check if the download URL is valid
     const juce::URL downloadUrl(downloadUrlString);
     if (!downloadUrl.isWellFormed()) {
       std::cerr << "Download URL is not well-formed." << std::endl;
       return;
     }
 
-    // Successfully parsed the download URL
     std::cout << "Download URL is valid." << std::endl;
     dmt::version::Info::downloadLink =
       std::make_unique<String>(downloadUrlString);
   }
-  //============================================================================
+
+  //==============================================================================
   /**
    * @brief Handles the thread exit process.
    *
-   * @details This function checks if the current version is the latest
-   *          and if the download link is available. If both conditions are
-   *          met, it requests the thread to exit. Otherwise, it does nothing.
-   *          This function is called after each run of the thread.
+   * @details
+   * Checks if the current version is the latest and if the download link is
+   * available. If both conditions are met, requests the thread to exit.
+   * Otherwise, does nothing. Called after each run of the thread.
    */
-  void handleThreadExit() noexcept
+  inline void handleThreadExit() noexcept
   {
-    // Check if we should exit the thread
     if (threadShouldExit())
       return;
 
-    // If we don't know if we are on lastest version return early
     if (!dmt::version::Info::isLatest)
-      return; // Can't stop the thread yet
+      return;
 
-    // So we know if we are on the latest version, if we are we can exit
     if (*dmt::version::Info::isLatest) {
-      // On latest version we don't even need to check the download url
       std::cout << "Version Manager exiting..." << std::endl;
-      signalThreadShouldExit(); // Request thread exit, don't call stopThread()
+      signalThreadShouldExit();
       return;
     }
 
-    // So we are not on the latest version, let's check the download url
     if (dmt::version::Info::downloadLink == nullptr) {
-      // Something went wrong, we don't have a download link.
-      return; // So we exit without stopping the thread.
+      return;
     }
 
-    // Download link is fine, so we can exit the thread
     std::cout << "Version Manager exiting..." << std::endl;
-    signalThreadShouldExit(); // Request thread exit, don't call stopThread()
+    signalThreadShouldExit();
   }
+
+  //==============================================================================
+
+  JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Manager)
 };
+
 } // namespace version
 } // namespace dmt
