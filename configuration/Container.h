@@ -49,19 +49,29 @@ namespace configuration {
  */
 class Container
 {
-  //==============================================================================
-  /**
-   * @brief Variant type for storing heterogeneous settings.
-   *
-   * @details
-   * The possible types are: juce::String, juce::Colour, int, float, and bool.
-   * Used for type-safe, runtime-checked configuration storage.
-   */
-  using SettingValue =
-    std::variant<juce::String, juce::Colour, int, float, bool>;
+  //============================================================================
+  // Aliases for convenience
+  using String = juce::String;
+  using Colour = juce::Colour;
 
 public:
-  //==============================================================================
+  //============================================================================
+  /**
+   * @brief Pseudo type for storing heterogeneous settings.
+   *
+   * @details
+   * The possible types are: String, Colour, int, float, and bool.
+   * Used for type-safe, runtime-checked configuration storage.
+   */
+  typedef std::variant<String, Colour, int, float, bool> SettingValue;
+
+  //============================================================================
+  /**
+   * @brief Default constructor.
+   */
+  Container() = default;
+
+  //============================================================================
   /**
    * @brief Retrieves a setting by its name with type safety.
    *
@@ -77,7 +87,7 @@ public:
    * Use for real-time safe, type-checked access to configuration.
    */
   template<typename T>
-  inline T& get(const juce::String _name)
+  inline T& get(const String _name)
   {
     auto it = settings.find(_name);
     if (it != settings.end()) {
@@ -112,7 +122,7 @@ public:
    * it is added to the collection.
    */
   template<typename T>
-  inline T& add(const juce::String _name, const T _value)
+  inline T& add(const String _name, const T _value)
   {
     auto it = settings.find(_name);
     if (it != settings.end()) {
@@ -140,10 +150,10 @@ public:
   {
     juce::PropertySet propertySet;
     for (const auto& [key, value] : settings) {
-      if (std::holds_alternative<juce::String>(value)) {
-        propertySet.setValue(key, std::get<juce::String>(value));
-      } else if (std::holds_alternative<juce::Colour>(value)) {
-        propertySet.setValue(key, std::get<juce::Colour>(value).toString());
+      if (std::holds_alternative<String>(value)) {
+        propertySet.setValue(key, std::get<String>(value));
+      } else if (std::holds_alternative<Colour>(value)) {
+        propertySet.setValue(key, std::get<Colour>(value).toString());
       } else if (std::holds_alternative<int>(value)) {
         propertySet.setValue(key, std::get<int>(value));
       } else if (std::holds_alternative<float>(value)) {
@@ -169,10 +179,10 @@ public:
   {
     for (auto& [key, storedValue] : settings) {
       if (_propertySet->containsKey(key)) {
-        if (std::holds_alternative<juce::String>(storedValue)) {
+        if (std::holds_alternative<String>(storedValue)) {
           settings[key] = _propertySet->getValue(key);
-        } else if (std::holds_alternative<juce::Colour>(storedValue)) {
-          settings[key] = juce::Colour::fromString(_propertySet->getValue(key));
+        } else if (std::holds_alternative<Colour>(storedValue)) {
+          settings[key] = Colour::fromString(_propertySet->getValue(key));
         } else if (std::holds_alternative<int>(storedValue)) {
           settings[key] = _propertySet->getValue(key).getIntValue();
         } else if (std::holds_alternative<float>(storedValue)) {
@@ -184,6 +194,18 @@ public:
     }
   }
 
+  //==============================================================================
+  /**
+   * @brief Returns a const reference to the internal settings map.
+   *
+   * @details
+   * This is used by the adapter to build the category/leaf structure.
+   */
+  inline const std::map<String, SettingValue>& getAllSettings() const
+  {
+    return settings;
+  }
+
 private:
   //==============================================================================
   // Members initialized in the initializer list
@@ -191,8 +213,11 @@ private:
 
   //==============================================================================
   // Other members
-  std::map<juce::String, SettingValue> settings;
-};
+  std::map<String, SettingValue> settings;
 
+  //==============================================================================
+  JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Container)
+};
+//==============================================================================
 } // namespace configuration
 } // namespace dmt
