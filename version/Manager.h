@@ -33,6 +33,10 @@ public:
     const auto versionArray = parseVersionStringToArray(versionString);
     dmt::version::Info::current = std::make_unique<VersionArray>(versionArray);
 
+    // Exit early if update notifications are disabled
+    if (DMT_DISABLE_UPDATE_NOTIFICATION)
+      return;
+
     // Start the thread to fetch the latest version
     startThread();
   }

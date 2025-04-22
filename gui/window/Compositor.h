@@ -59,13 +59,6 @@ class Compositor
   , public juce::Timer
 {
   //============================================================================
-  // Feature flag for update notification
-#ifdef DMT_DISABLE_UPDATE_NOTIFICATION
-  static constexpr bool updateNotificationEnabled = false;
-#else
-  static constexpr bool updateNotificationEnabled = true;
-#endif
-  //============================================================================
   // Aliases for convenience
   using AbstractPanel = dmt::gui::panel::AbstractPanel;
   using SettingsPanel = dmt::gui::panel::SettingsPanel;
@@ -119,8 +112,7 @@ public:
     addChildComponent(settingsPanel);
 
     // Start the timer to check if update is found
-    if (updateNotificationEnabled)
-      startTimer(1000); // Commented out until Popover is done
+    startTimer(1000);
 
     // Tooltips
     addAndMakeVisible(tooltipWindow);
@@ -230,8 +222,10 @@ public:
    */
   void timerCallback() override
   {
-    if (!updateNotificationEnabled)
+    if (DMT_DISABLE_UPDATE_NOTIFICATION) {
+      stopTimer();
       return;
+    }
 
     if (dmt::version::Info::isLatest != nullptr &&
         !(*dmt::version::Info::isLatest)) {
@@ -245,7 +239,7 @@ public:
   /** @brief Displays the update popover with a message. */
   void showUpdatePopover() noexcept
   {
-    if (!updateNotificationEnabled)
+    if (DMT_DISABLE_UPDATE_NOTIFICATION)
       return;
 
     if (!dmt::version::Info::wasPopoverShown) {
@@ -267,7 +261,7 @@ public:
   /** @brief Makes the update button visible. */
   void showUpdateButton() noexcept
   {
-    if (!updateNotificationEnabled)
+    if (DMT_DISABLE_UPDATE_NOTIFICATION)
       return;
 
     header.getUpdateButton().setVisible(true);

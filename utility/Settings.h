@@ -14,6 +14,9 @@
 #ifndef OS_IS_LINUX
 #define OS_IS_LINUX 0
 #endif
+#ifndef DMT_DISABLE_UPDATE_NOTIFICATION
+#define DMT_DISABLE_UPDATE_NOTIFICATION 0
+#endif
 //==============================================================================
 namespace dmt {
 //==============================================================================
