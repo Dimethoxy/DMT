@@ -20,8 +20,6 @@
  *
  * Description:
  * Adapter for browsing settings as a fixed-depth category/leaf tree.
- * Designed for efficient, type-safe, real-time GUI browsing of settings
- * stored in a dmt::configuration::Container.
  *
  * Authors:
  * Lunix-420 (Primary Author)
