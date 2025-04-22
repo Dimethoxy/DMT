@@ -99,13 +99,14 @@ public:
   {
     // Header
     addAndMakeVisible(header);
-    header.getSettingsButton().onClick = [this] { showSettings(); };
-    header.getSettingsExitButton().onClick = [this] { closeSettings(); };
-    header.getHideHeaderButton().onClick = [this] { hideHeader(); };
+    header.getSettingsButton().onClick = [this] { settingsCallback(); };
+    header.getSettingsExitButton().onClick = [this] { settingExitCallback(); };
+    header.getHideHeaderButton().onClick = [this] { hideHeaderCallback(); };
+    header.getUpdateButton().onClick = [this] { updateCallback(); };
 
     // BorderButton
     addChildComponent(borderButton);
-    borderButton.setButtonCallback([this]() { showHeader(); });
+    borderButton.setButtonCallback([this]() { showHeaderCallback(); });
 
     // Popover
     addChildComponent(popover);
@@ -182,7 +183,7 @@ public:
    * @note This function is only enabled if the settings panel is not
    *       currently visible.
    */
-  void showSettings() noexcept
+  void settingsCallback() noexcept
   {
     if (settingsPanel.isVisible())
       return;
@@ -204,7 +205,7 @@ public:
    * @note This function is only enabled if the settings panel is currently
    *       visible.
    */
-  void closeSettings() noexcept
+  void settingExitCallback() noexcept
   {
     if (!settingsPanel.isVisible())
       return;
@@ -227,12 +228,19 @@ public:
    *       disabled (DMT_DISABLE_UPDATE_NOTIFICATION is not set).
    *       If the download link is not available, this function does nothing.
    */
-  void downloadUpdate() noexcept
+  void updateCallback() noexcept
   {
+    // Check if update system is disabled
     if (DMT_DISABLE_UPDATE_NOTIFICATION)
       return;
 
+    // Hide the popover
+    popover.hideMessage();
+
+    // Check if the download link is available
     if (dmt::version::Info::downloadLink != nullptr) {
+      std::cout << "Opening download link: "
+                << *dmt::version::Info::downloadLink << std::endl;
       juce::URL(*dmt::version::Info::downloadLink).launchInDefaultBrowser();
     }
   }
@@ -246,7 +254,7 @@ public:
    *
    * @note This function is only enabled if the header is currently visible.
    */
-  void hideHeader() noexcept
+  void hideHeaderCallback() noexcept
   {
     if (!header.isVisible())
       return;
@@ -269,7 +277,7 @@ public:
    *
    * @note This function is only enabled if the header is currently hidden.
    */
-  void showHeader() noexcept
+  void showHeaderCallback() noexcept
   {
     if (header.isVisible())
       return;
