@@ -19,8 +19,7 @@ namespace version {
 
 constexpr auto SERVER_WAIT_FOR_INITIALIZATION_TIMEOUT = 100;
 constexpr auto SERVER_RECONNECT_INTERVAL = 10000;
-constexpr auto THREAD_STOP_TIMEOUT = 5000; // We are not in a rush to exit
-constexpr auto THREAD_ABORT_TIMEOUT = 1000;
+constexpr auto THREAD_TIMEOUT = 1000;
 
 //==============================================================================
 
@@ -61,7 +60,7 @@ public:
   {
     if (isThreadRunning()) {
       std::cout << "Aborting Version Manager thread..." << std::endl;
-      stopThread(THREAD_ABORT_TIMEOUT);
+      stopThread(THREAD_TIMEOUT);
     }
   }
 
@@ -95,6 +94,10 @@ private:
    */
   void fetchLatestVersion() noexcept
   {
+    // Check if we should exit the thread
+    if (threadShouldExit())
+      return;
+
     // If the latest version is already fetched, return early
     if (dmt::version::Info::latest != nullptr) {
       std::cout << "Latest version already fetched." << std::endl;
@@ -131,6 +134,10 @@ private:
    */
   void handleVersionComparison() noexcept
   {
+    // Check if we should exit the thread
+    if (threadShouldExit())
+      return;
+
     // Make sure both versions are available
     if (!dmt::version::Info::current || !dmt::version::Info::latest) {
       std::cerr << "Version comparison failed: one of the versions is null."
@@ -171,6 +178,10 @@ private:
    */
   void fetchLatestDownloadLink() noexcept
   {
+    // Check if we should exit the thread
+    if (threadShouldExit())
+      return;
+
     // Debugging
     std::cout << "Fetching latest download link..." << std::endl;
 
@@ -190,9 +201,9 @@ private:
     if (osName == "unknown") {
       std::cerr << "Unknown Operating System. Cannot fetch download link."
                 << std::endl;
-      // If we land here, continueing makes no sense and we should stop
-      stopThread(THREAD_STOP_TIMEOUT);
+      // If we land here, continueing makes no sense and we should sto
       std::cout << "Version Manager exiting..." << std::endl;
+      threadShouldExit();
       return;
     }
 
@@ -245,20 +256,24 @@ private:
    *
    * @details This function checks if the current version is the latest
    *          and if the download link is available. If both conditions are
-   *          met, it stops the thread and exits. Otherwise, it does nothing.
+   *          met, it requests the thread to exit. Otherwise, it does nothing.
    *          This function is called after each run of the thread.
    */
   void handleThreadExit() noexcept
   {
+    // Check if we should exit the thread
+    if (threadShouldExit())
+      return;
+
     // If we don't know if we are on lastest version return early
     if (!dmt::version::Info::isLatest)
-      return; // Can't stop the tread yet
+      return; // Can't stop the thread yet
 
     // So we know if we are on the latest version, if we are we can exit
     if (*dmt::version::Info::isLatest) {
       // On latest version we don't even need to check the download url
-      stopThread(THREAD_STOP_TIMEOUT); // So exit the thread
       std::cout << "Version Manager exiting..." << std::endl;
+      signalThreadShouldExit(); // Request thread exit, don't call stopThread()
       return;
     }
 
@@ -269,8 +284,8 @@ private:
     }
 
     // Download link is fine, so we can exit the thread
-    stopThread(THREAD_STOP_TIMEOUT);
     std::cout << "Version Manager exiting..." << std::endl;
+    signalThreadShouldExit(); // Request thread exit, don't call stopThread()
   }
 };
 } // namespace version
