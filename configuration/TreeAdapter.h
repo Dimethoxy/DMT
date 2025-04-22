@@ -28,8 +28,15 @@
 
 #pragma once
 
+//==============================================================================
+
 #include "configuration/Container.h"
 #include <JuceHeader.h>
+
+//==============================================================================
+
+namespace dmt {
+namespace configuration {
 
 //==============================================================================
 /**
@@ -163,3 +170,5 @@ private:
   //==============================================================================
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(TreeAdapter)
 };
+} // namespace configuration
+} // namespace dmt
