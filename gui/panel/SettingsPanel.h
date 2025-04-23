@@ -28,7 +28,7 @@ class SettingsPanel : public dmt::gui::panel::AbstractPanel
 
 public:
   SettingsPanel(/*juce::AudioProcessorValueTreeState& apvts*/)
-    : AbstractPanel("Work in Progress")
+    : AbstractPanel("Settings", false)
   {
     setLayout({ 22, 60 });
     addAndMakeVisible(settingsEditor);
@@ -42,9 +42,9 @@ public:
 
     const float padding = rawPadding * size;
     auto editorBounds = bounds.reduced(padding);
-    const float editorHorizontalPadding = 100.0f;
-    const float editorTopPadding = 35.0f;
-    const float editorBottomPadding = 15.0f;
+    const float editorHorizontalPadding = 90.0f;
+    const float editorTopPadding = 5.0f;
+    const float editorBottomPadding = 5.0f;
     editorBounds.removeFromTop(editorTopPadding * size);
     editorBounds.removeFromBottom(editorBottomPadding * size);
     editorBounds.removeFromLeft(editorHorizontalPadding * size);

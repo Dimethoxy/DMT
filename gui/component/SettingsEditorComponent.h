@@ -4,6 +4,7 @@
 
 //==============================================================================
 
+#include "dmt/gui/widget/ValueCategoryList.h"
 #include "dmt/gui/widget/ValueEditorList.h"
 #include "dmt/utility/Settings.h"
 #include <JuceHeader.h>
@@ -21,6 +22,7 @@ class SettingsEditor : public juce::Component
   using String = juce::String;
   using Viewport = juce::Viewport;
   using ValueEditorList = dmt::gui::component::ValueEditorList;
+  using ValueCategoryList = dmt::gui::component::ValueCategoryList;
 
   const float& size = Settings::Window::size;
 
@@ -29,9 +31,16 @@ public:
     : searchEditor("TestEditor")
   {
     addAndMakeVisible(searchEditor);
-    addAndMakeVisible(viewport);
+    addAndMakeVisible(categoryViewport);
+    addAndMakeVisible(editorViewport);
 
-    viewport.setViewedComponent(&valueEditorList, false);
+    categoryViewport.setViewedComponent(&valueCategoryList, false);
+    categoryViewport.setScrollBarsShown(true, false, false, false);
+    categoryViewport.setScrollBarThickness(12 * size);
+
+    editorViewport.setViewedComponent(&valueEditorList, false);
+    editorViewport.setScrollBarsShown(true, false, false, false);
+    editorViewport.setScrollBarThickness(12 * size);
   }
 
   ~SettingsEditor() override = default;
@@ -43,16 +52,31 @@ public:
     auto bounds = getLocalBounds();
     const auto testBounds = bounds.removeFromTop(24 * size);
     searchEditor.setBounds(testBounds);
-    const auto editorBounds = bounds;
-    viewport.setBounds(editorBounds);
-    valueEditorList.setOptimalSize(viewport.getWidth() -
-                                   viewport.getScrollBarThickness());
+    const int editorWidth = bounds.getWidth() * 0.7f;
+    const auto editorBounds = bounds.removeFromRight(editorWidth);
+    editorViewport.setBounds(editorBounds);
+    if (editorViewport.isVerticalScrollBarShown()) {
+      valueEditorList.setOptimalSize(editorViewport.getWidth() -
+                                     editorViewport.getScrollBarThickness());
+    } else {
+      valueEditorList.setOptimalSize(editorViewport.getWidth());
+    }
+    const auto categoryBounds = bounds;
+    categoryViewport.setBounds(categoryBounds);
+    if (categoryViewport.isVerticalScrollBarShown()) {
+      valueCategoryList.setOptimalSize(
+        categoryViewport.getWidth() - categoryViewport.getScrollBarThickness());
+    } else {
+      valueCategoryList.setOptimalSize(categoryViewport.getWidth());
+    }
   }
 
 private:
-  Viewport viewport;
   TextEditor searchEditor;
+  Viewport categoryViewport;
+  Viewport editorViewport;
   ValueEditorList valueEditorList;
+  ValueCategoryList valueCategoryList;
 
   //==============================================================================
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SettingsEditor)
