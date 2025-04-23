@@ -19,6 +19,7 @@ class SettingsEditor : public juce::Component
   using Colour = juce::Colour;
   using Settings = dmt::Settings;
   using String = juce::String;
+  using Viewport = juce::Viewport;
   using ValueEditorList = dmt::gui::component::ValueEditorList;
 
   const float& size = Settings::Window::size;
@@ -28,7 +29,9 @@ public:
     : searchEditor("TestEditor")
   {
     addAndMakeVisible(searchEditor);
-    addAndMakeVisible(valueEditorList);
+    addAndMakeVisible(viewport);
+
+    viewport.setViewedComponent(&valueEditorList, false);
   }
 
   ~SettingsEditor() override = default;
@@ -42,16 +45,17 @@ public:
     searchEditor.setBounds(testBounds);
     const auto editorBounds = bounds;
     valueEditorList.setOptimalSize(editorBounds.getWidth());
-    valueEditorList.setTopLeftPosition(editorBounds.getPosition());
+    viewport.setBounds(editorBounds);
   }
 
 private:
+  Viewport viewport;
   TextEditor searchEditor;
   ValueEditorList valueEditorList;
+
   //==============================================================================
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SettingsEditor)
 };
-
 } // namespace component
 } // namespace gui
 } // namespace dmt
