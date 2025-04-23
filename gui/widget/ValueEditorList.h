@@ -76,6 +76,9 @@ public:
 
     // Set the new category
     category = &_category;
+
+    resized(); // Ensure layout is updated
+    repaint(); // Ensure component is redrawn
   }
 
 protected:
