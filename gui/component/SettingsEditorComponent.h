@@ -47,7 +47,7 @@ public:
     addAndMakeVisible(editorViewport);
 
     categoryViewport.setViewedComponent(&valueCategoryList, false);
-    categoryViewport.setScrollBarsShown(true, false, false, false);
+    categoryViewport.setScrollBarsShown(false, false, false, false);
     editorViewport.setViewedComponent(&valueEditorList, false);
     editorViewport.setScrollBarsShown(true, false, false, false);
     setScrollbarThicknesses();

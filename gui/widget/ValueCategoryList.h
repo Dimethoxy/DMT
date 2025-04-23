@@ -32,6 +32,7 @@ class ValueCategoryList : public juce::Component
   // TODO: Move to settings
   const float rawFontSize = 17.0f;
   const Colour fontColour = juce::Colours::white;
+  const Colour seperatorColour = juce::Colours::white.withAlpha(0.2f);
 
 public:
   ValueCategoryList(CategoryList& _categories,
@@ -49,7 +50,7 @@ public:
   {
     // Draw separator lines above, between, and below labels
     const auto fontSize = rawFontSize * size;
-    _g.setColour(juce::Colours::darkgrey.withAlpha(0.5f));
+    _g.setColour(seperatorColour);
 
     // Top line
     _g.drawLine(0.0f, 0.0f, static_cast<float>(getWidth()), 0.0f, 1.0f);
