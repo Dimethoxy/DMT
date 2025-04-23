@@ -30,7 +30,7 @@ class ValueCategoryList : public juce::Component
   const float& size = Settings::Window::size;
 
   // TODO: Move to settings
-  const float rawFontSize = 16.0f;
+  const float rawFontSize = 17.0f;
   const Colour fontColour = juce::Colours::white;
 
 public:
@@ -45,13 +45,36 @@ public:
 
   ~ValueCategoryList() override = default;
 
-  void paint(juce::Graphics& _g) override {}
+  void paint(juce::Graphics& _g) override
+  {
+    // Draw separator lines above, between, and below labels
+    const auto fontSize = rawFontSize * size;
+    _g.setColour(juce::Colours::darkgrey.withAlpha(0.5f));
+
+    // Top line
+    _g.drawLine(0.0f, 0.0f, static_cast<float>(getWidth()), 0.0f, 1.0f);
+
+    // Lines between labels
+    for (std::size_t i = 1; i < labelList.size(); ++i) {
+      auto y = static_cast<int>(i * fontSize);
+      _g.drawLine(0.0f,
+                  static_cast<float>(y),
+                  static_cast<float>(getWidth()),
+                  static_cast<float>(y),
+                  1.0f);
+    }
+
+    // Bottom line
+    auto bottomY = static_cast<float>(labelList.size() * fontSize);
+    _g.drawLine(0.0f, bottomY, static_cast<float>(getWidth()), bottomY, 1.0f);
+  }
 
   void resized() override
   {
     const auto fontSize = rawFontSize * size;
-
+    const float leftPadding = 5.0f * size;
     auto bounds = getLocalBounds();
+    bounds.removeFromLeft(leftPadding);
     for (auto& label : labelList) {
       auto labelBounds = bounds.removeFromTop(fontSize);
       label->setBounds(labelBounds);
@@ -62,7 +85,8 @@ public:
   {
     const auto fontSize = rawFontSize * size;
     const auto neededHeight = fontSize * labelList.size();
-    setSize(width, neededHeight);
+    const auto extraHeight = fontSize * 0.5f;
+    setSize(width, neededHeight + extraHeight);
   }
 
 protected:
