@@ -25,7 +25,7 @@ class ValueCategoryList : public juce::Component
   using LabelList = std::vector<LabelPointer>;
   using TreeAdapter = dmt::configuration::TreeAdapter;
   using CategoryList = std::vector<TreeAdapter::Category>;
-  using CategoryCallback = std::function<void(const TreeAdapter::Category&)>;
+  using CategoryCallback = std::function<void(TreeAdapter::Category&)>;
 
   const float& size = Settings::Window::size;
 
@@ -34,7 +34,7 @@ class ValueCategoryList : public juce::Component
   const Colour fontColour = juce::Colours::white;
 
 public:
-  ValueCategoryList(const CategoryList& _categories,
+  ValueCategoryList(CategoryList& _categories,
                     CategoryCallback _onCategorySelected)
     : categories(_categories)
     , onCategorySelected(std::move(_onCategorySelected))
@@ -110,7 +110,7 @@ private:
   Fonts fonts;
 
   //==============================================================================
-  const CategoryList& categories;
+  CategoryList& categories;
   CategoryCallback onCategorySelected;
   //==============================================================================
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(ValueCategoryList)

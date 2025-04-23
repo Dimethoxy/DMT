@@ -3,7 +3,7 @@
  * ██████  ██ ███    ███ ███████ ████████ ██   ██  ██████  ██   ██ ██    ██
  * ██   ██ ██ ████  ████ ██         ██    ██   ██ ██    ██  ██ ██   ██  ██
  * ██   ██ ██ ██ ████ ██ █████      ██    ███████ ██    ██   ███     ████
- * ██   ██ ██ ██  ██  ██ ██         ██    ██   ██ ██    ██  ██ ██     ██
+ * ██   ██ ██ ██  ██  ██ ██         ██   ██ ██    ██  ██ ██     ██
  * ██████  ██ ██      ██ ███████    ██    ██   ██  ██████  ██   ██    ██
  *
  * Copyright (C) 2024 Dimethoxy Audio (https://dimethoxy.com)
@@ -71,7 +71,7 @@ public:
   struct Leaf
   {
     juce::String name;
-    const Container::SettingValue* value;
+    Container::SettingValue* value;
   };
 
   //==============================================================================
@@ -118,28 +118,20 @@ public:
 
   //==============================================================================
   /**
-   * @brief Returns the list of categories, each with its leaves.
+   * @brief Returns a mutable reference to the vector of categories.
    *
-   * @return Const reference to the vector of categories.
+   * @return Reference to the vector of categories.
    *
    * @details
-   * The returned reference remains valid until rebuild() is called.
+   * This allows modifications to the categories directly. Use with caution
+   * as it bypasses the rebuild mechanism.
    */
-  [[nodiscard]] inline const std::vector<Category>& getCategories()
-    const noexcept
+  [[nodiscard]] inline std::vector<Category>& getCategories() noexcept
   {
     return categories;
   }
 
-private:
-  //==============================================================================
-  // Members initialized in the initializer list
-  Container& container;
-
-  //==============================================================================
-  // Other members
-  std::vector<Category> categories;
-
+protected:
   //==============================================================================
   /**
    * @brief Builds the category/leaf tree from the container.
@@ -153,19 +145,43 @@ private:
     categories.clear();
     std::map<juce::String, std::vector<Leaf>> categoryMap;
 
-    for (const auto& [key, value] : container.getAllSettings()) {
+    for (auto& [key, value] : container.getAllSettingsMutable()) {
       auto dotIndex = static_cast<int>(key.indexOfChar('.'));
       if (dotIndex < 0)
         continue;
       juce::String category = key.substring(0, dotIndex);
       juce::String leaf = key.substring(dotIndex + 1);
-      categoryMap[category].push_back(Leaf{ leaf, &value });
+      Leaf leafObj{ leaf, &value };
+      categoryMap[category].push_back(leafObj);
     }
 
-    for (auto& [category, leaves] : categoryMap) {
+    // Prepare to sort categories: "General" should be first
+    std::vector<std::pair<juce::String, std::vector<Leaf>>> sortedCategories;
+    auto generalIt = categoryMap.find("General");
+    if (generalIt != categoryMap.end()) {
+      // Add "General" first if it exists
+      sortedCategories.push_back(*generalIt);
+      categoryMap.erase(generalIt);
+    }
+    // Add the rest
+    for (auto& entry : categoryMap) {
+      sortedCategories.push_back(entry);
+    }
+
+    // Now add to categories vector
+    for (auto& [category, leaves] : sortedCategories) {
       categories.push_back(Category{ category, leaves });
     }
   }
+
+private:
+  //==============================================================================
+  // Members initialized in the initializer list
+  Container& container;
+
+  //==============================================================================
+  // Other members
+  std::vector<Category> categories;
 
   //==============================================================================
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(TreeAdapter)

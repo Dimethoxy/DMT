@@ -196,12 +196,12 @@ public:
 
   //==============================================================================
   /**
-   * @brief Returns a const reference to the internal settings map.
+   * @brief Returns a mutable reference to the internal settings map.
    *
    * @details
-   * This is used by the adapter to build the category/leaf structure.
+   * This is used by adapters that need to provide mutable access to values.
    */
-  inline const std::map<String, SettingValue>& getAllSettings() const
+  inline std::map<String, SettingValue>& getAllSettingsMutable()
   {
     return settings;
   }

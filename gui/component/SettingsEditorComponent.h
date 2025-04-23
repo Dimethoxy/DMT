@@ -37,7 +37,7 @@ public:
     : treeAdapter(Settings::container)
     , searchEditor("TestEditor")
     , valueCategoryList(treeAdapter.getCategories(),
-                        [this](const TreeAdapter::Category& category) {
+                        [this](TreeAdapter::Category& category) {
                           onCategorySelectedCallback(category);
                         })
 
@@ -79,7 +79,7 @@ public:
     setScrollbarThicknesses();
   }
 
-  void onCategorySelectedCallback(const TreeAdapter::Category& category)
+  void onCategorySelectedCallback(TreeAdapter::Category& category)
   {
     std::cout << "Selected category: " << category.name << std::endl;
     valueEditorList.setCategory(category);

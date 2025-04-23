@@ -29,11 +29,7 @@ class ValueEditorList : public juce::Component
   const float rawFontSize = 16.0f;
 
 public:
-  ValueEditorList()
-  {
-    generateDummyEditors();
-    addAllEditors();
-  }
+  ValueEditorList() { addAllEditors(); }
 
   ~ValueEditorList() override = default;
 
@@ -57,8 +53,11 @@ public:
     setSize(width, neededHeight);
   }
 
-  void setCategory(const TreeAdapter::Category& category)
+  void setCategory(TreeAdapter::Category& category)
   {
+    // Remove all child components before clearing the list
+    removeAllChildren();
+
     // Clear existing editors
     editorList.clear();
 
@@ -74,14 +73,6 @@ public:
   }
 
 protected:
-  void generateDummyEditors()
-  {
-    for (int i = 0; i < 15; ++i) {
-      const auto name = String("ValueEditor") + String(i);
-      auto editor = std::make_unique<ValueEditor>(name);
-      editorList.push_back(std::move(editor));
-    }
-  }
   void addAllEditors()
   {
     for (auto& editor : editorList) {
