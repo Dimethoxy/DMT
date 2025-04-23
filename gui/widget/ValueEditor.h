@@ -52,6 +52,8 @@ public:
     auto bounds = getLocalBounds();
     auto labelBounds = bounds.removeFromLeft(bounds.getWidth() / 2);
     auto editorBounds = bounds;
+    label.setBounds(labelBounds);
+    editor.setBounds(editorBounds);
   }
 
 private:

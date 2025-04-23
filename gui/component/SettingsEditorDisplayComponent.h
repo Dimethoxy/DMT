@@ -46,7 +46,8 @@ public:
     const auto testBounds = bounds.removeFromTop(24 * size);
     searchEditor.setBounds(testBounds);
     const auto editorBounds = bounds;
-    valueEditorList.setBounds(editorBounds);
+    valueEditorList.setOptimalSize(editorBounds.getWidth());
+    valueEditorList.setTopLeftPosition(editorBounds.getPosition());
   }
 
   void paintDisplay(juce::Graphics& _g,
