@@ -4,6 +4,7 @@
 
 //==============================================================================
 
+#include "dmt/configuration/TreeAdapter.h"
 #include "dmt/gui/widget/ValueCategoryList.h"
 #include "dmt/gui/widget/ValueEditorList.h"
 #include "dmt/utility/Settings.h"
@@ -21,16 +22,21 @@ class SettingsEditor : public juce::Component
   using Settings = dmt::Settings;
   using String = juce::String;
   using Viewport = juce::Viewport;
+  using TreeAdapter = dmt::configuration::TreeAdapter;
   using ValueEditorList = dmt::gui::component::ValueEditorList;
   using ValueCategoryList = dmt::gui::component::ValueCategoryList;
+  using Component = juce::Component;
 
   const float& size = Settings::Window::size;
 
   const float rawScrollBarThickness = 8.0f;
+  const float rawFontSize = 16.0f;
 
 public:
   SettingsEditor()
-    : searchEditor("TestEditor")
+    : treeAdapter(Settings::container)
+    , searchEditor("TestEditor")
+
   {
     addAndMakeVisible(searchEditor);
     addAndMakeVisible(categoryViewport);
@@ -42,6 +48,8 @@ public:
     editorViewport.setScrollBarsShown(true, false, false, false);
     setScrollbarThicknesses();
     setScrollBarColour();
+
+    valueCategoryList.setCategories(treeAdapter.getCategories());
   }
 
   ~SettingsEditor() override = default;
@@ -51,27 +59,33 @@ public:
   void resized() override
   {
     auto bounds = getLocalBounds();
-    const auto testBounds = bounds.removeFromTop(24 * size);
-    searchEditor.setBounds(testBounds);
-    const int editorWidth = bounds.getWidth() * 0.7f;
-    const auto editorBounds = bounds.removeFromRight(editorWidth);
-    editorViewport.setBounds(editorBounds);
-    if (editorViewport.isVerticalScrollBarShown()) {
-      valueEditorList.setOptimalSize(editorViewport.getWidth() -
-                                     editorViewport.getScrollBarThickness());
-    } else {
-      valueEditorList.setOptimalSize(editorViewport.getWidth());
-    }
-    const auto categoryBounds = bounds;
-    categoryViewport.setBounds(categoryBounds);
-    if (categoryViewport.isVerticalScrollBarShown()) {
-      valueCategoryList.setOptimalSize(
-        categoryViewport.getWidth() - categoryViewport.getScrollBarThickness());
-    } else {
-      valueCategoryList.setOptimalSize(categoryViewport.getWidth());
-    }
 
+    // Set bounds for the search editor
+    const auto fontSize = static_cast<int>(rawFontSize * size);
+    searchEditor.setBounds(bounds.removeFromTop(fontSize));
+
+    // Calculate and set bounds for the category viewport
+    const int categoryWidth = static_cast<int>(bounds.getWidth() * 0.35f);
+    categoryViewport.setBounds(bounds.removeFromLeft(categoryWidth));
+    layoutViewport(categoryViewport, valueCategoryList);
+
+    // Set bounds for the editor viewport
+    editorViewport.setBounds(bounds);
+    layoutViewport(editorViewport, valueEditorList);
+
+    // Update scrollbar thicknesses
     setScrollbarThicknesses();
+  }
+
+protected:
+  template<typename ComponentType>
+  void layoutViewport(Viewport& viewport, ComponentType& content)
+  {
+    const int optimalWidth =
+      viewport.isVerticalScrollBarShown()
+        ? viewport.getWidth() - viewport.getScrollBarThickness()
+        : viewport.getWidth();
+    content.setOptimalSize(optimalWidth);
   }
 
 protected:
@@ -92,6 +106,7 @@ protected:
   }
 
 private:
+  TreeAdapter treeAdapter;
   TextEditor searchEditor;
   Viewport categoryViewport;
   Viewport editorViewport;

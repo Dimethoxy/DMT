@@ -31,11 +31,7 @@ class ValueCategoryList : public juce::Component
   const Colour fontColour = juce::Colours::white;
 
 public:
-  ValueCategoryList()
-  {
-    generateDummyLabels();
-    addAllLabels();
-  }
+  ValueCategoryList() {}
 
   ~ValueCategoryList() override = default;
 
@@ -59,20 +55,27 @@ public:
     setSize(width, neededHeight);
   }
 
-protected:
-  void generateDummyLabels()
+  void setCategories(
+    std::vector<dmt::configuration::TreeAdapter::Category> categories)
   {
-    for (int i = 0; i < 15; ++i) {
-      const auto name = String("Category ") + String(i);
+    // Let's clear the current labels
+    labelList.clear();
+    // And generate new ones
+    for (auto& category : categories) {
+      const auto name = String(category.name) + String("Label");
+      const auto text = String(category.name);
       auto label = std::make_unique<Lable>(name,
                                            fonts.medium,
                                            rawFontSize,
                                            fontColour,
-                                           juce::Justification::centredBottom);
-      label->setText(name);
+                                           juce::Justification::centredLeft);
+      label->setText(text);
       labelList.push_back(std::move(label));
     }
+    addAllLabels();
   }
+
+protected:
   void addAllLabels()
   {
     for (auto& label : labelList) {

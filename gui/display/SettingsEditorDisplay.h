@@ -4,7 +4,6 @@
 
 //==============================================================================
 
-#include "dmt/configuration/TreeAdapter.h"
 #include "dmt/gui/component/SettingsEditorComponent.h"
 #include "dmt/gui/display/AbstractDisplay.h"
 #include "dmt/utility/Settings.h"
@@ -20,18 +19,14 @@ class SettingsEditorDisplay : public dmt::gui::display::AbstractDisplay
 {
   using Image = juce::Image;
   using Settings = dmt::Settings;
-  using TreeAdapter = dmt::configuration::TreeAdapter;
+
   using TextEditor = dmt::gui::widget::TextEditor;
   using SettingsEditor = dmt::gui::component::SettingsEditor;
 
   const float& size = Settings::Window::size;
 
 public:
-  SettingsEditorDisplay()
-    : treeAdapter(Settings::container)
-  {
-    addAndMakeVisible(settingsEditor);
-  }
+  SettingsEditorDisplay() { addAndMakeVisible(settingsEditor); }
 
   ~SettingsEditorDisplay() override = default;
 
@@ -54,7 +49,6 @@ public:
 
 private:
   SettingsEditor settingsEditor;
-  TreeAdapter treeAdapter;
 
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SettingsEditorDisplay)
 };
