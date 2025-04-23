@@ -66,7 +66,7 @@ public:
     editorList.clear();
 
     // Generate new editors based on the selected category
-    for (auto& leaf : _category.leaves) { // was: const auto& leaf
+    for (auto& leaf : _category.leaves) {
       auto editor = std::make_unique<ValueEditor>(leaf);
       editorList.push_back(std::move(editor));
     }

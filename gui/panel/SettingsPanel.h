@@ -42,7 +42,7 @@ public:
 
     const float padding = rawPadding * size;
     auto editorBounds = bounds.reduced(padding);
-    const float editorHorizontalPadding = 90.0f;
+    const float editorHorizontalPadding = 5.0f;
     const float editorTopPadding = 5.0f;
     const float editorBottomPadding = 5.0f;
     editorBounds.removeFromTop(editorTopPadding * size);
