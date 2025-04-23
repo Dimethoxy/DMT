@@ -44,8 +44,9 @@ public:
     const auto testBounds = bounds.removeFromTop(24 * size);
     searchEditor.setBounds(testBounds);
     const auto editorBounds = bounds;
-    valueEditorList.setOptimalSize(editorBounds.getWidth());
     viewport.setBounds(editorBounds);
+    valueEditorList.setOptimalSize(viewport.getWidth() -
+                                   viewport.getScrollBarThickness());
   }
 
 private:
