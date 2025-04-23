@@ -26,6 +26,8 @@ class SettingsEditor : public juce::Component
 
   const float& size = Settings::Window::size;
 
+  const float rawScrollBarThickness = 8.0f;
+
 public:
   SettingsEditor()
     : searchEditor("TestEditor")
@@ -36,11 +38,10 @@ public:
 
     categoryViewport.setViewedComponent(&valueCategoryList, false);
     categoryViewport.setScrollBarsShown(true, false, false, false);
-    categoryViewport.setScrollBarThickness(12 * size);
-
     editorViewport.setViewedComponent(&valueEditorList, false);
     editorViewport.setScrollBarsShown(true, false, false, false);
-    editorViewport.setScrollBarThickness(12 * size);
+    setScrollbarThicknesses();
+    setScrollBarColour();
   }
 
   ~SettingsEditor() override = default;
@@ -69,6 +70,25 @@ public:
     } else {
       valueCategoryList.setOptimalSize(categoryViewport.getWidth());
     }
+
+    setScrollbarThicknesses();
+  }
+
+protected:
+  void setScrollbarThicknesses()
+  {
+    const int scrollBarThickness =
+      static_cast<int>(rawScrollBarThickness * size);
+    categoryViewport.setScrollBarThickness(scrollBarThickness);
+    editorViewport.setScrollBarThickness(scrollBarThickness);
+  }
+
+  void setScrollBarColour()
+  {
+    categoryViewport.getVerticalScrollBar().setColour(
+      juce::ScrollBar::ColourIds::thumbColourId, juce::Colours::white);
+    editorViewport.getVerticalScrollBar().setColour(
+      juce::ScrollBar::ColourIds::thumbColourId, juce::Colours::white);
   }
 
 private:

@@ -25,7 +25,7 @@ class ValueEditorList : public juce::Component
   const float& size = Settings::Window::size;
 
   // TODO: Move to settings
-  const float rawFontSize = 24.0f;
+  const float rawFontSize = 16.0f;
 
 public:
   ValueEditorList()

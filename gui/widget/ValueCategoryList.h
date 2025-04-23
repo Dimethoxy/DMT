@@ -27,8 +27,7 @@ class ValueCategoryList : public juce::Component
   const float& size = Settings::Window::size;
 
   // TODO: Move to settings
-  const float rawFontSize = 24.0f;
-  const float fontSize = 16.0f;
+  const float rawFontSize = 16.0f;
   const Colour fontColour = juce::Colours::white;
 
 public:
@@ -67,7 +66,7 @@ protected:
       const auto name = String("Category ") + String(i);
       auto label = std::make_unique<Lable>(name,
                                            fonts.medium,
-                                           fontSize,
+                                           rawFontSize,
                                            fontColour,
                                            juce::Justification::centredBottom);
       label->setText(name);

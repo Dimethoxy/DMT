@@ -50,7 +50,7 @@ public:
   void resized() override
   {
     auto bounds = getLocalBounds();
-    auto labelBounds = bounds.removeFromLeft(bounds.getWidth() / 2);
+    auto labelBounds = bounds.removeFromLeft(bounds.getWidth() / 3.0f * 2.0f);
     auto editorBounds = bounds;
     label.setBounds(labelBounds);
     editor.setBounds(editorBounds);
