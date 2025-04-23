@@ -18,6 +18,7 @@ class ValueEditorList : public juce::Component
   using Colour = juce::Colour;
   using Settings = dmt::Settings;
   using String = juce::String;
+  using TreeAdapter = dmt::configuration::TreeAdapter;
   using ValueEditor = dmt::gui::component::ValueEditor;
   using ValueEditorPointer = std::unique_ptr<ValueEditor>;
   using ValueEditorPointerList = std::vector<ValueEditorPointer>;
@@ -54,6 +55,22 @@ public:
     const auto fontSize = rawFontSize * size;
     const auto neededHeight = fontSize * editorList.size();
     setSize(width, neededHeight);
+  }
+
+  void setCategory(const TreeAdapter::Category& category)
+  {
+    // Clear existing editors
+    editorList.clear();
+
+    // Generate new editors based on the selected category
+    for (const auto& value : category.leaves) {
+      const auto name = String(value.name);
+      auto editor = std::make_unique<ValueEditor>(name);
+      editorList.push_back(std::move(editor));
+    }
+
+    // Add new editors to the component
+    addAllEditors();
   }
 
 protected:

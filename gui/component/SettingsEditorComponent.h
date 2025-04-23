@@ -82,6 +82,8 @@ public:
   void onCategorySelectedCallback(const TreeAdapter::Category& category)
   {
     std::cout << "Selected category: " << category.name << std::endl;
+    valueEditorList.setCategory(category);
+    valueEditorList.setOptimalSize(editorViewport.getWidth());
   }
 
 protected:

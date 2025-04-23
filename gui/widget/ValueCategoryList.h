@@ -99,8 +99,7 @@ protected:
 
     for (std::size_t i = 0; i < labelList.size(); ++i) {
       if (labelList[i].get() == clickedLabel) {
-        std::cout << "Selected category: " << categories[i].name << std::endl;
-        // onCategorySelected(categories[i]);
+        onCategorySelected(categories[i]);
         break;
       }
     }
