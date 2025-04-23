@@ -36,6 +36,10 @@ public:
   SettingsEditor()
     : treeAdapter(Settings::container)
     , searchEditor("TestEditor")
+    , valueCategoryList(treeAdapter.getCategories(),
+                        [this](const TreeAdapter::Category& category) {
+                          onCategorySelectedCallback(category);
+                        })
 
   {
     addAndMakeVisible(searchEditor);
@@ -48,8 +52,6 @@ public:
     editorViewport.setScrollBarsShown(true, false, false, false);
     setScrollbarThicknesses();
     setScrollBarColour();
-
-    valueCategoryList.setCategories(treeAdapter.getCategories());
   }
 
   ~SettingsEditor() override = default;
@@ -77,6 +79,11 @@ public:
     setScrollbarThicknesses();
   }
 
+  void onCategorySelectedCallback(const TreeAdapter::Category& category)
+  {
+    std::cout << "Selected category: " << category.name << std::endl;
+  }
+
 protected:
   template<typename ComponentType>
   void layoutViewport(Viewport& viewport, ComponentType& content)
@@ -88,7 +95,6 @@ protected:
     content.setOptimalSize(optimalWidth);
   }
 
-protected:
   void setScrollbarThicknesses()
   {
     const int scrollBarThickness =

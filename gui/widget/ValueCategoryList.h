@@ -23,6 +23,9 @@ class ValueCategoryList : public juce::Component
   using Lable = dmt::gui::widget::Label;
   using LabelPointer = std::unique_ptr<Lable>;
   using LabelList = std::vector<LabelPointer>;
+  using TreeAdapter = dmt::configuration::TreeAdapter;
+  using CategoryList = std::vector<TreeAdapter::Category>;
+  using CategoryCallback = std::function<void(const TreeAdapter::Category&)>;
 
   const float& size = Settings::Window::size;
 
@@ -31,7 +34,13 @@ class ValueCategoryList : public juce::Component
   const Colour fontColour = juce::Colours::white;
 
 public:
-  ValueCategoryList() {}
+  ValueCategoryList(const CategoryList& _categories,
+                    CategoryCallback _onCategorySelected)
+    : categories(_categories)
+    , onCategorySelected(std::move(_onCategorySelected))
+  {
+    addCategories();
+  }
 
   ~ValueCategoryList() override = default;
 
@@ -55,8 +64,8 @@ public:
     setSize(width, neededHeight);
   }
 
-  void setCategories(
-    std::vector<dmt::configuration::TreeAdapter::Category> categories)
+protected:
+  void addCategories()
   {
     // Let's clear the current labels
     labelList.clear();
@@ -75,7 +84,6 @@ public:
     addAllLabels();
   }
 
-protected:
   void addAllLabels()
   {
     for (auto& label : labelList) {
@@ -87,6 +95,9 @@ private:
   LabelList labelList;
   Fonts fonts;
 
+  //==============================================================================
+  const CategoryList& categories;
+  CategoryCallback onCategorySelected;
   //==============================================================================
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(ValueCategoryList)
 };

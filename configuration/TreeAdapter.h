@@ -162,8 +162,8 @@ private:
       categoryMap[category].push_back(Leaf{ leaf, &value });
     }
 
-    for (auto& [cat, leaves] : categoryMap) {
-      categories.push_back(Category{ cat, leaves });
+    for (auto& [category, leaves] : categoryMap) {
+      categories.push_back(Category{ category, leaves });
     }
   }
 
