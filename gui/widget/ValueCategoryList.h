@@ -79,6 +79,7 @@ protected:
                                            fontColour,
                                            juce::Justification::centredLeft);
       label->setText(text);
+
       labelList.push_back(std::move(label));
     }
     addAllLabels();
@@ -88,6 +89,20 @@ protected:
   {
     for (auto& label : labelList) {
       addAndMakeVisible(*label);
+      label->addMouseListener(this, true);
+    }
+  }
+
+  void mouseUp(const juce::MouseEvent& _event) override
+  {
+    const auto clickedLabel = dynamic_cast<Lable*>(_event.eventComponent);
+
+    for (std::size_t i = 0; i < labelList.size(); ++i) {
+      if (labelList[i].get() == clickedLabel) {
+        std::cout << "Selected category: " << categories[i].name << std::endl;
+        // onCategorySelected(categories[i]);
+        break;
+      }
     }
   }
 
