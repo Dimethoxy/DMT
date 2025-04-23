@@ -2,7 +2,7 @@
 //==============================================================================
 #include "dsp/data/FifoAudioBuffer.h"
 #include "dsp/data/RingAudioBuffer.h"
-#include "gui/component/AbstractDisplayComponent.h"
+#include "gui/display/AbstractDisplay.h"
 #include "gui/widget/Oscilloscope.h"
 #include "gui/widget/Shadow.h"
 #include "utility/RepaintTimer.h"
@@ -11,11 +11,11 @@
 //==============================================================================
 namespace dmt {
 namespace gui {
-namespace component {
+namespace display {
 //==============================================================================
 template<typename SampleType>
-class OscilloscopeComponent
-  : public dmt::gui::component::AbstractDisplayComponent
+class OscilloscopeDisplay
+  : public dmt::gui::display::AbstractDisplay
   , public juce::AudioProcessorValueTreeState::Listener
 {
   using Oscilloscope = dmt::gui::widget::Oscilloscope<SampleType>;
@@ -47,8 +47,8 @@ class OscilloscopeComponent
 
 public:
   //==============================================================================
-  OscilloscopeComponent(FifoAudioBuffer& _fifoBuffer,
-                        AudioProcessorValueTreeState& _apvts)
+  OscilloscopeDisplay(FifoAudioBuffer& _fifoBuffer,
+                      AudioProcessorValueTreeState& _apvts)
     : ringBuffer(2, 4096)
     , fifoBuffer(_fifoBuffer)
     , leftOscilloscope(ringBuffer, 0)
@@ -78,7 +78,7 @@ public:
     juce::Graphics& g,
     const juce::Rectangle<int>& /*_displayBounds*/) const noexcept override
   {
-    TRACER("OscilloscopeComponent::paintDisplay");
+    TRACER("OscilloscopeDisplay::paintDisplay");
 
     const auto leftScopeBounds = leftOscilloscope.getBounds().toFloat();
     const auto rightScopeBounds = rightOscilloscope.getBounds().toFloat();
@@ -158,7 +158,7 @@ protected:
   //==============================================================================
   void prepareNextFrame() noexcept override
   {
-    TRACER("OscilloscopeComponent::prepareNextFrame");
+    TRACER("OscilloscopeDisplay::prepareNextFrame");
     ringBuffer.write(fifoBuffer);
     ringBuffer.equalizeReadPositions();
     leftOscilloscope.notify();
@@ -167,7 +167,7 @@ protected:
   //==============================================================================
   void setZoom(float _zoom) noexcept
   {
-    TRACER("OscilloscopeComponent::setZoom");
+    TRACER("OscilloscopeDisplay::setZoom");
     // Just random math with magic numbers to get a nice feeling zoom
     float zoomModifier = (_zoom + 5) / 105.0f;
     float maxSamplesPerPixel = 900.0f;
@@ -179,14 +179,14 @@ protected:
   //==============================================================================
   void setThickness(float _thickness) noexcept
   {
-    TRACER("OscilloscopeComponent::setThickness");
+    TRACER("OscilloscopeDisplay::setThickness");
     leftOscilloscope.setThickness(_thickness);
     rightOscilloscope.setThickness(_thickness);
   }
   //==============================================================================
   void setHeight(float _height) noexcept
   {
-    TRACER("OscilloscopeComponent::setHeight");
+    TRACER("OscilloscopeDisplay::setHeight");
     float amplitude = juce::Decibels::decibelsToGain(_height);
     leftOscilloscope.setAmplitude(amplitude);
     rightOscilloscope.setAmplitude(amplitude);
@@ -212,7 +212,7 @@ private:
   Oscilloscope rightOscilloscope;
   //==============================================================================
 
-  JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(OscilloscopeComponent)
+  JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(OscilloscopeDisplay)
 };
 } // namespace component
 } // namespace gui

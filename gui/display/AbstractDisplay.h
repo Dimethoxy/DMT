@@ -19,7 +19,7 @@
  * Your are not allowed to use this code in any closed-source project.
  *
  * Description:
- * AbstractDisplayComponent provides a base class for all display components
+ * AbstractDisplay provides a base class for all display components
  * that require custom painting, shadow/border rendering, and repaint timing.
  * Designed for extensibility and real-time GUI performance.
  *
@@ -41,7 +41,7 @@
 
 namespace dmt {
 namespace gui {
-namespace component {
+namespace display {
 
 //==============================================================================
 /**
@@ -54,7 +54,7 @@ namespace component {
  * implement extendResized, paintDisplay, and prepareNextFrame for their own
  * drawing and layout logic.
  */
-class AbstractDisplayComponent
+class AbstractDisplay
   : public juce::Component
   , public dmt::utility::RepaintTimer
 {
@@ -88,13 +88,13 @@ class AbstractDisplayComponent
 public:
   //==============================================================================
   /**
-   * @brief Constructs an AbstractDisplayComponent.
+   * @brief Constructs an AbstractDisplay.
    *
    * @details
    * Initializes shadow components and starts the repaint timer.
    * Subclasses should implement their own layout and painting logic.
    */
-  inline explicit AbstractDisplayComponent(
+  inline explicit AbstractDisplay(
     /*juce::AudioProcessorValueTreeState& _apvts*/) noexcept
     : outerShadow(drawOuterShadow, outerShadowColour, outerShadowRadius, false)
     , innerShadow(drawInnerShadow, innerShadowColour, innerShadowRadius, true)
@@ -163,7 +163,7 @@ public:
    */
   inline void resized() override final
   {
-    TRACER("DisfluxDisplayComponent::resized");
+    TRACER("DisfluxDisplay::resized");
 
     const auto bounds = getLocalBounds();
     const auto borderStrength = rawBorderStrength * size;
@@ -256,7 +256,7 @@ private:
   juce::Rectangle<int> outerBounds;
 
   //==============================================================================
-  JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(AbstractDisplayComponent)
+  JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(AbstractDisplay)
 };
 
 } // namespace component

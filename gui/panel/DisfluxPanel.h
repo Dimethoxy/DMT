@@ -32,9 +32,9 @@
 //==============================================================================
 
 #include "dsp/data/FifoAudioBuffer.h"
-#include "gui/component/DisfluxDisplayComponent.h"
 #include "gui/component/LinearSliderComponent.h"
 #include "gui/component/RotarySliderComponent.h"
+#include "gui/display/DisfluxDisplay.h"
 #include "gui/panel/AbstractPanel.h"
 #include "utility/Settings.h"
 #include "utility/Unit.h"
@@ -61,7 +61,7 @@ template<typename SampleType>
 class DisfluxPanel : public dmt::gui::panel::AbstractPanel
 {
   using FifoAudioBuffer = dmt::dsp::data::FifoAudioBuffer<float>;
-  using DisfluxDisplayComponent = dmt::gui::component::DisfluxDisplayComponent;
+  using DisfluxDisplay = dmt::gui::display::DisfluxDisplay;
   using LinearSlider = dmt::gui::component::LinearSliderComponent;
   using LinearSliderType = dmt::gui::widget::LinearSlider::Type;
   using LinearSliderOrientation = dmt::gui::widget::LinearSlider::Orientation;
@@ -185,7 +185,7 @@ public:
 private:
   //==============================================================================
   // Members initialized in the initializer list
-  DisfluxDisplayComponent display;
+  DisfluxDisplay display;
   RotarySlider amountSlider;
   RotarySlider spreadSlider;
   LinearSlider fequencySlider;

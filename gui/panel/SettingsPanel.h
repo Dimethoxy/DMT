@@ -3,10 +3,10 @@
 //==============================================================================
 #include "gui/component/LinearSliderComponent.h"
 #include "gui/component/RotarySliderComponent.h"
-#include "gui/component/SettingsEditorDisplayComponent.h"
+#include "gui/display/SettingsEditorDisplay.h"
 #include "gui/panel/AbstractPanel.h"
 #include "utility/Settings.h"
-#include "utility/Unit.h" 1
+#include "utility/Unit.h"
 #include <JuceHeader.h>
 //==============================================================================
 namespace dmt {
@@ -20,8 +20,7 @@ class SettingsPanel : public dmt::gui::panel::AbstractPanel
   using RotarySliderType = dmt::gui::widget::RotarySlider::Type;
   using LinearSliderType = dmt::gui::widget::LinearSlider::Type;
   using Unit = dmt::utility::Unit;
-  using SettingsEditorDisplayComponent =
-    dmt::gui::component::SettingsEditorDisplayComponent;
+  using SettingsEditorDisplay = dmt::gui::display::SettingsEditorDisplay;
   using Settings = dmt::Settings;
 
   const float& size = Settings::Window::size;
@@ -54,7 +53,7 @@ public:
   }
 
 private:
-  SettingsEditorDisplayComponent settingsEditor;
+  SettingsEditorDisplay settingsEditor;
 
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SettingsPanel)
 };

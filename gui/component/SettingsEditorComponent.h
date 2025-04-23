@@ -4,9 +4,6 @@
 
 //==============================================================================
 
-#include "dmt/configuration/TreeAdapter.h"
-#include "dmt/gui/component/AbstractDisplayComponent.h"
-#include "dmt/gui/widget/TextEditor.h"
 #include "dmt/gui/widget/ValueEditorList.h"
 #include "dmt/utility/Settings.h"
 #include <JuceHeader.h>
@@ -17,32 +14,30 @@ namespace dmt {
 namespace gui {
 namespace component {
 //==============================================================================
-class SettingsEditorDisplayComponent
-  : public dmt::gui::component::AbstractDisplayComponent
+class SettingsEditor : public juce::Component
 {
-  using Image = juce::Image;
+  using Colour = juce::Colour;
   using Settings = dmt::Settings;
-  using TreeAdapter = dmt::configuration::TreeAdapter;
-  using TextEditor = dmt::gui::widget::TextEditor;
+  using String = juce::String;
   using ValueEditorList = dmt::gui::component::ValueEditorList;
 
   const float& size = Settings::Window::size;
 
 public:
-  SettingsEditorDisplayComponent()
-    : treeAdapter(Settings::container)
-    , searchEditor("TestEditor")
+  SettingsEditor()
+    : searchEditor("TestEditor")
   {
     addAndMakeVisible(searchEditor);
     addAndMakeVisible(valueEditorList);
   }
 
-  ~SettingsEditorDisplayComponent() override = default;
+  ~SettingsEditor() override = default;
 
-  void extendResized(
-    const juce::Rectangle<int>& _displayBounds) noexcept override
+  void paint(juce::Graphics& _g) override {}
+
+  void resized() override
   {
-    auto bounds = _displayBounds.reduced(5.0f * size);
+    auto bounds = getLocalBounds();
     const auto testBounds = bounds.removeFromTop(24 * size);
     searchEditor.setBounds(testBounds);
     const auto editorBounds = bounds;
@@ -50,21 +45,11 @@ public:
     valueEditorList.setTopLeftPosition(editorBounds.getPosition());
   }
 
-  void paintDisplay(juce::Graphics& _g,
-                    const juce::Rectangle<int>& _displayBounds) const noexcept
-  {
-  }
-
-  void prepareNextFrame() noexcept override
-  {
-    // Implement frame preparation logic here
-  }
-
 private:
-  TreeAdapter treeAdapter;
   TextEditor searchEditor;
   ValueEditorList valueEditorList;
-  JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SettingsEditorDisplayComponent)
+  //==============================================================================
+  JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SettingsEditor)
 };
 
 } // namespace component

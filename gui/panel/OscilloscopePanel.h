@@ -1,7 +1,7 @@
 #pragma once
 //==============================================================================
 #include "gui/component/LinearSliderComponent.h"
-#include "gui/component/OscilloscopeComponent.h"
+#include "gui/display/OscilloscopeDisplay.h"
 #include "gui/panel/AbstractPanel.h"
 #include "utility/Unit.h"
 #include <JuceHeader.h>
@@ -14,8 +14,8 @@ template<typename SampleType>
 class OscilloscopePanel : public dmt::gui::panel::AbstractPanel
 {
   using FifoAudioBuffer = dmt::dsp::data::FifoAudioBuffer<SampleType>;
-  using OscilloscopeComponent =
-    dmt::gui::component::OscilloscopeComponent<SampleType>;
+  using OscilloscopeDisplay =
+    dmt::gui::display::OscilloscopeDisplay<SampleType>;
 
   using LinearSlider = dmt::gui::component::LinearSliderComponent;
   using LinearSliderType = dmt::gui::widget::LinearSlider::Type;
@@ -85,7 +85,7 @@ public:
   }
   //============================================================================
 private:
-  OscilloscopeComponent oscilloscopeComponent;
+  OscilloscopeDisplay oscilloscopeComponent;
   LinearSlider zoomSlider;
   LinearSlider thicknessSlider;
   LinearSlider heightSlider;

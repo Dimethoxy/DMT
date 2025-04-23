@@ -19,7 +19,7 @@
  * Your are not allowed to use this code in any closed-source project.
  *
  * Description:
- * Specialized display component inheriting from AbstractDisplayComponent.
+ * Specialized display component inheriting from AbstractDisplay.
  *
  * Authors:
  * Lunix-420 (Primary Author)
@@ -29,28 +29,28 @@
 #pragma once
 
 #include "dsp/data/FifoAudioBuffer.h"
-#include "gui/component/OscilloscopeComponent.h"
+#include "gui/display/OscilloscopeDisplay.h"
 #include <JuceHeader.h>
 
 //==============================================================================
 namespace dmt {
 namespace gui {
-namespace component {
+namespace display {
 //==============================================================================
 
 /**
- * @class DisfluxDisplayComponent
+ * @class DisfluxDisplay
  * @brief Specialized display component inheriting from
- * AbstractDisplayComponent.
+ * AbstractDisplay.
  */
-class alignas(64) DisfluxDisplayComponent
-  : public dmt::gui::component::OscilloscopeComponent<float>
+class alignas(64) DisfluxDisplay
+  : public dmt::gui::display::OscilloscopeDisplay<float>
 {
 public:
   using FifoAudioBuffer = dmt::dsp::data::FifoAudioBuffer<float>;
-  DisfluxDisplayComponent(FifoAudioBuffer& _fifoBuffer,
+  DisfluxDisplay(FifoAudioBuffer& _fifoBuffer,
                           AudioProcessorValueTreeState& _apvts)
-    : OscilloscopeComponent(_fifoBuffer, _apvts)
+    : OscilloscopeDisplay(_fifoBuffer, _apvts)
   {
   }
 };
