@@ -40,6 +40,7 @@ public:
     , onCategorySelected(std::move(_onCategorySelected))
   {
     addCategories();
+    onCategorySelected(categories[0]);
   }
 
   ~ValueCategoryList() override = default;

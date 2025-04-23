@@ -53,16 +53,21 @@ public:
     setSize(width, neededHeight);
   }
 
-  void setCategory(TreeAdapter::Category& category)
+  void setCategory(TreeAdapter::Category& _category)
   {
+    // Check if the category is the same as the current one
+    if (category != nullptr && category->name == _category.name)
+      return;
+
     // Remove all child components before clearing the list
     removeAllChildren();
 
     // Clear existing editors
     editorList.clear();
 
+    // Ensure the `==` operator is implemented for TreeAdapter::Category
     // Generate new editors based on the selected category
-    for (const auto& value : category.leaves) {
+    for (const auto& value : _category.leaves) {
       const auto name = String(value.name);
       auto editor = std::make_unique<ValueEditor>(name);
       editorList.push_back(std::move(editor));
@@ -70,6 +75,9 @@ public:
 
     // Add new editors to the component
     addAllEditors();
+
+    // Set the new category
+    category = &_category;
   }
 
 protected:
@@ -80,7 +88,7 @@ protected:
     }
   }
 
-private:
+  TreeAdapter::Category* category = nullptr;
   ValueEditorPointerList editorList;
 
   //==============================================================================
