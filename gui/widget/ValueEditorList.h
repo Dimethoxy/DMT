@@ -33,7 +33,7 @@ public:
 
   ~ValueEditorList() override = default;
 
-  void paint(juce::Graphics& _g) override { _g.fillAll(Colours::darkmagenta); }
+  void paint(juce::Graphics& _g) override {}
 
   void resized() override
   {

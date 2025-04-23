@@ -45,7 +45,7 @@ public:
 
   ~ValueCategoryList() override = default;
 
-  void paint(juce::Graphics& _g) override { _g.fillAll(Colours::darkgrey); }
+  void paint(juce::Graphics& _g) override {}
 
   void resized() override
   {

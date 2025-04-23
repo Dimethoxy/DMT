@@ -64,7 +64,7 @@ public:
 
     // Set bounds for the search editor
     const auto fontSize = static_cast<int>(rawFontSize * size);
-    searchEditor.setBounds(bounds.removeFromTop(fontSize));
+    // searchEditor.setBounds(bounds.removeFromTop(fontSize));
 
     // Calculate and set bounds for the category viewport
     const int categoryWidth = static_cast<int>(bounds.getWidth() * 0.35f);

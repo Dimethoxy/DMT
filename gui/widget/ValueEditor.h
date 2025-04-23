@@ -49,7 +49,7 @@ public:
 
   ~ValueEditor() override = default;
 
-  void paint(juce::Graphics& _g) override { _g.fillAll(Colours::darkgreen); }
+  void paint(juce::Graphics& _g) override {}
 
   void resized() override
   {
