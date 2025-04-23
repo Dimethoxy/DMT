@@ -72,6 +72,26 @@ public:
   {
     juce::String name;
     Container::SettingValue* value;
+
+    juce::String toString() const
+    {
+      auto toStringImpl = [](const auto& v) -> juce::String {
+        using T = std::decay_t<decltype(v)>;
+        if constexpr (std::is_same_v<T, juce::String>)
+          return v;
+        else if constexpr (std::is_same_v<T, juce::Colour>)
+          return v.toString();
+        else if constexpr (std::is_same_v<T, int>)
+          return juce::String(v);
+        else if constexpr (std::is_same_v<T, float>)
+          return juce::String(v);
+        else if constexpr (std::is_same_v<T, bool>)
+          return v ? "true" : "false";
+        else
+          return {};
+      };
+      return value ? std::visit(toStringImpl, *value) : juce::String();
+    }
   };
 
   //==============================================================================

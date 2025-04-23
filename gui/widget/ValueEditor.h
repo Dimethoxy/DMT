@@ -24,6 +24,7 @@ class ValueEditor : public juce::Component
   using Settings = dmt::Settings;
   using String = juce::String;
   using TextEditor = dmt::gui::widget::TextEditor;
+  using TreeAdapter = dmt::configuration::TreeAdapter;
 
   const float& size = Settings::Window::size;
 
@@ -31,16 +32,19 @@ class ValueEditor : public juce::Component
   const Colour fontColour = juce::Colours::white;
 
 public:
-  ValueEditor(const String _name)
-    : label(String(_name + "Label"),
+  ValueEditor(TreeAdapter::Leaf& _leaf)
+    : leaf(_leaf)
+    , label(String(leaf.name + "Label"),
             fonts.medium,
             fontSize,
             fontColour,
             juce::Justification::topLeft)
-    , editor(String(_name + "Editor"))
+    , editor(String(leaf.name + "Editor"))
   {
     addAndMakeVisible(label);
     addAndMakeVisible(editor);
+
+    editor.setText(String(leaf.toString()));
   }
 
   ~ValueEditor() override = default;
@@ -58,6 +62,7 @@ public:
 
 private:
   //==============================================================================
+  TreeAdapter::Leaf& leaf;
   Label label;
   TextEditor editor;
 

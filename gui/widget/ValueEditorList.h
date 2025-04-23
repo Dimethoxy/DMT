@@ -65,11 +65,9 @@ public:
     // Clear existing editors
     editorList.clear();
 
-    // Ensure the `==` operator is implemented for TreeAdapter::Category
     // Generate new editors based on the selected category
-    for (const auto& value : _category.leaves) {
-      const auto name = String(value.name);
-      auto editor = std::make_unique<ValueEditor>(name);
+    for (auto& leaf : _category.leaves) { // was: const auto& leaf
+      auto editor = std::make_unique<ValueEditor>(leaf);
       editorList.push_back(std::move(editor));
     }
 
