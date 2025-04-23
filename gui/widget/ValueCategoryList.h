@@ -28,6 +28,8 @@ class ValueCategoryList : public juce::Component
 
   // TODO: Move to settings
   const float rawFontSize = 24.0f;
+  const float fontSize = 16.0f;
+  const Colour fontColour = juce::Colours::white;
 
 public:
   ValueCategoryList()
@@ -38,16 +40,16 @@ public:
 
   ~ValueCategoryList() override = default;
 
-  void paint(juce::Graphics& _g) override { _g.fillAll(Colours::darkmagenta); }
+  void paint(juce::Graphics& _g) override { _g.fillAll(Colours::darkgrey); }
 
   void resized() override
   {
     const auto fontSize = rawFontSize * size;
 
     auto bounds = getLocalBounds();
-    for (auto& editor : labelList) {
+    for (auto& label : labelList) {
       auto labelBounds = bounds.removeFromTop(fontSize);
-      editor->setBounds(labelBounds);
+      label->setBounds(labelBounds);
     }
   }
 
@@ -62,19 +64,20 @@ protected:
   void generateDummyLabels()
   {
     for (int i = 0; i < 15; ++i) {
-      const auto name = String("Category") + String(i);
-      auto editor = std::make_unique<Lable>(name,
-                                            fonts.light,
-                                            24.0f,
-                                            juce::Colours::white,
-                                            juce::Justification::centredBottom);
-      labelList.push_back(std::move(editor));
+      const auto name = String("Category ") + String(i);
+      auto label = std::make_unique<Lable>(name,
+                                           fonts.medium,
+                                           fontSize,
+                                           fontColour,
+                                           juce::Justification::centredBottom);
+      label->setText(name);
+      labelList.push_back(std::move(label));
     }
   }
   void addAllLabels()
   {
-    for (auto& editor : labelList) {
-      addAndMakeVisible(*editor);
+    for (auto& label : labelList) {
+      addAndMakeVisible(*label);
     }
   }
 
