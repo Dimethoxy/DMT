@@ -91,10 +91,10 @@ public:
     , text(_text)
     , font(_font)
     , fontSize(_fontSize)
-    , colour(_colour)
     , justification(_justification)
     , multiline(_multiline)
   {
+    fontColour = &_colour;
   }
 
   //==============================================================================
@@ -114,6 +114,10 @@ public:
     TRACER("Label::paint");
     auto bounds = getLocalBounds();
 
+    // Set background colour
+    if (backgroundColour != nullptr)
+      _g.fillAll(*backgroundColour);
+
     // Draw bounds debug
     _g.setColour(juce::Colours::red);
     if (Settings::debugBounds)
@@ -129,14 +133,14 @@ public:
 
     // Draw text
     if (!multiline) {
-      _g.setColour(colour);
+      _g.setColour(*fontColour);
       _g.drawText(text, this->getLocalBounds(), justification, true);
     } else {
       const int startX = bounds.getX();
       const int baselineY =
         bounds.getY() + static_cast<int>(_g.getCurrentFont().getAscent());
       const int maximumLineWidth = bounds.getWidth();
-      _g.setColour(colour);
+      _g.setColour(*fontColour);
       _g.drawMultiLineText(
         text, startX, baselineY, maximumLineWidth, justification, 0.0f);
     }
@@ -168,13 +172,58 @@ public:
    */
   [[nodiscard]] inline String getText() const noexcept { return this->text; }
 
+  //==============================================================================
+  /**
+   * @brief Sets the label's font colour.
+   *
+   * @param _colour The new colour to use for the text.
+   *
+   * @details
+   * Sets the colour of the label's text and triggers a repaint.
+   */
+  inline void setFontColour(const juce::Colour& _colour) noexcept
+  {
+    // Make sure the colour is actually different before repainting
+    if (fontColour == &_colour) {
+      fontColour = &_colour;
+      return;
+    }
+
+    // Set the font colour and trigger a repaint.
+    fontColour = &_colour;
+    repaint();
+  }
+
+  //==============================================================================
+  /**
+   * @brief Sets the label's background colour.
+   *
+   * @param _colour The new colour to use for the background.
+   *
+   * @details
+   * Sets the colour of the label's background and triggers a repaint.
+   */
+  inline void setBackgroundColour(const juce::Colour& _colour) noexcept
+  {
+    // Make sure the colour is actually different before repainting
+    if (backgroundColour == &_colour) {
+      backgroundColour = &_colour;
+      return;
+    }
+
+    // Set the background colour and trigger a repaint.
+    backgroundColour = &_colour;
+    repaint();
+  }
+
 private:
   //==============================================================================
   // Members initialized in the initializer list
   String text;
   const juce::Font& font;
   const float& fontSize;
-  const juce::Colour& colour;
+  const juce::Colour* fontColour = nullptr;
+  const juce::Colour* backgroundColour = nullptr;
   Justification justification;
   bool multiline;
 

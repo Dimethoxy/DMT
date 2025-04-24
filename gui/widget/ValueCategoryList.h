@@ -6,6 +6,7 @@
 
 #include "dmt/gui/widget/ValueEditor.h"
 #include "dmt/utility/Fonts.h"
+#include "dmt/utility/Settings.h"
 #include <JuceHeader.h>
 
 //==============================================================================
@@ -32,6 +33,8 @@ class ValueCategoryList : public juce::Component
   // TODO: Move to settings
   const float rawFontSize = 17.0f;
   const Colour fontColour = juce::Colours::white;
+  const Colour selectedFontColour = juce::Colour(0, 0, 0);
+  const Colour selectedBackgroundColour = juce::Colour(80, 250, 123);
   const Colour seperatorColour = juce::Colours::white.withAlpha(0.2f);
 
 public:
@@ -122,6 +125,15 @@ protected:
   void mouseUp(const juce::MouseEvent& _event) override
   {
     const auto clickedLabel = dynamic_cast<Lable*>(_event.eventComponent);
+
+    for (auto& label : labelList) {
+      if (label.get() != clickedLabel) {
+        label->setFontColour(fontColour);
+        label->setBackgroundColour(juce::Colours::transparentBlack);
+      }
+    }
+    clickedLabel->setFontColour(selectedFontColour);
+    clickedLabel->setBackgroundColour(selectedBackgroundColour);
 
     for (std::size_t i = 0; i < labelList.size(); ++i) {
       if (labelList[i].get() == clickedLabel) {
