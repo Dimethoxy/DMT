@@ -45,6 +45,8 @@ public:
   {
     addCategories();
     onCategorySelected(categories[0]);
+    labelList[0]->setFontColour(selectedFontColour);
+    labelList[0]->setBackgroundColour(selectedBackgroundColour);
   }
 
   ~ValueCategoryList() override = default;
@@ -78,7 +80,6 @@ public:
     const auto fontSize = rawFontSize * size;
     const float leftPadding = 5.0f * size;
     auto bounds = getLocalBounds();
-    bounds.removeFromLeft(leftPadding);
     for (auto& label : labelList) {
       auto labelBounds = bounds.removeFromTop(fontSize);
       label->setBounds(labelBounds);
@@ -108,7 +109,7 @@ protected:
                                            fontColour,
                                            juce::Justification::centredLeft);
       label->setText(text);
-
+      label->setRawHorizontalPadding(5.0f);
       labelList.push_back(std::move(label));
     }
     addAllLabels();

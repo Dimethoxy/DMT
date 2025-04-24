@@ -131,15 +131,22 @@ public:
         font.withHeight(static_cast<float>(fontSize * size * unixScale)));
     }
 
+    // Padding
+    const float horizontalPadding = rawHorizontalPadding * size;
+
     // Draw text
     if (!multiline) {
       _g.setColour(*fontColour);
-      _g.drawText(text, this->getLocalBounds(), justification, true);
+      _g.drawText(text,
+                  bounds.reduced(static_cast<int>(horizontalPadding), 0),
+                  justification,
+                  true);
     } else {
-      const int startX = bounds.getX();
+      const int startX = bounds.getX() + static_cast<int>(horizontalPadding);
       const int baselineY =
         bounds.getY() + static_cast<int>(_g.getCurrentFont().getAscent());
-      const int maximumLineWidth = bounds.getWidth();
+      const int maximumLineWidth =
+        bounds.getWidth() - static_cast<int>(2 * horizontalPadding);
       _g.setColour(*fontColour);
       _g.drawMultiLineText(
         text, startX, baselineY, maximumLineWidth, justification, 0.0f);
@@ -216,6 +223,18 @@ public:
     repaint();
   }
 
+  //==============================================================================
+  /**
+   * @brief Sets the raw horizontal padding (unscaled).
+   *
+   * @param padding The new raw horizontal padding value.
+   */
+  inline void setRawHorizontalPadding(float padding) noexcept
+  {
+    rawHorizontalPadding = padding;
+    repaint();
+  }
+
 private:
   //==============================================================================
   // Members initialized in the initializer list
@@ -229,6 +248,7 @@ private:
 
   //==============================================================================
   // Other members
+  float rawHorizontalPadding = 0.0f;
 
   //==============================================================================
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Label)
