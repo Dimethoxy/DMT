@@ -26,14 +26,37 @@ class ValueEditorList : public juce::Component
   const float& size = Settings::Window::size;
 
   // TODO: Move to settings
-  const float rawFontSize = 16.0f;
+  const float rawFontSize = 17.0f;
+  const Colour seperatorColour = juce::Colours::white.withAlpha(0.2f);
 
 public:
   ValueEditorList() { addAllEditors(); }
 
   ~ValueEditorList() override = default;
 
-  void paint(juce::Graphics& _g) override {}
+  void paint(juce::Graphics& _g) override
+  {
+    // Draw separator lines above, between, and below labels
+    const auto fontSize = rawFontSize * size;
+    _g.setColour(seperatorColour);
+
+    // Top line
+    _g.drawLine(0.0f, 0.0f, static_cast<float>(getWidth()), 0.0f, 1.0f);
+
+    // Lines between labels
+    for (std::size_t i = 1; i < editorList.size(); ++i) {
+      auto y = static_cast<int>(i * fontSize);
+      _g.drawLine(0.0f,
+                  static_cast<float>(y),
+                  static_cast<float>(getWidth()),
+                  static_cast<float>(y),
+                  1.0f);
+    }
+
+    // Bottom line
+    auto bottomY = static_cast<float>(editorList.size() * fontSize);
+    _g.drawLine(0.0f, bottomY, static_cast<float>(getWidth()), bottomY, 1.0f);
+  }
 
   void resized() override
   {
@@ -50,7 +73,8 @@ public:
   {
     const auto fontSize = rawFontSize * size;
     const auto neededHeight = fontSize * editorList.size();
-    setSize(width, neededHeight);
+    const auto extraHeight = fontSize * 0.5f;
+    setSize(width, neededHeight + extraHeight);
   }
 
   void setCategory(TreeAdapter::Category& _category)

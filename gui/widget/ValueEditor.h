@@ -43,6 +43,7 @@ public:
   {
     addAndMakeVisible(label);
     addAndMakeVisible(editor);
+    label.setRawHorizontalPadding(5.0f);
 
     editor.setText(String(leaf.toString()));
   }
