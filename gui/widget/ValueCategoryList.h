@@ -99,16 +99,15 @@ protected:
   {
     // Let's clear the current labels
     labelList.clear();
+
     // And generate new ones
     for (auto& category : categories) {
-      const auto name = String(category.name) + String("Label");
       const auto text = String(category.name);
-      auto label = std::make_unique<Lable>(name,
+      auto label = std::make_unique<Lable>(text,
                                            fonts.medium,
                                            rawFontSize,
                                            fontColour,
                                            juce::Justification::centredLeft);
-      label->setText(text);
       label->setRawHorizontalPadding(5.0f);
       labelList.push_back(std::move(label));
     }

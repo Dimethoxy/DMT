@@ -34,7 +34,7 @@ class ValueEditor : public juce::Component
 public:
   ValueEditor(TreeAdapter::Leaf& _leaf)
     : leaf(_leaf)
-    , label(String(leaf.name + "Label"),
+    , label(String(leaf.name),
             fonts.medium,
             fontSize,
             fontColour,
