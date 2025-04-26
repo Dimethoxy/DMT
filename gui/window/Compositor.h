@@ -190,8 +190,18 @@ public:
 
     mainPanel.setVisible(false);
     settingsPanel.setVisible(true);
+
+    // Hide all header buttons except settingsExitButton
     header.getSettingsButton().setVisible(false);
+    header.getHideHeaderButton().setVisible(false);
+    header.getUpdateButton().setVisible(false);
     header.getSettingsExitButton().setVisible(true);
+
+    // Show settings-only buttons
+    header.getResetButton().setVisible(true);
+    header.getSaveButton().setVisible(true);
+
+    popover.hideMessage();
     repaint();
   }
 
@@ -212,8 +222,25 @@ public:
 
     mainPanel.setVisible(true);
     settingsPanel.setVisible(false);
+
+    // Rerun logic for which buttons to show
     header.getSettingsButton().setVisible(true);
     header.getSettingsExitButton().setVisible(false);
+
+    // Hide settings-only buttons
+    header.getResetButton().setVisible(false);
+    header.getSaveButton().setVisible(false);
+
+    // Show/hide update button depending on update state
+    if (!DMT_DISABLE_UPDATE_NOTIFICATION &&
+        dmt::version::Info::isLatest != nullptr &&
+        !(*dmt::version::Info::isLatest)) {
+      header.getUpdateButton().setVisible(true);
+    } else {
+      header.getUpdateButton().setVisible(false);
+    }
+
+    header.getHideHeaderButton().setVisible(true);
     repaint();
   }
 

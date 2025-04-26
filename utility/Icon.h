@@ -40,8 +40,17 @@ getIcon(const juce::String iconName)
     return juce::Drawable::createFromImageData(BinaryData::presets_svg,
                                                BinaryData::presets_svgSize);
   if (iconName == "Close")
+
     return juce::Drawable::createFromImageData(BinaryData::close_svg,
                                                BinaryData::close_svgSize);
+  if (iconName == "Save")
+
+    return juce::Drawable::createFromImageData(BinaryData::save_svg,
+                                               BinaryData::save_svgSize);
+  if (iconName == "Reload")
+
+    return juce::Drawable::createFromImageData(BinaryData::reload_svg,
+                                               BinaryData::reload_svgSize);
   return nullptr;
 };
 //==============================================================================
@@ -68,6 +77,10 @@ getPadding(const juce::String iconName)
     return 5.0f;
   if (iconName == "Close")
     return 0.0f;
+  if (iconName == "Save")
+    return 5.0f;
+  if (iconName == "Reload")
+    return 4.0f;
   return 0.0f;
 };
 //==============================================================================

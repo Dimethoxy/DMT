@@ -120,6 +120,9 @@ public:
                    "Update available - click to install")
     , bypassButton("BypassButton", "Bypass", "GlobalBypass", _apvts)
     , presetsButton("PresetsButton", "Presets", "Browse presets")
+    // Add new buttons for settings view
+    , resetButton("HeaderResetButton", "Reload", "Reset settings")
+    , saveButton("HeaderSaveButton", "Save", "Save settings")
   {
     // Shadows
     addAndMakeVisible(outerShadow);
@@ -143,6 +146,12 @@ public:
     updateButton.setVisible(false);
     addAndMakeVisible(presetsButton);
     presetsButton.setVisible(false);
+
+    // Add new buttons for settings view, hidden by default
+    addAndMakeVisible(resetButton);
+    resetButton.setVisible(false);
+    addAndMakeVisible(saveButton);
+    saveButton.setVisible(false);
   }
 
   //==============================================================================
@@ -231,6 +240,10 @@ public:
       static_cast<int>(rawHeaderButtonWidth * size));
     updateButton.setBounds(updateButtonBounds);
 
+    // Set the bounds for the reset and save buttons (settings view only)
+    resetButton.setBounds(updateButtonBounds);    // reset replaces update
+    saveButton.setBounds(hideHeaderButtonBounds); // save replaces hide header
+
     // Set the bounds for the bypass button
     const auto bypassButtonBounds = buttonAreaBounds.removeFromLeft(
       static_cast<int>(rawHeaderButtonWidth * size));
@@ -272,6 +285,11 @@ public:
   {
     return updateButton;
   }
+  [[nodiscard]] CallbackButton& getResetButton() noexcept
+  {
+    return resetButton;
+  }
+  [[nodiscard]] CallbackButton& getSaveButton() noexcept { return saveButton; }
 
 private:
   //==============================================================================
@@ -287,6 +305,8 @@ private:
   CallbackButton updateButton;
   ToggleButton bypassButton;
   CallbackButton presetsButton;
+  CallbackButton resetButton;
+  CallbackButton saveButton;
 
   //==============================================================================
   // Other members
