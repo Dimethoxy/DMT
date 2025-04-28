@@ -92,6 +92,15 @@ public:
       };
       return value ? std::visit(toStringImpl, *value) : juce::String();
     }
+
+    /**
+     * @brief Returns the std::variant index of the value, or -1 if value is
+     * null.
+     */
+    int getTypeIndex() const noexcept
+    {
+      return value ? static_cast<int>(value->index()) : -1;
+    }
   };
 
   //==============================================================================
