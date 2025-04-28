@@ -285,11 +285,21 @@ public:
   {
     return updateButton;
   }
+
+  /** @brief Returns the bypass button. */
+  [[nodiscard]] ToggleButton& getBypassButton() noexcept
+  {
+    return bypassButton;
+  }
+
+  /** @bried Returns the save button. */
+  [[nodiscard]] CallbackButton& getSaveButton() noexcept { return saveButton; }
+
+  /** @brief Returns the reset button. */
   [[nodiscard]] CallbackButton& getResetButton() noexcept
   {
     return resetButton;
   }
-  [[nodiscard]] CallbackButton& getSaveButton() noexcept { return saveButton; }
 
 private:
   //==============================================================================

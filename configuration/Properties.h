@@ -42,8 +42,7 @@ namespace configuration {
 //==============================================================================
 /**
  * @class Properties
- * @brief Class to manage application properties with optimized
- * performance.
+ * @brief Class to manage application properties
  */
 class Properties
 {
@@ -89,6 +88,35 @@ public:
     // Set the app name
     auto appName = options.applicationName;
     dmt::Settings::appName = appName;
+  }
+
+  /**
+   * @brief Save the current container settings to the file system.
+   */
+  void saveCurrentSettings()
+  {
+    auto* settings = file.getUserSettings();
+    auto currentSet = dmt::Settings::container.toPropertySet();
+    for (const auto& key : currentSet.getAllProperties().getAllKeys()) {
+      settings->setValue(key, currentSet.getValue(key));
+    }
+    settings->saveIfNeeded();
+  }
+
+  /**
+   * @brief Reset the container and file to fallback (default) values.
+   */
+  void resetToFallback()
+  {
+    auto* settings = file.getUserSettings();
+    // Overwrite container with fallback
+    dmt::Settings::container.applyPropertySet(&fallbackPropertySet);
+    // Overwrite file with fallback
+    for (const auto& key :
+         fallbackPropertySet.getAllProperties().getAllKeys()) {
+      settings->setValue(key, fallbackPropertySet.getValue(key));
+    }
+    settings->saveIfNeeded();
   }
 
 private:

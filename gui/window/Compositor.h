@@ -31,6 +31,7 @@
 
 //==============================================================================
 
+#include "configuration/Properties.h"
 #include "dmt/version/Info.h"
 #include "gui/panel/AbstractPanel.h"
 #include "gui/panel/SettingsPanel.h"
@@ -69,6 +70,7 @@ class Compositor
   using BorderButton = dmt::gui::widget::BorderButton;
   using Popover = dmt::gui::window::Popover;
   using TooltipWindow = juce::TooltipWindow;
+  using Properties = dmt::configuration::Properties;
 
   //============================================================================
   // Window size
@@ -90,10 +92,12 @@ public:
    */
   Compositor(juce::String _titleText,
              AbstractPanel& _mainPanel,
-             AudioProcessorValueTreeState& _apvts) noexcept
+             AudioProcessorValueTreeState& _apvts,
+             Properties& _properties) noexcept
     : mainPanel(_mainPanel)
-    , settingsPanel()
+    , properties(_properties)
     , header(_titleText, _apvts)
+    , settingsPanel()
     , borderButton()
     , tooltipWindow(this, 700)
   {
@@ -103,6 +107,8 @@ public:
     header.getSettingsExitButton().onClick = [this] { settingExitCallback(); };
     header.getHideHeaderButton().onClick = [this] { hideHeaderCallback(); };
     header.getUpdateButton().onClick = [this] { updateCallback(); };
+    header.getSaveButton().onClick = [this] { saveSettingsCallback(); };
+    header.getResetButton().onClick = [this] { resetSettingsCallback(); };
 
     // BorderButton
     addChildComponent(borderButton);
@@ -318,6 +324,30 @@ public:
 
   //==============================================================================
   /**
+   * @brief Saves the settings to the properties.
+   *
+   * @details This function is called when the save settings button is clicked.
+   *          It saves the current settings to the properties.
+   *
+   * @note This function is only enabled if the settings panel is currently
+   *       visible.
+   */
+  void saveSettingsCallback() noexcept { properties.saveCurrentSettings(); }
+
+  //==============================================================================
+  /**
+   * @brief Resets the settings to the default values.
+   *
+   * @details This function is called when the reset settings button is clicked.
+   *          It resets the current settings to the default values.
+   *
+   * @note This function is only enabled if the settings panel is currently
+   *       visible.
+   */
+  void resetSettingsCallback() noexcept { properties.resetToFallback(); }
+
+  //==============================================================================
+  /**
    * @brief Timer callback to check for updates.
    *
    * @details This function is called periodically to check if an update
@@ -431,8 +461,9 @@ private:
   //==============================================================================
   // Members initialized in the initializer list
   AbstractPanel& mainPanel;
-  SettingsPanel settingsPanel;
+  Properties& properties;
   Header header;
+  SettingsPanel settingsPanel;
   BorderButton borderButton;
   TooltipWindow tooltipWindow;
 
