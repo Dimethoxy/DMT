@@ -194,6 +194,21 @@ public:
     buildTree();
   }
 
+  /**
+   * @brief Constructs the adapter with a reference to a Container and a block
+   * list.
+   *
+   * @param _containerRef Reference to the settings container to adapt.
+   * @param _blockedCategories List of category names to block (ignore).
+   */
+  inline TreeAdapter(Container& _containerRef,
+                     std::vector<juce::String> _blockedCategories) noexcept
+    : container(_containerRef)
+    , blockedCategories(std::move(_blockedCategories))
+  {
+    buildTree();
+  }
+
   //==============================================================================
   /**
    * @brief Rebuilds the category/leaf tree from the container.
@@ -228,6 +243,7 @@ protected:
    * @details
    * Groups all settings by their category prefix (before the first '.').
    * Only settings with a '.' in their name are included.
+   * Categories in the block list are ignored.
    */
   inline void buildTree() noexcept
   {
@@ -239,6 +255,11 @@ protected:
       if (dotIndex < 0)
         continue;
       juce::String category = key.substring(0, dotIndex);
+      // Blocked category check
+      if (std::find(blockedCategories.begin(),
+                    blockedCategories.end(),
+                    category) != blockedCategories.end())
+        continue;
       juce::String leaf = key.substring(dotIndex + 1);
       Leaf leafObj{ leaf, &value };
       categoryMap[category].push_back(leafObj);
@@ -267,6 +288,7 @@ private:
   //==============================================================================
   // Members initialized in the initializer list
   Container& container;
+  std::vector<juce::String> blockedCategories; // Blocked category names
 
   //==============================================================================
   // Other members
