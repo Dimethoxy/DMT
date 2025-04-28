@@ -101,6 +101,66 @@ public:
     {
       return value ? static_cast<int>(value->index()) : -1;
     }
+
+    /**
+     * @brief Attempts to parse the given text and set the value.
+     *
+     * @param _textToSet The text to parse and set.
+     * @return true if parsing and setting succeeded, false otherwise.
+     */
+    bool parseAndSet(juce::String _textToSet)
+    {
+      if (!value)
+        return false;
+
+      switch (getTypeIndex()) {
+        case 0: // juce::String
+          *value = _textToSet;
+          return true;
+        case 1: // juce::Colour
+        {
+          juce::Colour c = juce::Colour::fromString(_textToSet);
+          if (c.isTransparent()) // fromString returns transparent if invalid
+            return false;
+          *value = c;
+          return true;
+        }
+        case 2: // int
+        {
+          int v = _textToSet.getIntValue();
+          // Optionally, check if _textToSet is a valid int string
+          if (_textToSet.trim().isEmpty() ||
+              !_textToSet.containsOnly("0123456789-+"))
+            return false;
+          *value = v;
+          return true;
+        }
+        case 3: // float
+        {
+          double v = _textToSet.getDoubleValue();
+          // Optionally, check if _textToSet is a valid float string
+          if (_textToSet.trim().isEmpty())
+            return false;
+          *value = static_cast<float>(v);
+          return true;
+        }
+        case 4: // bool
+        {
+          auto lower = _textToSet.trim().toLowerCase();
+          if (lower == "true" || lower == "1") {
+            *value = true;
+            return true;
+          }
+          if (lower == "false" || lower == "0") {
+            *value = false;
+            return true;
+          }
+          return false;
+        }
+        default:
+          return false;
+      }
+    }
   };
 
   //==============================================================================
