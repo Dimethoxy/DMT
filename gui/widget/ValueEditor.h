@@ -66,12 +66,15 @@ public:
 
   void newValueCallback()
   {
+    std::cout << "New value: " << leaf.toString() << std::endl;
     auto newText = editor.getText();
     if (!leaf.parseAndSet(newText)) {
+      std::cout << "Failed to parse new value: " << newText << std::endl;
       editor.setText(leaf.toString(), juce::dontSendNotification);
-      getTopLevelComponent()->resized();
-      getTopLevelComponent()->repaint();
+      return;
     }
+    getTopLevelComponent()->resized();
+    getTopLevelComponent()->repaint();
   }
 
 private:

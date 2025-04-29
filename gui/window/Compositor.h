@@ -94,7 +94,8 @@ public:
              AbstractPanel& _mainPanel,
              AudioProcessorValueTreeState& _apvts,
              Properties& _properties) noexcept
-    : mainPanel(_mainPanel)
+    : juce::Component("Compositor")
+    , mainPanel(_mainPanel)
     , properties(_properties)
     , header(_titleText, _apvts)
     , settingsPanel()
