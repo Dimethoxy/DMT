@@ -26,7 +26,13 @@ class SettingsEditorDisplay : public dmt::gui::display::AbstractDisplay
   const float& size = Settings::Window::size;
 
 public:
-  SettingsEditorDisplay() { addAndMakeVisible(settingsEditor); }
+  SettingsEditorDisplay()
+  {
+    addAndMakeVisible(settingsEditor);
+
+    settingsEditor.setRepaintRequestCallback(
+      [this]() { this->repaintRequestCallback(); });
+  }
 
   ~SettingsEditorDisplay() override = default;
 
@@ -47,8 +53,15 @@ public:
     // Implement frame preparation logic here
   }
 
+  void setRepaintRequestCallback(const std::function<void()>& _function)
+  {
+    repaintRequestCallback = _function;
+  }
+
 private:
   SettingsEditor settingsEditor;
+
+  std::function<void()> repaintRequestCallback;
 
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SettingsEditorDisplay)
 };

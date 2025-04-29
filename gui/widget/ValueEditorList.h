@@ -92,6 +92,8 @@ public:
     // Generate new editors based on the selected category
     for (auto& leaf : _category.leaves) {
       auto editor = std::make_unique<ValueEditor>(leaf);
+      editor->setRepaintRequestCallback(
+        [this]() { this->repaintRequestCallback(); });
       editorList.push_back(std::move(editor));
     }
 
@@ -105,6 +107,11 @@ public:
     repaint(); // Ensure component is redrawn
   }
 
+  void setRepaintRequestCallback(const std::function<void()>& _function)
+  {
+    repaintRequestCallback = _function;
+  }
+
 protected:
   void addAllEditors()
   {
@@ -115,6 +122,8 @@ protected:
 
   TreeAdapter::Category* category = nullptr;
   ValueEditorPointerList editorList;
+
+  std::function<void()> repaintRequestCallback;
 
   //==============================================================================
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(ValueEditorList)

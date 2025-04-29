@@ -46,6 +46,20 @@ public:
     label.setRawHorizontalPadding(5.0f);
 
     editor.setText(String(leaf.toString()));
+
+    editor.onTextChange = [this]() {
+      auto newText = editor.getText();
+      if (!leaf.parseAndSet(newText)) {
+        editor.setText(leaf.toString(), juce::dontSendNotification);
+      }
+      if (repaintRequestCallback)
+        repaintRequestCallback();
+    };
+  }
+
+  void setRepaintRequestCallback(const std::function<void()>& _function)
+  {
+    repaintRequestCallback = _function;
   }
 
   ~ValueEditor() override = default;
@@ -66,6 +80,8 @@ private:
   TreeAdapter::Leaf& leaf;
   Label label;
   TextEditor editor;
+
+  std::function<void()> repaintRequestCallback;
 
   //==============================================================================
   Fonts fonts;
