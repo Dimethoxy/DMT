@@ -47,11 +47,12 @@ public:
 
     editor.setText(String(leaf.toString()));
 
-    editor.onTextChange = [this]() {
+    editor.onReturnKey = [this]() {
       auto newText = editor.getText();
       if (!leaf.parseAndSet(newText)) {
         editor.setText(leaf.toString(), juce::dontSendNotification);
       }
+      getTopLevelComponent()->resized();
       getTopLevelComponent()->repaint();
     };
   }
