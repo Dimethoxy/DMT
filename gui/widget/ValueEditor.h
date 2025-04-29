@@ -47,14 +47,9 @@ public:
 
     editor.setText(String(leaf.toString()));
 
-    editor.onReturnKey = [this]() {
-      auto newText = editor.getText();
-      if (!leaf.parseAndSet(newText)) {
-        editor.setText(leaf.toString(), juce::dontSendNotification);
-      }
-      getTopLevelComponent()->resized();
-      getTopLevelComponent()->repaint();
-    };
+    editor.onFocusLost = [this]() { newValueCallback(); };
+    editor.onReturnKey = [this]() { newValueCallback(); };
+    0
   }
 
   ~ValueEditor() override = default;
@@ -68,6 +63,16 @@ public:
     auto editorBounds = bounds;
     label.setBounds(labelBounds);
     editor.setBounds(editorBounds);
+  }
+
+  void newValueCallback()
+  {
+    auto newText = editor.getText();
+    if (!leaf.parseAndSet(newText)) {
+      editor.setText(leaf.toString(), juce::dontSendNotification);
+      getTopLevelComponent()->resized();
+      getTopLevelComponent()->repaint();
+    }
   }
 
 private:
