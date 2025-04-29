@@ -32,9 +32,6 @@ public:
   {
     setLayout({ 22, 60 });
     addAndMakeVisible(settingsEditor);
-
-    settingsEditor.setRepaintRequestCallback(
-      [this]() { this->repaintRequestCallback(); });
   }
 
   ~SettingsPanel() override = default;
@@ -53,14 +50,6 @@ public:
     editorBounds.removeFromLeft(editorHorizontalPadding * size);
     editorBounds.removeFromRight(editorHorizontalPadding * size);
     settingsEditor.setBounds(editorBounds);
-  }
-
-  void repaintRequestCallback()
-  {
-    const auto parent = getParentComponent();
-    if (parent != nullptr) {
-      parent->repaint();
-    }
   }
 
 private:

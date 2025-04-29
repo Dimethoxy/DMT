@@ -52,9 +52,6 @@ public:
     editorViewport.setScrollBarsShown(true, false, false, false);
     setScrollbarThicknesses();
     setScrollBarColour();
-
-    valueEditorList.setRepaintRequestCallback(
-      [this]() { this->repaintRequestCallback(); });
   }
 
   ~SettingsEditor() override = default;
@@ -87,11 +84,6 @@ public:
     std::cout << "Selected category: " << category.name << std::endl;
     valueEditorList.setCategory(category);
     valueEditorList.setOptimalSize(editorViewport.getWidth());
-  }
-
-  void setRepaintRequestCallback(const std::function<void()>& _function)
-  {
-    repaintRequestCallback = _function;
   }
 
 protected:
@@ -128,8 +120,6 @@ private:
   Viewport editorViewport;
   ValueEditorList valueEditorList;
   ValueCategoryList valueCategoryList;
-
-  std::function<void()> repaintRequestCallback;
 
   //==============================================================================
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SettingsEditor)

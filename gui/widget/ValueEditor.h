@@ -52,14 +52,8 @@ public:
       if (!leaf.parseAndSet(newText)) {
         editor.setText(leaf.toString(), juce::dontSendNotification);
       }
-      if (repaintRequestCallback)
-        repaintRequestCallback();
+      getTopLevelComponent()->repaint();
     };
-  }
-
-  void setRepaintRequestCallback(const std::function<void()>& _function)
-  {
-    repaintRequestCallback = _function;
   }
 
   ~ValueEditor() override = default;
@@ -80,8 +74,6 @@ private:
   TreeAdapter::Leaf& leaf;
   Label label;
   TextEditor editor;
-
-  std::function<void()> repaintRequestCallback;
 
   //==============================================================================
   Fonts fonts;
