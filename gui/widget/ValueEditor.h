@@ -49,7 +49,6 @@ public:
 
     editor.onFocusLost = [this]() { newValueCallback(); };
     editor.onReturnKey = [this]() { newValueCallback(); };
-    0
   }
 
   ~ValueEditor() override = default;
