@@ -53,7 +53,12 @@ public:
 
   ~ValueEditor() override = default;
 
-  void paint(juce::Graphics& _g) override {}
+  void paint(juce::Graphics& _g) override
+  {
+    if (!editor.hasKeyboardFocus(false)) {
+      editor.setText(leaf.toString(), juce::dontSendNotification);
+    }
+  }
 
   void resized() override
   {

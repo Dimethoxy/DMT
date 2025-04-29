@@ -333,7 +333,12 @@ public:
    * @note This function is only enabled if the settings panel is currently
    *       visible.
    */
-  void saveSettingsCallback() noexcept { properties.saveCurrentSettings(); }
+  void saveSettingsCallback() noexcept
+  {
+    properties.saveCurrentSettings();
+    getTopLevelComponent()->resized();
+    getTopLevelComponent()->repaint();
+  }
 
   //==============================================================================
   /**
@@ -345,7 +350,12 @@ public:
    * @note This function is only enabled if the settings panel is currently
    *       visible.
    */
-  void resetSettingsCallback() noexcept { properties.resetToFallback(); }
+  void resetSettingsCallback() noexcept
+  {
+    properties.resetToFallback();
+    getTopLevelComponent()->resized();
+    getTopLevelComponent()->repaint();
+  }
 
   //==============================================================================
   /**
