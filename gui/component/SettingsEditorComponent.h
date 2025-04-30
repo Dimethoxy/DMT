@@ -20,6 +20,7 @@ class SettingsEditor : public juce::Component
 {
   using Colour = juce::Colour;
   using Settings = dmt::Settings;
+  using SettingsEditorSettings = dmt::Settings::SettingsEditor;
   using String = juce::String;
   using Viewport = juce::Viewport;
   using TreeAdapter = dmt::configuration::TreeAdapter;
@@ -29,11 +30,11 @@ class SettingsEditor : public juce::Component
 
   const float& size = Settings::Window::size;
 
-  const float rawScrollBarThickness = 8.0f;
-  const float rawFontSize = 16.0f;
+  const float rawScrollBarThickness = SettingsEditorSettings::scrollBarThickness;
+  const float rawFontSize = SettingsEditorSettings::fontSize;
 
   // TODO: Move somewhere else
-  std::vector<juce::String> blockedCategories = { "TriangleButton", "OscillatorDisplay" };
+  std::vector<juce::String> blockedCategories = { "TriangleButton", "OscillatorDisplay", "Carousel" };
 
 public:
   SettingsEditor()

@@ -196,6 +196,16 @@ public:
       container.add<float>("Carousel.ButtonHeight", 180.0f);
   };
 
+  struct SettingsEditor
+  {
+    static inline auto& scrollBarThickness =
+      container.add<float>("SettingsEditor.ScrollBarThickness", 8.0f);
+    static inline auto& scrollBarColour =
+      container.add<Colour>("SettingsEditor.ScrollBarColour", Colours::font);
+    static inline auto& fontSize =
+      container.add<float>("SettingsEditor.FontSize", 17.0f);
+  };
+
   struct Slider
   {
     // General
