@@ -400,6 +400,9 @@ public:
     if (DMT_DISABLE_UPDATE_NOTIFICATION)
       return;
 
+    if (Settings::displayUpdateNotifications == false)
+      return;
+
     if (!dmt::version::Info::wasPopoverShown) {
       const auto& updateButton = header.getUpdateButton();
       const int x = updateButton.getBounds().getCentreX();
