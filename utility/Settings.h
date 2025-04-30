@@ -202,6 +202,9 @@ public:
       container.add<float>("SettingsEditor.ScrollBarThickness", 8.0f);
     static inline auto& scrollBarColour =
       container.add<Colour>("SettingsEditor.ScrollBarColour", Colours::font);
+    static inline auto& scrollBarBackgroundColour =
+      container.add<Colour>("SettingsEditor.ScrollBarBackgroundColour",
+                            juce::Colours::transparentBlack);
     static inline auto& fontSize =
       container.add<float>("SettingsEditor.FontSize", 17.0f);
   };

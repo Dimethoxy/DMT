@@ -28,9 +28,15 @@ class SettingsEditor : public juce::Component
   using ValueCategoryList = dmt::gui::component::ValueCategoryList;
   using Component = juce::Component;
 
+  //==============================================================================
+  // Window
   const float& size = Settings::Window::size;
 
+  // SettingsEditor
+  const Colour& scrollBarColour = SettingsEditorSettings::scrollBarColour;
   const float rawScrollBarThickness = SettingsEditorSettings::scrollBarThickness;
+  const Colour& scrollBarBackgroundColour =
+    SettingsEditorSettings::scrollBarBackgroundColour;
   const float rawFontSize = SettingsEditorSettings::fontSize;
 
   // TODO: Move somewhere else
@@ -112,9 +118,14 @@ protected:
   void setScrollBarColour()
   {
     categoryViewport.getVerticalScrollBar().setColour(
-      juce::ScrollBar::ColourIds::thumbColourId, juce::Colours::white);
+      juce::ScrollBar::ColourIds::thumbColourId, scrollBarColour);
     editorViewport.getVerticalScrollBar().setColour(
-      juce::ScrollBar::ColourIds::thumbColourId, juce::Colours::white);
+      juce::ScrollBar::ColourIds::thumbColourId, scrollBarColour);
+
+    categoryViewport.getVerticalScrollBar().setColour(
+      juce::ScrollBar::ColourIds::backgroundColourId, scrollBarBackgroundColour);
+    editorViewport.getVerticalScrollBar().setColour(
+      juce::ScrollBar::ColourIds::backgroundColourId, scrollBarBackgroundColour);
   }
 
 private:
