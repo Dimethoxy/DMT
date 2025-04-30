@@ -40,6 +40,8 @@ public:
     container.add<bool>("General.ShowDebugBounds", false);
   static inline auto& debugGrid =
     container.add<bool>("General.ShowDebugGrid", false);
+  static inline auto& displayUpdateNotifications =
+    container.add<bool>("General.DisplayUpdateNotifications", true);
 
 private:
   struct Colours
@@ -198,8 +200,16 @@ public:
 
   struct SettingsEditor
   {
-    static inline auto& scrollBarThickness =
-      container.add<float>("SettingsEditor.ScrollBarThickness", 8.0f);
+    static inline auto& fontColour =
+      container.add<Colour>("SettingsEditor.FontColour", Colours::font);
+    static inline auto& selectedFontColour =
+      container.add<Colour>("SettingsEditor.SelectedFontColour",
+                            juce::Colours::black);
+    static inline auto& selectedLabelBackgroundColour =
+      container.add<Colour>("SettingsEditor.SelectedLabelBackgroundColour",
+                            Colours::primary);
+    static inline auto& seperatorColour =
+      container.add<Colour>("SettingsEditor.SeperatorColour", Colours::solidDark);
     static inline auto& scrollBarColour =
       container.add<Colour>("SettingsEditor.ScrollBarColour", Colours::font);
     static inline auto& scrollBarBackgroundColour =
@@ -209,6 +219,8 @@ public:
       container.add<float>("SettingsEditor.Padding", 5.0f);
     static inline auto& fontSize =
       container.add<float>("SettingsEditor.FontSize", 17.0f);
+          static inline auto& scrollBarThickness =
+      container.add<float>("SettingsEditor.ScrollBarThickness", 8.0f);
   };
 
   struct Slider

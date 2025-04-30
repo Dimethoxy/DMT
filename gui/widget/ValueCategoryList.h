@@ -19,6 +19,7 @@ class ValueCategoryList : public juce::Component
 {
   using Colour = juce::Colour;
   using Settings = dmt::Settings;
+  using SettingsEditorSettings = dmt::Settings::SettingsEditor;
   using String = juce::String;
   using Fonts = dmt::utility::Fonts;
   using Lable = dmt::gui::widget::Label;
@@ -31,11 +32,11 @@ class ValueCategoryList : public juce::Component
   const float& size = Settings::Window::size;
 
   // TODO: Move to settings
-  const float rawFontSize = 17.0f;
-  const Colour fontColour = juce::Colours::white;
-  const Colour selectedFontColour = juce::Colour(0, 0, 0);
-  const Colour selectedBackgroundColour = juce::Colour(80, 250, 123);
-  const Colour seperatorColour = juce::Colours::white.withAlpha(0.2f);
+  const float rawFontSize = SettingsEditorSettings::fontSize;
+  const Colour fontColour = SettingsEditorSettings::fontColour;
+  const Colour selectedFontColour = SettingsEditorSettings::selectedFontColour;
+  const Colour selectedBackgroundColour = SettingsEditorSettings::selectedLabelBackgroundColour;
+  const Colour seperatorColour = SettingsEditorSettings::seperatorColour;
 
 public:
   ValueCategoryList(CategoryList& _categories,
