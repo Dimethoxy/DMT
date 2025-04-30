@@ -205,6 +205,8 @@ public:
     static inline auto& scrollBarBackgroundColour =
       container.add<Colour>("SettingsEditor.ScrollBarBackgroundColour",
                             juce::Colours::transparentBlack);
+    static inline auto& padding =
+      container.add<float>("SettingsEditor.Padding", 5.0f);
     static inline auto& fontSize =
       container.add<float>("SettingsEditor.FontSize", 17.0f);
   };

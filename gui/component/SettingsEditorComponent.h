@@ -66,14 +66,14 @@ public:
 
   ~SettingsEditor() override = default;
 
-  void paint(juce::Graphics& _g) override {}
+  void paint(juce::Graphics& /*_g*/) override {}
 
   void resized() override
   {
     auto bounds = getLocalBounds();
 
     // Set bounds for the search editor
-    const auto fontSize = static_cast<int>(rawFontSize * size);
+    // const auto fontSize = static_cast<int>(rawFontSize * size);
     // searchEditor.setBounds(bounds.removeFromTop(fontSize));
 
     // Calculate and set bounds for the category viewport

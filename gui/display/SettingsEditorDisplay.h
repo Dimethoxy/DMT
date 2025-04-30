@@ -19,11 +19,16 @@ class SettingsEditorDisplay : public dmt::gui::display::AbstractDisplay
 {
   using Image = juce::Image;
   using Settings = dmt::Settings;
-
+  using SettingsEditorSettings = dmt::Settings::SettingsEditor;
   using TextEditor = dmt::gui::widget::TextEditor;
   using SettingsEditor = dmt::gui::component::SettingsEditor;
 
+  //==============================================================================
+  // Window
   const float& size = Settings::Window::size;
+
+  // SettingsEditor
+  const float rawPadding = SettingsEditorSettings::padding;
 
 public:
   SettingsEditorDisplay() { addAndMakeVisible(settingsEditor); }
@@ -33,12 +38,13 @@ public:
   void extendResized(
     const juce::Rectangle<int>& _displayBounds) noexcept override
   {
-    auto bounds = _displayBounds.reduced(5.0f * size);
-    settingsEditor.setBounds(bounds);
+    const auto padding = rawPadding * size;
+    auto settingsBounds = _displayBounds.reduced(padding);
+    settingsEditor.setBounds(settingsBounds);
   }
 
-  void paintDisplay(juce::Graphics& _g,
-                    const juce::Rectangle<int>& _displayBounds) const noexcept
+  void paintDisplay(juce::Graphics& /*_g*/,
+                    const juce::Rectangle<int>& /*_displayBounds*/) const noexcept
   {
   }
 
