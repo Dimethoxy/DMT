@@ -28,7 +28,7 @@ class SettingsEditorDisplay : public dmt::gui::display::AbstractDisplay
   const float& size = Settings::Window::size;
 
   // SettingsEditor
-  const float rawPadding = SettingsEditorSettings::padding;
+  const float& rawPadding = SettingsEditorSettings::padding;
 
 public:
   SettingsEditorDisplay() { addAndMakeVisible(settingsEditor); }
@@ -44,8 +44,12 @@ public:
   }
 
   void paintDisplay(juce::Graphics& /*_g*/,
-                    const juce::Rectangle<int>& /*_displayBounds*/) const noexcept
+                    const juce::Rectangle<int>& /*_displayBounds*/) noexcept
   {
+    if (cachedPadding != rawPadding) {
+      cachedPadding = rawPadding;
+      resized();
+    }
   }
 
   void prepareNextFrame() noexcept override
@@ -55,6 +59,7 @@ public:
 
 private:
   SettingsEditor settingsEditor;
+  float cachedPadding = 0.0f;
 
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SettingsEditorDisplay)
 };

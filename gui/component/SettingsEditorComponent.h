@@ -37,7 +37,7 @@ class SettingsEditor : public juce::Component
   const float rawScrollBarThickness = SettingsEditorSettings::scrollBarThickness;
   const Colour& scrollBarBackgroundColour =
     SettingsEditorSettings::scrollBarBackgroundColour;
-  const float rawFontSize = SettingsEditorSettings::fontSize;
+  const float& rawFontSize = SettingsEditorSettings::fontSize;
 
   // TODO: Move somewhere else
   std::vector<juce::String> blockedCategories = { "TriangleButton", "OscillatorDisplay", "Carousel" };

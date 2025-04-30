@@ -25,11 +25,16 @@ class ValueEditor : public juce::Component
   using String = juce::String;
   using TextEditor = dmt::gui::widget::TextEditor;
   using TreeAdapter = dmt::configuration::TreeAdapter;
+  using SettingsEditorSettings = dmt::Settings::SettingsEditor;
 
+  //==============================================================================
+  // Window
   const float& size = Settings::Window::size;
 
-  const float fontSize = 16.0f;
-  const Colour fontColour = juce::Colours::white;
+  // SettingsEditor
+  const float& labelHorizontalPadding = SettingsEditorSettings::labelHorizontalPadding;
+  const float& fontSize = SettingsEditorSettings::fontSize;
+  const Colour& fontColour = SettingsEditorSettings::fontColour;
 
 public:
   ValueEditor(TreeAdapter::Leaf& _leaf)
@@ -43,13 +48,10 @@ public:
   {
     addAndMakeVisible(label);
     addAndMakeVisible(editor);
-    label.setRawHorizontalPadding(5.0f);
+
 
     editor.setText(String(leaf.toString()));
-    editor.setColour(juce::TextEditor::textColourId, fontColour);
-    editor.setColour(juce::TextEditor::backgroundColourId,
-                  juce::Colours::transparentBlack);
-    editor.setColour(juce::TextEditor::outlineColourId, juce::Colours::transparentBlack);
+    setStyle();
 
     editor.onFocusLost = [this]() { newValueCallback(); };
     editor.onReturnKey = [this]() { newValueCallback(); };
@@ -62,6 +64,7 @@ public:
     if (!editor.hasKeyboardFocus(false)) {
       editor.setText(leaf.toString(), juce::dontSendNotification);
     }
+    setStyle();
   }
 
   void resized() override
@@ -72,6 +75,15 @@ public:
     label.setBounds(labelBounds);
     editor.setBounds(editorBounds);
     editor.setFont(fonts.medium.withHeight(fontSize * size));
+  }
+
+  // TODO: This is absolutely horrible
+  void setStyle(){
+    label.setRawHorizontalPadding(labelHorizontalPadding);
+    editor.setColour(juce::TextEditor::textColourId, fontColour);
+    editor.setColour(juce::TextEditor::backgroundColourId,
+                  juce::Colours::transparentBlack);
+    editor.setColour(juce::TextEditor::outlineColourId, juce::Colours::transparentBlack);
   }
 
   void newValueCallback()

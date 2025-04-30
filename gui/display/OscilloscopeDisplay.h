@@ -76,7 +76,7 @@ public:
   //==============================================================================
   void paintDisplay(
     juce::Graphics& g,
-    const juce::Rectangle<int>& /*_displayBounds*/) const noexcept override
+    const juce::Rectangle<int>& /*_displayBounds*/) noexcept override
   {
     TRACER("OscilloscopeDisplay::paintDisplay");
 

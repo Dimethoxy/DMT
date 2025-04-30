@@ -218,7 +218,7 @@ protected:
    */
   virtual void paintDisplay(
     juce::Graphics& _g,
-    const juce::Rectangle<int>& _displayBounds) const noexcept = 0;
+    const juce::Rectangle<int>& _displayBounds) noexcept = 0;
 
   //==============================================================================
   /**

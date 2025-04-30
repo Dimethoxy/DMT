@@ -221,6 +221,8 @@ public:
       container.add<float>("SettingsEditor.FontSize", 17.0f);
           static inline auto& scrollBarThickness =
       container.add<float>("SettingsEditor.ScrollBarThickness", 8.0f);
+    static inline auto& labelHorizontalPadding =
+      container.add<float>("SettingsEditor.LabelHorizontalPadding", 10.0f);
   };
 
   struct Slider
