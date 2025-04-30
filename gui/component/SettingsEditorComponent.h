@@ -32,9 +32,12 @@ class SettingsEditor : public juce::Component
   const float rawScrollBarThickness = 8.0f;
   const float rawFontSize = 16.0f;
 
+  // TODO: Move somewhere else
+  std::vector<juce::String> blockedCategories = { "TriangleButton", "OscillatorDisplay" };
+
 public:
   SettingsEditor()
-    : treeAdapter(Settings::container)
+    : treeAdapter(Settings::container, blockedCategories)
     , searchEditor("TestEditor")
     , valueCategoryList(treeAdapter.getCategories(),
                         [this](TreeAdapter::Category& category) {
