@@ -46,6 +46,10 @@ public:
     label.setRawHorizontalPadding(5.0f);
 
     editor.setText(String(leaf.toString()));
+    editor.setColour(juce::TextEditor::textColourId, fontColour);
+    editor.setColour(juce::TextEditor::backgroundColourId,
+                  juce::Colours::transparentBlack);
+    editor.setColour(juce::TextEditor::outlineColourId, juce::Colours::transparentBlack);
 
     editor.onFocusLost = [this]() { newValueCallback(); };
     editor.onReturnKey = [this]() { newValueCallback(); };
@@ -67,6 +71,7 @@ public:
     auto editorBounds = bounds;
     label.setBounds(labelBounds);
     editor.setBounds(editorBounds);
+    editor.setFont(fonts.medium.withHeight(fontSize * size));
   }
 
   void newValueCallback()
