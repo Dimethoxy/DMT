@@ -3,7 +3,7 @@
 
  * ██████  ██ ███    ███ ███████ ████████ ██   ██  ██████  ██   ██ ██    ██
  * ██   ██ ██ ████  ████ ██         ██    ██   ██ ██    ██  ██ ██   ██  ██
- * ██   ██ ██ ██ ████ ██ █████      ██    ███████ ██    ██   ███     ████
+ * ██   ██ ██ ██ ████ ██ █████      ██    ██   ██ ██    ██   ███     ████
  * ██   ██ ██ ██  ██  ██ ██         ██    ██   ██ ██    ██  ██ ██     ██
  * ██████  ██ ██      ██ ███████    ██    ██   ██  ██████  ██   ██    ██
  *
@@ -306,8 +306,8 @@ private:
   // Members initialized in the initializer list
   Shadow outerShadow;
   Shadow innerShadow;
+  Fonts fonts; // <-- Moved this above Label title
   Label title;
-  Fonts fonts;
   CallbackButton settingsButton;
   CallbackButton settingsExitButton;
   CallbackButton hideHeaderButton;
