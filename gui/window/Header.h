@@ -78,7 +78,7 @@ class Header : public juce::Component
   const bool& drawInnerShadow = PanelSettings::drawInnerShadow;
 
   // Header
-  const String& name = ProjectInfo::projectName;
+  const String name = ProjectInfo::projectName;
   const Colour& backgroundColour = HeaderSettings::backgroundColour;
   const Colour& borderColor = HeaderSettings::borderColor;
   const Colour& titleFontColour = HeaderSettings::titleFontColour;
