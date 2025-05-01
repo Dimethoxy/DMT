@@ -130,6 +130,9 @@ protected:
   {
     const auto clickedLabel = dynamic_cast<Lable*>(_event.eventComponent);
 
+    if (!clickedLabel)
+      return;
+
     for (auto& label : labelList) {
       if (label.get() != clickedLabel) {
         label->setFontColour(fontColour);
