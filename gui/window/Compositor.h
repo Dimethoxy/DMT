@@ -358,11 +358,7 @@ public:
   {
     properties.resetToFallback();
 
-    // We call the parent seperately to make sure the global size gets recalculated
-    auto* parent = getParentComponent();
-    parent->resized();
-
-    getTopLevelComponent()->resized();
+    resizedRecursively(this);
     getTopLevelComponent()->repaint();
   }
 
