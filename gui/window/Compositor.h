@@ -71,6 +71,7 @@ class Compositor
   using Popover = dmt::gui::window::Popover;
   using TooltipWindow = juce::TooltipWindow;
   using Properties = dmt::configuration::Properties;
+  using String = juce::String;
 
   //============================================================================
   // Window size
@@ -90,10 +91,11 @@ public:
    * @param _apvts The audio processor value tree state for parameter
    * management.
    */
-  Compositor(juce::String _titleText,
+  Compositor(String _titleText,
              AbstractPanel& _mainPanel,
              AudioProcessorValueTreeState& _apvts,
-             Properties& _properties) noexcept
+             Properties& _properties
+            ) noexcept
     : juce::Component("Compositor")
     , mainPanel(_mainPanel)
     , properties(_properties)
@@ -353,6 +355,11 @@ public:
   void resetSettingsCallback() noexcept
   {
     properties.resetToFallback();
+
+    // We call the parent seperately to make sure the global size gets recalculated
+    auto* parent = getParentComponent();
+    parent->resized();
+
     getTopLevelComponent()->resized();
     getTopLevelComponent()->repaint();
   }
@@ -485,6 +492,8 @@ private:
   // Other members
   std::function<void(bool)> headerVisibilityCallback;
   Popover popover;
+  int baseHeight = 0;
+  int baseWidth = 0;
 };
 
 } // namespace window
