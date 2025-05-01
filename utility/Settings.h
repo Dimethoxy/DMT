@@ -33,7 +33,7 @@ public:
 
   static inline auto appName = juce::String(""); // TODO: Remove this
 
-  static inline auto& framerate = container.add<int>("General.Framerate", 30);
+  static inline auto& framerate = container.add<int>("General.TargetFramerate", 30);
   static inline auto& unixFontScalingFactor =
     container.add<float>("General.UnixFontScalingFactor", 0.9f);
   static inline auto& debugBounds =
