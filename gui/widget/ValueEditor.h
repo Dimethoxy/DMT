@@ -75,6 +75,8 @@ public:
     label.setBounds(labelBounds);
     editor.setBounds(editorBounds);
     editor.setFont(fonts.medium.withHeight(fontSize * size));
+    editor.setText("", juce::dontSendNotification);
+    editor.setText(leaf.toString(), juce::dontSendNotification);
   }
 
   // TODO: This is absolutely horrible
