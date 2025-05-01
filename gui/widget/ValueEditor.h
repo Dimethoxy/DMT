@@ -70,7 +70,6 @@ public:
     if (!editor.hasKeyboardFocus(false)) {
       editor.setText(leaf.toString(), juce::dontSendNotification);
     }
-    setStyle();
   }
 
   void resized() override
