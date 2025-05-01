@@ -32,11 +32,11 @@ class ValueCategoryList : public juce::Component
   const float& size = Settings::Window::size;
 
   // TODO: Move to settings
-  const float rawFontSize = SettingsEditorSettings::fontSize;
-  const Colour fontColour = SettingsEditorSettings::fontColour;
-  const Colour selectedFontColour = SettingsEditorSettings::selectedFontColour;
-  const Colour selectedBackgroundColour = SettingsEditorSettings::selectedLabelBackgroundColour;
-  const Colour seperatorColour = SettingsEditorSettings::seperatorColour;
+  const float& rawFontSize = SettingsEditorSettings::fontSize;
+  const Colour& fontColour = SettingsEditorSettings::fontColour;
+  const Colour& selectedFontColour = SettingsEditorSettings::selectedFontColour;
+  const Colour& selectedBackgroundColour = SettingsEditorSettings::selectedLabelBackgroundColour;
+  const Colour& seperatorColour = SettingsEditorSettings::seperatorColour;
 
 public:
   ValueCategoryList(CategoryList& _categories,
