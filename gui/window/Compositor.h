@@ -61,6 +61,7 @@ namespace window {
 class Compositor
   : public juce::Component
   , public juce::Timer
+  , public dmt::gui::component::ValueEditor::Listener
 {
   //============================================================================
   // Aliases for convenience
@@ -76,7 +77,7 @@ class Compositor
   //============================================================================
   // Window size
   const float& size = dmt::Settings::Window::size;
-  const int rawHeaderHeight = dmt::Settings::Header::height;
+  const int& rawHeaderHeight = dmt::Settings::Header::height;
 
   // Header
   const int& rawBorderButtonHeight = Settings::Header::borderButtonHeight;
@@ -137,7 +138,8 @@ public:
 
   //============================================================================
   /** @brief Paints the component. */
-  void paint(juce::Graphics& /*_g*/) noexcept override {}
+  void paint(juce::Graphics& /*_g*/) noexcept override {
+  }
 
   //============================================================================
   /**
@@ -392,6 +394,18 @@ public:
 
   //==============================================================================
   /**
+   * @brief Callback function for value editor changes.
+   *
+   * @details This function is called when the value editor changes.
+   *          It triggers a resize event for all child components.
+   */
+  void valueEditorListenerCallback() override
+  {
+    resizedRecursively(this);
+  }
+
+  //==============================================================================
+  /**
    * @brief Shows the update popover.
    *
    * @details This function is called when an update is available.
@@ -476,6 +490,30 @@ public:
   [[nodiscard]] bool isHeaderVisible() const noexcept
   {
     return header.isVisible();
+  }
+
+protected:
+  //==============================================================================
+  /**
+   * @brief Resizes the component and its children recursively.
+   *
+   * @param component The component to resize.
+   *
+   * @note This function is used to trigger a resize event for all child
+   *       components.
+   */
+  void resizedRecursively(juce::Component* component)
+  {
+    if (component == nullptr)
+      return;
+
+    component->resized();
+
+    for (auto& child : component->getChildren()) {
+      if (auto* childComponent = dynamic_cast<juce::Component*>(child)) {
+        resizedRecursively(childComponent);
+      }
+    }
   }
 
 private:

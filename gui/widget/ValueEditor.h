@@ -37,6 +37,12 @@ class ValueEditor : public juce::Component
   const Colour& fontColour = SettingsEditorSettings::fontColour;
 
 public:
+  class Listener
+  {
+    public:
+    virtual void valueEditorListenerCallback() = 0;  
+  };
+public:
   ValueEditor(TreeAdapter::Leaf& _leaf)
     : leaf(_leaf)
     , label(String(leaf.name),
@@ -95,8 +101,27 @@ public:
       editor.setText(leaf.toString(), juce::dontSendNotification);
       return;
     }
-    getTopLevelComponent()->resized();
-    getTopLevelComponent()->repaint();
+    // Let's trigger a resize of the top level component
+    // const auto topLevelBounds = getTopLevelComponent()->getBounds();
+    // const auto width = topLevelBounds.getWidth();
+    // const auto height = topLevelBounds.getHeight();
+    // getTopLevelComponent()->setSize(0,0);
+    // getTopLevelComponent()->setSize(width, height);
+    // Iterate parents to find the compositor
+    auto* parent = getParentComponent();
+    while (dynamic_cast<Listener*>(parent) == nullptr) {
+      parent = parent->getParentComponent();
+      if (parent == nullptr) {
+        break;
+      }
+    }
+    if (parent != nullptr) {
+      Listener* listener = dynamic_cast<Listener*>(parent);
+      listener->valueEditorListenerCallback();
+    }
+
+    auto* topLevelComponent = getTopLevelComponent();
+    topLevelComponent->repaint();
   }
 
 private:
