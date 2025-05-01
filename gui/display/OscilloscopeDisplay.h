@@ -22,28 +22,29 @@ class OscilloscopeDisplay
   using RingAudioBuffer = dmt::dsp::data::RingAudioBuffer<SampleType>;
   using FifoAudioBuffer = dmt::dsp::data::FifoAudioBuffer<SampleType>;
   using Shadow = dmt::gui::widget::Shadow;
-
-  // General
+  using Colour = juce::Colour;
   using Settings = dmt::Settings;
-  const juce::Colour& backgroundColour =
-    Settings::Oscilloscope::backgroundColour;
+  using DisplaySettings = dmt::Settings::Display;
+
+  //==============================================================================
+  // General
+  const Colour& backgroundColour = DisplaySettings::backgroundColour;
+
   // Layout
   const float& size = Settings::Window::size;
-  const float& rawCornerSize = Settings::Oscilloscope::cornerSize;
-  const float& rawPadding = Settings::Oscilloscope::padding;
+  const float& rawCornerSize = DisplaySettings::cornerSize;
+  const float& rawPadding = DisplaySettings::padding;
   // Border
-  const bool& drawBorder = Settings::Oscilloscope::drawBorder;
-  const juce::Colour& borderColour = Settings::Oscilloscope::borderColour;
-  const float& borderStrength = Settings::Oscilloscope::borderStrength;
+  const bool& drawBorder = DisplaySettings::drawBorder;
+  const Colour& borderColour = DisplaySettings::borderColour;
+  const float& borderStrength = DisplaySettings::borderStrength;
   // Shadows
-  const bool& drawOuterShadow = Settings::Oscilloscope::drawOuterShadow;
-  const bool& drawInnerShadow = Settings::Oscilloscope::drawInnerShadow;
-  const juce::Colour& outerShadowColour =
-    Settings::Oscilloscope::outerShadowColour;
-  const juce::Colour& innerShadowColour =
-    Settings::Oscilloscope::innerShadowColour;
-  const float& outerShadowRadius = Settings::Oscilloscope::outerShadowRadius;
-  const float& innerShadowRadius = Settings::Oscilloscope::innerShadowRadius;
+  const bool& drawOuterShadow = DisplaySettings::drawOuterShadow;
+  const bool& drawInnerShadow = DisplaySettings::drawInnerShadow;
+  const Colour& outerShadowColour = DisplaySettings::outerShadowColour;
+  const Colour& innerShadowColour = DisplaySettings::innerShadowColour;
+  const float& outerShadowRadius = DisplaySettings::outerShadowRadius;
+  const float& innerShadowRadius = DisplaySettings::innerShadowRadius;
 
 public:
   //==============================================================================

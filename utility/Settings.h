@@ -379,33 +379,12 @@ public:
   struct Oscilloscope
   {
     // General
-    static inline auto& backgroundColour =
-      container.add<Colour>("Oscilloscope.BackgroundColour",
-                            Colours::background);
-    static inline auto& padding =
-      container.add<float>("Oscilloscope.Padding", 10.0f);
-    static inline auto& cornerSize =
-      container.add<float>("Oscilloscope.CornerSize", 15.0f);
-    // Border
-    static inline auto& drawBorder =
-      container.add<bool>("Oscilloscope.DrawBorder", true);
-    static inline auto& borderColour =
-      container.add<Colour>("Oscilloscope.BorderColour", Colours::solidDark);
-    static inline auto& borderStrength =
-      container.add<float>("Oscilloscope.BorderStrength", 4.0f);
-    // Shadow
-    static inline auto& drawOuterShadow =
-      container.add<bool>("Oscilloscope.DrawOuterShadow", false);
-    static inline auto& drawInnerShadow =
-      container.add<bool>("Oscilloscope.DrawInnerShadow", true);
-    static inline auto& outerShadowColour =
-      container.add<Colour>("Oscilloscope.OuterShadowColour", Colours::shadow);
-    static inline auto& innerShadowColour =
-      container.add<Colour>("Oscilloscope.InnerShadowColour", Colours::shadow);
-    static inline auto& outerShadowRadius =
-      container.add<float>("Oscilloscope.OuterShadowRadius", 4.0f);
-    static inline auto& innerShadowRadius =
-      container.add<float>("Oscilloscope.InnerShadowRadius", 4.0f);
+    static inline auto& defaultSpeed =
+      container.add<float>("Oscilloscope.DefaultSpeed", 0.5f);
+    static inline auto& defaultGain =
+      container.add<float>("Oscilloscope.DefaultGain", 0.5f);
+    static inline auto& defaultThickness =
+      container.add<float>("Oscilloscope.DefaultThickness", 1.0f);
   };
 };
 

@@ -5,6 +5,7 @@
 //==============================================================================
 
 #include "dmt/gui/widget/ValueEditor.h"
+#include "dmt/utility/Settings.h"
 #include <JuceHeader.h>
 
 //==============================================================================
@@ -17,6 +18,7 @@ class ValueEditorList : public juce::Component
 {
   using Colour = juce::Colour;
   using Settings = dmt::Settings;
+  using SettingsEditorSettings = dmt::Settings::SettingsEditor;
   using String = juce::String;
   using TreeAdapter = dmt::configuration::TreeAdapter;
   using ValueEditor = dmt::gui::component::ValueEditor;
@@ -26,8 +28,8 @@ class ValueEditorList : public juce::Component
   const float& size = Settings::Window::size;
 
   // TODO: Move to settings
-  const float rawFontSize = 17.0f;
-  const Colour seperatorColour = juce::Colours::white.withAlpha(0.2f);
+  const float& rawFontSize = SettingsEditorSettings::fontSize;
+  const Colour& seperatorColour = SettingsEditorSettings::seperatorColour;
 
 public:
   ValueEditorList() { addAllEditors(); }
