@@ -14,6 +14,7 @@
 namespace dmt {
 namespace gui {
 namespace display {
+// TODO: Make this use the new display system with multithreading
 //==============================================================================
 class SettingsEditorDisplay : public dmt::gui::display::AbstractDisplay
 {

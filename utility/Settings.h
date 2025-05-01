@@ -379,12 +379,12 @@ public:
   struct Oscilloscope
   {
     // General
-    static inline auto& defaultSpeed =
-      container.add<float>("Oscilloscope.DefaultSpeed", 0.5f);
+    static inline auto& defaultZoom =
+      container.add<float>("Oscilloscope.DefaultZoom", 25.0f);
     static inline auto& defaultGain =
-      container.add<float>("Oscilloscope.DefaultGain", 0.5f);
+      container.add<float>("Oscilloscope.DefaultGain", 0.0f);
     static inline auto& defaultThickness =
-      container.add<float>("Oscilloscope.DefaultThickness", 1.0f);
+      container.add<float>("Oscilloscope.DefaultThickness", 3.0f);
   };
 };
 

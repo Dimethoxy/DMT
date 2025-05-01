@@ -50,7 +50,9 @@ public:
   using FifoAudioBuffer = dmt::dsp::data::FifoAudioBuffer<float>;
   DisfluxDisplay(FifoAudioBuffer& _fifoBuffer,
                           AudioProcessorValueTreeState& _apvts)
-    : OscilloscopeDisplay(_fifoBuffer, _apvts)
+    : OscilloscopeDisplay(_fifoBuffer, // The data buffer
+                          _apvts, // The processers value tree state
+                          true) // This tells the display to not listen to the apvts
   {
   }
 };

@@ -49,15 +49,24 @@ class OscilloscopeDisplay
 public:
   //==============================================================================
   OscilloscopeDisplay(FifoAudioBuffer& _fifoBuffer,
-                      AudioProcessorValueTreeState& _apvts)
+                      AudioProcessorValueTreeState& _apvts,
+                      bool _useDefaultSettings = false)
     : ringBuffer(2, 4096)
     , fifoBuffer(_fifoBuffer)
     , leftOscilloscope(ringBuffer, 0)
     , rightOscilloscope(ringBuffer, 1)
+    , useDefaultSettings(_useDefaultSettings)
   {
-    _apvts.addParameterListener("OscilloscopeZoom", this);
-    _apvts.addParameterListener("OscilloscopeThickness", this);
-    _apvts.addParameterListener("OscilloscopeGain", this);
+    if (!useDefaultSettings) {
+      _apvts.addParameterListener("OscilloscopeZoom", this);
+      _apvts.addParameterListener("OscilloscopeThickness", this);
+      _apvts.addParameterListener("OscilloscopeGain", this);
+    } else {
+      // Use default values from dmt::Settings::Oscilloscope
+      setZoom(dmt::Settings::Oscilloscope::defaultZoom);
+      setThickness(dmt::Settings::Oscilloscope::defaultThickness);
+      setHeight(dmt::Settings::Oscilloscope::defaultGain);
+    }
   }
   //==============================================================================
   void extendResized(
@@ -73,6 +82,13 @@ public:
 
     leftOscilloscope.setBounds(leftScopeBounds);
     rightOscilloscope.setBounds(rightScopeBounds);
+
+    // If using default settings, update oscilloscope parameters on resize
+    if (useDefaultSettings) {
+      setZoom(dmt::Settings::Oscilloscope::defaultZoom);
+      setThickness(dmt::Settings::Oscilloscope::defaultThickness);
+      setHeight(dmt::Settings::Oscilloscope::defaultGain);
+    }
   }
   //==============================================================================
   void paintDisplay(
@@ -211,6 +227,7 @@ private:
   FifoAudioBuffer& fifoBuffer;
   Oscilloscope leftOscilloscope;
   Oscilloscope rightOscilloscope;
+  bool useDefaultSettings;
   //==============================================================================
 
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(OscilloscopeDisplay)

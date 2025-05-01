@@ -12,6 +12,7 @@ namespace dmt {
 namespace gui {
 namespace component {
 //==============================================================================
+// TODO: Make this use the new display system
 class OscillatorDisplayComponent
   : public juce::Component
   , public juce::Timer
