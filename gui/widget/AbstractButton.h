@@ -84,65 +84,6 @@ class AbstractButton : public juce::Button
   const bool& drawOuterShadow = ButtonSettings::drawOuterShadow;
   const bool& drawInnerShadow = ButtonSettings::drawInnerShadow;
 
-  struct SettingsCache
-  {
-    Colour backgroundColour;
-    Colour outerShadowColour;
-    Colour innerShadowColour;
-    Colour fontColour;
-    Colour hoverColour;
-    Colour clickColour;
-    float rawCornerRadius;
-    float rawButtonPadding;
-    float outerShadowRadius;
-    float innerShadowRadius;
-    bool drawOuterShadow;
-    bool drawInnerShadow;
-
-    static SettingsCache makeCurrent() noexcept
-    {
-      return {
-        ButtonSettings::backgroundColour,  ButtonSettings::outerShadowColour,
-        ButtonSettings::innerShadowColour, ButtonSettings::fontColour,
-        ButtonSettings::hoverColour,       ButtonSettings::clickColour,
-        ButtonSettings::cornerRadius,      ButtonSettings::padding,
-        ButtonSettings::outerShadowRadius, ButtonSettings::innerShadowRadius,
-        ButtonSettings::drawOuterShadow,   ButtonSettings::drawInnerShadow
-      };
-    }
-
-    bool operator==(const SettingsCache& other) const noexcept
-    {
-      return std::tie(backgroundColour,
-                      outerShadowColour,
-                      innerShadowColour,
-                      fontColour,
-                      hoverColour,
-                      clickColour,
-                      rawCornerRadius,
-                      rawButtonPadding,
-                      outerShadowRadius,
-                      innerShadowRadius,
-                      drawOuterShadow,
-                      drawInnerShadow) == std::tie(other.backgroundColour,
-                                                   other.outerShadowColour,
-                                                   other.innerShadowColour,
-                                                   other.fontColour,
-                                                   other.hoverColour,
-                                                   other.clickColour,
-                                                   other.rawCornerRadius,
-                                                   other.rawButtonPadding,
-                                                   other.outerShadowRadius,
-                                                   other.innerShadowRadius,
-                                                   other.drawOuterShadow,
-                                                   other.drawInnerShadow);
-    }
-    bool operator!=(const SettingsCache& other) const noexcept
-    {
-      return !(*this == other);
-    }
-  };
-
 public:
   //==============================================================================
   /**
@@ -178,7 +119,6 @@ public:
     , rawSpecificSvgPadding(dmt::icons::getPadding(_iconName))
     , outerShadow(drawOuterShadow, outerShadowColour, outerShadowRadius, false)
     , innerShadow(drawInnerShadow, innerShadowColour, innerShadowRadius, true)
-    , settingsCache{ SettingsCache::makeCurrent() }
   {
     icon = dmt::icons::getIcon(_iconName);
 
@@ -231,29 +171,6 @@ public:
     setIconBounds(innerBounds);
     drawBackground();
     drawIcon();
-  }
-
-  //==============================================================================
-  /**
-   * @brief Paints the button. This method is intentionally left empty.
-   *
-   * @param g The graphics context.
-   * @param isMouseOverButton Whether the mouse is over the button.
-   * @param isButtonDown Whether the button is pressed.
-   *
-   * @details All painting is handled by subcomponents for maximum flexibility
-   * and performance. This override is required by JUCE.
-   */
-  inline void paintButton(juce::Graphics& /*_g*/,
-                          bool /*_isMouseOverButton*/,
-                          bool /*_isButtonDown*/) override
-  {
-    const auto currentCache = SettingsCache::makeCurrent();
-    if (currentCache != settingsCache) {
-      settingsCache = currentCache;
-      drawBackground();
-      drawIcon();
-    }
   }
 
   //==============================================================================
@@ -317,6 +234,23 @@ public:
     }
     iconImageComponent.setVisible(false);
     hoverIconImageComponent.setVisible(true);
+  }
+
+  //==============================================================================
+  /**
+   * @brief Paints the button. This method is intentionally left empty.
+   *
+   * @param g The graphics context.
+   * @param isMouseOverButton Whether the mouse is over the button.
+   * @param isButtonDown Whether the button is pressed.
+   *
+   * @details All painting is handled by subcomponents for maximum flexibility
+   * and performance. This override is required by JUCE.
+   */
+  inline void paintButton(juce::Graphics& /*_g*/,
+                          bool /*_isMouseOverButton*/,
+                          bool /*_isButtonDown*/) override
+  {
   }
 
 private:
@@ -474,20 +408,6 @@ private:
   }
 
   //==============================================================================
-  /**
-   * @brief Checks if any of the values in the settings cache have changed.
-   *
-   * @details This method compares the current settings with the cached
-   * settings. If any value has changed, it returns true, indicating that
-   * the button needs to be redrawn.
-   * @return true if any settings have changed, false otherwise.
-   */
-  [[nodiscard]] inline bool settingsHaveChanged() const
-  {
-    return SettingsCache::makeCurrent() != settingsCache;
-  }
-
-  //==============================================================================
   // Members initialized in the initializer list
   String tooltip;
   bool shouldDrawBorder;
@@ -511,7 +431,6 @@ private:
   ImageComponent iconImageComponent;
   Image hoverIconImage;
   ImageComponent hoverIconImageComponent;
-  SettingsCache settingsCache{ SettingsCache::makeCurrent() };
 
   //==============================================================================
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(AbstractButton)
