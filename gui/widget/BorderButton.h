@@ -200,6 +200,12 @@ protected:
    */
   void updateCachedImage()
   {
+    const auto width = getWidth();
+    const auto height = getHeight();
+    if (width <= 0 || height <= 0) {
+     return; // Avoid invalid dimensions
+    }
+
     cachedImage = Image(juce::Image::ARGB, getWidth(), getHeight(), true);
     Graphics g(cachedImage);
 
