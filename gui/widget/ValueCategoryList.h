@@ -32,11 +32,13 @@ class ValueCategoryList : public juce::Component
   const float& size = Settings::Window::size;
 
   // TODO: Move to settings
-  const float& rawFontSize = SettingsEditorSettings::fontSize;
   const Colour& fontColour = SettingsEditorSettings::fontColour;
   const Colour& selectedFontColour = SettingsEditorSettings::selectedFontColour;
   const Colour& selectedBackgroundColour = SettingsEditorSettings::selectedLabelBackgroundColour;
   const Colour& seperatorColour = SettingsEditorSettings::seperatorColour;
+    const float& rawFontSize = SettingsEditorSettings::fontSize;
+  const float& labelHorizontalPadding =
+    SettingsEditorSettings::labelHorizontalPadding;
 
 public:
   ValueCategoryList(CategoryList& _categories,
@@ -54,32 +56,33 @@ public:
 
   void paint(juce::Graphics& _g) override
   {
-    // Draw separator lines above, between, and below labels
-    const auto fontSize = rawFontSize * size;
     _g.setColour(seperatorColour);
 
-    // Top line
+    // Draw top line
     _g.drawLine(0.0f, 0.0f, static_cast<float>(getWidth()), 0.0f, 1.0f);
 
-    // Lines between labels
-    for (std::size_t i = 1; i < labelList.size(); ++i) {
-      auto y = static_cast<int>(i * fontSize);
-      _g.drawLine(0.0f,
-                  static_cast<float>(y),
-                  static_cast<float>(getWidth()),
-                  static_cast<float>(y),
-                  1.0f);
+    // Draw separator lines at the top of each child component (except the first)
+    for (int i = 1; i < getNumChildComponents(); ++i) {
+      auto* comp = getChildComponent(i);
+      if (comp) {
+        float y = static_cast<float>(comp->getY());
+        _g.drawLine(0.0f, y, static_cast<float>(getWidth()), y, 1.0f);
+      }
     }
 
-    // Bottom line
-    auto bottomY = static_cast<float>(labelList.size() * fontSize);
-    _g.drawLine(0.0f, bottomY, static_cast<float>(getWidth()), bottomY, 1.0f);
+    // Draw bottom line at the bottom of the last child component
+    if (getNumChildComponents() > 0) {
+      auto* last = getChildComponent(getNumChildComponents() - 1);
+      if (last) {
+        float bottomY = static_cast<float>(last->getBottom());
+        _g.drawLine(0.0f, bottomY, static_cast<float>(getWidth()), bottomY, 1.0f);
+      }
+    }
   }
 
   void resized() override
   {
     const auto fontSize = rawFontSize * size;
-    const float leftPadding = 5.0f * size;
     auto bounds = getLocalBounds();
     for (auto& label : labelList) {
       auto labelBounds = bounds.removeFromTop(fontSize);
@@ -145,12 +148,15 @@ protected:
   }
 
 private:
+  //==============================================================================
+  CategoryList& categories;
+
+  //==============================================================================
+  // Other members
+  CategoryCallback onCategorySelected;
   LabelList labelList;
   Fonts fonts;
 
-  //==============================================================================
-  CategoryList& categories;
-  CategoryCallback onCategorySelected;
   //==============================================================================
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(ValueCategoryList)
 };

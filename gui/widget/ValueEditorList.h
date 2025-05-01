@@ -38,26 +38,28 @@ public:
 
   void paint(juce::Graphics& _g) override
   {
-    // Draw separator lines above, between, and below labels
-    const auto fontSize = rawFontSize * size;
     _g.setColour(seperatorColour);
 
-    // Top line
+    // Draw top line
     _g.drawLine(0.0f, 0.0f, static_cast<float>(getWidth()), 0.0f, 1.0f);
 
-    // Lines between labels
-    for (std::size_t i = 1; i < editorList.size(); ++i) {
-      auto y = static_cast<int>(i * fontSize);
-      _g.drawLine(0.0f,
-                  static_cast<float>(y),
-                  static_cast<float>(getWidth()),
-                  static_cast<float>(y),
-                  1.0f);
+    // Draw separator lines at the top of each child component (except the first)
+    for (int i = 1; i < getNumChildComponents(); ++i) {
+      auto* comp = getChildComponent(i);
+      if (comp) {
+        float y = static_cast<float>(comp->getY());
+        _g.drawLine(0.0f, y, static_cast<float>(getWidth()), y, 1.0f);
+      }
     }
 
-    // Bottom line
-    auto bottomY = static_cast<float>(editorList.size() * fontSize);
-    _g.drawLine(0.0f, bottomY, static_cast<float>(getWidth()), bottomY, 1.0f);
+    // Draw bottom line at the bottom of the last child component
+    if (getNumChildComponents() > 0) {
+      auto* last = getChildComponent(getNumChildComponents() - 1);
+      if (last) {
+        float bottomY = static_cast<float>(last->getBottom());
+        _g.drawLine(0.0f, bottomY, static_cast<float>(getWidth()), bottomY, 1.0f);
+      }
+    }
   }
 
   void resized() override

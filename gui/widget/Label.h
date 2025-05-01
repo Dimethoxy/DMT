@@ -191,7 +191,7 @@ public:
   inline void setFontColour(const juce::Colour& _colour) noexcept
   {
     // Make sure the colour is actually different before repainting
-    if (fontColour == &_colour) {
+    if (fontColour != nullptr&& fontColour == &_colour) {
       fontColour = &_colour;
       return;
     }
