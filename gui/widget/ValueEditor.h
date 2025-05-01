@@ -43,7 +43,7 @@ public:
             fonts.medium,
             fontSize,
             fontColour,
-            juce::Justification::topLeft)
+            juce::Justification::centredLeft)
     , editor(String(leaf.name + "Editor"))
   {
     addAndMakeVisible(label);
