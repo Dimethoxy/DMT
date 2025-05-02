@@ -363,7 +363,16 @@ public:
   {
     properties.resetToFallback();
 
+    // Gotta call this first to recalculate the global size
+    const auto& parent = getParentComponent();
+    if (parent != nullptr) {
+      parent->resized();
+    }
+
+    // We need this to clear all cached images
     resizedRecursively(this);
+
+    // Now trigger the actual repaint
     getTopLevelComponent()->repaint();
   }
 
