@@ -305,15 +305,19 @@ private:
     if (!shouldDrawBackground)
       return;
 
+    if (_innerBounds.getWidth() <= 0 && _innerBounds.getHeight() <= 0)
+      return;
+     
     backgroundImage = Image(
-      Image::ARGB, _innerBounds.getWidth(), _innerBounds.getHeight(), true);
+        Image::ARGB, _innerBounds.getWidth(), _innerBounds.getHeight(), true);
     backgroundImageComponent.setBounds(_innerBounds);
     hoverBackgroundImage = Image(
-      Image::ARGB, _innerBounds.getWidth(), _innerBounds.getHeight(), true);
+        Image::ARGB, _innerBounds.getWidth(), _innerBounds.getHeight(), true);
     hoverBackgroundImageComponent.setBounds(_innerBounds);
     clickedBackgroundImage = Image(
-      Image::ARGB, _innerBounds.getWidth(), _innerBounds.getHeight(), true);
+        Image::ARGB, _innerBounds.getWidth(), _innerBounds.getHeight(), true);
     clickedBackgroundImageComponent.setBounds(_innerBounds);
+    
   }
 
   //==============================================================================
