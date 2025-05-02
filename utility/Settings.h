@@ -152,6 +152,10 @@ public:
       container.add<float>("Tooltip.TextHorizontalPadding", 10.0f);
     static inline auto& textVerticalPadding =
       container.add<float>("Tooltip.TextVerticalPadding", 5.0f);
+    static inline auto& drawOuterShadow =
+      container.add<bool>("Tooltip.DrawOuterShadow", true);
+    static inline auto& drawInnerShadow =
+      container.add<bool>("Tooltip.DrawInnerShadow", true);
   };
 
   struct Button

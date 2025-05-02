@@ -6,6 +6,7 @@
 #include "dmt/utility/RepaintTimer.h"
 #include "dmt/utility/Settings.h"
 #include "dmt/utility/Fonts.h"
+#include "dmt/gui/widget/Shadow.h" // <-- Add this include
 
 //==============================================================================
 
@@ -20,6 +21,7 @@ class Tooltip : public juce::Component, private dmt::utility::RepaintTimer
   using Settings = dmt::Settings;
   using Fonts = dmt::utility::Fonts;
   using TooltipSettings = dmt::Settings::Tooltip;
+  using Shadow = dmt::gui::widget::Shadow; // <-- Add alias
 
   //==============================================================================
   // Window 
@@ -36,9 +38,12 @@ class Tooltip : public juce::Component, private dmt::utility::RepaintTimer
   const float& rawFontSize = TooltipSettings::fontSize;
   const float& rawTextHorizontalPadding = TooltipSettings::textHorizontalPadding;
   const float& rawTextVerticalPadding = TooltipSettings::textVerticalPadding;
-
+  const bool& drawOuterShadow = TooltipSettings::drawOuterShadow;
+  const bool& drawInnerShadow = TooltipSettings::drawInnerShadow;
 public:
   Tooltip() noexcept
+    : outerShadow(drawOuterShadow, shadowColour, rawShadowRadius, false)
+    , innerShadow(drawInnerShadow, shadowColour, rawShadowRadius, true)
   {
     setInterceptsMouseClicks(false, false);
     startRepaintTimer(); // Use custom repaint timer
@@ -173,15 +178,28 @@ protected:
     
     tooltipImage = juce::Image(juce::Image::ARGB, tooltipWidth, tooltipHeight, true);
     juce::Graphics graphics(tooltipImage);
-    
-    // Border
+
+    // Path for the tooltip shape (outer and inner)
+    juce::Path outerPath, innerPath;
+    outerPath.addRoundedRectangle(outerBounds, cornerRadius);
+    innerPath.addRoundedRectangle(innerBounds, innerCornerRadius);
+
+    // Draw outer shadow if enabled
+    if (drawOuterShadow)
+      outerShadow.directDraw(graphics, outerPath);
+
+    // Draw border
     graphics.setColour(borderColour);
-    graphics.fillRoundedRectangle(outerBounds, cornerRadius);
-    
+    graphics.fillPath(outerPath);
+
+    // Draw inner shadow if enabled
+    if (drawInnerShadow)
+      innerShadow.directDraw(graphics, innerPath);
+
     // Background
     graphics.setColour(backgroundColour);
-    graphics.fillRoundedRectangle(innerBounds, innerCornerRadius);
-    
+    graphics.fillPath(innerPath);
+
     // Text
     graphics.setColour(fontColour);
     graphics.setFont(font);
@@ -193,6 +211,10 @@ private:
   juce::Image tooltipImage;
   juce::Point<int> lastMousePosition;
   Fonts fonts;
+
+  // Shadow members
+  Shadow outerShadow;
+  Shadow innerShadow;
 };
 
 } // namespace window

@@ -152,6 +152,28 @@ public:
     resized();
   }
 
+  //==============================================================================
+  /** 
+   * @brief Directly draws the shadow for the given path.
+   * 
+   * @param _g The graphics context.
+   * @param _target The path to shadow.
+   * 
+   * @details
+   * This method is used if the shadow isn't used as a component, allowing
+   * for direct drawing of the shadow on a given graphics context.
+   * It doesn't do any caching or image management, so it's suitable for one-off
+   * rendering tasks.
+  */
+  inline void directDraw(juce::Graphics& _g, juce::Path _target)
+  {
+    TRACER("Shadow::directDraw");
+    if (inner)
+      drawInnerForPath(_g, _target);
+    else
+      drawOuterForPath(_g, _target);
+  }
+
 protected:
   //==============================================================================
   /**
