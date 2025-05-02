@@ -47,6 +47,7 @@ public:
                  LinearSliderType::Positive,
                  LinearSliderOrientation::Vertical)
   {
+    TRACER("AnalogGainPanel::AnalogGainPanel");
     setLayout({ 25, 32 });
     addAndMakeVisible(attackSlider);
     addAndMakeVisible(holdSlider);
@@ -56,6 +57,7 @@ public:
 
   void extendResize() noexcept override
   {
+    TRACER("AnalogGainPanel::extendResize");
     const auto bounds = getLocalBounds();
 
     const int primaryRow = 3;

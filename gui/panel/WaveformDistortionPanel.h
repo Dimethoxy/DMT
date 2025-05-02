@@ -45,6 +45,7 @@ public:
                   juce::String("osc1DistortionCrush"),
                   Unit::Type::Bitdepth)
   {
+    TRACER("WaveformDistortionPanel::WaveformDistortionPanel");
     setLayout({ 17, 32 });
     addAndMakeVisible(typeSlider);
     addAndMakeVisible(driveSlider);
@@ -54,6 +55,7 @@ public:
   }
   void extendResize() noexcept override
   {
+    TRACER("WaveformDistortionPanel::extendResize");
     const auto bounds = getLocalBounds();
     const int rotarySliderRow = 10;
     const int linearSliderRow = 26;

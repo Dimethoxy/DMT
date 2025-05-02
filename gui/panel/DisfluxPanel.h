@@ -116,6 +116,7 @@ public:
                 Unit::Type::DisfluxMix,
                 RotarySliderType::Positive)
   {
+    TRACER("DisfluxPanel::DisfluxPanel");
     setLayout({ 22, 60 });
 
     addAndMakeVisible(display);
@@ -137,6 +138,7 @@ public:
    */
   inline void extendResize() noexcept override
   {
+    TRACER("DisfluxPanel::extendResize");
     auto bounds = getLocalBounds();
 
     const float padding = rawPadding * size;

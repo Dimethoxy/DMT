@@ -57,6 +57,7 @@ public:
   SynthVoice(juce::AudioProcessorValueTreeState& _apvts) noexcept
     : apvts(_apvts)
   {
+    TRACER("SynthVoice::SynthVoice");
   }
 
   //==============================================================================
@@ -67,6 +68,7 @@ public:
    */
   bool canPlaySound(juce::SynthesiserSound* _sound) override
   {
+    TRACER("SynthVoice::canPlaySound");
     return dynamic_cast<juce::SynthesiserSound*>(_sound) != nullptr;
   }
 
@@ -85,6 +87,7 @@ public:
   void controllerMoved(int /*controllerNumber*/,
                        int /*newControllerValue*/) noexcept override
   {
+    TRACER("SynthVoice::controllerMoved");
   }
 
   //==============================================================================
@@ -96,7 +99,9 @@ public:
    *
    * @param newPitchWheelValue The new value of the pitch wheel.
    */
-  void pitchWheelMoved(int /*newPitchWheelValue*/) noexcept override {}
+  void pitchWheelMoved(int /*newPitchWheelValue*/) noexcept override {
+    TRACER("SynthVoice::pitchWheelMoved");
+  }
 
   //==============================================================================
   /**
@@ -109,6 +114,7 @@ public:
                      int /*_samplesPerBlock*/,
                      int /*_outputChannels*/) noexcept
   {
+    TRACER("SynthVoice::prepareToPlay");
     if (_sampleRate <= 0)
       return;
 
@@ -132,6 +138,7 @@ public:
                  juce::SynthesiserSound* /*_sound*/,
                  int /*_currentPitchWheelPosition*/) noexcept override
   {
+    TRACER("SynthVoice::startNote");
     osc.setPhase(0.0f);
     note = _midiNoteNumber;
 
@@ -145,6 +152,7 @@ public:
   //==============================================================================
   void stopNote(float /*_velocity*/, bool /*_allowTailOff*/) noexcept override
   {
+    TRACER("SynthVoice::stopNote");
   }
 
   /**
@@ -157,6 +165,7 @@ public:
                        int _startSample,
                        int _numSamples) noexcept override
   {
+    TRACER("SynthVoice::renderNextBlock");
     if (!isVoiceActive() || !isPrepared)
       return;
 
@@ -191,6 +200,7 @@ public:
    */
   void addOnNoteReceivers(std::function<void()> _callbackFunction) noexcept
   {
+    TRACER("SynthVoice::addOnNoteReceivers");
     onNoteReceivers.push_back(std::move(_callbackFunction));
   }
 
@@ -200,6 +210,7 @@ public:
    */
   void callOnNoteReceivers() noexcept
   {
+    TRACER("SynthVoice::callOnNoteReceivers");
     for (const auto& func : onNoteReceivers) {
       func();
     }
@@ -213,6 +224,7 @@ protected:
    */
   void updateEnvelopeParameters() noexcept
   {
+    TRACER("SynthVoice::updateEnvelopeParameters");
     dmt::dsp::envelope::AhdEnvelope::Parameters gainEnvParameters;
     gainEnvParameters.attack =
       apvts.getRawParameterValue("osc1GainEnvAttack")->load();
@@ -244,6 +256,7 @@ protected:
    */
   void updateOscillatorParameters() noexcept
   {
+    TRACER("SynthVoice::updateOscillatorParameters");
     osc.setWaveformType(static_cast<dmt::dsp::synth::AnalogWaveform::Type>(
       apvts.getRawParameterValue("osc1WaveformType")->load()));
     osc.setDrive(apvts.getRawParameterValue("osc1DistortionType")->load());
@@ -265,6 +278,7 @@ protected:
                                        const int _rawSemitone,
                                        const float _rawModDepth) noexcept
   {
+    TRACER("SynthVoice::getNextFrequency");
     const int octaves = 12 * _rawOctave;
     const int semitone = octaves + _rawSemitone;
     const int baseNote = note + semitone;
@@ -285,6 +299,7 @@ protected:
    */
   [[nodiscard]] float applyGain(float _sample, float _oscGain) noexcept
   {
+    TRACER("SynthVoice::applyGain");
     const float envGain = gainEnvelope.getNextSample();
     const float gain = juce::Decibels::decibelsToGain(_oscGain, -96.0f);
     return _sample * envGain * gain;

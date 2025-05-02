@@ -63,6 +63,7 @@ public:
    */
   inline void setSampleRate(const float _newSampleRate) noexcept
   {
+    TRACER("AnalogOscillator::setSampleRate");
     float rangeEnd =
       std::nextafter(392000.0f, std::numeric_limits<float>::max());
     const juce::Range<float> validRange(20.0f, rangeEnd);
@@ -77,6 +78,7 @@ public:
    */
   [[nodiscard]] forcedinline float getNextSample() noexcept
   {
+    TRACER("AnalogOscillator::getNextSample");
     if (sampleRate <= 0.0f)
       return 0.0f;
 
@@ -100,6 +102,7 @@ public:
    */
   inline void setFrequency(const float _newFrequency) noexcept
   {
+    TRACER("AnalogOscillator::setFrequency");
     frequency = _newFrequency;
   }
 
@@ -111,6 +114,7 @@ public:
   inline void setWaveformType(
     const dmt::dsp::synth::AnalogWaveform::Type _type) noexcept
   {
+    TRACER("AnalogOscillator::setWaveformType");
     waveform.type = _type;
   }
 
@@ -119,21 +123,30 @@ public:
    * @brief Sets the drive level for waveform distortion.
    * @param _newDrive The new drive level.
    */
-  inline void setDrive(const float _newDrive) noexcept { drive = _newDrive; }
+  inline void setDrive(const float _newDrive) noexcept { 
+    TRACER("AnalogOscillator::setDrive");
+    drive = _newDrive; 
+  }
 
   //==============================================================================
   /**
    * @brief Sets the bias level for waveform distortion.
    * @param _newBias The new bias level.
    */
-  inline void setBias(const float _newBias) noexcept { bias = _newBias; }
+  inline void setBias(const float _newBias) noexcept { 
+    TRACER("AnalogOscillator::setBias");
+    bias = _newBias; 
+  }
 
   //==============================================================================
   /**
    * @brief Sets the initial phase of the oscillator.
    * @param _newPhase The new phase value.
    */
-  inline void setPhase(const float _newPhase) noexcept { phase = _newPhase; }
+  inline void setPhase(const float _newPhase) noexcept { 
+    TRACER("AnalogOscillator::setPhase");
+    phase = _newPhase; 
+  }
 
   //==============================================================================
   /**
@@ -142,6 +155,7 @@ public:
    */
   inline void setBend(const float _newBendModifier) noexcept
   {
+    TRACER("AnalogOscillator::setBend");
     float rangeEnd = std::nextafter(100.0f, std::numeric_limits<float>::max());
     const juce::NormalisableRange<float> sourceRange(-100.0f, rangeEnd);
     jassert(sourceRange.getRange().contains(_newBendModifier));
@@ -157,6 +171,7 @@ public:
    */
   inline void setPwm(const float _newPwmModifier) noexcept
   {
+    TRACER("AnalogOscillator::setPwm");
     float rangeEnd = std::nextafter(100.0f, std::numeric_limits<float>::max());
     const juce::NormalisableRange<float> sourceRange(0.0f, rangeEnd);
     jassert(sourceRange.getRange().contains(_newPwmModifier));
@@ -172,6 +187,7 @@ public:
    */
   inline void setSync(const float _newSyncModifier) noexcept
   {
+    TRACER("AnalogOscillator::setSync");
     float rangeEnd = std::nextafter(100.0f, std::numeric_limits<float>::max());
     const juce::NormalisableRange<float> sourceRange(0.0f, rangeEnd);
     jassert(sourceRange.getRange().contains(_newSyncModifier));
@@ -198,6 +214,7 @@ private:
    */
   forcedinline void advancePhase() noexcept
   {
+    TRACER("AnalogOscillator::advancePhase");
     float cycleLength = sampleRate / frequency;
     float phaseDelta = twoPi / cycleLength;
     phase += phaseDelta;
@@ -215,6 +232,7 @@ private:
    */
   forcedinline float getSyncedPhase(float _rawPhase) const noexcept
   {
+    TRACER("AnalogOscillator::getSyncedPhase");
     float syncedPhase = _rawPhase * syncModifier;
     while (syncedPhase >= twoPi) {
       syncedPhase -= twoPi;
@@ -230,6 +248,7 @@ private:
    */
   forcedinline float getBendedPhase(float _rawPhase) const noexcept
   {
+    TRACER("AnalogOscillator::getBendedPhase");
     auto bendedPhase = _rawPhase;
 
     float positiveCycleSize = posityCycleRatio * twoPi;
@@ -255,6 +274,7 @@ private:
    */
   forcedinline void distortSample(float& _sample) const noexcept
   {
+    TRACER("AnalogOscillator::distortSample");
     constexpr float magicNumber = 0.7615941559558f;
     if (drive >= 1.0f) {
       _sample = Math::tanh(drive * _sample);

@@ -34,6 +34,7 @@ public:
                 Unit::Type::Pan,
                 LinearSliderType::Bipolar)
   {
+    TRACER("OscSendPanel::OscSendPanel");
     setLayout({ 3, 32 });
     addAndMakeVisible(gainSlider);
     addAndMakeVisible(panSlider);
@@ -41,6 +42,7 @@ public:
 
   void extendResize() noexcept override
   {
+    TRACER("OscSendPanel::extendResize");
     auto bounds = getLocalBounds();
     auto gainSliderPoint = this->getGridPoint(bounds, 2, 10);
     gainSlider.setSizeAndCentre(gainSliderPoint);

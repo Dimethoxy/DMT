@@ -78,6 +78,7 @@ public:
                   Unit::Type::Degree,
                   LinearSliderType::Positive)
   {
+    TRACER("VoicingPanel::VoicingPanel");
     setLayout({ 31, 32 });
 
     addAndMakeVisible(osctaveSlider);
@@ -96,6 +97,7 @@ public:
   }
   void extendResize() noexcept override
   {
+    TRACER("VoicingPanel::extendResize");
     const auto bounds = getLocalBounds();
     const int rotarySliderRow = 10;
     const int linearSliderRow = 26;

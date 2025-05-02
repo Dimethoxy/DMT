@@ -132,6 +132,7 @@ public:
     , outerShadow(drawOuterShadow, outerShadowColour, outerShadowRadius, false)
     , innerShadow(drawInnerShadow, outerShadowColour, outerShadowRadius, true)
   {
+    TRACER("AbstractPanel::AbstractPanel");
     if (_displayName) {
       addAndMakeVisible(titleLabel);
     }
@@ -153,7 +154,7 @@ public:
    */
   inline void paint(juce::Graphics& _g) noexcept override
   {
-    TRACER("AbstractPanel:paint");
+    TRACER("AbstractPanel::paint");
     // Precalculation
     const auto bounds = this->getLocalBounds().toFloat();
     const auto outerBounds = bounds.reduced(margin * size);
@@ -215,7 +216,7 @@ public:
    */
   inline void resized() noexcept override
   {
-    TRACER("AbstractPanel:resized");
+    TRACER("AbstractPanel::resized");
     const auto bounds = getLocalBounds();
     const auto outerBounds = bounds.reduced(margin * size);
     const auto innerBounds = outerBounds.reduced(borderStrength * size);
@@ -276,7 +277,10 @@ public:
    * @details
    * Override in subclasses to provide a custom name.
    */
-  virtual inline const juce::String getName() noexcept { return "Panel"; }
+  virtual inline const juce::String getName() noexcept { 
+    TRACER("AbstractPanel::getName");
+    return "Panel"; 
+  }
 
   //==============================================================================
   /**
@@ -291,6 +295,7 @@ public:
   inline void setCallbacks(std::function<void()> _next,
                            std::function<void()> _prev)
   {
+    TRACER("AbstractPanel::setCallbacks");
     nextCallback = _next;
     prevCallback = _prev;
     addAndMakeVisible(nextButton);
@@ -303,13 +308,19 @@ public:
   /**
    * @brief Invokes the "next" callback.
    */
-  inline void next() { nextCallback(); }
+  inline void next() { 
+    TRACER("AbstractPanel::next");
+    nextCallback(); 
+  }
 
   //==============================================================================
   /**
    * @brief Invokes the "previous" callback.
    */
-  inline void prev() { prevCallback(); }
+  inline void prev() { 
+    TRACER("AbstractPanel::prev");
+    prevCallback(); 
+  }
 
   //==============================================================================
   /**
@@ -323,6 +334,7 @@ public:
    */
   inline void buttonClicked(juce::Button* _button) override
   {
+    TRACER("AbstractPanel::buttonClicked");
     if (_button == &nextButton) {
       nextCallback();
     } else if (_button == &prevButton) {
@@ -337,7 +349,10 @@ protected:
    *
    * @return The current Layout struct.
    */
-  [[nodiscard]] inline const Layout getLayout() noexcept { return layout; }
+  [[nodiscard]] inline const Layout getLayout() noexcept { 
+    TRACER("AbstractPanel::getLayout");
+    return layout; 
+  }
 
   //==============================================================================
   /**
@@ -350,7 +365,7 @@ protected:
    */
   inline void setLayout(const Layout _layoutToUse) noexcept
   {
-    TRACER("AbstractPanel:setLayout");
+    TRACER("AbstractPanel::setLayout");
     const int cols = _layoutToUse.cols;
     const int rows = _layoutToUse.rows;
     const float colSpacing = 1.0f / static_cast<float>(cols + 1);
@@ -391,7 +406,7 @@ protected:
     const int _col,
     const int _row) noexcept
   {
-    TRACER("AbstractPanel:getGridPoint");
+    TRACER("AbstractPanel::getGridPoint");
     // assert if col and row are out of bounds
     jassert(_col >= 0 && static_cast<size_t>(_col) < grid.size());
     jassert(_row >= 0 &&
@@ -420,6 +435,7 @@ protected:
    */
   inline void setRawGridOffset(const int _offset) noexcept
   {
+    TRACER("AbstractPanel::setRawGridOffset");
     rawGridOffsetY = _offset;
   }
 
@@ -431,6 +447,7 @@ protected:
    */
   [[nodiscard]] inline const int getRawGridOffset() const noexcept
   {
+    TRACER("AbstractPanel::getRawGridOffset");
     return rawGridOffsetY;
   }
 
