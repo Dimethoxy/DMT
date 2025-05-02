@@ -36,10 +36,10 @@
 #include "gui/panel/AbstractPanel.h"
 #include "gui/panel/SettingsPanel.h"
 #include "gui/widget/BorderButton.h"
+#include "gui/window/Alerts.h"
 #include "gui/window/Header.h"
 #include "gui/window/Popover.h"
 #include "gui/window/Tooltip.h"
-#include "gui/window/Alerts.h"
 #include <JuceHeader.h>
 
 //==============================================================================
@@ -98,8 +98,7 @@ public:
   Compositor(String _titleText,
              AbstractPanel& _mainPanel,
              AudioProcessorValueTreeState& _apvts,
-             Properties& _properties
-            ) noexcept
+             Properties& _properties) noexcept
     : juce::Component("Compositor")
     , mainPanel(_mainPanel)
     , properties(_properties)
@@ -144,7 +143,8 @@ public:
 
   //============================================================================
   /** @brief Paints the component. */
-  void paint(juce::Graphics& /*_g*/) noexcept override {
+  void paint(juce::Graphics& /*_g*/) noexcept override
+  {
     TRACER("Compositor::paint");
   }
 
@@ -172,6 +172,7 @@ public:
     tooltip.setBounds(bounds);
     tooltip.setAlwaysOnTop(true);
 
+    // Main panel
     if (header.isVisible()) {
       const auto headerHeight = rawHeaderHeight * size;
       const auto headerBounds = juce::Rectangle(bounds).removeFromTop(
@@ -363,13 +364,9 @@ public:
   {
     TRACER("Compositor::saveSettingsCallback");
     properties.saveCurrentSettings();
-    getTopLevelComponent()->resized();
-    getTopLevelComponent()->repaint();
-
-    alerts.pushAlert(
-      "Settings saved successfully!",
-      "Your settings have been saved.",
-      Alerts::AlertType::Info);
+    alerts.pushAlert("Settings saved successfully!",
+                     "Your settings have been saved.",
+                     Alerts::AlertType::Info);
   }
 
   //==============================================================================

@@ -33,7 +33,8 @@ public:
 
   static inline auto appName = juce::String(""); // TODO: Remove this
 
-  static inline auto& framerate = container.add<int>("General.TargetFramerate", 30);
+  static inline auto& framerate =
+    container.add<int>("General.TargetFramerate", 30);
   static inline auto& unixFontScalingFactor =
     container.add<float>("General.UnixFontScalingFactor", 0.9f);
   static inline auto& debugBounds =
@@ -164,16 +165,60 @@ public:
 
   struct Alerts
   {
-    static inline auto& backgroundColour =
-      container.add<Colour>("Alert.BackgroundColour", Colours::solidDark);
-    static inline auto& borderColour =
-      container.add<Colour>("Alert.BorderColour", Colours::font);
-    static inline auto& fontColour =
-      container.add<Colour>("Alert.FontColour", Colours::font);
-    static inline auto& innerShadowColour =
-      container.add<Colour>("Alert.InnerShadowColour", Colours::shadow);
-    static inline auto& outerShadowColour =
-      container.add<Colour>("Alert.OuterShadowColour", Colours::shadow);
+    static inline auto& warningBackgroundColour =
+      container.add<Colour>("Alert.WarningBackgroundColour",
+                            Colours::solidDark);
+    static inline auto& warningBorderColour =
+      container.add<Colour>("Alert.WarningBorderColour", Colours::font);
+    static inline auto& warningFontColour =
+      container.add<Colour>("Alert.WarningFontColour", Colours::font);
+    static inline auto& warningIconColour =
+      container.add<Colour>("Alert.WarningIconColour", Colours::font);
+    static inline auto& warningOuterShadowColour =
+      container.add<Colour>("Alert.WarningOuterShadowColour", Colours::shadow);
+    static inline auto& warningInnerShadowColour =
+      container.add<Colour>("Alert.WarningInnerShadowColour", Colours::shadow);
+
+    static inline auto& errorBackgroundColour =
+      container.add<Colour>("Alert.ErrorBackgroundColour", Colours::solidDark);
+    static inline auto& errorBorderColour =
+      container.add<Colour>("Alert.ErrorBorderColour", Colours::font);
+    static inline auto& errorFontColour =
+      container.add<Colour>("Alert.ErrorFontColour", Colours::font);
+    static inline auto& errorIconColour =
+      container.add<Colour>("Alert.ErrorIconColour", Colours::font);
+    static inline auto& errorOuterShadowColour =
+      container.add<Colour>("Alert.ErrorOuterShadowColour", Colours::shadow);
+    static inline auto& errorInnerShadowColour =
+      container.add<Colour>("Alert.ErrorInnerShadowColour", Colours::shadow);
+
+    static inline auto& infoBackgroundColour =
+      container.add<Colour>("Alert.InfoBackgroundColour", Colours::solidDark);
+    static inline auto& infoBorderColour =
+      container.add<Colour>("Alert.InfoBorderColour", Colours::font);
+    static inline auto& infoFontColour =
+      container.add<Colour>("Alert.InfoFontColour", Colours::font);
+    static inline auto& infoIconColour =
+      container.add<Colour>("Alert.InfoIconColour", Colours::font);
+    static inline auto& infoOuterShadowColour =
+      container.add<Colour>("Alert.InfoOuterShadowColour", Colours::shadow);
+    static inline auto& infoInnerShadowColour =
+      container.add<Colour>("Alert.InfoInnerShadowColour", Colours::shadow);
+
+    static inline auto& successBackgroundColour =
+      container.add<Colour>("Alert.SuccessBackgroundColour",
+                            Colours::solidDark);
+    static inline auto& successBorderColour =
+      container.add<Colour>("Alert.SuccessBorderColour", Colours::font);
+    static inline auto& successFontColour =
+      container.add<Colour>("Alert.SuccessFontColour", Colours::font);
+    static inline auto& successIconColour =
+      container.add<Colour>("Alert.SuccessIconColour", Colours::font);
+    static inline auto& successOuterShadowColour =
+      container.add<Colour>("Alert.SuccessOuterShadowColour", Colours::shadow);
+    static inline auto& successInnerShadowColour =
+      container.add<Colour>("Alert.SuccessInnerShadowColour", Colours::shadow);
+
     static inline auto& cornerRadius =
       container.add<float>("Alert.CornerRadius", 10.0f);
     static inline auto& borderWidth =
@@ -195,7 +240,7 @@ public:
     static inline auto& alertWidth =
       container.add<int>("Alert.AlertWidth", 250);
     static inline auto& alertHeight =
-      container.add<int>("Alert.AlertHeight", 150);
+      container.add<int>("Alert.AlertHeight", 75);
     static inline auto& maxAge = container.add<float>("Alert.MaxAge", 2.0f);
     static inline auto& fadeOutTime =
       container.add<float>("Alert.FadeOutTime", 0.5f);
@@ -280,7 +325,8 @@ public:
       container.add<Colour>("SettingsEditor.SelectedLabelBackgroundColour",
                             Colours::primary);
     static inline auto& seperatorColour =
-      container.add<Colour>("SettingsEditor.SeperatorColour", Colours::solidDark);
+      container.add<Colour>("SettingsEditor.SeperatorColour",
+                            Colours::solidDark);
     static inline auto& scrollBarColour =
       container.add<Colour>("SettingsEditor.ScrollBarColour", Colours::font);
     static inline auto& scrollBarBackgroundColour =
@@ -290,7 +336,7 @@ public:
       container.add<float>("SettingsEditor.Padding", 5.0f);
     static inline auto& fontSize =
       container.add<float>("SettingsEditor.FontSize", 17.0f);
-          static inline auto& scrollBarThickness =
+    static inline auto& scrollBarThickness =
       container.add<float>("SettingsEditor.ScrollBarThickness", 8.0f);
     static inline auto& labelHorizontalPadding =
       container.add<float>("SettingsEditor.LabelHorizontalPadding", 10.0f);
