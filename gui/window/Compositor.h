@@ -359,7 +359,7 @@ public:
 
     alerts.pushAlert(
       "Settings saved successfully!",
-      "Your settings have been saved to the properties file.",
+      "Your settings have been saved.",
       Alerts::AlertType::Info);
   }
 

@@ -162,6 +162,45 @@ public:
       container.add<bool>("Tooltip.DrawInnerShadow", true);
   };
 
+  struct Alerts
+  {
+    static inline auto& backgroundColour =
+      container.add<Colour>("Alert.BackgroundColour", Colours::solidDark);
+    static inline auto& borderColour =
+      container.add<Colour>("Alert.BorderColour", Colours::font);
+    static inline auto& fontColour =
+      container.add<Colour>("Alert.FontColour", Colours::font);
+    static inline auto& innerShadowColour =
+      container.add<Colour>("Alert.InnerShadowColour", Colours::shadow);
+    static inline auto& outerShadowColour =
+      container.add<Colour>("Alert.OuterShadowColour", Colours::shadow);
+    static inline auto& cornerRadius =
+      container.add<float>("Alert.CornerRadius", 10.0f);
+    static inline auto& borderWidth =
+      container.add<float>("Alert.BorderWidth", 2.0f);
+    static inline auto& innerShadowRadius =
+      container.add<float>("Alert.InnerShadowRadius", 10.0f);
+    static inline auto& outerShadowRadius =
+      container.add<float>("Alert.OuterShadowRadius", 10.0f);
+    static inline auto& fontSize =
+      container.add<float>("Alert.FontSize", 18.0f);
+    static inline auto& textHorizontalPadding =
+      container.add<float>("Alert.TextHorizontalPadding", 10.0f);
+    static inline auto& textVerticalPadding =
+      container.add<float>("Alert.TextVerticalPadding", 5.0f);
+    static inline auto& drawOuterShadow =
+      container.add<bool>("Alert.DrawOuterShadow", true);
+    static inline auto& drawInnerShadow =
+      container.add<bool>("Alert.DrawInnerShadow", true);
+    static inline auto& alertWidth =
+      container.add<int>("Alert.AlertWidth", 250);
+    static inline auto& alertHeight =
+      container.add<int>("Alert.AlertHeight", 150);
+    static inline auto& maxAge = container.add<float>("Alert.MaxAge", 2.0f);
+    static inline auto& fadeOutTime =
+      container.add<float>("Alert.FadeOutTime", 0.5f);
+  };
+
   struct Button
   {
     static inline auto& backgroundColour =

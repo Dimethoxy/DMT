@@ -23,14 +23,31 @@ class Alerts : public juce::Component, public dmt::utility::RepaintTimer
   using Settings = dmt::Settings;
   using Fonts = dmt::utility::Fonts;
   using Shadow = dmt::gui::widget::Shadow;
+  using AlertSettings = dmt::Settings::Alerts;
 
   //==============================================================================
-  // Alerts
-  static inline float maxAge = 3.0f; // in seconds
-  static inline float fadeOutTime = 0.5f; // in seconds
-  static constexpr int alertWidth = 320;
-  static constexpr int alertHeight = 80;
+  // Window
+  const float& size = Settings::Window::size;
 
+  // Alerts
+  const Colour& backgroundColour = AlertSettings::backgroundColour; 
+  const Colour& borderColour = AlertSettings::borderColour;
+  const Colour& fontColour = AlertSettings::fontColour;
+  const Colour& innerShadowColour = AlertSettings::innerShadowColour;
+  const Colour& outerShadowColour = AlertSettings::outerShadowColour;
+  const float& rawCornerRadius = AlertSettings::cornerRadius;
+  const float& rawBorderWidth = AlertSettings::borderWidth;
+  const float& innerShadowRadius = AlertSettings::innerShadowRadius;
+  const float& outerShadowRadius = AlertSettings::outerShadowRadius;
+  const float& rawFontSize = AlertSettings::fontSize;
+  const float& rawTextHorizontalPadding = AlertSettings::textHorizontalPadding;
+  const float& rawTextVerticalPadding = AlertSettings::textVerticalPadding;
+  const float& rawAlertWidth = AlertSettings::alertWidth;
+  const float& rawAlertHeight = AlertSettings::alertHeight;
+  const float& maxAge = AlertSettings::maxAge; // in seconds
+  const float& fadeOutTime = AlertSettings::fadeOutTime; // in seconds
+  const bool& drawOuterShadow = AlertSettings::drawOuterShadow;
+  const bool& drawInnerShadow = AlertSettings::drawInnerShadow;
 public:
   enum class AlertType
   {
@@ -83,11 +100,16 @@ public:
 
   void paint(juce::Graphics& g) override
   {
-    // Calculate total height of all alerts
-    const int totalHeight = alerts.size() * alertHeight + (alerts.size() > 0 ? (alerts.size() - 1) * 8 : 0);
+    // Calculate scaled alert size and spacing
+    const auto alertWidth = rawAlertWidth * size;
+    const auto alertHeight = rawAlertHeight * size;
+    const int spacing = int(8 * size);
+    const int marginBottom = int(24 * size);
+
+    const int totalHeight = alerts.size() * alertHeight + (alerts.size() > 0 ? (alerts.size() - 1) * spacing : 0);
     const int areaWidth = getWidth();
     const int areaHeight = getHeight();
-    int y = areaHeight - totalHeight - 24; // 24px margin from bottom
+    int y = areaHeight - totalHeight - marginBottom;
 
     for (const auto& alert : alerts)
     {
@@ -97,8 +119,9 @@ public:
 
       g.setOpacity(alpha);
       int x = (areaWidth - alertWidth) / 2;
-      g.drawImageAt(alert.cachedComponentImage, x, y, false);
-      y += alertHeight + 8;
+      g.drawImage(alert.cachedComponentImage, (float)x, (float)y, (float)alertWidth, (float)alertHeight, 
+                  0, 0, alert.cachedComponentImage.getWidth(), alert.cachedComponentImage.getHeight());
+      y += alertHeight + spacing;
     }
     g.setOpacity(1.0f);
   }
@@ -118,6 +141,8 @@ protected:
   // Helper to render an alert into its cached image
   void renderAlertToImage(AlertData& alert)
   {
+    const auto alertWidth = rawAlertWidth * size;
+    const auto alertHeight = rawAlertHeight * size;
     alert.cachedComponentImage = juce::Image(juce::Image::ARGB, alertWidth, alertHeight, true);
     juce::Graphics g(alert.cachedComponentImage);
 
@@ -133,21 +158,21 @@ protected:
     }
 
     g.setColour(bg.withAlpha(0.95f));
-    g.fillRoundedRectangle(g.getClipBounds().toFloat(), 12.0f);
+    g.fillRoundedRectangle(g.getClipBounds().toFloat(), 12.0f * size);
 
     // Draw icon (placeholder: colored circle)
     g.setColour(juce::Colours::white);
-    g.fillEllipse(16, 16, 32, 32);
+    g.fillEllipse(16 * size, 16 * size, 32 * size, 32 * size);
 
     // Draw title
     g.setColour(juce::Colours::white);
-    g.setFont(fonts.medium.withHeight(18.0f));
-    g.drawText(alert.title, 56, 12, alertWidth - 64, 24, juce::Justification::left);
+    g.setFont(fonts.medium.withHeight(18.0f * size));
+    g.drawText(alert.title, int(56 * size), int(12 * size), int(alertWidth - 64 * size), int(24 * size), juce::Justification::left);
 
     // Draw message
-    g.setFont(fonts.medium.withHeight(18.0f));
+    g.setFont(fonts.medium.withHeight(18.0f * size));
     g.setColour(juce::Colours::white.withAlpha(0.85f));
-    g.drawText(alert.message, 56, 36, alertWidth - 64, 32, juce::Justification::left);
+    g.drawText(alert.message, int(56 * size), int(36 * size), int(alertWidth - 64 * size), int(32 * size), juce::Justification::left);
 
     // Optionally: draw shadow, border, etc.
   }
