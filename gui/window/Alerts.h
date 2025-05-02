@@ -104,6 +104,9 @@ public:
   void paint(juce::Graphics& g) override
   {
     TRACER("Alerts::paint");
+    if(alerts.size() == 0)
+      return;
+
     // Calculate scaled alert size and spacing
     const auto alertWidth = rawAlertWidth * size;
     const auto alertHeight = rawAlertHeight * size;
@@ -139,7 +142,8 @@ public:
       if (alerts.getReference(i).age >= maxAge)
         alerts.remove(i);
     }
-    repaint();
+    if (alerts.size() > 0)
+      repaint();
   }
 
 protected:
