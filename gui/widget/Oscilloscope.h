@@ -224,6 +224,12 @@ protected:
   {
     TRACER("Oscilloscope::resizeImage");
     const ScopedWriteLock writeLock(imageLock);
+
+    // Avoid illegal sizes
+    if (_width <= 0 || _height <= 0) {
+      return;
+    }
+    
     image = Image(PixelFormat::ARGB, _width + 10, _height, true);
 
     juce::Graphics imageGraphics(image);

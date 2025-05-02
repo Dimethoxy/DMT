@@ -18,7 +18,6 @@ namespace display {
 //==============================================================================
 class SettingsEditorDisplay : public dmt::gui::display::AbstractDisplay
 {
-  using Image = juce::Image;
   using Settings = dmt::Settings;
   using SettingsEditorSettings = dmt::Settings::SettingsEditor;
   using TextEditor = dmt::gui::widget::TextEditor;

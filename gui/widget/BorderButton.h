@@ -202,6 +202,7 @@ protected:
   {
     const auto width = getWidth();
     const auto height = getHeight();
+    
     if (width <= 0 || height <= 0) {
      return; // Avoid invalid dimensions
     }
