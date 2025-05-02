@@ -89,9 +89,9 @@ public:
                           bool _shouldDrawBackground = true,
                           bool _shouldDrawShadow = true,
                           bool _alternativeIconHover = false) noexcept
-    : AbstractButton(static_cast<juce::String>(_name),
-                     static_cast<juce::String>(_iconName),
-                     static_cast<juce::String>(_tooltip),
+    : AbstractButton(_name,
+                     _iconName,
+                     _tooltip,
                      _shouldDrawBorder,
                      _shouldDrawBackground,
                      _shouldDrawShadow,

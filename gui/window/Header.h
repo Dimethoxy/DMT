@@ -118,7 +118,7 @@ public:
     , updateButton("UpdateButton",
                    "Download",
                    "Update available - click to install")
-    , bypassButton("BypassButton", "Bypass", "GlobalBypass", _apvts)
+    , bypassButton("BypassButton", "Bypass", "GlobalBypass", _apvts, "Toggle bypass")
     , presetsButton("PresetsButton", "Presets", "Browse presets")
     // Add new buttons for settings view
     , resetButton("HeaderResetButton", "Reload", "Reset settings")

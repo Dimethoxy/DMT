@@ -73,17 +73,32 @@ public:
    * @param _iconName The icon name for the button.
    * @param _parameterID The parameter ID in the APVTS to control.
    * @param _apvts Reference to the APVTS instance.
+   * @param _tooltip The tooltip text for the button.
+   * @param _shouldDrawBorder Whether to draw the button's border.
+   * @param _shouldDrawBackground Whether to draw the button's background.
+   * @param _shouldDrawShadow Whether to draw the button's shadow.
+   * @param _alternativeIconHover Whether to use an alternative icon on hover.
    *
    * @details
    *   The constructor registers the button as a listener to the parameter,
    *   and sets the initial visual state based on the parameter's value.
-   *   The constructor is constexpr for macOS compatibility.
    */
   explicit ToggleButton(juce::String _name,
                         juce::String _iconName,
                         juce::String _parameterID,
-                        AudioProcessorValueTreeState& _apvts) noexcept
-    : AbstractButton(_name, _iconName)
+                        AudioProcessorValueTreeState& _apvts,
+                        juce::String _tooltip = "",
+                        bool _shouldDrawBorder = true,
+                        bool _shouldDrawBackground = true,
+                        bool _shouldDrawShadow = true,
+                        bool _alternativeIconHover = false) noexcept
+    : AbstractButton(_name, 
+                     _iconName, 
+                     _tooltip, 
+                     _shouldDrawBorder,
+                     _shouldDrawBackground,
+                     _shouldDrawShadow,
+                     _alternativeIconHover)
     , parameterID(_parameterID)
     , apvts(_apvts)
   {
