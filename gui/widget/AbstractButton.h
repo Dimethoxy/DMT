@@ -305,7 +305,7 @@ private:
     if (!shouldDrawBackground)
       return;
 
-    if (_innerBounds.getWidth() <= 0 && _innerBounds.getHeight() <= 0)
+    if (_innerBounds.getWidth() <= 0 || _innerBounds.getHeight() <= 0)
       return;
      
     backgroundImage = Image(
@@ -336,8 +336,10 @@ private:
     const auto svgPadding = specificSvgPadding + globalSvgPadding;
 
     const auto iconArea = _innerBounds.reduced(svgPadding);
-    if (iconArea.getWidth() <= 0 && iconArea.getHeight() <= 0)
+    
+    if (iconArea.getWidth() <= 0 || iconArea.getHeight() <= 0)
       return;
+
     iconImage = juce::Image(
       juce::Image::ARGB, iconArea.getWidth(), iconArea.getHeight(), true);
     iconImageComponent.setBounds(iconArea);
