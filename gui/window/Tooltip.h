@@ -19,21 +19,24 @@ class Tooltip : public juce::Component, private dmt::utility::RepaintTimer
   using Rectangle = juce::Rectangle<T>;
   using Settings = dmt::Settings;
   using Fonts = dmt::utility::Fonts;
-  
+  using TooltipSettings = dmt::Settings::Tooltip;
+
   //==============================================================================
   // Window 
   const float& size = Settings::Window::size;
 
   // Tooltip
-  const float rawFontSize = 18.0f;
-  const float rawCornerRadius = 10.0f;
-  const float rawBorderThickness = 2.0f;
-  const Colour fontColour = juce::Colours::white;
-  const Colour borderColour = juce::Colours::orange;
-  const Colour backgroundColour = juce::Colours::darkgreen;
-  const float rawTextHorizontalPadding = 10.0f;
-  const float rawTextVerticalPadding = 5.0f;
-  const float rawShadowRadius = 10.0f;
+  const Colour& backgroundColour = TooltipSettings::backgroundColour; 
+  const Colour& borderColour = TooltipSettings::borderColour;
+  const Colour& fontColour = TooltipSettings::fontColour;
+  const Colour& shadowColour = TooltipSettings::shadowColour;
+  const float& rawCornerRadius = TooltipSettings::cornerRadius;
+  const float& rawBorderWidth = TooltipSettings::borderWidth;
+  const float& rawShadowRadius = TooltipSettings::shadowRadius;
+  const float& rawFontSize = TooltipSettings::fontSize;
+  const float& rawTextHorizontalPadding = TooltipSettings::textHorizontalPadding;
+  const float& rawTextVerticalPadding = TooltipSettings::textVerticalPadding;
+
 public:
   Tooltip() noexcept
   {
@@ -71,19 +74,23 @@ public:
 
   void repaintTimerCallback() noexcept override
   {
-    auto* parentComponent = getParentComponent();
-    if (!parentComponent)
+    // Get the parent component of the tooltip
+    auto* parent = getParentComponent();
+    if (!parent)
       return;
 
-    auto mousePosition = parentComponent->getMouseXYRelative();
-    auto* component = parentComponent->getComponentAt(mousePosition);
+    // Get the current mouse position relative to the parent component
+    auto mousePosition = parent->getMouseXYRelative();
+    auto* component = parent->getComponentAt(mousePosition);
 
     juce::String foundTooltipText;
 
-    while (component != nullptr && component != parentComponent)
+    // Traverse up the component hierarchy to find a TooltipClient
+    while (component != nullptr && component != parent)
     {
       if (auto* tooltipClient = dynamic_cast<juce::TooltipClient*>(component))
       {
+        // If a TooltipClient is found, get its tooltip text
         auto tooltipText = tooltipClient->getTooltip();
         if (!tooltipText.isEmpty())
         {
@@ -96,22 +103,28 @@ public:
 
     bool needsRepaint = false;
 
+    // Check if the tooltip text has changed
     if (foundTooltipText != currentTooltipText)
     {
       currentTooltipText = foundTooltipText;
+
+      // If there is new tooltip text, render the tooltip image
       if (currentTooltipText.isNotEmpty())
         renderTooltipImage(currentTooltipText);
       else
-        tooltipImage = juce::Image(); // Null image
+        tooltipImage = juce::Image(); // Clear the tooltip image if no text
+
       needsRepaint = true;
     }
 
+    // Check if the mouse position has changed
     if (mousePosition != lastMousePosition)
     {
       lastMousePosition = mousePosition;
       needsRepaint = true;
     }
 
+    // Repaint the tooltip if necessary
     if (needsRepaint)
       repaint();
   }
@@ -143,19 +156,19 @@ protected:
     const auto textVerticalPadding = rawTextVerticalPadding * size;
     const auto innerWidth = layoutWidth + textHorizontalPadding * 2;
     const auto innerHeight = layoutHeight + textVerticalPadding * 2;    
-    const auto borderThickness = rawBorderThickness * size;
-    const auto outerWidth = innerWidth + borderThickness * 2;
-    const auto outerHeight = innerHeight + borderThickness * 2;
+    const auto borderWidth = rawBorderWidth * size;
+    const auto outerWidth = innerWidth + borderWidth * 2;
+    const auto outerHeight = innerHeight + borderWidth * 2;
     const auto shadowRadius = rawShadowRadius * size;
     const auto tooltipWidth = outerWidth + shadowRadius * 2;
     const auto tooltipHeight = outerHeight + shadowRadius * 2;
     const auto cornerRadius = rawCornerRadius * size;
-    const auto innerCornerRadius = cornerRadius - borderThickness;
+    const auto innerCornerRadius = cornerRadius - borderWidth;
 
     // Bounds
     const auto tooltipBounds = Rectangle<float>(0, 0, tooltipWidth, tooltipHeight);
     const auto outerBounds = tooltipBounds.reduced(shadowRadius);
-    const auto innerBounds = outerBounds.reduced(borderThickness);
+    const auto innerBounds = outerBounds.reduced(borderWidth);
     const auto textBounds = innerBounds.reduced(textHorizontalPadding, textVerticalPadding);
     
     tooltipImage = juce::Image(juce::Image::ARGB, tooltipWidth, tooltipHeight, true);
