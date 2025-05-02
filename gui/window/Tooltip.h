@@ -30,10 +30,11 @@ public:
   void paint(juce::Graphics& g) override
   {
     // For debug: show green overlay if hovering a TooltipClient
-    if (isHoveringTooltipClient)
+    if (!tooltipImage.isNull())
       g.fillAll(juce::Colours::green.withAlpha(0.5f));
     else
       g.fillAll(juce::Colours::red.withAlpha(0.2f));
+    // Do NOT draw the image to the screen yet
   }
 
   void repaintTimerCallback() noexcept override
@@ -45,7 +46,6 @@ public:
     auto mousePos = parent->getMouseXYRelative();
     auto* comp = parent->getComponentAt(mousePos);
 
-    isHoveringTooltipClient = false;
     juce::String foundTooltip;
 
     while (comp != nullptr && comp != parent)
@@ -55,7 +55,6 @@ public:
         auto tip = tooltipClient->getTooltip();
         if (!tip.isEmpty())
         {
-          isHoveringTooltipClient = true;
           foundTooltip = tip;
           break;
         }
@@ -63,17 +62,35 @@ public:
       comp = comp->getParentComponent();
     }
 
-    if (isHoveringTooltipClient)
+    if (foundTooltip != currentTooltipText)
+    {
       currentTooltipText = foundTooltip;
-    else
-      currentTooltipText = {};
+      if (currentTooltipText.isNotEmpty())
+        renderTooltipImage(currentTooltipText);
+      else
+        tooltipImage = juce::Image(); // Null image
+      repaint();
+    }
+  }
 
-    repaint();
+protected:
+ void renderTooltipImage(const juce::String& text)
+  {
+    // For now, just render a simple white rectangle with the text in black
+    constexpr int width = 300, height = 40;
+    tooltipImage = juce::Image(juce::Image::ARGB, width, height, true);
+    juce::Graphics g(tooltipImage);
+    g.fillAll(juce::Colours::white);
+    g.setColour(juce::Colours::black);
+    g.setFont(rawFontSize);
+    g.drawText(text, tooltipImage.getBounds(), juce::Justification::centredLeft, true);
   }
 
 private:
-  bool isHoveringTooltipClient = false;
   juce::String currentTooltipText;
+  juce::Image tooltipImage;
+
+ 
 };
 
 } // namespace window
