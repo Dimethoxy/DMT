@@ -38,6 +38,7 @@
 #include "gui/widget/BorderButton.h"
 #include "gui/window/Header.h"
 #include "gui/window/Popover.h"
+#include "gui/window/Tooltip.h"
 #include <JuceHeader.h>
 
 //==============================================================================
@@ -73,7 +74,7 @@ class Compositor
   using TooltipWindow = juce::TooltipWindow;
   using Properties = dmt::configuration::Properties;
   using String = juce::String;
-
+  using Tooltip = dmt::gui::window::Tooltip;
   //============================================================================
   // Window size
   const float& size = dmt::Settings::Window::size;
@@ -103,7 +104,6 @@ public:
     , header(_titleText, _apvts)
     , settingsPanel()
     , borderButton()
-    , tooltipWindow(this, 700)
   {
     // Header
     addAndMakeVisible(header);
@@ -121,15 +121,15 @@ public:
     // Popover
     addChildComponent(popover);
 
+    // Tooltip
+    addAndMakeVisible(tooltip);
+
     // Panels
     addAndMakeVisible(mainPanel);
     addChildComponent(settingsPanel);
 
     // Start the timer to check if update is found
     startTimer(1000);
-
-    // Tooltips
-    addAndMakeVisible(tooltipWindow);
   }
 
   //============================================================================
@@ -154,6 +154,11 @@ public:
 
     // Popover
     popover.setBounds(bounds);
+    popover.setAlwaysOnTop(true);
+
+    // Tooltip
+    tooltip.setBounds(bounds);
+    tooltip.setAlwaysOnTop(true);
 
     if (header.isVisible()) {
       const auto headerHeight = rawHeaderHeight * size;
@@ -520,12 +525,12 @@ private:
   Header header;
   SettingsPanel settingsPanel;
   BorderButton borderButton;
-  TooltipWindow tooltipWindow;
 
   //==============================================================================
   // Other members
   std::function<void(bool)> headerVisibilityCallback;
   Popover popover;
+  Tooltip tooltip;
   int baseHeight = 0;
   int baseWidth = 0;
 };
