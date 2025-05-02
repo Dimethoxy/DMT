@@ -2,7 +2,7 @@
 /*
  * ██████  ██ ███    ███ ███████ ████████ ██   ██  ██████  ██   ██ ██    ██
  * ██   ██ ██ ████  ████ ██         ██    ██   ██ ██    ██  ██ ██   ██  ██
- * ██   ██ ██ ██ ████ ██ █████      ██    ███████ ██    ██   ███     ████
+ * ██   ██ ██ ██ ████ ██ █████      ██    ██    ███████ ██    ██   ███     ████
  * ██   ██ ██ ██  ██  ██ ██         ██    ██   ██ ██    ██  ██ ██     ██
  * ██████  ██ ██      ██ ███████    ██    ██   ██  ██████  ██   ██    ██
  *
@@ -87,6 +87,7 @@ public:
     , currentOpacity(MIN_OPACITY) // Start with semi-transparency
     , isHovered(false)
   {
+    TRACER("BorderButton::BorderButton");
     addMouseListener(this, true);
     startRepaintTimer(); // Start the timer in the constructor
   }
@@ -104,7 +105,11 @@ public:
    * @details Updates the cached image whenever the button is resized to ensure
    * proper rendering.
    */
-  void resized() override { updateCachedImage(); }
+  void resized() override
+  {
+    TRACER("BorderButton::resized");
+    updateCachedImage();
+  }
 
   //==============================================================================
   /**
@@ -121,6 +126,7 @@ public:
                           bool /*_isMouseOverButton*/,
                           bool /*_isButtonDown*/) override
   {
+    TRACER("BorderButton::paintButton");
     _g.setOpacity(currentOpacity);
     _g.drawImageAt(cachedImage, 0, 0);
   }
@@ -135,6 +141,7 @@ public:
    */
   inline void mouseEnter(const juce::MouseEvent& /*_event*/) override
   {
+    TRACER("BorderButton::mouseEnter");
     isHovered = true;
     currentOpacity = MAX_OPACITY;
     repaint();
@@ -150,6 +157,7 @@ public:
    */
   inline void mouseExit(const juce::MouseEvent& /*_event*/) override
   {
+    TRACER("BorderButton::mouseExit");
     isHovered = false;
   }
 
@@ -162,6 +170,7 @@ public:
    */
   inline void setOpacityToMax() noexcept
   {
+    TRACER("BorderButton::setOpacityToMax");
     currentOpacity = MAX_OPACITY;
     repaint();
   }
@@ -174,6 +183,7 @@ public:
    */
   inline void setButtonCallback(ButtonCallback _callback) noexcept
   {
+    TRACER("BorderButton::setButtonCallback");
     buttonCallback = std::move(_callback);
   }
 
@@ -185,6 +195,7 @@ public:
    */
   inline void clicked() override
   {
+    TRACER("BorderButton::clicked");
     if (buttonCallback) {
       buttonCallback();
     }
@@ -200,11 +211,12 @@ protected:
    */
   void updateCachedImage()
   {
+    TRACER("BorderButton::updateCachedImage");
     const auto width = getWidth();
     const auto height = getHeight();
-    
+
     if (width <= 0 || height <= 0) {
-     return; // Avoid invalid dimensions
+      return; // Avoid invalid dimensions
     }
 
     cachedImage = Image(juce::Image::ARGB, getWidth(), getHeight(), true);
@@ -227,6 +239,7 @@ protected:
    */
   void repaintTimerCallback() noexcept override
   {
+    TRACER("BorderButton::repaintTimerCallback");
     const float fadeSpeed =
       RAW_FADE_SPEED / static_cast<float>(Settings::framerate);
 

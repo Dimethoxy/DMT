@@ -97,6 +97,7 @@ public:
                      _shouldDrawShadow,
                      _alternativeIconHover)
   {
+    TRACER("CallbackButton::CallbackButton");
     setPassiveState(); // Set initial state for consistent appearance
   }
 
@@ -120,6 +121,7 @@ public:
    */
   inline void mouseEnter(const juce::MouseEvent& /*_event*/) override
   {
+    TRACER("CallbackButton::mouseEnter");
     if (isEnabled()) {
       setHoverState();
     }
@@ -138,6 +140,7 @@ public:
    */
   inline void mouseExit(const juce::MouseEvent& /*_event*/) override
   {
+    TRACER("CallbackButton::mouseExit");
     if (isEnabled()) {
       setPassiveState();
     }
@@ -156,6 +159,7 @@ public:
    */
   inline void mouseDown(const juce::MouseEvent& /*_event*/) override
   {
+    TRACER("CallbackButton::mouseDown");
     if (isEnabled()) {
       setClickedState();
     }
@@ -176,6 +180,7 @@ public:
    */
   inline void mouseUp(const juce::MouseEvent& /*_event*/) override
   {
+    TRACER("CallbackButton::mouseUp");
     if (isEnabled()) {
       setHoverState();
       if (onClick)

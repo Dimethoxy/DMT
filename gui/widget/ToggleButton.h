@@ -102,6 +102,7 @@ public:
     , parameterID(_parameterID)
     , apvts(_apvts)
   {
+    TRACER("ToggleButton::ToggleButton");
     // Start listening to the parameter
     apvts.addParameterListener(parameterID, this);
 
@@ -126,6 +127,7 @@ public:
    */
   inline ~ToggleButton() override
   {
+    TRACER("ToggleButton::~ToggleButton");
     apvts.removeParameterListener(parameterID, this);
   }
 
@@ -142,6 +144,7 @@ public:
    */
   inline void mouseEnter(const juce::MouseEvent& /*_event*/) override
   {
+    TRACER("ToggleButton::mouseEnter");
     if (isEnabled()) {
       auto* bypassParameter = apvts.getParameter(parameterID);
       if (bypassParameter != nullptr && bypassParameter->getValue() == 0.0f) {
@@ -162,6 +165,7 @@ public:
    */
   inline void mouseExit(const juce::MouseEvent& /*_event*/) override
   {
+    TRACER("ToggleButton::mouseExit");
     if (isEnabled()) {
       auto* bypassParameter = apvts.getParameter(parameterID);
       if (bypassParameter != nullptr && bypassParameter->getValue() == 0.0f) {
@@ -179,6 +183,7 @@ public:
    */
   inline void mouseDown(const juce::MouseEvent& /*_event*/) override
   {
+    TRACER("ToggleButton::mouseDown");
     if (isEnabled()) {
       // No visual state change on mouse down for toggle.
     }
@@ -196,6 +201,7 @@ public:
    */
   inline void mouseUp(const juce::MouseEvent& /*_event*/) override
   {
+    TRACER("ToggleButton::mouseUp");
     if (isEnabled()) {
       // Toggle the parameter value
       auto* bypassParameter = apvts.getParameter(parameterID);
@@ -220,6 +226,7 @@ public:
   inline void parameterChanged(const juce::String& _parameterID,
                                float _newValue) override
   {
+    TRACER("ToggleButton::parameterChanged");
     if (_parameterID == parameterID) {
       if (_newValue == 0.0f) {
         setPassiveState();

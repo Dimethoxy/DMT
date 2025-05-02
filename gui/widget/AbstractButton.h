@@ -120,6 +120,7 @@ public:
     , outerShadow(drawOuterShadow, outerShadowColour, outerShadowRadius, false)
     , innerShadow(drawInnerShadow, innerShadowColour, innerShadowRadius, true)
   {
+    TRACER("AbstractButton::AbstractButton");
     icon = dmt::icons::getIcon(_iconName);
 
     if (shouldDrawShadows) {
@@ -161,6 +162,7 @@ public:
    */
   inline void resized() override
   {
+    TRACER("AbstractButton::resized");
     auto bounds = getLocalBounds();
     const auto buttonPadding = rawButtonPadding * size;
     auto innerBounds = bounds.reduced(buttonPadding);
@@ -180,7 +182,7 @@ public:
    *
    * @details Used by JUCE's tooltip system to display contextual help.
    */
-  [[nodiscard]] inline String getTooltip() override { return tooltip; }
+  [[nodiscard]] inline String getTooltip() override { TRACER("AbstractButton::getTooltip"); return tooltip; }
 
   //==============================================================================
   /**
@@ -191,6 +193,7 @@ public:
    */
   inline void setPassiveState()
   {
+    TRACER("AbstractButton::setPassiveState");
     if (shouldDrawBackground) {
       backgroundImageComponent.setVisible(true);
       hoverBackgroundImageComponent.setVisible(false);
@@ -209,6 +212,7 @@ public:
    */
   inline void setHoverState()
   {
+    TRACER("AbstractButton::setHoverState");
     if (shouldDrawBackground) {
       backgroundImageComponent.setVisible(false);
       hoverBackgroundImageComponent.setVisible(true);
@@ -227,6 +231,7 @@ public:
    */
   inline void setClickedState()
   {
+    TRACER("AbstractButton::setClickedState");
     if (shouldDrawBackground) {
       backgroundImageComponent.setVisible(false);
       hoverBackgroundImageComponent.setVisible(false);
@@ -251,6 +256,7 @@ public:
                           bool /*_isMouseOverButton*/,
                           bool /*_isButtonDown*/) override
   {
+    TRACER("AbstractButton::paintButton");
   }
 
 private:
@@ -268,6 +274,7 @@ private:
   inline void setShadowBounds(const juce::Rectangle<int>& _innerBounds,
                               float _cornerRadius)
   {
+    TRACER("AbstractButton::setShadowBounds");
     if (!shouldDrawShadows)
       return;
 
@@ -302,6 +309,7 @@ private:
    */
   inline void setBackgroundBounds(const juce::Rectangle<int>& _innerBounds)
   {
+    TRACER("AbstractButton::setBackgroundBounds");
     if (!shouldDrawBackground)
       return;
 
@@ -331,6 +339,7 @@ private:
    */
   inline void setIconBounds(const juce::Rectangle<int>& _innerBounds)
   {
+    TRACER("AbstractButton::setIconBounds");
     const auto specificSvgPadding = rawSpecificSvgPadding * size;
     const auto globalSvgPadding = 2.5f * size;
     const auto svgPadding = specificSvgPadding + globalSvgPadding;
@@ -358,6 +367,7 @@ private:
    */
   inline void drawBackground()
   {
+    TRACER("AbstractButton::drawBackground");
     if (!shouldDrawBackground)
       return;
 
@@ -392,6 +402,7 @@ private:
    */
   inline void drawIcon()
   {
+    TRACER("AbstractButton::drawIcon");
     if (icon != nullptr) {
       juce::Graphics iconGraphics(iconImage);
       iconGraphics.fillAll(juce::Colours::transparentBlack);

@@ -106,6 +106,7 @@ public:
     , outerShadow(drawOuterShadow, outerShadowColour, outerShadowRadius, false)
     , innerShadow(drawInnerShadow, innerShadowColour, innerShadowRadius, true)
   {
+    TRACER("TriangleButton::TriangleButton");
     addAndMakeVisible(outerShadow);
     addAndMakeVisible(innerShadow);
   }
@@ -125,6 +126,7 @@ protected:
    */
   [[nodiscard]] inline juce::Path getPath(juce::Rectangle<int> _bounds)
   {
+    TRACER("TriangleButton::getPath");
     juce::Path path;
     const float left = static_cast<float>(_bounds.getX());
     const float right = static_cast<float>(_bounds.getRight());
@@ -180,6 +182,7 @@ protected:
   [[nodiscard]] inline juce::Path getTnnerTrianglePath(
     juce::Rectangle<int> _origin)
   {
+    TRACER("TriangleButton::getTnnerTrianglePath");
     if (drawBorder) {
       auto bounds = _origin;
       float width = static_cast<float>(bounds.getWidth());
@@ -201,7 +204,7 @@ protected:
    * @brief
    *   Called when the button's state changes. Triggers a repaint.
    */
-  inline void buttonStateChanged() override { repaint(); }
+  inline void buttonStateChanged() override { TRACER("TriangleButton::buttonStateChanged"); repaint(); }
 
   //==============================================================================
   /**
@@ -222,6 +225,7 @@ protected:
                           bool /*_shouldDrawButtonAsHighlighted*/,
                           bool /*_shouldDrawButtonAsDown*/) override
   {
+    TRACER("TriangleButton::paintButton");
     const auto bounds = this->getLocalBounds();
     const int bigBoundsPadding = static_cast<int>(buttonMargin * size);
     const auto bigBounds = bounds.reduced(bigBoundsPadding);
