@@ -138,14 +138,18 @@ public:
       container.add<Colour>("Tooltip.BorderColour", Colours::font);
     static inline auto& fontColour =
       container.add<Colour>("Tooltip.FontColour", Colours::font);
-    static inline auto& shadowColour =
-      container.add<Colour>("Tooltip.ShadowColour", Colours::shadow);
+    static inline auto& innerShadowColour =
+      container.add<Colour>("Tooltip.InnerShadowColour", Colours::shadow);
+    static inline auto& outerShadowColour =
+      container.add<Colour>("Tooltip.OuterShadowColour", Colours::shadow);
     static inline auto& cornerRadius =
       container.add<float>("Tooltip.CornerRadius", 10.0f);
     static inline auto& borderWidth =
       container.add<float>("Tooltip.BorderWidth", 2.0f);
-    static inline auto& shadowRadius =
-      container.add<float>("Tooltip.ShadowRadius", 10.0f);
+    static inline auto& innerShadowRadius =
+      container.add<float>("Tooltip.InnerShadowRadius", 10.0f);
+    static inline auto& outerShadowRadius =
+      container.add<float>("Tooltip.OuterShadowRadius", 10.0f);
     static inline auto& fontSize =
       container.add<float>("Tooltip.FontSize", 18.0f);
     static inline auto& textHorizontalPadding =

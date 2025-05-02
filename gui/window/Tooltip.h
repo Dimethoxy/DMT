@@ -6,7 +6,7 @@
 #include "dmt/utility/RepaintTimer.h"
 #include "dmt/utility/Settings.h"
 #include "dmt/utility/Fonts.h"
-#include "dmt/gui/widget/Shadow.h" // <-- Add this include
+#include "dmt/gui/widget/Shadow.h"
 
 //==============================================================================
 
@@ -21,7 +21,7 @@ class Tooltip : public juce::Component, private dmt::utility::RepaintTimer
   using Settings = dmt::Settings;
   using Fonts = dmt::utility::Fonts;
   using TooltipSettings = dmt::Settings::Tooltip;
-  using Shadow = dmt::gui::widget::Shadow; // <-- Add alias
+  using Shadow = dmt::gui::widget::Shadow;
 
   //==============================================================================
   // Window 
@@ -31,10 +31,12 @@ class Tooltip : public juce::Component, private dmt::utility::RepaintTimer
   const Colour& backgroundColour = TooltipSettings::backgroundColour; 
   const Colour& borderColour = TooltipSettings::borderColour;
   const Colour& fontColour = TooltipSettings::fontColour;
-  const Colour& shadowColour = TooltipSettings::shadowColour;
+  const Colour& innerShadowColour = TooltipSettings::innerShadowColour;
+  const Colour& outerShadowColour = TooltipSettings::outerShadowColour;
   const float& rawCornerRadius = TooltipSettings::cornerRadius;
   const float& rawBorderWidth = TooltipSettings::borderWidth;
-  const float& rawShadowRadius = TooltipSettings::shadowRadius;
+  const float& innerShadowRadius = TooltipSettings::innerShadowRadius;
+  const float& outerShadowRadius = TooltipSettings::outerShadowRadius;
   const float& rawFontSize = TooltipSettings::fontSize;
   const float& rawTextHorizontalPadding = TooltipSettings::textHorizontalPadding;
   const float& rawTextVerticalPadding = TooltipSettings::textVerticalPadding;
@@ -42,8 +44,8 @@ class Tooltip : public juce::Component, private dmt::utility::RepaintTimer
   const bool& drawInnerShadow = TooltipSettings::drawInnerShadow;
 public:
   Tooltip() noexcept
-    : outerShadow(drawOuterShadow, shadowColour, rawShadowRadius, false)
-    , innerShadow(drawInnerShadow, shadowColour, rawShadowRadius, true)
+    : outerShadow(drawOuterShadow, outerShadowColour, outerShadowRadius, false)
+    , innerShadow(drawInnerShadow, innerShadowColour, innerShadowRadius, true)
   {
     setInterceptsMouseClicks(false, false);
     startRepaintTimer(); // Use custom repaint timer
@@ -164,7 +166,7 @@ protected:
     const auto borderWidth = rawBorderWidth * size;
     const auto outerWidth = innerWidth + borderWidth * 2;
     const auto outerHeight = innerHeight + borderWidth * 2;
-    const auto shadowRadius = rawShadowRadius * size;
+    const auto shadowRadius = std::max(outerShadowRadius, innerShadowRadius) * size;
     const auto tooltipWidth = outerWidth + shadowRadius * 2;
     const auto tooltipHeight = outerHeight + shadowRadius * 2;
     const auto cornerRadius = rawCornerRadius * size;
