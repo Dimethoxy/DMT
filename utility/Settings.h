@@ -327,7 +327,7 @@ public:
     static inline auto& padding =
       container.add<float>("Display.Padding", 10.0f);
     static inline auto& cornerSize =
-      container.add<float>("Display.CornerSize", 15.0f);
+      container.add<float>("Display.CornerSize", 8.0f);
     // Border
     static inline auto& drawBorder =
       container.add<bool>("Display.DrawBorder", true);

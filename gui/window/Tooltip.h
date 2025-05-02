@@ -53,7 +53,11 @@ public:
 
   ~Tooltip() override = default;
 
-  void resized() override {}
+  void resized() override
+  {
+    if (!tooltipImage.isNull())
+      renderTooltipImage(currentTooltipText);
+  }
 
   void paint(juce::Graphics& graphics) override
   {
