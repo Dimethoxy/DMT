@@ -39,6 +39,7 @@
 #include "gui/window/Header.h"
 #include "gui/window/Popover.h"
 #include "gui/window/Tooltip.h"
+#include "gui/window/Alerts.h"
 #include <JuceHeader.h>
 
 //==============================================================================
@@ -75,6 +76,7 @@ class Compositor
   using Properties = dmt::configuration::Properties;
   using String = juce::String;
   using Tooltip = dmt::gui::window::Tooltip;
+  using Alerts = dmt::gui::window::Alerts;
   //============================================================================
   // Window size
   const float& size = dmt::Settings::Window::size;
@@ -124,6 +126,9 @@ public:
     // Tooltip
     addAndMakeVisible(tooltip);
 
+    // Alerts
+    addAndMakeVisible(alerts);
+
     // Panels
     addAndMakeVisible(mainPanel);
     addChildComponent(settingsPanel);
@@ -151,6 +156,10 @@ public:
   void resized() noexcept override
   {
     const auto bounds = getLocalBounds();
+
+    // Alerts
+    alerts.setBounds(bounds);
+    alerts.setAlwaysOnTop(true);
 
     // Popover
     popover.setBounds(bounds);
@@ -347,6 +356,11 @@ public:
     properties.saveCurrentSettings();
     getTopLevelComponent()->resized();
     getTopLevelComponent()->repaint();
+
+    alerts.pushAlert(
+      "Settings saved successfully!",
+      "Your settings have been saved to the properties file.",
+      Alerts::AlertType::Info);
   }
 
   //==============================================================================
@@ -540,6 +554,7 @@ private:
   std::function<void(bool)> headerVisibilityCallback;
   Popover popover;
   Tooltip tooltip;
+  Alerts alerts;
   int baseHeight = 0;
   int baseWidth = 0;
 };
