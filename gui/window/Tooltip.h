@@ -27,70 +27,95 @@ public:
 
   void resized() override {}
 
-  void paint(juce::Graphics& g) override
+  void paint(juce::Graphics& graphics) override
   {
-    // For debug: show green overlay if hovering a TooltipClient
     if (!tooltipImage.isNull())
-      g.fillAll(juce::Colours::green.withAlpha(0.5f));
-    else
-      g.fillAll(juce::Colours::red.withAlpha(0.2f));
-    // Do NOT draw the image to the screen yet
+    {
+      const int imageWidth = tooltipImage.getWidth();
+      const int imageHeight = tooltipImage.getHeight();
+      const int width = getWidth();
+      const int height = getHeight();
+
+      int drawPositionX = lastMousePosition.x;
+      int drawPositionY = lastMousePosition.y;
+
+      // If drawing at (x, y) would go off the right edge, flip to left of mouse
+      if (drawPositionX + imageWidth > width)
+        drawPositionX = std::max(0, lastMousePosition.x - imageWidth);
+
+      // If drawing at (x, y) would go off the bottom, flip to above mouse
+      if (drawPositionY + imageHeight > height)
+        drawPositionY = std::max(0, lastMousePosition.y - imageHeight);
+
+      graphics.drawImageAt(tooltipImage, drawPositionX, drawPositionY);
+    }
   }
 
   void repaintTimerCallback() noexcept override
   {
-    auto* parent = getParentComponent();
-    if (!parent)
+    auto* parentComponent = getParentComponent();
+    if (!parentComponent)
       return;
 
-    auto mousePos = parent->getMouseXYRelative();
-    auto* comp = parent->getComponentAt(mousePos);
+    auto mousePosition = parentComponent->getMouseXYRelative();
+    auto* component = parentComponent->getComponentAt(mousePosition);
 
-    juce::String foundTooltip;
+    juce::String foundTooltipText;
 
-    while (comp != nullptr && comp != parent)
+    while (component != nullptr && component != parentComponent)
     {
-      if (auto* tooltipClient = dynamic_cast<juce::TooltipClient*>(comp))
+      if (auto* tooltipClient = dynamic_cast<juce::TooltipClient*>(component))
       {
-        auto tip = tooltipClient->getTooltip();
-        if (!tip.isEmpty())
+        auto tooltipText = tooltipClient->getTooltip();
+        if (!tooltipText.isEmpty())
         {
-          foundTooltip = tip;
+          foundTooltipText = tooltipText;
           break;
         }
       }
-      comp = comp->getParentComponent();
+      component = component->getParentComponent();
     }
 
-    if (foundTooltip != currentTooltipText)
+    bool needsRepaint = false;
+
+    if (foundTooltipText != currentTooltipText)
     {
-      currentTooltipText = foundTooltip;
+      currentTooltipText = foundTooltipText;
       if (currentTooltipText.isNotEmpty())
         renderTooltipImage(currentTooltipText);
       else
         tooltipImage = juce::Image(); // Null image
-      repaint();
+      needsRepaint = true;
     }
+
+    if (mousePosition != lastMousePosition)
+    {
+      lastMousePosition = mousePosition;
+      needsRepaint = true;
+    }
+
+    if (needsRepaint)
+      repaint();
   }
 
 protected:
- void renderTooltipImage(const juce::String& text)
+  void renderTooltipImage(const juce::String& text)
   {
     // For now, just render a simple white rectangle with the text in black
-    constexpr int width = 300, height = 40;
-    tooltipImage = juce::Image(juce::Image::ARGB, width, height, true);
-    juce::Graphics g(tooltipImage);
-    g.fillAll(juce::Colours::white);
-    g.setColour(juce::Colours::black);
-    g.setFont(rawFontSize);
-    g.drawText(text, tooltipImage.getBounds(), juce::Justification::centredLeft, true);
+    constexpr int imageWidth = 300, imageHeight = 40;
+    tooltipImage = juce::Image(juce::Image::ARGB, imageWidth, imageHeight, true);
+    juce::Graphics graphics(tooltipImage);
+    graphics.fillAll(juce::Colours::white);
+    graphics.setColour(juce::Colours::black);
+    graphics.setFont(rawFontSize);
+    graphics.drawText(text, tooltipImage.getBounds(), juce::Justification::centredLeft, true);
   }
 
 private:
   juce::String currentTooltipText;
   juce::Image tooltipImage;
+  juce::Point<int> lastMousePosition;
 
- 
 };
 
 } // namespace window
