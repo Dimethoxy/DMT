@@ -52,6 +52,7 @@ public:
             juce::Justification::centredLeft)
     , editor(String(leaf.name + "Editor"))
   {
+    TRACER("ValueEditor::ValueEditor");
     addAndMakeVisible(label);
     addAndMakeVisible(editor);
 
@@ -67,6 +68,7 @@ public:
 
   void paint(juce::Graphics& _g) override
   {
+    TRACER("ValueEditor::paint");
     if (!editor.hasKeyboardFocus(false)) {
       editor.setText(leaf.toString(), juce::dontSendNotification);
     }
@@ -74,6 +76,7 @@ public:
 
   void resized() override
   {
+    TRACER("ValueEditor::resized");
     auto bounds = getLocalBounds();
     auto labelBounds = bounds.removeFromLeft(bounds.getWidth() / 3.0f * 2.0f);
     auto editorBounds = bounds;
@@ -86,6 +89,7 @@ public:
 
   // TODO: This is absolutely horrible
   void setStyle(){
+    TRACER("ValueEditor::setStyle");
     label.setRawHorizontalPadding(labelHorizontalPadding);
     editor.setColour(juce::TextEditor::textColourId, fontColour);
     editor.setColour(juce::TextEditor::backgroundColourId,
@@ -95,6 +99,7 @@ public:
 
   void newValueCallback()
   {
+    TRACER("ValueEditor::newValueCallback");
     auto newText = editor.getText();
     if (!leaf.parseAndSet(newText)) {
       editor.setText(leaf.toString(), juce::dontSendNotification);

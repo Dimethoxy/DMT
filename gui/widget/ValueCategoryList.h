@@ -46,6 +46,7 @@ public:
     : categories(_categories)
     , onCategorySelected(std::move(_onCategorySelected))
   {
+    TRACER("ValueCategoryList::ValueCategoryList");
     addCategories();
     onCategorySelected(categories[0]);
     labelList[0]->setFontColour(selectedFontColour);
@@ -56,6 +57,7 @@ public:
 
   void paint(juce::Graphics& _g) override
   {
+    TRACER("ValueCategoryList::paint");
     _g.setColour(seperatorColour);
 
     // Draw top line
@@ -82,6 +84,7 @@ public:
 
   void resized() override
   {
+    TRACER("ValueCategoryList::resized");
     const auto fontSize = rawFontSize * size;
     auto bounds = getLocalBounds();
     for (auto& label : labelList) {
@@ -92,6 +95,7 @@ public:
 
   void setOptimalSize(const int width)
   {
+    TRACER("ValueCategoryList::setOptimalSize");
     const auto fontSize = rawFontSize * size;
     const auto neededHeight = fontSize * labelList.size();
     const auto extraHeight = fontSize * 0.5f;
@@ -101,6 +105,7 @@ public:
 protected:
   void addCategories()
   {
+    TRACER("ValueCategoryList::addCategories");
     // Let's clear the current labels
     labelList.clear();
 
@@ -120,6 +125,7 @@ protected:
 
   void addAllLabels()
   {
+    TRACER("ValueCategoryList::addAllLabels");
     for (auto& label : labelList) {
       addAndMakeVisible(*label);
       label->addMouseListener(this, true);
@@ -128,6 +134,7 @@ protected:
 
   void mouseUp(const juce::MouseEvent& _event) override
   {
+    TRACER("ValueCategoryList::mouseUp");
     const auto clickedLabel = dynamic_cast<Lable*>(_event.eventComponent);
 
     if (!clickedLabel)

@@ -52,6 +52,7 @@ public:
                         })
 
   {
+    TRACER("SettingsEditor::SettingsEditor");
     addAndMakeVisible(searchEditor);
     addAndMakeVisible(categoryViewport);
     addAndMakeVisible(editorViewport);
@@ -66,10 +67,14 @@ public:
 
   ~SettingsEditor() override = default;
 
-  void paint(juce::Graphics& /*_g*/) override {}
+  void paint(juce::Graphics& /*_g*/) override 
+  {
+    TRACER("SettingsEditor::paint");
+  }
 
   void resized() override
   {
+    TRACER("SettingsEditor::resized");
     auto bounds = getLocalBounds();
 
     // Set bounds for the search editor
@@ -91,6 +96,7 @@ public:
 
   void onCategorySelectedCallback(TreeAdapter::Category& category)
   {
+    TRACER("SettingsEditor::onCategorySelectedCallback");
     std::cout << "Selected category: " << category.name << std::endl;
     valueEditorList.setCategory(category);
     valueEditorList.setOptimalSize(editorViewport.getWidth());
@@ -100,6 +106,7 @@ protected:
   template<typename ComponentType>
   void layoutViewport(Viewport& viewport, ComponentType& content)
   {
+    TRACER("SettingsEditor::layoutViewport");
     const int optimalWidth =
       viewport.isVerticalScrollBarShown()
         ? viewport.getWidth() - viewport.getScrollBarThickness()
@@ -109,6 +116,7 @@ protected:
 
   void setScrollbarThicknesses()
   {
+    TRACER("SettingsEditor::setScrollbarThicknesses");
     const int scrollBarThickness =
       static_cast<int>(rawScrollBarThickness * size);
     categoryViewport.setScrollBarThickness(scrollBarThickness);
@@ -117,6 +125,7 @@ protected:
 
   void setScrollBarColour()
   {
+    TRACER("SettingsEditor::setScrollBarColour");
     categoryViewport.getVerticalScrollBar().setColour(
       juce::ScrollBar::ColourIds::thumbColourId, scrollBarColour);
     editorViewport.getVerticalScrollBar().setColour(

@@ -31,13 +31,17 @@ class SettingsEditorDisplay : public dmt::gui::display::AbstractDisplay
   const float& rawPadding = SettingsEditorSettings::padding;
 
 public:
-  SettingsEditorDisplay() { addAndMakeVisible(settingsEditor); }
+  SettingsEditorDisplay() { 
+    TRACER("SettingsEditorDisplay::SettingsEditorDisplay");
+    addAndMakeVisible(settingsEditor); 
+  }
 
   ~SettingsEditorDisplay() override = default;
 
   void extendResized(
     const juce::Rectangle<int>& _displayBounds) noexcept override
   {
+    TRACER("SettingsEditorDisplay::extendResized");
     const auto padding = rawPadding * size;
     auto settingsBounds = _displayBounds.reduced(padding);
     settingsEditor.setBounds(settingsBounds);
@@ -46,6 +50,7 @@ public:
   void paintDisplay(juce::Graphics& /*_g*/,
                     const juce::Rectangle<int>& /*_displayBounds*/) noexcept
   {
+    TRACER("SettingsEditorDisplay::paintDisplay");
     if (cachedPadding != rawPadding) {
       cachedPadding = rawPadding;
       resized();
@@ -54,6 +59,7 @@ public:
 
   void prepareNextFrame() noexcept override
   {
+    TRACER("SettingsEditorDisplay::prepareNextFrame");
     // Implement frame preparation logic here
   }
 

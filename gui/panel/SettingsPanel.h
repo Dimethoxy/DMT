@@ -30,6 +30,7 @@ public:
   SettingsPanel(/*juce::AudioProcessorValueTreeState& apvts*/)
     : AbstractPanel("Settings", false)
   {
+    TRACER("SettingsPanel::SettingsPanel");
     setLayout({ 22, 60 });
     addAndMakeVisible(settingsEditor);
   }
@@ -38,6 +39,7 @@ public:
 
   void extendResize() noexcept override
   {
+    TRACER("SettingsPanel::extendResize");
     auto bounds = getLocalBounds();
 
     const float padding = rawPadding * size;

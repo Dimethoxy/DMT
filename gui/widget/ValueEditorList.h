@@ -32,12 +32,17 @@ class ValueEditorList : public juce::Component
   const Colour& seperatorColour = SettingsEditorSettings::seperatorColour;
 
 public:
-  ValueEditorList() { addAllEditors(); }
+  ValueEditorList() { 
+    TRACER("ValueEditorList::ValueEditorList");
+    addAllEditors(); 
+  }
 
   ~ValueEditorList() override = default;
 
   void paint(juce::Graphics& _g) override
   {
+    TRACER("ValueEditorList::paint");
+
     _g.setColour(seperatorColour);
 
     // Draw top line
@@ -64,6 +69,8 @@ public:
 
   void resized() override
   {
+    TRACER("ValueEditorList::resized");
+    
     const auto fontSize = rawFontSize * size;
 
     auto bounds = getLocalBounds();
@@ -75,6 +82,8 @@ public:
 
   void setOptimalSize(const int width)
   {
+    TRACER("ValueEditorList::setOptimalSize");
+
     const auto fontSize = rawFontSize * size;
     const auto neededHeight = fontSize * editorList.size();
     const auto extraHeight = fontSize * 0.5f;
@@ -83,6 +92,8 @@ public:
 
   void setCategory(TreeAdapter::Category& _category)
   {
+    TRACER("ValueEditorList::setCategory");
+
     // Check if the category is the same as the current one
     if (category != nullptr && category->name == _category.name)
       return;
@@ -113,6 +124,8 @@ public:
 protected:
   void addAllEditors()
   {
+    TRACER("ValueEditorList::addAllEditors");
+
     for (auto& editor : editorList) {
       addAndMakeVisible(*editor);
     }
