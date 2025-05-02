@@ -78,7 +78,7 @@ public:
                   const float& _radius,
                   const bool _inner) noexcept
     : visibility(_visibility)
-    , colour(_colour)
+    , colour(&_colour)
     , radius(_radius)
     , inner(_inner)
   {
@@ -108,7 +108,7 @@ public:
     }
 
     juce::Graphics imageGraphics(image);
-    imageGraphics.setColour(colour);
+    imageGraphics.setColour(*colour); // dereference pointer
     if (inner)
       drawInnerForPath(imageGraphics, path);
     else
@@ -138,6 +138,24 @@ public:
 
   //==============================================================================
   /**
+   * @brief Changes the Colour of the shadow.
+   *
+   * @param _newColour The new colour to use for the shadow.
+   *
+   * @details
+   * Updates the internal colour and triggers a repaint to update the shadow
+   * image.
+   */
+  inline void setColour(const juce::Colour& _newColour)
+  {
+    TRACER("Shadow::setColour");
+    colour = &_newColour;
+    needsRepaint = true;
+    repaint();
+  }
+
+  //==============================================================================
+  /**
    * @brief Sets the path for which the shadow is rendered.
    *
    * @param _newPath The new path to use for the shadow.
@@ -153,18 +171,18 @@ public:
   }
 
   //==============================================================================
-  /** 
+  /**
    * @brief Directly draws the shadow for the given path.
-   * 
+   *
    * @param _g The graphics context.
    * @param _target The path to shadow.
-   * 
+   *
    * @details
    * This method is used if the shadow isn't used as a component, allowing
    * for direct drawing of the shadow on a given graphics context.
    * It doesn't do any caching or image management, so it's suitable for one-off
    * rendering tasks.
-  */
+   */
   inline void directDraw(juce::Graphics& _g, juce::Path _target)
   {
     TRACER("Shadow::directDraw");
@@ -194,7 +212,8 @@ protected:
     shadowPath.addRectangle(_target.getBounds().expanded(10));
     shadowPath.setUsingNonZeroWinding(false);
     _g.reduceClipRegion(_target);
-    juce::DropShadow ds(colour, static_cast<int>(radius * size), offset);
+    juce::DropShadow ds(
+      *colour, static_cast<int>(radius * size), offset); // dereference pointer
     ds.drawForPath(_g, shadowPath);
   }
 
@@ -217,7 +236,8 @@ protected:
     shadowPath.addRectangle(_target.getBounds().expanded(10));
     shadowPath.setUsingNonZeroWinding(false);
     _g.reduceClipRegion(shadowPath);
-    juce::DropShadow ds(colour, static_cast<int>(radius * size), offset);
+    juce::DropShadow ds(
+      *colour, static_cast<int>(radius * size), offset); // dereference pointer
     ds.drawForPath(_g, _target);
   }
 
@@ -225,7 +245,7 @@ private:
   //==============================================================================
   // Members initialized in the initializer list
   const bool& visibility;
-  const juce::Colour& colour;
+  const juce::Colour* colour; // pointer instead of reference
   const float& radius;
   const bool inner;
 
