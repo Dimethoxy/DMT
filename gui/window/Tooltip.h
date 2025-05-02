@@ -4,6 +4,8 @@
 
 #include <JuceHeader.h>
 #include "dmt/utility/RepaintTimer.h"
+#include "dmt/utility/Settings.h"
+#include "dmt/utility/Fonts.h"
 
 //==============================================================================
 
@@ -13,8 +15,15 @@ namespace window {
 
 class Tooltip : public juce::Component, private dmt::utility::RepaintTimer
 {
+  using Settings = dmt::Settings;
+  using Fonts = dmt::utility::Fonts;
+  //==============================================================================
+  // Window 
+  const float& size = Settings::Window::size;
 
-  const float& rawFontSize = 18.0f;
+  // Tooltip
+  const float rawFontSize = 18.0f;
+  const Colour fontColour = juce::Colours::white;
 
 public:
   Tooltip() noexcept
@@ -101,21 +110,36 @@ public:
 protected:
   void renderTooltipImage(const juce::String& text)
   {
-    // For now, just render a simple white rectangle with the text in black
-    constexpr int imageWidth = 300, imageHeight = 40;
-    tooltipImage = juce::Image(juce::Image::ARGB, imageWidth, imageHeight, true);
+    const auto fontSize = rawFontSize * size;
+    const auto font = fonts.medium.withHeight(fontSize);
+
+    juce::AttributedString attributedString(text);
+    attributedString.setFont(font);
+    attributedString.setColour(fontColour);
+    attributedString.setJustification(juce::Justification::centredLeft);
+    attributedString.setWordWrap(juce::AttributedString::WordWrap::none);
+
+    const float maxWidth = getWidth();
+    juce::TextLayout textLayout;
+    textLayout.createLayout(attributedString, maxWidth);
+    
+    const auto layoutWidth = textLayout.getWidth() * 1.01f;
+    const auto layoutHeight = textLayout.getHeight() * 1.01f;
+    tooltipImage = juce::Image(juce::Image::ARGB, layoutWidth, layoutHeight, true);
     juce::Graphics graphics(tooltipImage);
-    graphics.fillAll(juce::Colours::white);
     graphics.setColour(juce::Colours::black);
-    graphics.setFont(rawFontSize);
-    graphics.drawText(text, tooltipImage.getBounds(), juce::Justification::centredLeft, true);
+    graphics.fillAll(juce::Colours::black);
+    graphics.setFont(font);
+    graphics.setColour(fontColour);
+    graphics.drawText(text, 0, 0, layoutWidth, layoutHeight,
+                       juce::Justification::centredLeft, true);
   }
 
 private:
   juce::String currentTooltipText;
   juce::Image tooltipImage;
   juce::Point<int> lastMousePosition;
-
+  Fonts fonts;
 };
 
 } // namespace window
