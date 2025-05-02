@@ -2,8 +2,8 @@
 /*
  * ██████  ██ ███    ███ ███████ ████████ ██   ██  ██████  ██   ██ ██    ██
  * ██   ██ ██ ████  ████ ██         ██    ██   ██ ██    ██  ██ ██   ██  ██
- * ██   ██ ██ ██ ████ ██ █████      ██    ███████ ██    ██   ███     ████
- * ██   ██ ██ ██  ██  ██ ██         ██    ██   ██ ██    ██  ██ ██     ██
+ * ██   ██ ██ ██ ████ ██ █████      ██    ██   ██ ██    ██   ███     ████
+ * ██   ██ ██ ██  ██  ██ ██         ██    ██ ██    ██   ██ ██     ██
  * ██████  ██ ██      ██ ███████    ██    ██   ██  ██████  ██   ██    ██
  *
  * Copyright (C) 2024 Dimethoxy Audio (https://dimethoxy.com)
@@ -107,6 +107,7 @@ public:
     , settingsPanel()
     , borderButton()
   {
+    TRACER("Compositor::Compositor");
     // Header
     addAndMakeVisible(header);
     header.getSettingsButton().onClick = [this] { settingsCallback(); };
@@ -144,6 +145,7 @@ public:
   //============================================================================
   /** @brief Paints the component. */
   void paint(juce::Graphics& /*_g*/) noexcept override {
+    TRACER("Compositor::paint");
   }
 
   //============================================================================
@@ -155,6 +157,7 @@ public:
    */
   void resized() noexcept override
   {
+    TRACER("Compositor::resized");
     const auto bounds = getLocalBounds();
 
     // Alerts
@@ -210,6 +213,7 @@ public:
    */
   void settingsCallback() noexcept
   {
+    TRACER("Compositor::settingsCallback");
     if (settingsPanel.isVisible())
       return;
 
@@ -242,6 +246,7 @@ public:
    */
   void settingExitCallback() noexcept
   {
+    TRACER("Compositor::settingExitCallback");
     if (!settingsPanel.isVisible())
       return;
 
@@ -282,6 +287,7 @@ public:
    */
   void updateCallback() noexcept
   {
+    TRACER("Compositor::updateCallback");
     // Check if update system is disabled
     if (DMT_DISABLE_UPDATE_NOTIFICATION)
       return;
@@ -308,6 +314,7 @@ public:
    */
   void hideHeaderCallback() noexcept
   {
+    TRACER("Compositor::hideHeaderCallback");
     if (!header.isVisible())
       return;
 
@@ -331,6 +338,7 @@ public:
    */
   void showHeaderCallback() noexcept
   {
+    TRACER("Compositor::showHeaderCallback");
     if (header.isVisible())
       return;
 
@@ -353,6 +361,7 @@ public:
    */
   void saveSettingsCallback() noexcept
   {
+    TRACER("Compositor::saveSettingsCallback");
     properties.saveCurrentSettings();
     getTopLevelComponent()->resized();
     getTopLevelComponent()->repaint();
@@ -375,6 +384,7 @@ public:
    */
   void resetSettingsCallback() noexcept
   {
+    TRACER("Compositor::resetSettingsCallback");
     properties.resetToFallback();
 
     // Gotta call this first to recalculate the global size
@@ -403,6 +413,7 @@ public:
    */
   void timerCallback() override
   {
+    TRACER("Compositor::timerCallback");
     if (DMT_DISABLE_UPDATE_NOTIFICATION) {
       stopTimer();
       return;
@@ -425,6 +436,7 @@ public:
    */
   void valueEditorListenerCallback() override
   {
+    TRACER("Compositor::valueEditorListenerCallback");
     resizedRecursively(this);
   }
 
@@ -442,6 +454,7 @@ public:
    */
   void showUpdatePopover() noexcept
   {
+    TRACER("Compositor::showUpdatePopover");
     if (DMT_DISABLE_UPDATE_NOTIFICATION)
       return;
 
@@ -475,6 +488,7 @@ public:
    */
   void showUpdateButton() noexcept
   {
+    TRACER("Compositor::showUpdateButton");
     if (DMT_DISABLE_UPDATE_NOTIFICATION)
       return;
 
@@ -502,6 +516,7 @@ public:
    */
   void setHeaderVisibilityCallback(std::function<void(bool)> callback) noexcept
   {
+    TRACER("Compositor::setHeaderVisibilityCallback");
     headerVisibilityCallback = std::move(callback);
   }
 
@@ -513,6 +528,7 @@ public:
    */
   [[nodiscard]] bool isHeaderVisible() const noexcept
   {
+    TRACER("Compositor::isHeaderVisible");
     return header.isVisible();
   }
 
@@ -528,6 +544,7 @@ protected:
    */
   void resizedRecursively(juce::Component* component)
   {
+    TRACER("Compositor::resizedRecursively");
     if (component == nullptr)
       return;
 

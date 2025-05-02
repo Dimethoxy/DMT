@@ -71,6 +71,7 @@ protected:
 public:
   Alerts() noexcept
   {
+    TRACER("Alerts::Alerts");
     setInterceptsMouseClicks(false, false);
     startRepaintTimer();
   }
@@ -78,6 +79,7 @@ public:
   // Push a new alert to the list
   void pushAlert(const juce::String& title, const juce::String& message, AlertType type, const juce::String& iconName = {})
   {
+    TRACER("Alerts::pushAlert");
     // When we push a new alert, let old ones age quicker
     const auto quickAgeTarget = maxAge - fadeOutTime;
     for (int i = 0; i < alerts.size(); ++i)
@@ -92,6 +94,7 @@ public:
 
   void resized() override
   {
+    TRACER("Alerts::resized");
     // Re-render all alert images on resize
     for (int i = 0; i < alerts.size(); ++i)
       renderAlertToImage(alerts.getReference(i));
@@ -100,6 +103,7 @@ public:
 
   void paint(juce::Graphics& g) override
   {
+    TRACER("Alerts::paint");
     // Calculate scaled alert size and spacing
     const auto alertWidth = rawAlertWidth * size;
     const auto alertHeight = rawAlertHeight * size;
@@ -128,6 +132,7 @@ public:
 
   void repaintTimerCallback() noexcept override
   {
+    TRACER("Alerts::repaintTimerCallback");
     for (int i = alerts.size(); --i >= 0;)
     {
       alerts.getReference(i).age += Settings::framerate / 1000.0f;
@@ -141,6 +146,7 @@ protected:
   // Helper to render an alert into its cached image
   void renderAlertToImage(AlertData& alert)
   {
+    TRACER("Alerts::renderAlertToImage");
     const auto alertWidth = rawAlertWidth * size;
     const auto alertHeight = rawAlertHeight * size;
     alert.cachedComponentImage = juce::Image(juce::Image::ARGB, alertWidth, alertHeight, true);

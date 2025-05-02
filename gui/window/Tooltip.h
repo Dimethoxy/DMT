@@ -47,6 +47,7 @@ public:
     : outerShadow(drawOuterShadow, outerShadowColour, outerShadowRadius, false)
     , innerShadow(drawInnerShadow, innerShadowColour, innerShadowRadius, true)
   {
+    TRACER("Tooltip::Tooltip");
     setInterceptsMouseClicks(false, false);
     startRepaintTimer(); // Use custom repaint timer
   }
@@ -55,12 +56,14 @@ public:
 
   void resized() override
   {
+    TRACER("Tooltip::resized");
     if (!tooltipImage.isNull())
       renderTooltipImage(currentTooltipText);
   }
 
   void paint(juce::Graphics& graphics) override
   {
+    TRACER("Tooltip::paint");
     if (!tooltipImage.isNull())
     {
       const int imageWidth = tooltipImage.getWidth();
@@ -85,6 +88,7 @@ public:
 
   void repaintTimerCallback() noexcept override
   {
+    TRACER("Tooltip::repaintTimerCallback");
     // Get the parent component of the tooltip
     auto* parent = getParentComponent();
     if (!parent)
@@ -143,6 +147,7 @@ public:
 protected:
   void renderTooltipImage(const juce::String& text)
   {
+    TRACER("Tooltip::renderTooltipImage");
     // Font size and style
     const auto fontSize = rawFontSize * size;
     const auto font = fonts.medium.withHeight(fontSize);

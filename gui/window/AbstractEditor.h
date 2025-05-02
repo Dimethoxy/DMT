@@ -25,6 +25,7 @@
 //     , baseWidth(_baseWidth)
 //     , baseHeight(_baseHeight)
 //   {
+//     TRACER("AbstractEditor::AbstractEditor");
 //     if (OS_IS_WINDOWS) {
 //       setResizable(true, true);
 //     }
@@ -55,7 +56,7 @@
 
 //   void paint(juce::Graphics& g)
 //   {
-//     TRACER("PluginEditor::paint");
+//     TRACER("AbstractEditor::paint");
 
 //     // Just painting the background
 //     g.fillAll(dmt::Settings::Window::backgroundColour);
@@ -63,7 +64,7 @@
 
 //   void resized() override
 //   {
-//     TRACER("PluginEditor::resized");
+//     TRACER("AbstractEditor::resized");
 
 //     // Set the global size
 //     const int currentHeight = getHeight();
@@ -86,6 +87,7 @@
 // protected:
 //   void handleHeaderVisibilityChange(bool isHeaderVisible)
 //   {
+//     TRACER("AbstractEditor::handleHeaderVisibilityChange");
 //     const int adjustedHeight =
 //       isHeaderVisible ? baseHeight + headerHeight : baseHeight;
 //     setConstraints(baseWidth, adjustedHeight);
@@ -94,6 +96,7 @@
 
 //   void setConstraints(int width, int height)
 //   {
+//     TRACER("AbstractEditor::setConstraints");
 //     if (auto* constrainer = this->getConstrainer()) {
 //       const auto aspectRatio = (double)width / (double)height;
 //       constrainer->setFixedAspectRatio(aspectRatio);

@@ -3,7 +3,7 @@
 
  * ██████  ██ ███    ███ ███████ ████████ ██   ██  ██████  ██   ██ ██    ██
  * ██   ██ ██ ████  ████ ██         ██    ██   ██ ██    ██  ██ ██   ██  ██
- * ██   ██ ██ ██ ████ ██ █████      ██    ███████ ██    ██   ███     ████
+ * ██   ██ ██ ██ ████ ██ █████      ██    ██   ██ ██    ██   ███     ████
  * ██   ██ ██ ██  ██  ██ ██         ██    ██   ██ ██    ██  ██ ██     ██
  * ██████  ██ ██      ██ ███████    ██    ██   ██  ██████  ██   ██    ██
  *
@@ -124,6 +124,7 @@ public:
                    juce::Justification::topLeft,
                    true)
   {
+    TRACER("Popover::Popover");
     setAlwaysOnTop(true);
     setInterceptsMouseClicks(false, true);
 
@@ -138,7 +139,11 @@ public:
 
   //==============================================================================
   /** @brief Destructor for `Popover`. */
-  ~Popover() noexcept override { setVisible(false); }
+  ~Popover() noexcept override
+  {
+    TRACER("Popover::~Popover");
+    setVisible(false);
+  }
 
   //==============================================================================
   /**
@@ -151,6 +156,7 @@ public:
    */
   void paint(juce::Graphics& _g) noexcept override
   {
+    TRACER("Popover::paint");
     // Skip drawing if the anchor is null
     if (normalizedAnchor == nullptr)
       return;
@@ -187,6 +193,7 @@ public:
    */
   [[nodiscard]] bool hitTest(int _x, int _y) noexcept override
   {
+    TRACER("Popover::hitTest");
     return cachedMessageBounds.contains(_x, _y);
   }
 
@@ -199,6 +206,7 @@ public:
    */
   void resized() noexcept override
   {
+    TRACER("Popover::resized");
     cachedMessageBounds = createMessageBounds(false);
 
     const auto closeButtonSize = static_cast<int>(rawCloseButtonSize * size);
@@ -235,6 +243,7 @@ public:
                    juce::String _title,
                    juce::String _message) noexcept
   {
+    TRACER("Popover::showMessage");
     setNormalizedAnchor(_anchor);
     cachedMessageBounds = createMessageBounds(false); // Update cached bounds
     setVisible(true);
@@ -248,6 +257,7 @@ public:
   /** @brief Hides the popover message. */
   void hideMessage() noexcept
   {
+    TRACER("Popover::hideMessage");
     normalizedAnchor.reset();
     this->setVisible(false);
   }
@@ -265,6 +275,7 @@ protected:
    */
   [[nodiscard]] juce::Path createPath(bool isOuter = true) const noexcept
   {
+    TRACER("Popover::createPath");
     juce::Path path;
 
     const auto messageBounds = createMessageBounds(isOuter);
@@ -289,6 +300,7 @@ protected:
    */
   [[nodiscard]] Rectangle createMessageBounds(bool isOuter) const noexcept
   {
+    TRACER("Popover::createMessageBounds");
     const int surfaceWidth = static_cast<int>(rawSurfaceWidth * size);
     const int surfaceHeight = static_cast<int>(rawSurfaceHeight * size);
     const float borderWidth = isOuter ? 0.0f : rawBorderWidth * size;
@@ -322,6 +334,7 @@ protected:
     tuple<juce::Point<float>, juce::Point<float>, juce::Point<float>>
     calculateSpikePoints(bool isOuter) const noexcept
   {
+    TRACER("Popover::calculateSpikePoints");
     const int spikeWidth = static_cast<int>(rawSpikeWidth * size);
     const int spikeHeight = static_cast<int>(rawSpikeHeight * size);
     const float borderWidth = isOuter ? 0.0f : rawBorderWidth * size;
@@ -396,6 +409,7 @@ protected:
                      juce::Point<float>,
                      juce::Point<float>>& spikePoints) const noexcept
   {
+    TRACER("Popover::addSpikeToPath");
     const auto& [spikeTip, spikeBaseLeft, spikeBaseRight] = spikePoints;
 
     path.startNewSubPath(spikeBaseLeft);
@@ -418,6 +432,7 @@ protected:
                                  const Rectangle& messageBounds,
                                  bool isOuter) const noexcept
   {
+    TRACER("Popover::addRoundedRectangleToPath");
     const auto topLeft = messageBounds.getTopLeft().toFloat();
     const auto topRight = messageBounds.getTopRight().toFloat();
     const auto bottomLeft = messageBounds.getBottomLeft().toFloat();
@@ -482,6 +497,7 @@ protected:
    */
   void setNormalizedAnchor(const juce::Point<int>& _anchor) noexcept
   {
+    TRACER("Popover::setNormalizedAnchor");
     if (getWidth() == 0 || getHeight() == 0)
       return;
 
@@ -502,6 +518,7 @@ protected:
    */
   [[nodiscard]] juce::Point<int> getAnchor() const noexcept
   {
+    TRACER("Popover::getAnchor");
     if (normalizedAnchor == nullptr)
       return juce::Point<int>(0, 0);
 
