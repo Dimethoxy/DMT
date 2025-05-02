@@ -125,6 +125,7 @@ public:
     : juce::Slider()
     , type(_type)
   {
+    TRACER("RotarySlider::RotarySlider");
     setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
     setTextBoxStyle(juce::Slider::TextBoxBelow, true, 0, 0);
     juce::Random rand;
@@ -146,6 +147,7 @@ public:
    */
   inline void paint(juce::Graphics& _g) override
   {
+    TRACER("RotarySlider::paint");
     const auto bounds = getLocalBounds().toFloat();
     const auto padding = rawPadding * size;
 
@@ -163,7 +165,11 @@ public:
    *
    * @return The slider type.
    */
-  [[nodiscard]] inline Type getType() const noexcept { return type; }
+  [[nodiscard]] inline Type getType() const noexcept 
+  { 
+    TRACER("RotarySlider::getType");
+    return type; 
+  }
 
 protected:
   //==============================================================================
@@ -322,6 +328,7 @@ protected:
     const float _endAngleInRadians,
     const float _valueAngleInRadians) const noexcept
   {
+    TRACER("RotarySlider::getUpperRail");
     juce::Path arc;
     switch (this->type) {
       case Type::Selector:
@@ -382,6 +389,7 @@ protected:
     float _startAngleInRadians,
     float _endAngleInRadians) const noexcept
   {
+    TRACER("RotarySlider::getLowerRail");
     juce::Path arc;
     arc.addCentredArc(_centre.getX(),
                       _centre.getY(),
@@ -412,6 +420,7 @@ protected:
     const juce::Point<float>& _centre,
     const float& _angleInRadians) const noexcept
   {
+    TRACER("RotarySlider::getTick");
     const float outerRadius = _bounds.getWidth() / 2.0f;
     const auto outerPoint =
       dmt::math::pointOnCircle(_centre, outerRadius, _angleInRadians);

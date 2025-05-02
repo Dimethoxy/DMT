@@ -54,6 +54,7 @@ public:
                 juce::Justification::centredBottom)
     , unitType(unitType)
   {
+    TRACER("RotarySliderComponent::RotarySliderComponent");
     slider.addListener(this);
     updateLabel();
     addAndMakeVisible(slider);
@@ -62,6 +63,7 @@ public:
   }
   void resized()
   {
+    TRACER("RotarySliderComponent::resized");
     const auto bounds = getLocalBounds();
     const auto padding = rawPadding * size;
 
@@ -79,6 +81,7 @@ public:
   }
   void paint(juce::Graphics& g)
   {
+    TRACER("RotarySliderComponent::paint");
     auto bounds = getLocalBounds();
     // Draw bounds debug
     g.setColour(juce::Colours::green);
@@ -89,9 +92,10 @@ public:
       g.drawEllipse(bounds.getCentreX(), bounds.getCentreY(), 5, 5, 1);
     }
   }
-  void sliderValueChanged(juce::Slider*) { updateLabel(); }
+  void sliderValueChanged(juce::Slider*) { TRACER("RotarySliderComponent::sliderValueChanged"); updateLabel(); }
   void setSizeAndCentre(juce::Point<int> centrePoint)
   {
+    TRACER("RotarySliderComponent::setSizeAndCentre");
     int width = (int)(baseWidth * size);
     int height = (int)(baseHeight * size);
     setSize(width, height);
@@ -101,6 +105,7 @@ public:
 protected:
   void updateLabel()
   {
+    TRACER("RotarySliderComponent::updateLabel");
     auto text = Unit::getString(unitType, (float)slider.getValue());
     infoLabel.setText(text);
     infoLabel.repaint();

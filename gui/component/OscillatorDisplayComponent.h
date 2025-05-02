@@ -37,6 +37,7 @@ public:
   OscillatorDisplayComponent(juce::AudioProcessorValueTreeState& apvts)
     : apvts(apvts)
   {
+    TRACER("OscillatorDisplayComponent::OscillatorDisplayComponent");
     osc.setSampleRate((float)resolution + 1.0f);
     osc.setFrequency(1.0f);
     startTimerHz(60);
@@ -44,6 +45,7 @@ public:
   //============================================================================
   void paint(juce::Graphics& g) override
   {
+    TRACER("OscillatorDisplayComponent::paint");
     const auto bounds = this->getLocalBounds().toFloat();
   }
 
@@ -51,6 +53,7 @@ protected:
   //==============================================================================
   void timerCallback()
   {
+    TRACER("OscillatorDisplayComponent::timerCallback");
     if (isParametersChanged()) {
       this->buildTable();
       this->repaint();
@@ -59,17 +62,22 @@ protected:
 
   void buildTable()
   {
+    TRACER("OscillatorDisplayComponent::buildTable");
     osc.setPhase(0.0f);
     table.initialise(
       [&](std::size_t index) { return (float)osc.getNextSample(); },
       resolution);
   }
 
-  bool isParametersChanged() {}
+  bool isParametersChanged() 
+  { 
+    TRACER("OscillatorDisplayComponent::isParametersChanged"); 
+  }
 
   //==============================================================================
   juce::Path getPath(juce::Rectangle<float> bounds)
   {
+    TRACER("OscillatorDisplayComponent::getPath");
     bounds.setY(bounds.getY() + (bounds.getHeight() / 10.0f));
     bounds.setHeight(bounds.getHeight() - (bounds.getHeight() / 5.0f));
 

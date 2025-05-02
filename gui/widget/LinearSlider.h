@@ -136,6 +136,7 @@ public:
     , type(_type)
     , orientation(_orientation)
   {
+    TRACER("LinearSlider::LinearSlider");
     switch (_orientation) {
       case Orientation::Horizontal: {
         setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalDrag);

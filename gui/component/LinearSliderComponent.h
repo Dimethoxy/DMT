@@ -62,6 +62,7 @@ public:
     , svgTitle(svgTitle)
     , svgPadding(dmt::icons::getPadding(param))
   {
+    TRACER("LinearSliderComponent::LinearSliderComponent");
     slider.addListener(this);
     updateLabel();
     addAndMakeVisible(slider);
@@ -77,6 +78,7 @@ public:
   //==============================================================================
   void resized()
   {
+    TRACER("LinearSliderComponent::resized");
     const auto bounds = getLocalBounds();
     const auto padding = rawPadding * size;
 
@@ -120,6 +122,7 @@ public:
   //==============================================================================
   void paint(juce::Graphics& g)
   {
+    TRACER("LinearSliderComponent::paint");
     auto bounds = getLocalBounds();
 
     // Draw bounds debug
@@ -138,11 +141,12 @@ public:
     }
   }
   //==============================================================================
-  void sliderValueChanged(juce::Slider*) { updateLabel(); }
+  void sliderValueChanged(juce::Slider*) { TRACER("LinearSliderComponent::sliderValueChanged"); updateLabel(); }
   //==============================================================================
   void setBoundsByPoints(juce::Point<int> primaryPoint,
                          juce::Point<int> secondaryPoint)
   {
+    TRACER("LinearSliderComponent::setBoundsByPoints");
     const float padding = 2.0f * rawPadding * size;
     const float minHeight = 50 * size;
     const float minWidth = 40 * size;
@@ -168,11 +172,12 @@ public:
     }
   }
   //==============================================================================
-  juce::Slider& getSlider() { return slider; }
+  juce::Slider& getSlider() { TRACER("LinearSliderComponent::getSlider"); return slider; }
   //==============================================================================
 protected:
   void updateLabel()
   {
+    TRACER("LinearSliderComponent::updateLabel");
     auto text = Unit::getString(unitType, (float)slider.getValue());
     infoLabel.setText(text);
     infoLabel.repaint();
