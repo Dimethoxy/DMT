@@ -5,6 +5,7 @@
 #include "dmt/gui/widget/Shadow.h"
 #include "dmt/utility/Fonts.h"
 #include "dmt/utility/RepaintTimer.h"
+#include "dmt/utility/Scaleable.h"
 #include "dmt/utility/Settings.h"
 #include <JuceHeader.h>
 
@@ -16,7 +17,8 @@ namespace window {
 
 class Tooltip
   : public juce::Component
-  , private dmt::utility::RepaintTimer
+  , public dmt::utility::RepaintTimer
+  , public dmt::Scaleable
 {
   template<typename T>
   using Rectangle = juce::Rectangle<T>;
@@ -72,7 +74,7 @@ public:
   {
     TRACER("Tooltip::paint");
     if (!tooltipImage.isNull()) {
-      const float scale = (float)getDesktopScaleFactor() * 2.0f;
+      const float scale = getScaleFactor(this);
       const int imageWidth = tooltipImage.getWidth();
       const int imageHeight = tooltipImage.getHeight();
       const int width = getWidth();
@@ -198,8 +200,8 @@ protected:
     const auto cornerRadius = rawCornerRadius * size;
     const auto innerCornerRadius = cornerRadius - borderWidth;
 
-    // --- Begin HiDPI fix ---
-    const float scale = (float)getDesktopScaleFactor() * 2.0f;
+    // HiDPI scaling stuff
+    const float scale = getScaleFactor(this);
     const auto scaledTooltipWidth = juce::roundToInt(tooltipWidth * scale);
     const auto scaledTooltipHeight = juce::roundToInt(tooltipHeight * scale);
 
@@ -241,7 +243,6 @@ protected:
     graphics.setColour(fontColour);
     graphics.setFont(font);
     graphics.drawText(text, textBounds, justification, true);
-    // --- End HiDPI fix ---
   }
 
 private:
