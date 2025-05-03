@@ -383,26 +383,34 @@ private:
     if (!shouldDrawBackground)
       return;
 
+    const float scale = getScaleFactor(this);
     const auto cornerRadius = rawCornerRadius * size;
     const auto backgroundArea = backgroundImage.getBounds().toFloat();
 
     juce::Graphics backgroundGraphics(backgroundImage);
+    backgroundGraphics.addTransform(juce::AffineTransform::scale(scale, scale));
     backgroundGraphics.fillAll(juce::Colours::transparentBlack);
     backgroundGraphics.setColour(backgroundColour);
-    backgroundGraphics.fillRoundedRectangle(backgroundArea, cornerRadius);
-    backgroundImageComponent.setImage(backgroundImage);
+    backgroundGraphics.fillRoundedRectangle(backgroundArea * scale,
+                                            cornerRadius * scale);
+    backgroundImageComponent.setImage(backgroundImage,
+                                      juce::RectanglePlacement::stretchToFit);
 
     juce::Graphics hoverGraphics(hoverBackgroundImage);
     hoverGraphics.fillAll(juce::Colours::transparentBlack);
     hoverGraphics.setColour(hoverColour);
-    hoverGraphics.fillRoundedRectangle(backgroundArea, cornerRadius);
-    hoverBackgroundImageComponent.setImage(hoverBackgroundImage);
+    hoverGraphics.fillRoundedRectangle(backgroundArea * scale,
+                                       cornerRadius * scale);
+    hoverBackgroundImageComponent.setImage(
+      hoverBackgroundImage, juce::RectanglePlacement::stretchToFit);
 
     juce::Graphics clickGraphics(clickedBackgroundImage);
     clickGraphics.fillAll(juce::Colours::transparentBlack);
     clickGraphics.setColour(clickColour);
-    clickGraphics.fillRoundedRectangle(backgroundArea, cornerRadius);
-    clickedBackgroundImageComponent.setImage(clickedBackgroundImage);
+    clickGraphics.fillRoundedRectangle(backgroundArea * scale,
+                                       cornerRadius * scale);
+    clickedBackgroundImageComponent.setImage(
+      clickedBackgroundImage, juce::RectanglePlacement::stretchToFit);
   }
 
   //==============================================================================
