@@ -28,6 +28,7 @@
 //==============================================================================
 #pragma once
 //==============================================================================
+#include "utility/Scaleable.h"
 #include "utility/Settings.h"
 #include <JuceHeader.h>
 //==============================================================================
@@ -46,7 +47,9 @@ namespace widget {
  * can be toggled visible/invisible, and supports dynamic resizing and path
  * changes. Designed for use in custom widgets and panels.
  */
-class Shadow : public juce::Component
+class Shadow
+  : public juce::Component
+  , protected dmt::Scaleable
 {
   //==============================================================================
   // Alias for convenience
@@ -109,10 +112,14 @@ public:
 
     juce::Graphics imageGraphics(image);
     imageGraphics.setColour(*colour); // dereference pointer
+
+    // Get scale factor for HiDPI
+    const float scale = getScaleFactor(this);
+
     if (inner)
-      drawInnerForPath(imageGraphics, path);
+      drawInnerForPath(imageGraphics, path, scale);
     else
-      drawOuterForPath(imageGraphics, path);
+      drawOuterForPath(imageGraphics, path, scale);
 
     needsRepaint = false;
     _g.drawImageAt(image, 0, 0);
@@ -186,10 +193,11 @@ public:
   inline void directDraw(juce::Graphics& _g, juce::Path _target)
   {
     TRACER("Shadow::directDraw");
+    const float scale = getScaleFactor(this);
     if (inner)
-      drawInnerForPath(_g, _target);
+      drawInnerForPath(_g, _target, scale);
     else
-      drawOuterForPath(_g, _target);
+      drawOuterForPath(_g, _target, scale);
   }
 
 protected:
@@ -199,21 +207,25 @@ protected:
    *
    * @param _g The graphics context.
    * @param _target The path to shadow.
+   * @param scale The scale factor for HiDPI.
    *
    * @details
    * Uses JUCE's DropShadow to render an inner shadow by clipping to the
    * target path and drawing the shadow on an expanded rectangle.
    */
-  inline void drawInnerForPath(juce::Graphics& _g, juce::Path _target)
+  inline void drawInnerForPath(juce::Graphics& _g,
+                               juce::Path _target,
+                               float scale)
   {
     TRACER("Shadow::drawInnerForPath");
     juce::Graphics::ScopedSaveState saveState(_g);
     juce::Path shadowPath(_target);
-    shadowPath.addRectangle(_target.getBounds().expanded(10));
+    shadowPath.addRectangle(_target.getBounds().expanded(10 * scale));
     shadowPath.setUsingNonZeroWinding(false);
     _g.reduceClipRegion(_target);
-    juce::DropShadow ds(
-      *colour, static_cast<int>(radius * size), offset); // dereference pointer
+    juce::DropShadow ds(*colour,
+                        static_cast<int>(radius * size * scale),
+                        offset * scale); // dereference pointer
     ds.drawForPath(_g, shadowPath);
   }
 
@@ -223,21 +235,25 @@ protected:
    *
    * @param _g The graphics context.
    * @param _target The path to shadow.
+   * @param scale The scale factor for HiDPI.
    *
    * @details
    * Uses JUCE's DropShadow to render an outer shadow by clipping to the
    * expanded shadow path and drawing the shadow on the original path.
    */
-  inline void drawOuterForPath(juce::Graphics& _g, juce::Path _target)
+  inline void drawOuterForPath(juce::Graphics& _g,
+                               juce::Path _target,
+                               float scale)
   {
     TRACER("Shadow::drawOuterForPath");
     juce::Graphics::ScopedSaveState saveState(_g);
     juce::Path shadowPath(_target);
-    shadowPath.addRectangle(_target.getBounds().expanded(10));
+    shadowPath.addRectangle(_target.getBounds().expanded(10 * scale));
     shadowPath.setUsingNonZeroWinding(false);
     _g.reduceClipRegion(shadowPath);
-    juce::DropShadow ds(
-      *colour, static_cast<int>(radius * size), offset); // dereference pointer
+    juce::DropShadow ds(*colour,
+                        static_cast<int>(radius * size * scale),
+                        offset * scale); // dereference pointer
     ds.drawForPath(_g, _target);
   }
 
