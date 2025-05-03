@@ -2,11 +2,11 @@
 
 //==============================================================================
 
-#include <JuceHeader.h>
+#include "dmt/gui/widget/Shadow.h"
+#include "dmt/utility/Fonts.h"
 #include "dmt/utility/RepaintTimer.h"
 #include "dmt/utility/Settings.h"
-#include "dmt/utility/Fonts.h"
-#include "dmt/gui/widget/Shadow.h"
+#include <JuceHeader.h>
 
 //==============================================================================
 
@@ -14,9 +14,11 @@ namespace dmt {
 namespace gui {
 namespace window {
 
-class Tooltip : public juce::Component, private dmt::utility::RepaintTimer
+class Tooltip
+  : public juce::Component
+  , private dmt::utility::RepaintTimer
 {
-  template <typename T>
+  template<typename T>
   using Rectangle = juce::Rectangle<T>;
   using Settings = dmt::Settings;
   using Fonts = dmt::utility::Fonts;
@@ -24,11 +26,14 @@ class Tooltip : public juce::Component, private dmt::utility::RepaintTimer
   using Shadow = dmt::gui::widget::Shadow;
 
   //==============================================================================
-  // Window 
+  // Window
   const float& size = Settings::Window::size;
 
+  // General
+  const float& unixScale = Settings::unixFontScalingFactor;
+
   // Tooltip
-  const Colour& backgroundColour = TooltipSettings::backgroundColour; 
+  const Colour& backgroundColour = TooltipSettings::backgroundColour;
   const Colour& borderColour = TooltipSettings::borderColour;
   const Colour& fontColour = TooltipSettings::fontColour;
   const Colour& innerShadowColour = TooltipSettings::innerShadowColour;
@@ -38,10 +43,12 @@ class Tooltip : public juce::Component, private dmt::utility::RepaintTimer
   const float& innerShadowRadius = TooltipSettings::innerShadowRadius;
   const float& outerShadowRadius = TooltipSettings::outerShadowRadius;
   const float& rawFontSize = TooltipSettings::fontSize;
-  const float& rawTextHorizontalPadding = TooltipSettings::textHorizontalPadding;
+  const float& rawTextHorizontalPadding =
+    TooltipSettings::textHorizontalPadding;
   const float& rawTextVerticalPadding = TooltipSettings::textVerticalPadding;
   const bool& drawOuterShadow = TooltipSettings::drawOuterShadow;
   const bool& drawInnerShadow = TooltipSettings::drawInnerShadow;
+
 public:
   Tooltip() noexcept
     : outerShadow(drawOuterShadow, outerShadowColour, outerShadowRadius, false)
@@ -64,8 +71,7 @@ public:
   void paint(juce::Graphics& graphics) override
   {
     TRACER("Tooltip::paint");
-    if (!tooltipImage.isNull())
-    {
+    if (!tooltipImage.isNull()) {
       const int imageWidth = tooltipImage.getWidth();
       const int imageHeight = tooltipImage.getHeight();
       const int width = getWidth();
@@ -101,14 +107,11 @@ public:
     juce::String foundTooltipText;
 
     // Traverse up the component hierarchy to find a TooltipClient
-    while (component != nullptr && component != parent)
-    {
-      if (auto* tooltipClient = dynamic_cast<juce::TooltipClient*>(component))
-      {
+    while (component != nullptr && component != parent) {
+      if (auto* tooltipClient = dynamic_cast<juce::TooltipClient*>(component)) {
         // If a TooltipClient is found, get its tooltip text
         auto tooltipText = tooltipClient->getTooltip();
-        if (!tooltipText.isEmpty())
-        {
+        if (!tooltipText.isEmpty()) {
           foundTooltipText = tooltipText;
           break;
         }
@@ -119,8 +122,7 @@ public:
     bool needsRepaint = false;
 
     // Check if the tooltip text has changed
-    if (foundTooltipText != currentTooltipText)
-    {
+    if (foundTooltipText != currentTooltipText) {
       currentTooltipText = foundTooltipText;
 
       // If there is new tooltip text, render the tooltip image
@@ -133,8 +135,7 @@ public:
     }
 
     // Check if the mouse position has changed
-    if (mousePosition != lastMousePosition)
-    {
+    if (mousePosition != lastMousePosition) {
       lastMousePosition = mousePosition;
       needsRepaint = true;
     }
@@ -150,7 +151,11 @@ protected:
     TRACER("Tooltip::renderTooltipImage");
     // Font size and style
     const auto fontSize = rawFontSize * size;
-    const auto font = fonts.medium.withHeight(fontSize);
+
+    // Determine font size based on OS
+    const auto font =
+      fonts.medium.withHeight(OS_IS_WINDOWS ? fontSize : fontSize * unixScale);
+
     const auto justification = juce::Justification::centredLeft;
 
     // Prepare the AttributedString
@@ -166,28 +171,32 @@ protected:
     textLayout.createLayout(attributedString, maxWidth);
     const auto layoutWidth = textLayout.getWidth() * 1.01f;
     const auto layoutHeight = textLayout.getHeight() * 1.01f;
-    
+
     // Precalculate parameters
     const auto textHorizontalPadding = rawTextHorizontalPadding * size;
     const auto textVerticalPadding = rawTextVerticalPadding * size;
     const auto innerWidth = layoutWidth + textHorizontalPadding * 2;
-    const auto innerHeight = layoutHeight + textVerticalPadding * 2;    
+    const auto innerHeight = layoutHeight + textVerticalPadding * 2;
     const auto borderWidth = rawBorderWidth * size;
     const auto outerWidth = innerWidth + borderWidth * 2;
     const auto outerHeight = innerHeight + borderWidth * 2;
-    const auto shadowRadius = std::max(outerShadowRadius, innerShadowRadius) * size;
+    const auto shadowRadius =
+      std::max(outerShadowRadius, innerShadowRadius) * size;
     const auto tooltipWidth = outerWidth + shadowRadius * 2;
     const auto tooltipHeight = outerHeight + shadowRadius * 2;
     const auto cornerRadius = rawCornerRadius * size;
     const auto innerCornerRadius = cornerRadius - borderWidth;
 
     // Bounds
-    const auto tooltipBounds = Rectangle<float>(0, 0, tooltipWidth, tooltipHeight);
+    const auto tooltipBounds =
+      Rectangle<float>(0, 0, tooltipWidth, tooltipHeight);
     const auto outerBounds = tooltipBounds.reduced(shadowRadius);
     const auto innerBounds = outerBounds.reduced(borderWidth);
-    const auto textBounds = innerBounds.reduced(textHorizontalPadding, textVerticalPadding);
-    
-    tooltipImage = juce::Image(juce::Image::ARGB, tooltipWidth, tooltipHeight, true);
+    const auto textBounds =
+      innerBounds.reduced(textHorizontalPadding, textVerticalPadding);
+
+    tooltipImage =
+      juce::Image(juce::Image::ARGB, tooltipWidth, tooltipHeight, true);
     juce::Graphics graphics(tooltipImage);
 
     // Path for the tooltip shape (outer and inner)

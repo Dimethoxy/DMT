@@ -154,7 +154,7 @@ public:
     static inline auto& outerShadowRadius =
       container.add<float>("Tooltip.OuterShadowRadius", 10.0f);
     static inline auto& fontSize =
-      container.add<float>("Tooltip.FontSize", 18.0f);
+      container.add<float>("Tooltip.FontSize", 20.0f);
     static inline auto& textHorizontalPadding =
       container.add<float>("Tooltip.TextHorizontalPadding", 10.0f);
     static inline auto& textVerticalPadding =
