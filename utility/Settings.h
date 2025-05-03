@@ -148,9 +148,9 @@ public:
     static inline auto& rawBorderWidth =
       container.add<float>("Popover.BorderWidth", 2.0f);
     static inline auto& titleFontSize =
-      container.add<float>("Popover.TitleFontSize", 24.0f);
+      container.add<float>("Popover.TitleFontSize", 22.0f);
     static inline auto& messageFontSize =
-      container.add<float>("Popover.MessageFontSize", 18.0f);
+      container.add<float>("Popover.MessageFontSize", 16.5f);
     static inline auto& drawOuterShadow =
       container.add<bool>("Popover.DrawOuterShadow", true);
     static inline auto& drawInnerShadow =
