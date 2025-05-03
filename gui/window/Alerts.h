@@ -5,6 +5,7 @@
 #include "dmt/gui/widget/Shadow.h"
 #include "dmt/utility/Fonts.h"
 #include "dmt/utility/RepaintTimer.h"
+#include "dmt/utility/Scaleable.h"
 #include "dmt/utility/Settings.h"
 #include "utility/Icon.h"
 #include <JuceHeader.h>
@@ -20,6 +21,7 @@ namespace window {
 class Alerts
   : public juce::Component
   , public dmt::utility::RepaintTimer
+  , public dmt::Scaleable
 {
   template<typename T>
   using Rectangle = juce::Rectangle<T>;
@@ -199,9 +201,16 @@ protected:
     TRACER("Alerts::renderAlertToImage");
     const auto alertWidth = rawAlertWidth * size;
     const auto alertHeight = rawAlertHeight * size;
+
+    // HiDPI support: render at higher resolution
+    const float scale = getScaleFactor(this);
+    const int hiResWidth = static_cast<int>(alertWidth * scale);
+    const int hiResHeight = static_cast<int>(alertHeight * scale);
+
     alert.cachedComponentImage =
-      juce::Image(juce::Image::ARGB, alertWidth, alertHeight, true);
+      juce::Image(juce::Image::ARGB, hiResWidth, hiResHeight, true);
     juce::Graphics g(alert.cachedComponentImage);
+    g.addTransform(juce::AffineTransform::scale(scale, scale));
 
     // copy the colours to use
     Colour backgroundColour, borderColour, fontColour, iconColour,
