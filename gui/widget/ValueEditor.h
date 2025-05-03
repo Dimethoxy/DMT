@@ -27,26 +27,6 @@ class ValueEditor : public juce::Component
   using TreeAdapter = dmt::configuration::TreeAdapter;
   using SettingsEditorSettings = dmt::Settings::SettingsEditor;
 
-  // Add a custom TextEditor that always consumes key events
-  class ConsumingTextEditor : public TextEditor
-  {
-  public:
-    ConsumingTextEditor(const juce::String& name)
-      : TextEditor(name)
-    {
-    }
-
-    bool keyPressed(const juce::KeyPress& key) override
-    {
-      // Let the base class handle the key event first
-      TextEditor::keyPressed(key);
-      // Always consume key events when focused
-      if (hasKeyboardFocus(true))
-        return true;
-      return false;
-    }
-  };
-
   //==============================================================================
   // Window
   const float& size = Settings::Window::size;
@@ -86,8 +66,7 @@ public:
 
     editor.setWantsKeyboardFocus(true);
     editor.setMouseClickGrabsKeyboardFocus(true);
-    // Ensure the editor is focusable and consumes keypresses
-    editor.setInterceptsMouseClicks(true, false);
+    editor.setEscapeAndReturnKeysConsumed(true);
   }
 
   ~ValueEditor() override = default;
@@ -111,6 +90,9 @@ public:
     editor.setFont(fonts.medium.withHeight(fontSize * size));
     editor.setText("", juce::dontSendNotification);
     editor.setText(leaf.toString(), juce::dontSendNotification);
+    editor.setWantsKeyboardFocus(true);
+    editor.setMouseClickGrabsKeyboardFocus(true);
+    editor.setEscapeAndReturnKeysConsumed(true);
   }
 
   // TODO: This is absolutely horrible
@@ -133,13 +115,6 @@ public:
       editor.setText(leaf.toString(), juce::dontSendNotification);
       return;
     }
-    // Let's trigger a resize of the top level component
-    // const auto topLevelBounds = getTopLevelComponent()->getBounds();
-    // const auto width = topLevelBounds.getWidth();
-    // const auto height = topLevelBounds.getHeight();
-    // getTopLevelComponent()->setSize(0,0);
-    // getTopLevelComponent()->setSize(width, height);
-    // Iterate parents to find the compositor
     auto* parent = getParentComponent();
     while (dynamic_cast<Listener*>(parent) == nullptr) {
       parent = parent->getParentComponent();
@@ -154,13 +129,16 @@ public:
 
     auto* topLevelComponent = getTopLevelComponent();
     topLevelComponent->repaint();
+    editor.setWantsKeyboardFocus(true);
+    editor.setMouseClickGrabsKeyboardFocus(true);
+    editor.setEscapeAndReturnKeysConsumed(true);
   }
 
 private:
   //==============================================================================
   TreeAdapter::Leaf& leaf;
   Label label;
-  ConsumingTextEditor editor; // Use the custom editor
+  TextEditor editor;
 
   //==============================================================================
   Fonts fonts;
