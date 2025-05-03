@@ -36,11 +36,12 @@ public:
         setText(getText().dropLastCharacters(1));
       }
       return true;
-    } else if (key == juce::KeyPress::returnKey) {
-      // Handle return key press
+    } else if (key.getTextCharacter() != 0) {
+      setText(getText() + key.getTextCharacter());
+      return true;
     } else {
-      // Handle other key presses
-      return false;
+      TextEditor::keyPressed(key);
+      return true;
     }
   }
 
