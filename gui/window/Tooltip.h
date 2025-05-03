@@ -72,6 +72,7 @@ public:
   {
     TRACER("Tooltip::paint");
     if (!tooltipImage.isNull()) {
+      const float scale = (float)getDesktopScaleFactor() * 2.0f;
       const int imageWidth = tooltipImage.getWidth();
       const int imageHeight = tooltipImage.getHeight();
       const int width = getWidth();
@@ -81,14 +82,24 @@ public:
       int drawPositionY = lastMousePosition.y;
 
       // If drawing at (x, y) would go off the right edge, flip to left of mouse
-      if (drawPositionX + imageWidth > width)
-        drawPositionX = std::max(0, lastMousePosition.x - imageWidth);
+      if (drawPositionX + imageWidth / scale > width)
+        drawPositionX =
+          std::max(0, lastMousePosition.x - (int)(imageWidth / scale));
 
       // If drawing at (x, y) would go off the bottom, flip to above mouse
-      if (drawPositionY + imageHeight > height)
-        drawPositionY = std::max(0, lastMousePosition.y - imageHeight);
+      if (drawPositionY + imageHeight / scale > height)
+        drawPositionY =
+          std::max(0, lastMousePosition.y - (int)(imageHeight / scale));
 
-      graphics.drawImageAt(tooltipImage, drawPositionX, drawPositionY);
+      graphics.drawImage(tooltipImage,
+                         (float)drawPositionX,
+                         (float)drawPositionY,
+                         imageWidth / scale,
+                         imageHeight / scale,
+                         0,
+                         0,
+                         imageWidth,
+                         imageHeight);
     }
   }
 
@@ -187,6 +198,16 @@ protected:
     const auto cornerRadius = rawCornerRadius * size;
     const auto innerCornerRadius = cornerRadius - borderWidth;
 
+    // --- Begin HiDPI fix ---
+    const float scale = (float)getDesktopScaleFactor() * 2.0f;
+    const auto scaledTooltipWidth = juce::roundToInt(tooltipWidth * scale);
+    const auto scaledTooltipHeight = juce::roundToInt(tooltipHeight * scale);
+
+    tooltipImage = juce::Image(
+      juce::Image::ARGB, scaledTooltipWidth, scaledTooltipHeight, true);
+    juce::Graphics graphics(tooltipImage);
+    graphics.addTransform(juce::AffineTransform::scale(scale, scale));
+
     // Bounds
     const auto tooltipBounds =
       Rectangle<float>(0, 0, tooltipWidth, tooltipHeight);
@@ -194,10 +215,6 @@ protected:
     const auto innerBounds = outerBounds.reduced(borderWidth);
     const auto textBounds =
       innerBounds.reduced(textHorizontalPadding, textVerticalPadding);
-
-    tooltipImage =
-      juce::Image(juce::Image::ARGB, tooltipWidth, tooltipHeight, true);
-    juce::Graphics graphics(tooltipImage);
 
     // Path for the tooltip shape (outer and inner)
     juce::Path outerPath, innerPath;
@@ -224,6 +241,7 @@ protected:
     graphics.setColour(fontColour);
     graphics.setFont(font);
     graphics.drawText(text, textBounds, justification, true);
+    // --- End HiDPI fix ---
   }
 
 private:
