@@ -134,12 +134,15 @@ public:
     editor.setEscapeAndReturnKeysConsumed(true);
   }
 
+  TextEditor& getEditor() { return editor; }
+
 private:
   //==============================================================================
   TreeAdapter::Leaf& leaf;
   Label label;
   TextEditor editor;
 
+private:
   //==============================================================================
   Fonts fonts;
 

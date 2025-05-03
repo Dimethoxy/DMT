@@ -32,9 +32,10 @@ class ValueEditorList : public juce::Component
   const Colour& seperatorColour = SettingsEditorSettings::seperatorColour;
 
 public:
-  ValueEditorList() { 
+  ValueEditorList()
+  {
     TRACER("ValueEditorList::ValueEditorList");
-    addAllEditors(); 
+    addAllEditors();
   }
 
   ~ValueEditorList() override = default;
@@ -48,7 +49,8 @@ public:
     // Draw top line
     _g.drawLine(0.0f, 0.0f, static_cast<float>(getWidth()), 0.0f, 1.0f);
 
-    // Draw separator lines at the top of each child component (except the first)
+    // Draw separator lines at the top of each child component (except the
+    // first)
     for (int i = 1; i < getNumChildComponents(); ++i) {
       auto* comp = getChildComponent(i);
       if (comp) {
@@ -62,7 +64,8 @@ public:
       auto* last = getChildComponent(getNumChildComponents() - 1);
       if (last) {
         float bottomY = static_cast<float>(last->getBottom());
-        _g.drawLine(0.0f, bottomY, static_cast<float>(getWidth()), bottomY, 1.0f);
+        _g.drawLine(
+          0.0f, bottomY, static_cast<float>(getWidth()), bottomY, 1.0f);
       }
     }
   }
@@ -70,7 +73,7 @@ public:
   void resized() override
   {
     TRACER("ValueEditorList::resized");
-    
+
     const auto fontSize = rawFontSize * size;
 
     auto bounds = getLocalBounds();
@@ -126,8 +129,24 @@ protected:
   {
     TRACER("ValueEditorList::addAllEditors");
 
-    for (auto& editor : editorList) {
+    for (size_t i = 0; i < editorList.size(); ++i) {
+      auto& editor = editorList[i];
       addAndMakeVisible(*editor);
+
+      // Attach up/down callbacks
+      auto* textEditor = &(editor->getEditor());
+      textEditor->onArrowUp = [this, i]() {
+        if (i > 0) {
+          auto* prev = &(editorList[i - 1]->getEditor());
+          prev->grabKeyboardFocus();
+        }
+      };
+      textEditor->onArrowDown = [this, i]() {
+        if (i + 1 < editorList.size()) {
+          auto* next = &(editorList[i + 1]->getEditor());
+          next->grabKeyboardFocus();
+        }
+      };
     }
   }
 

@@ -29,6 +29,10 @@ public:
 
   ~TextEditor() override = default;
 
+  // Callbacks for arrow up/down
+  std::function<void()> onArrowUp;
+  std::function<void()> onArrowDown;
+
   bool keyPressed(const juce::KeyPress& key) override
   {
     // Handle the backspace key
@@ -48,6 +52,18 @@ public:
           setCaretPosition(caretPos - 1);
         }
       }
+      return true;
+    }
+
+    // Handle arrow up/down
+    if (key == juce::KeyPress::upKey) {
+      if (onArrowUp)
+        onArrowUp();
+      return true;
+    }
+    if (key == juce::KeyPress::downKey || key == juce::KeyPress::tabKey) {
+      if (onArrowDown)
+        onArrowDown();
       return true;
     }
 
@@ -81,6 +97,6 @@ private:
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(TextEditor)
 };
 
-} // namesp  ace widget
+} // namespace widget
 } // namespace gui
 } // namespace dmt
