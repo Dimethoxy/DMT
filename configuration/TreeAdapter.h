@@ -261,6 +261,9 @@ protected:
                     category) != blockedCategories.end())
         continue;
       juce::String leaf = key.substring(dotIndex + 1);
+      // Hide "General.ThemeVersion"
+      if (category == "General" && leaf == "ThemeVersion")
+        continue;
       Leaf leafObj{ leaf, &value };
       categoryMap[category].push_back(leafObj);
     }

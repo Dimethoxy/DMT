@@ -43,6 +43,8 @@ public:
     container.add<bool>("General.ShowDebugGrid", false);
   static inline auto& displayUpdateNotifications =
     container.add<bool>("General.DisplayUpdateNotifications", true);
+  static inline auto& themeVersion =
+    container.add<int>("General.ThemeVersion", 1);
 
 private:
   struct Colours
