@@ -182,7 +182,11 @@ public:
    *
    * @details Used by JUCE's tooltip system to display contextual help.
    */
-  [[nodiscard]] inline String getTooltip() override { TRACER("AbstractButton::getTooltip"); return tooltip; }
+  [[nodiscard]] inline String getTooltip() override
+  {
+    TRACER("AbstractButton::getTooltip");
+    return tooltip;
+  }
 
   //==============================================================================
   /**
@@ -315,17 +319,16 @@ private:
 
     if (_innerBounds.getWidth() <= 0 || _innerBounds.getHeight() <= 0)
       return;
-     
+
     backgroundImage = Image(
-        Image::ARGB, _innerBounds.getWidth(), _innerBounds.getHeight(), true);
+      Image::ARGB, _innerBounds.getWidth(), _innerBounds.getHeight(), true);
     backgroundImageComponent.setBounds(_innerBounds);
     hoverBackgroundImage = Image(
-        Image::ARGB, _innerBounds.getWidth(), _innerBounds.getHeight(), true);
+      Image::ARGB, _innerBounds.getWidth(), _innerBounds.getHeight(), true);
     hoverBackgroundImageComponent.setBounds(_innerBounds);
     clickedBackgroundImage = Image(
-        Image::ARGB, _innerBounds.getWidth(), _innerBounds.getHeight(), true);
+      Image::ARGB, _innerBounds.getWidth(), _innerBounds.getHeight(), true);
     clickedBackgroundImageComponent.setBounds(_innerBounds);
-    
   }
 
   //==============================================================================
@@ -345,16 +348,23 @@ private:
     const auto svgPadding = specificSvgPadding + globalSvgPadding;
 
     const auto iconArea = _innerBounds.reduced(svgPadding);
-    
+
     if (iconArea.getWidth() <= 0 || iconArea.getHeight() <= 0)
       return;
 
-    iconImage = juce::Image(
-      juce::Image::ARGB, iconArea.getWidth(), iconArea.getHeight(), true);
+    // Get the scale factor for HiDPI displays
+    const float scale =
+      juce::Component::getApproximateScaleFactorForComponent(this);
+
+    // Render the icon images at higher resolution
+    const int hiResWidth = static_cast<int>(iconArea.getWidth() * scale);
+    const int hiResHeight = static_cast<int>(iconArea.getHeight() * scale);
+
+    iconImage = juce::Image(juce::Image::ARGB, hiResWidth, hiResHeight, true);
     iconImageComponent.setBounds(iconArea);
 
-    hoverIconImage = juce::Image(
-      juce::Image::ARGB, iconArea.getWidth(), iconArea.getHeight(), true);
+    hoverIconImage =
+      juce::Image(juce::Image::ARGB, hiResWidth, hiResHeight, true);
     hoverIconImageComponent.setBounds(iconArea);
   }
 
@@ -404,25 +414,35 @@ private:
   {
     TRACER("AbstractButton::drawIcon");
     if (icon != nullptr) {
+      // Get the scale factor for HiDPI displays
+      const float scale =
+        juce::Component::getApproximateScaleFactorForComponent(this);
+
+      // Draw normal icon at high res, then scale down for display
       juce::Graphics iconGraphics(iconImage);
+      iconGraphics.addTransform(juce::AffineTransform::scale(scale, scale));
       iconGraphics.fillAll(juce::Colours::transparentBlack);
-      const auto iconArea = iconImage.getBounds().toFloat();
+      const auto iconArea = iconImage.getBounds().toFloat() / scale;
       const auto clonedIcon = icon->createCopy();
       clonedIcon->replaceColour(juce::Colours::black, juce::Colours::white);
       clonedIcon->drawWithin(
         iconGraphics, iconArea, juce::RectanglePlacement::centred, 1.0f);
-      iconImageComponent.setImage(iconImage);
+      iconImageComponent.setImage(iconImage,
+                                  juce::RectanglePlacement::stretchToFit);
 
+      // Draw hover icon at high res, then scale down for display
       juce::Graphics hoverIconGraphics(hoverIconImage);
+      hoverIconGraphics.addTransform(
+        juce::AffineTransform::scale(scale, scale));
       hoverIconGraphics.fillAll(juce::Colours::transparentBlack);
-      hoverIconGraphics.setColour(hoverColour);
       const auto clonedHoverIcon = icon->createCopy();
       clonedHoverIcon->replaceColour(
         juce::Colours::black,
         (alternativeIconHover) ? hoverColour : juce::Colours::black);
       clonedHoverIcon->drawWithin(
         hoverIconGraphics, iconArea, juce::RectanglePlacement::centred, 1.0f);
-      hoverIconImageComponent.setImage(hoverIconImage);
+      hoverIconImageComponent.setImage(hoverIconImage,
+                                       juce::RectanglePlacement::stretchToFit);
     }
   }
 
