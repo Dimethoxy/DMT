@@ -33,16 +33,25 @@ public:
   {
     if (key == juce::KeyPress::backspaceKey) {
       if (getText().isNotEmpty()) {
-        setText(getText().dropLastCharacters(1));
+        // Remove the character in front of the caret
+        const auto caretPos = getCaretPosition();
+        if (caretPos > 0) {
+          newTransaction();
+          const auto text = getText();
+          // split the text into two parts
+          const auto firstPart = text.substring(0, caretPos - 1);
+          const auto secondPart = text.substring(caretPos);
+          // set the new text
+          setText(firstPart + secondPart);
+          // set the caret position
+          setCaretPosition(caretPos - 1);
+        }
       }
       return true;
-    } else if (key.getTextCharacter() != 0) {
-      setText(getText() + key.getTextCharacter());
-      return true;
-    } else {
-      TextEditor::keyPressed(key);
-      return true;
     }
+
+    // If the key is not handled, call the base class implementation
+    return juce::TextEditor::keyPressed(key);
   }
 
 private:
