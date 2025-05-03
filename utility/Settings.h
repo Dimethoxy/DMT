@@ -5,17 +5,34 @@
 #include "configuration/Container.h"
 #include <JuceHeader.h>
 //==============================================================================
-#ifndef OS_IS_WINDOWS
-#define OS_IS_WINDOWS 0
+// OS constexprs set by CMake preprocessor definitions
+#if defined(CMAKE_OS_IS_WINDOWS) && CMAKE_OS_IS_WINDOWS
+static constexpr bool OS_IS_WINDOWS = true;
+#else
+static constexpr bool OS_IS_WINDOWS = false;
 #endif
-#ifndef OS_IS_DARWIN
-#define OS_IS_DARWIN 0
+
+#if defined(CMAKE_OS_IS_DARWIN) && CMAKE_OS_IS_DARWIN
+static constexpr bool OS_IS_DARWIN = true;
+#else
+static constexpr bool OS_IS_DARWIN = false;
 #endif
-#ifndef OS_IS_LINUX
-#define OS_IS_LINUX 0
+
+#if defined(CMAKE_OS_IS_LINUX) && CMAKE_OS_IS_LINUX
+static constexpr bool OS_IS_LINUX = true;
+#else
+static constexpr bool OS_IS_LINUX = false;
 #endif
-#ifndef DMT_DISABLE_UPDATE_NOTIFICATION
-#define DMT_DISABLE_UPDATE_NOTIFICATION 0
+
+static_assert(
+  (OS_IS_WINDOWS + OS_IS_DARWIN + OS_IS_LINUX) <= 1,
+  "Only one of OS_IS_WINDOWS, OS_IS_DARWIN, OS_IS_LINUX can be true!");
+
+#if defined(CMAKE_DMT_DISABLE_UPDATE_NOTIFICATION) &&                          \
+  CMAKE_DMT_DISABLE_UPDATE_NOTIFICATION
+static constexpr bool DMT_DISABLE_UPDATE_NOTIFICATION = true;
+#else
+static constexpr bool DMT_DISABLE_UPDATE_NOTIFICATION = false;
 #endif
 //==============================================================================
 namespace dmt {
