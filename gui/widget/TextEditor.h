@@ -23,6 +23,8 @@ public:
     setMultiLine(false);
     setFont(juce::Font(16.0f));
     setJustification(juce::Justification::centredLeft);
+    setEscapeAndReturnKeysConsumed(true);
+    setWantsKeyboardFocus(true);
   }
 
   ~TextEditor() override = default;
