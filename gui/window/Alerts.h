@@ -113,10 +113,10 @@ public:
   }
 
   // Push a new alert to the list
-  void pushAlert(const juce::String& title,
-                 const juce::String& message,
+  void pushAlert(const juce::String title,
+                 const juce::String message,
                  AlertType type,
-                 const juce::String& iconName = {})
+                 const juce::String iconName = {})
   {
     TRACER("Alerts::pushAlert");
     // When we push a new alert, let old ones age quicker
@@ -289,8 +289,8 @@ protected:
       }
     }
     const auto clonedIcon = icon->createCopy();
-    const auto iconBounds =
-      contentBounds.removeFromLeft(iconSize + 2 * uniqueIconPadding);
+    const auto iconBoundsWidth = iconSize + 2 * uniqueIconPadding;
+    const auto iconBounds = contentBounds.removeFromLeft(iconBoundsWidth);
     clonedIcon->replaceColour(juce::Colours::black, iconColour);
     clonedIcon->drawWithin(
       g, iconBounds, juce::RectanglePlacement::centred, 1.0f);

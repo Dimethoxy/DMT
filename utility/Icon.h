@@ -88,13 +88,13 @@ getPadding(const juce::String iconName)
   if (iconName == "Reload")
     return 4.0f;
   if (iconName == "Info")
-    return 4.0f;
+    return 0.0f;
   if (iconName == "Warning")
-    return 4.0f;
+    return 0.0f;
   if (iconName == "Error")
-    return 4.0f;
+    return 0.0f;
   if (iconName == "Success")
-    return 4.0f;
+    return 0.0f;
   return 0.0f;
 };
 //==============================================================================

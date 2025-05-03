@@ -366,7 +366,7 @@ public:
     properties.saveCurrentSettings();
     alerts.pushAlert("Settings saved successfully!",
                      "Your settings have been saved.",
-                     Alerts::AlertType::Info);
+                     Alerts::AlertType::Success);
   }
 
   //==============================================================================
