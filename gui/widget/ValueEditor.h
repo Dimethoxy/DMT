@@ -32,16 +32,18 @@ class ValueEditor : public juce::Component
   const float& size = Settings::Window::size;
 
   // SettingsEditor
-  const float& labelHorizontalPadding = SettingsEditorSettings::labelHorizontalPadding;
+  const float& labelHorizontalPadding =
+    SettingsEditorSettings::labelHorizontalPadding;
   const float& fontSize = SettingsEditorSettings::fontSize;
   const Colour& fontColour = SettingsEditorSettings::fontColour;
 
 public:
   class Listener
   {
-    public:
-    virtual void valueEditorListenerCallback() = 0;  
+  public:
+    virtual void valueEditorListenerCallback() = 0;
   };
+
 public:
   ValueEditor(TreeAdapter::Leaf& _leaf)
     : leaf(_leaf)
@@ -56,12 +58,14 @@ public:
     addAndMakeVisible(label);
     addAndMakeVisible(editor);
 
-
     editor.setText(String(leaf.toString()));
     setStyle();
 
     editor.onFocusLost = [this]() { newValueCallback(); };
     editor.onReturnKey = [this]() { newValueCallback(); };
+
+    editor.setWantsKeyboardFocus(true);
+    editor.setMouseClickGrabsKeyboardFocus(true);
   }
 
   ~ValueEditor() override = default;
@@ -88,13 +92,15 @@ public:
   }
 
   // TODO: This is absolutely horrible
-  void setStyle(){
+  void setStyle()
+  {
     TRACER("ValueEditor::setStyle");
     label.setRawHorizontalPadding(labelHorizontalPadding);
     editor.setColour(juce::TextEditor::textColourId, fontColour);
     editor.setColour(juce::TextEditor::backgroundColourId,
-                  juce::Colours::transparentBlack);
-    editor.setColour(juce::TextEditor::outlineColourId, juce::Colours::transparentBlack);
+                     juce::Colours::transparentBlack);
+    editor.setColour(juce::TextEditor::outlineColourId,
+                     juce::Colours::transparentBlack);
   }
 
   void newValueCallback()
