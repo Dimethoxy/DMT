@@ -229,7 +229,7 @@ protected:
     if (_width <= 0 || _height <= 0) {
       return;
     }
-    
+
     image = Image(PixelFormat::ARGB, _width + 10, _height, true);
 
     juce::Graphics imageGraphics(image);
@@ -305,7 +305,7 @@ protected:
 
     juce::PathStrokeType strokeType(thickness * size,
                                     juce::PathStrokeType::JointStyle::mitered,
-                                    juce::PathStrokeType::EndCapStyle::butt);
+                                    juce::PathStrokeType::EndCapStyle::square);
 
     juce::Graphics imageGraphics(image);
     imageGraphics.setColour(juce::Colours::white);
