@@ -31,6 +31,7 @@ public:
 
   bool keyPressed(const juce::KeyPress& key) override
   {
+    // Handle the backspace key
     if (key == juce::KeyPress::backspaceKey) {
       if (getText().isNotEmpty()) {
         // Remove the character in front of the caret
@@ -50,7 +51,28 @@ public:
       return true;
     }
 
-    // If the key is not handled, call the base class implementation
+    // Look for printable characters
+    const auto keyCode = key.getKeyCode();
+    const bool isLetter =
+      (keyCode >= 'a' && keyCode <= 'z') || (keyCode >= 'A' && keyCode <= 'Z');
+    const bool isDigit = (keyCode >= '0' && keyCode <= '9');
+    const bool isSpecialChar =
+      (keyCode == '.' || keyCode == '-' || keyCode == '_' || keyCode == '@' ||
+       keyCode == '#' || keyCode == '$' || keyCode == '%' || keyCode == '&' ||
+       keyCode == '*' || keyCode == '+' || keyCode == '=' || keyCode == '/' ||
+       keyCode == '?' || keyCode == '!' || keyCode == '~' || keyCode == '^' ||
+       keyCode == '(' || keyCode == ')' || keyCode == '{' || keyCode == '}' ||
+       keyCode == '[' || keyCode == ']' || keyCode == ';' || keyCode == ':' ||
+       keyCode == '"' || keyCode == '\'' || keyCode == '<' || keyCode == '>' ||
+       keyCode == ',' || keyCode == '|' || keyCode == '`' || keyCode == '\\');
+    if (isLetter || isDigit || isSpecialChar) {
+      newTransaction();
+      auto text = getText();
+      auto character = key.getTextCharacter();
+      auto string = String::charToString(character);
+      insertTextAtCaret(string);
+    }
+
     return juce::TextEditor::keyPressed(key);
   }
 
@@ -59,6 +81,6 @@ private:
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(TextEditor)
 };
 
-} // namespace widget
+} // namesp  ace widget
 } // namespace gui
 } // namespace dmt
