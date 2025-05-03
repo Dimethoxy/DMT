@@ -27,6 +27,26 @@ class ValueEditor : public juce::Component
   using TreeAdapter = dmt::configuration::TreeAdapter;
   using SettingsEditorSettings = dmt::Settings::SettingsEditor;
 
+  // Add a custom TextEditor that always consumes key events
+  class ConsumingTextEditor : public TextEditor
+  {
+  public:
+    ConsumingTextEditor(const juce::String& name)
+      : TextEditor(name)
+    {
+    }
+
+    bool keyPressed(const juce::KeyPress& key) override
+    {
+      // Let the base class handle the key event first
+      TextEditor::keyPressed(key);
+      // Always consume key events when focused
+      if (hasKeyboardFocus(true))
+        return true;
+      return false;
+    }
+  };
+
   //==============================================================================
   // Window
   const float& size = Settings::Window::size;
@@ -66,6 +86,8 @@ public:
 
     editor.setWantsKeyboardFocus(true);
     editor.setMouseClickGrabsKeyboardFocus(true);
+    // Ensure the editor is focusable and consumes keypresses
+    editor.setInterceptsMouseClicks(true, false);
   }
 
   ~ValueEditor() override = default;
@@ -138,7 +160,7 @@ private:
   //==============================================================================
   TreeAdapter::Leaf& leaf;
   Label label;
-  TextEditor editor;
+  ConsumingTextEditor editor; // Use the custom editor
 
   //==============================================================================
   Fonts fonts;
