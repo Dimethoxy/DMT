@@ -233,6 +233,12 @@ public:
       container.add<float>("Alert.TextHorizontalPadding", 10.0f);
     static inline auto& textVerticalPadding =
       container.add<float>("Alert.TextVerticalPadding", 5.0f);
+    static inline auto& maxAge = container.add<float>("Alert.MaxAge", 2.0f);
+    static inline auto& fadeOutTime =
+      container.add<float>("Alert.FadeOutTime", 0.5f);
+    static inline auto& iconSize =
+      container.add<float>("Alert.IconSize", 20.0f);
+
     static inline auto& drawOuterShadow =
       container.add<bool>("Alert.DrawOuterShadow", true);
     static inline auto& drawInnerShadow =
@@ -241,9 +247,6 @@ public:
       container.add<int>("Alert.AlertWidth", 250);
     static inline auto& alertHeight =
       container.add<int>("Alert.AlertHeight", 75);
-    static inline auto& maxAge = container.add<float>("Alert.MaxAge", 2.0f);
-    static inline auto& fadeOutTime =
-      container.add<float>("Alert.FadeOutTime", 0.5f);
   };
 
   struct Button

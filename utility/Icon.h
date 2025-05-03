@@ -27,30 +27,36 @@ getIcon(const juce::String iconName)
   if (iconName == "HideHeader")
     return juce::Drawable::createFromImageData(BinaryData::angles_up_svg,
                                                BinaryData::angles_up_svgSize);
-
   if (iconName == "Bypass")
     return juce::Drawable::createFromImageData(BinaryData::bypass_svg,
                                                BinaryData::bypass_svgSize);
-
   if (iconName == "Download")
     return juce::Drawable::createFromImageData(BinaryData::download_svg,
                                                BinaryData::download_svgSize);
-
   if (iconName == "Presets")
     return juce::Drawable::createFromImageData(BinaryData::presets_svg,
                                                BinaryData::presets_svgSize);
   if (iconName == "Close")
-
     return juce::Drawable::createFromImageData(BinaryData::close_svg,
                                                BinaryData::close_svgSize);
   if (iconName == "Save")
-
     return juce::Drawable::createFromImageData(BinaryData::save_svg,
                                                BinaryData::save_svgSize);
   if (iconName == "Reload")
-
     return juce::Drawable::createFromImageData(BinaryData::reload_svg,
                                                BinaryData::reload_svgSize);
+  if (iconName == "Info")
+    return juce::Drawable::createFromImageData(BinaryData::info_svg,
+                                               BinaryData::info_svgSize);
+  if (iconName == "Warning")
+    return juce::Drawable::createFromImageData(BinaryData::warning_svg,
+                                               BinaryData::warning_svgSize);
+  if (iconName == "Error")
+    return juce::Drawable::createFromImageData(BinaryData::error_svg,
+                                               BinaryData::error_svgSize);
+  if (iconName == "Success")
+    return juce::Drawable::createFromImageData(BinaryData::success_svg,
+                                               BinaryData::success_svgSize);
   return nullptr;
 };
 //==============================================================================
@@ -80,6 +86,14 @@ getPadding(const juce::String iconName)
   if (iconName == "Save")
     return 5.0f;
   if (iconName == "Reload")
+    return 4.0f;
+  if (iconName == "Info")
+    return 4.0f;
+  if (iconName == "Warning")
+    return 4.0f;
+  if (iconName == "Error")
+    return 4.0f;
+  if (iconName == "Success")
     return 4.0f;
   return 0.0f;
 };

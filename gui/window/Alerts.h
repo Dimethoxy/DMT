@@ -6,6 +6,7 @@
 #include "dmt/utility/Fonts.h"
 #include "dmt/utility/RepaintTimer.h"
 #include "dmt/utility/Settings.h"
+#include "utility/Icon.h"
 #include <JuceHeader.h>
 
 //==============================================================================
@@ -73,6 +74,7 @@ class Alerts
   const float& rawFontSize = AlertSettings::fontSize;
   const float& rawTextHorizontalPadding = AlertSettings::textHorizontalPadding;
   const float& rawTextVerticalPadding = AlertSettings::textVerticalPadding;
+  const float& rawIconSize = AlertSettings::iconSize;
   const int& rawAlertWidth = AlertSettings::alertWidth;
   const int& rawAlertHeight = AlertSettings::alertHeight;
   const float& maxAge = AlertSettings::maxAge;           // in seconds
@@ -237,34 +239,77 @@ protected:
         break;
     }
 
-    g.setColour(backgroundColour.withAlpha(0.95f));
-    g.fillRoundedRectangle(g.getClipBounds().toFloat(), 12.0f * size);
+    const auto iconSize = rawIconSize * size;
+    const auto fontSize = rawFontSize * size;
+    const auto font = fonts.medium.withHeight(fontSize);
+    const auto borderWidth = rawBorderWidth * size;
+    const auto cornerRadius = rawCornerRadius * size;
+    const auto innerCornerRadius = cornerRadius - borderWidth;
+    const auto textHorizontalPadding = rawTextHorizontalPadding * size;
+    const auto textVerticalPadding = rawTextVerticalPadding * size;
+    const auto alertBounds = Rectangle<float>(0, 0, alertWidth, alertHeight);
+    const auto outerBounds = alertBounds.reduced(outerShadowRadius * size);
+    const auto innerBounds = outerBounds.reduced(borderWidth);
+    auto contentBounds =
+      innerBounds.reduced(textHorizontalPadding, textVerticalPadding);
 
-    // Draw icon (placeholder: colored circle)
-    g.setColour(juce::Colours::white);
-    g.fillEllipse(16 * size, 16 * size, 32 * size, 32 * size);
+    // Draw Border
+    g.setColour(borderColour);
+    g.fillRoundedRectangle(outerBounds, cornerRadius);
 
-    // Draw title
-    g.setColour(juce::Colours::white);
-    g.setFont(fonts.medium.withHeight(18.0f * size));
-    g.drawText(alert.title,
-               int(56 * size),
-               int(12 * size),
-               int(alertWidth - 64 * size),
-               int(24 * size),
-               juce::Justification::left);
+    // Draw Background
+    g.setColour(backgroundColour);
+    g.fillRoundedRectangle(innerBounds, innerCornerRadius);
 
-    // Draw message
-    g.setFont(fonts.medium.withHeight(18.0f * size));
-    g.setColour(juce::Colours::white.withAlpha(0.85f));
-    g.drawText(alert.message,
-               int(56 * size),
-               int(36 * size),
-               int(alertWidth - 64 * size),
-               int(32 * size),
-               juce::Justification::left);
+    // Draw Icon
+    auto icon = icons::getIcon(alert.iconName);
+    auto uniqueIconPadding = icons::getPadding(alert.iconName) * size;
+    if (icon == nullptr) {
+      switch (alert.type) {
+        case AlertType::Info:
+          icon = icons::getIcon("Info");
+          uniqueIconPadding = icons::getPadding("Info") * size;
+          break;
+        case AlertType::Warning:
+          icon = icons::getIcon("Warning");
+          uniqueIconPadding = icons::getPadding("Warning") * size;
+          break;
+        case AlertType::Error:
+          icon = icons::getIcon("Error");
+          uniqueIconPadding = icons::getPadding("Error") * size;
+          break;
+        case AlertType::Success:
+          icon = icons::getIcon("Success");
+          uniqueIconPadding = icons::getPadding("Success") * size;
+          break;
+      }
+    }
+    const auto clonedIcon = icon->createCopy();
+    const auto iconBounds =
+      contentBounds.removeFromLeft(iconSize + 2 * uniqueIconPadding)
+        .reduced(uniqueIconPadding);
+    clonedIcon->replaceColour(juce::Colours::black, iconColour);
+    clonedIcon->drawWithin(
+      g, iconBounds, juce::RectanglePlacement::centred, 1.0f);
 
-    // Optionally: draw shadow, border, etc.
+    // Title
+    const auto titleBounds =
+      contentBounds.removeFromTop(iconSize + 2 * uniqueIconPadding);
+    g.setFont(font);
+    g.setColour(fontColour);
+    g.drawFittedText(alert.title,
+                     titleBounds.toNearestInt(),
+                     juce::Justification::centredLeft,
+                     1);
+
+    // Message
+    const auto messageBounds = contentBounds;
+    g.setFont(font);
+    g.setColour(fontColour);
+    g.drawFittedText(alert.message,
+                     messageBounds.toNearestInt(),
+                     juce::Justification::centredLeft,
+                     1);
   }
 
 private:
