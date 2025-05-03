@@ -34,6 +34,7 @@
 
 #include "gui/widget/Shadow.h"
 #include "utility/Icon.h"
+#include "utility/Scaleable.h"
 #include "utility/Settings.h"
 #include <JuceHeader.h>
 
@@ -57,7 +58,9 @@ namespace widget {
  * customizable colors, and tooltips. The rationale for this design is to
  * centralize button appearance logic and maximize real-time GUI performance.
  */
-class AbstractButton : public juce::Button
+class AbstractButton
+  : public juce::Button
+  , public dmt::Scaleable
 {
   using String = juce::String;
   using Settings = dmt::Settings;
@@ -353,8 +356,7 @@ private:
       return;
 
     // Get the scale factor for HiDPI displays
-    const float scale =
-      juce::Component::getApproximateScaleFactorForComponent(this);
+    const float scale = getScaleFactor(this);
 
     // Render the icon images at higher resolution
     const int hiResWidth = static_cast<int>(iconArea.getWidth() * scale);
@@ -415,8 +417,7 @@ private:
     TRACER("AbstractButton::drawIcon");
     if (icon != nullptr) {
       // Get the scale factor for HiDPI displays
-      const float scale =
-        juce::Component::getApproximateScaleFactorForComponent(this);
+      const float scale = getScaleFactor(this);
 
       // Draw normal icon at high res, then scale down for display
       juce::Graphics iconGraphics(iconImage);
