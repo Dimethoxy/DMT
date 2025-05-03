@@ -52,8 +52,6 @@ public:
 
   static inline auto& framerate =
     container.add<int>("General.TargetFramerate", 30);
-  static inline auto& unixFontScalingFactor =
-    container.add<float>("General.UnixFontScalingFactor", 0.9f);
   static inline auto& debugBounds =
     container.add<bool>("General.ShowDebugBounds", false);
   static inline auto& debugGrid =
@@ -108,7 +106,7 @@ public:
     static inline auto& titleFontColour =
       container.add<Colour>("Header.TitleFontColour", Colours::font);
     static inline auto& titleFontSize =
-      container.add<float>("Header.TitleFontSize", 34.0f);
+      container.add<float>("Header.TitleFontSize", 30.0f);
     static inline auto& titleOffset =
       container.add<float>("Header.TitleOffset", 2.5f);
     static inline auto& titleButtonWidth =
@@ -180,7 +178,7 @@ public:
     static inline auto& outerShadowRadius =
       container.add<float>("Tooltip.OuterShadowRadius", 10.0f);
     static inline auto& fontSize =
-      container.add<float>("Tooltip.FontSize", 20.0f);
+      container.add<float>("Tooltip.FontSize", 16.0f);
     static inline auto& textHorizontalPadding =
       container.add<float>("Tooltip.TextHorizontalPadding", 10.0f);
     static inline auto& textVerticalPadding =
@@ -271,16 +269,16 @@ public:
     static inline auto& iconSize =
       container.add<float>("Alert.IconSize", 20.0f);
     static inline auto& contentSpacing =
-      container.add<float>("Alert.ContentSpacing", 8.0f);
+      container.add<float>("Alert.ContentSpacing", 10.0f);
 
     static inline auto& drawOuterShadow =
       container.add<bool>("Alert.DrawOuterShadow", true);
     static inline auto& drawInnerShadow =
       container.add<bool>("Alert.DrawInnerShadow", true);
     static inline auto& alertWidth =
-      container.add<int>("Alert.AlertWidth", 260);
+      container.add<int>("Alert.AlertWidth", 270);
     static inline auto& alertHeight =
-      container.add<int>("Alert.AlertHeight", 75);
+      container.add<int>("Alert.AlertHeight", 70);
   };
 
   struct Button
@@ -340,7 +338,7 @@ public:
     static inline auto& fontColor =
       container.add<Colour>("Panel.FontColor", Colours::font);
     static inline auto& fontSize =
-      container.add<float>("Panel.FontSize", 34.0f);
+      container.add<float>("Panel.FontSize", 30.0f);
   };
 
   struct Carousel
@@ -372,7 +370,7 @@ public:
     static inline auto& padding =
       container.add<float>("SettingsEditor.Padding", 5.0f);
     static inline auto& fontSize =
-      container.add<float>("SettingsEditor.FontSize", 17.0f);
+      container.add<float>("SettingsEditor.FontSize", 16.0f);
     static inline auto& scrollBarThickness =
       container.add<float>("SettingsEditor.ScrollBarThickness", 8.0f);
     static inline auto& labelHorizontalPadding =
@@ -397,9 +395,9 @@ public:
     static inline auto& infoFontColour =
       container.add<Colour>("Slider.InfoFontColour", Colours::font);
     static inline auto& titleFontSize =
-      container.add<float>("Slider.TitleFontSize", 24.0f);
+      container.add<float>("Slider.TitleFontSize", 22.0f);
     static inline auto& infoFontSize =
-      container.add<float>("Slider.InfoFontSize", 18.0f);
+      container.add<float>("Slider.InfoFontSize", 16.0f);
     // Shaft
     static inline auto& shaftColour =
       container.add<Colour>("Slider.ShaftColour", Colours::font);

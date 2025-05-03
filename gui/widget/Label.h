@@ -62,7 +62,6 @@ class Label : public juce::Component
   using Settings = dmt::Settings;
   using Justification = juce::Justification;
   const float& size = Settings::Window::size;
-  const float& unixScale = Settings::unixFontScalingFactor;
 
 public:
   //==============================================================================
@@ -123,13 +122,8 @@ public:
     if (Settings::debugBounds)
       _g.drawRect(bounds, 1);
 
-    // Set font size depending on OS
-    if (OS_IS_WINDOWS) {
-      _g.setFont(font.withHeight(static_cast<float>(fontSize * size)));
-    } else {
-      _g.setFont(
-        font.withHeight(static_cast<float>(fontSize * size * unixScale)));
-    }
+    // Set font size and scaling
+    _g.setFont(font.withHeight(static_cast<float>(fontSize * size)));
 
     // Padding
     const float horizontalPadding = rawHorizontalPadding * size;
@@ -191,7 +185,7 @@ public:
   inline void setFontColour(const juce::Colour& _colour) noexcept
   {
     // Make sure the colour is actually different before repainting
-    if (fontColour != nullptr&& fontColour == &_colour) {
+    if (fontColour != nullptr && fontColour == &_colour) {
       fontColour = &_colour;
       return;
     }

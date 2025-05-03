@@ -31,9 +31,6 @@ class Tooltip
   // Window
   const float& size = Settings::Window::size;
 
-  // General
-  const float& unixScale = Settings::unixFontScalingFactor;
-
   // Tooltip
   const Colour& backgroundColour = TooltipSettings::backgroundColour;
   const Colour& borderColour = TooltipSettings::borderColour;
@@ -166,8 +163,7 @@ protected:
     const auto fontSize = rawFontSize * size;
 
     // Determine font size based on OS
-    const auto font =
-      fonts.medium.withHeight(OS_IS_WINDOWS ? fontSize : fontSize * unixScale);
+    const auto font = fonts.medium.withHeight(fontSize);
 
     const auto justification = juce::Justification::centredLeft;
 

@@ -253,8 +253,8 @@ protected:
     const auto iconSize = rawIconSize * size;
     const auto titleFontSize = rawFontSize * size;
     const auto messageFontSize = rawMessageFontSize * size;
-    const auto titleFont = fonts.medium.withHeight(titleFontSize);
-    const auto messageFont = fonts.regular.withHeight(messageFontSize);
+    const auto titleFont = fonts.bold.withHeight(titleFontSize);
+    const auto messageFont = fonts.medium.withHeight(messageFontSize);
     const auto borderWidth = rawBorderWidth * size;
     const auto cornerRadius = rawCornerRadius * size;
     const auto innerCornerRadius = cornerRadius - borderWidth;
