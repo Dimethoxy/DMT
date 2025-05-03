@@ -235,11 +235,13 @@ public:
       container.add<float>("Alert.TextHorizontalPadding", 10.0f);
     static inline auto& textVerticalPadding =
       container.add<float>("Alert.TextVerticalPadding", 5.0f);
-    static inline auto& maxAge = container.add<float>("Alert.MaxAge", 2.0f);
+    static inline auto& maxAge = container.add<float>("Alert.MaxAge", 1.0f);
     static inline auto& fadeOutTime =
       container.add<float>("Alert.FadeOutTime", 0.5f);
     static inline auto& iconSize =
       container.add<float>("Alert.IconSize", 20.0f);
+    static inline auto& contentSpacing =
+      container.add<float>("Alert.ContentSpacing", 8.0f);
 
     static inline auto& drawOuterShadow =
       container.add<bool>("Alert.DrawOuterShadow", true);

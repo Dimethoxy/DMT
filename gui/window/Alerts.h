@@ -76,6 +76,7 @@ class Alerts
   const float& rawTextHorizontalPadding = AlertSettings::textHorizontalPadding;
   const float& rawTextVerticalPadding = AlertSettings::textVerticalPadding;
   const float& rawIconSize = AlertSettings::iconSize;
+  const float& rawContentSpacing = AlertSettings::contentSpacing;
   const int& rawAlertWidth = AlertSettings::alertWidth;
   const int& rawAlertHeight = AlertSettings::alertHeight;
   const float& maxAge = AlertSettings::maxAge;           // in seconds
@@ -289,27 +290,26 @@ protected:
     }
     const auto clonedIcon = icon->createCopy();
     const auto iconBounds =
-      contentBounds.removeFromLeft(iconSize + 2 * uniqueIconPadding)
-      /*.reduced(uniqueIconPadding)*/;
+      contentBounds.removeFromLeft(iconSize + 2 * uniqueIconPadding);
     clonedIcon->replaceColour(juce::Colours::black, iconColour);
     clonedIcon->drawWithin(
       g, iconBounds, juce::RectanglePlacement::centred, 1.0f);
 
     // Title
-    const auto titleBounds =
-      contentBounds.removeFromTop(iconSize + 2 * uniqueIconPadding)
-        .removeFromRight(contentBounds.getWidth() -
-                         textHorizontalPadding * 0.9);
+    const auto contentSpacing = rawContentSpacing * size;
+    const auto contentWidth = contentBounds.getWidth() - contentSpacing;
+    const auto titleBoundsHeight = contentBounds.getHeight() / 2.0f;
+    const auto titleBounds = contentBounds.removeFromTop(titleBoundsHeight)
+                               .removeFromRight(contentWidth);
     g.setFont(titleFont);
     g.setColour(fontColour);
     g.drawFittedText(alert.title,
                      titleBounds.toNearestInt(),
-                     juce::Justification::centredLeft,
+                     juce::Justification::bottomLeft,
                      1);
 
     // Message
-    const auto messageBounds = contentBounds.removeFromRight(
-      contentBounds.getWidth() - textHorizontalPadding * 0.9);
+    const auto messageBounds = contentBounds.removeFromRight(contentWidth);
     g.setFont(messageFont);
     g.setColour(fontColour);
     g.drawFittedText(alert.message,
