@@ -360,14 +360,11 @@ private:
     const int hiResWidth = static_cast<int>(iconArea.getWidth() * scale);
     const int hiResHeight = static_cast<int>(iconArea.getHeight() * scale);
 
-    // Use juce::Image for drawing, but store as ScaledImage
-    juce::Image tmpIconImage(juce::Image::ARGB, hiResWidth, hiResHeight, true);
-    iconImage = juce::ScaledImage(tmpIconImage, scale);
+    iconImage = juce::Image(juce::Image::ARGB, hiResWidth, hiResHeight, true);
     iconImageComponent.setBounds(iconArea);
 
-    juce::Image tmpHoverIconImage(
-      juce::Image::ARGB, hiResWidth, hiResHeight, true);
-    hoverIconImage = juce::ScaledImage(tmpHoverIconImage, scale);
+    hoverIconImage =
+      juce::Image(juce::Image::ARGB, hiResWidth, hiResHeight, true);
     hoverIconImageComponent.setBounds(iconArea);
   }
 
@@ -422,18 +419,19 @@ private:
         juce::Component::getApproximateScaleFactorForComponent(this);
 
       // Draw normal icon at high res, then scale down for display
-      juce::Graphics iconGraphics(iconImage.getImage());
+      juce::Graphics iconGraphics(iconImage);
       iconGraphics.addTransform(juce::AffineTransform::scale(scale, scale));
       iconGraphics.fillAll(juce::Colours::transparentBlack);
-      const auto iconArea = iconImage.getImage().getBounds().toFloat() / scale;
+      const auto iconArea = iconImage.getBounds().toFloat() / scale;
       const auto clonedIcon = icon->createCopy();
       clonedIcon->replaceColour(juce::Colours::black, juce::Colours::white);
       clonedIcon->drawWithin(
         iconGraphics, iconArea, juce::RectanglePlacement::centred, 1.0f);
-      iconImageComponent.setImage(iconImage.getImage());
+      iconImageComponent.setImage(iconImage,
+                                  juce::RectanglePlacement::stretchToFit);
 
       // Draw hover icon at high res, then scale down for display
-      juce::Graphics hoverIconGraphics(hoverIconImage.getImage());
+      juce::Graphics hoverIconGraphics(hoverIconImage);
       hoverIconGraphics.addTransform(
         juce::AffineTransform::scale(scale, scale));
       hoverIconGraphics.fillAll(juce::Colours::transparentBlack);
@@ -443,7 +441,8 @@ private:
         (alternativeIconHover) ? hoverColour : juce::Colours::black);
       clonedHoverIcon->drawWithin(
         hoverIconGraphics, iconArea, juce::RectanglePlacement::centred, 1.0f);
-      hoverIconImageComponent.setImage(hoverIconImage.getImage());
+      hoverIconImageComponent.setImage(hoverIconImage,
+                                       juce::RectanglePlacement::stretchToFit);
     }
   }
 
@@ -467,9 +466,9 @@ private:
   ImageComponent hoverBackgroundImageComponent;
   Image clickedBackgroundImage;
   ImageComponent clickedBackgroundImageComponent;
-  juce::ScaledImage iconImage;
+  Image iconImage;
   ImageComponent iconImageComponent;
-  juce::ScaledImage hoverIconImage;
+  Image hoverIconImage;
   ImageComponent hoverIconImageComponent;
 
   //==============================================================================
