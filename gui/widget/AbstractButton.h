@@ -323,14 +323,16 @@ private:
     if (_innerBounds.getWidth() <= 0 || _innerBounds.getHeight() <= 0)
       return;
 
-    backgroundImage = Image(
-      Image::ARGB, _innerBounds.getWidth(), _innerBounds.getHeight(), true);
+    // HiDPI support: render background images at higher resolution
+    const float scale = getScaleFactor(this);
+    const int hiResWidth = static_cast<int>(_innerBounds.getWidth() * scale);
+    const int hiResHeight = static_cast<int>(_innerBounds.getHeight() * scale);
+
+    backgroundImage = Image(Image::ARGB, hiResWidth, hiResHeight, true);
     backgroundImageComponent.setBounds(_innerBounds);
-    hoverBackgroundImage = Image(
-      Image::ARGB, _innerBounds.getWidth(), _innerBounds.getHeight(), true);
+    hoverBackgroundImage = Image(Image::ARGB, hiResWidth, hiResHeight, true);
     hoverBackgroundImageComponent.setBounds(_innerBounds);
-    clickedBackgroundImage = Image(
-      Image::ARGB, _innerBounds.getWidth(), _innerBounds.getHeight(), true);
+    clickedBackgroundImage = Image(Image::ARGB, hiResWidth, hiResHeight, true);
     clickedBackgroundImageComponent.setBounds(_innerBounds);
   }
 
@@ -385,30 +387,33 @@ private:
 
     const float scale = getScaleFactor(this);
     const auto cornerRadius = rawCornerRadius * size;
-    const auto backgroundArea = backgroundImage.getBounds().toFloat();
+    // Use the hi-res image bounds, but draw at logical size
+    const auto hiResBackgroundArea = backgroundImage.getBounds().toFloat();
+    const auto logicalWidth = hiResBackgroundArea.getWidth() / scale;
+    const auto logicalHeight = hiResBackgroundArea.getHeight() / scale;
+    const juce::Rectangle<float> logicalArea(0, 0, logicalWidth, logicalHeight);
 
     juce::Graphics backgroundGraphics(backgroundImage);
     backgroundGraphics.addTransform(juce::AffineTransform::scale(scale, scale));
     backgroundGraphics.fillAll(juce::Colours::transparentBlack);
     backgroundGraphics.setColour(backgroundColour);
-    backgroundGraphics.fillRoundedRectangle(backgroundArea * scale,
-                                            cornerRadius * scale);
+    backgroundGraphics.fillRoundedRectangle(logicalArea, cornerRadius);
     backgroundImageComponent.setImage(backgroundImage,
                                       juce::RectanglePlacement::stretchToFit);
 
     juce::Graphics hoverGraphics(hoverBackgroundImage);
+    hoverGraphics.addTransform(juce::AffineTransform::scale(scale, scale));
     hoverGraphics.fillAll(juce::Colours::transparentBlack);
     hoverGraphics.setColour(hoverColour);
-    hoverGraphics.fillRoundedRectangle(backgroundArea * scale,
-                                       cornerRadius * scale);
+    hoverGraphics.fillRoundedRectangle(logicalArea, cornerRadius);
     hoverBackgroundImageComponent.setImage(
       hoverBackgroundImage, juce::RectanglePlacement::stretchToFit);
 
     juce::Graphics clickGraphics(clickedBackgroundImage);
+    clickGraphics.addTransform(juce::AffineTransform::scale(scale, scale));
     clickGraphics.fillAll(juce::Colours::transparentBlack);
     clickGraphics.setColour(clickColour);
-    clickGraphics.fillRoundedRectangle(backgroundArea * scale,
-                                       cornerRadius * scale);
+    clickGraphics.fillRoundedRectangle(logicalArea, cornerRadius);
     clickedBackgroundImageComponent.setImage(
       clickedBackgroundImage, juce::RectanglePlacement::stretchToFit);
   }
