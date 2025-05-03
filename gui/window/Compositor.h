@@ -395,6 +395,10 @@ public:
 
     // Now trigger the actual repaint
     getTopLevelComponent()->repaint();
+
+    alerts.pushAlert("Settings have been reset!",
+                     "Save to keep the default values permanently.",
+                     Alerts::AlertType::Info);
   }
 
   //==============================================================================
