@@ -227,8 +227,10 @@ public:
       container.add<float>("Alert.InnerShadowRadius", 10.0f);
     static inline auto& outerShadowRadius =
       container.add<float>("Alert.OuterShadowRadius", 10.0f);
-    static inline auto& fontSize =
-      container.add<float>("Alert.FontSize", 18.0f);
+    static inline auto& titleFontSize =
+      container.add<float>("Alert.TitleFontSize", 18.0f);
+    static inline auto& messageFontSize =
+      container.add<float>("Alert.MessageFontSize", 14.0f);
     static inline auto& textHorizontalPadding =
       container.add<float>("Alert.TextHorizontalPadding", 10.0f);
     static inline auto& textVerticalPadding =

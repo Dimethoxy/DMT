@@ -71,7 +71,8 @@ class Alerts
   const float& rawBorderWidth = AlertSettings::borderWidth;
   const float& innerShadowRadius = AlertSettings::innerShadowRadius;
   const float& outerShadowRadius = AlertSettings::outerShadowRadius;
-  const float& rawFontSize = AlertSettings::fontSize;
+  const float& rawFontSize = AlertSettings::titleFontSize;
+  const float& rawMessageFontSize = AlertSettings::messageFontSize;
   const float& rawTextHorizontalPadding = AlertSettings::textHorizontalPadding;
   const float& rawTextVerticalPadding = AlertSettings::textVerticalPadding;
   const float& rawIconSize = AlertSettings::iconSize;
@@ -240,8 +241,10 @@ protected:
     }
 
     const auto iconSize = rawIconSize * size;
-    const auto fontSize = rawFontSize * size;
-    const auto font = fonts.medium.withHeight(fontSize);
+    const auto titleFontSize = rawFontSize * size;
+    const auto messageFontSize = rawMessageFontSize * size;
+    const auto titleFont = fonts.medium.withHeight(titleFontSize);
+    const auto messageFont = fonts.regular.withHeight(messageFontSize);
     const auto borderWidth = rawBorderWidth * size;
     const auto cornerRadius = rawCornerRadius * size;
     const auto innerCornerRadius = cornerRadius - borderWidth;
@@ -287,15 +290,17 @@ protected:
     const auto clonedIcon = icon->createCopy();
     const auto iconBounds =
       contentBounds.removeFromLeft(iconSize + 2 * uniqueIconPadding)
-        .reduced(uniqueIconPadding);
+      /*.reduced(uniqueIconPadding)*/;
     clonedIcon->replaceColour(juce::Colours::black, iconColour);
     clonedIcon->drawWithin(
       g, iconBounds, juce::RectanglePlacement::centred, 1.0f);
 
     // Title
     const auto titleBounds =
-      contentBounds.removeFromTop(iconSize + 2 * uniqueIconPadding);
-    g.setFont(font);
+      contentBounds.removeFromTop(iconSize + 2 * uniqueIconPadding)
+        .removeFromRight(contentBounds.getWidth() -
+                         textHorizontalPadding * 0.9);
+    g.setFont(titleFont);
     g.setColour(fontColour);
     g.drawFittedText(alert.title,
                      titleBounds.toNearestInt(),
@@ -303,8 +308,9 @@ protected:
                      1);
 
     // Message
-    const auto messageBounds = contentBounds;
-    g.setFont(font);
+    const auto messageBounds = contentBounds.removeFromRight(
+      contentBounds.getWidth() - textHorizontalPadding * 0.9);
+    g.setFont(messageFont);
     g.setColour(fontColour);
     g.drawFittedText(alert.message,
                      messageBounds.toNearestInt(),
