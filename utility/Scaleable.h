@@ -12,31 +12,33 @@ namespace dmt {
 template<typename Derived>
 class Scaleable
 {
-public:
-  static inline float baseHeight = 100.0f;
-  static inline float baseWidth = 100.0f;
-
 protected:
-  //==============================================================================
-  // General
-  const float& size = Settings::Window::size;
+  //============================================================================
+  // Helper Variables
+  const float& size;
+  const float& scale;
 
-  inline float getScaleFactor() noexcept
+  //============================================================================
+  Scaleable()
+    : size(getSizeFactor())
+    , scale(getScaleFactor())
   {
-    const auto scale = getSelf()->getDesktopScaleFactor();
-    if (OS_IS_DARWIN)
-      return scale * 2.0f;
-    else
-      return scale;
-  }
-
-  inline float getSizeFactor() noexcept
-  {
-    const auto* topLevelComponent = getSelf()->getTopLevelComponent();
-    return 1.0f;
   }
 
 private:
+  //============================================================================
   inline Derived* getSelf() noexcept { return static_cast<Derived*>(this); }
+
+  //============================================================================
+  inline float& getSizeFactor() noexcept { return dmt::Settings::Window::size; }
+
+  //============================================================================
+  inline const float& getScaleFactor() noexcept
+  {
+    static float tempScale = getSelf()->getDesktopScaleFactor();
+    if (OS_IS_DARWIN)
+      tempScale *= 2.0f;
+    return tempScale;
+  }
 };
 } // namespace dmt

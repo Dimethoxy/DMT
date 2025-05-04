@@ -71,7 +71,6 @@ public:
   {
     TRACER("Tooltip::paint");
     if (!tooltipImage.isNull()) {
-      const float scale = getScaleFactor();
       const int imageWidth = tooltipImage.getWidth();
       const int imageHeight = tooltipImage.getHeight();
       const int width = getWidth();
@@ -197,7 +196,6 @@ protected:
     const auto innerCornerRadius = cornerRadius - borderWidth;
 
     // HiDPI scaling stuff
-    const float scale = getScaleFactor();
     const auto scaledTooltipWidth = juce::roundToInt(tooltipWidth * scale);
     const auto scaledTooltipHeight = juce::roundToInt(tooltipHeight * scale);
 

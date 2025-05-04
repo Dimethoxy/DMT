@@ -113,13 +113,10 @@ public:
     juce::Graphics imageGraphics(image);
     imageGraphics.setColour(*colour); // dereference pointer
 
-    // Get scale factor for HiDPI
-    const float scale = getScaleFactor();
-
     if (inner)
-      drawInnerForPath(imageGraphics, path, scale);
+      drawInnerForPath(imageGraphics, path);
     else
-      drawOuterForPath(imageGraphics, path, scale);
+      drawOuterForPath(imageGraphics, path);
 
     needsRepaint = false;
     _g.drawImageAt(image, 0, 0);
@@ -193,11 +190,10 @@ public:
   inline void directDraw(juce::Graphics& _g, juce::Path _target)
   {
     TRACER("Shadow::directDraw");
-    const float scale = getScaleFactor();
     if (inner)
-      drawInnerForPath(_g, _target, scale);
+      drawInnerForPath(_g, _target);
     else
-      drawOuterForPath(_g, _target, scale);
+      drawOuterForPath(_g, _target);
   }
 
 protected:
@@ -207,15 +203,12 @@ protected:
    *
    * @param _g The graphics context.
    * @param _target The path to shadow.
-   * @param scale The scale factor for HiDPI.
    *
    * @details
    * Uses JUCE's DropShadow to render an inner shadow by clipping to the
    * target path and drawing the shadow on an expanded rectangle.
    */
-  inline void drawInnerForPath(juce::Graphics& _g,
-                               juce::Path _target,
-                               float scale)
+  inline void drawInnerForPath(juce::Graphics& _g, juce::Path _target)
   {
     TRACER("Shadow::drawInnerForPath");
     juce::Graphics::ScopedSaveState saveState(_g);
@@ -235,15 +228,12 @@ protected:
    *
    * @param _g The graphics context.
    * @param _target The path to shadow.
-   * @param scale The scale factor for HiDPI.
    *
    * @details
    * Uses JUCE's DropShadow to render an outer shadow by clipping to the
    * expanded shadow path and drawing the shadow on the original path.
    */
-  inline void drawOuterForPath(juce::Graphics& _g,
-                               juce::Path _target,
-                               float scale)
+  inline void drawOuterForPath(juce::Graphics& _g, juce::Path _target)
   {
     TRACER("Shadow::drawOuterForPath");
     juce::Graphics::ScopedSaveState saveState(_g);

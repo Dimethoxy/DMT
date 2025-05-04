@@ -203,7 +203,6 @@ protected:
     const auto alertHeight = rawAlertHeight * size;
 
     // HiDPI support: render at higher resolution
-    const float scale = getScaleFactor();
     const int hiResWidth = static_cast<int>(alertWidth * scale);
     const int hiResHeight = static_cast<int>(alertHeight * scale);
 
