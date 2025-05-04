@@ -99,13 +99,15 @@ public:
   Compositor(String _titleText,
              AbstractPanel& _mainPanel,
              AudioProcessorValueTreeState& _apvts,
-             Properties& _properties) noexcept
+             Properties& _properties,
+             const float& _sizeFactor) noexcept
     : juce::Component("Compositor")
     , mainPanel(_mainPanel)
     , properties(_properties)
     , header(_titleText, _apvts)
     , settingsPanel()
     , borderButton()
+    , sizeFactor(_sizeFactor)
   {
     TRACER("Compositor::Compositor");
     // Header
@@ -576,10 +578,13 @@ protected:
     if (component == nullptr)
       return;
 
-    // Try to cast the component to a Scaleable
-    if (auto* scaleableComponent =
-          dynamic_cast<dmt::Scaleable<juce::Component>*>(component)) {
-      size = const_cast<float&>(scaleableComponent->size);
+    if (auto* scaleableComponent = dynamic_cast<dmt::IScaleable*>(component)) {
+      auto* scaleableBase =
+        reinterpret_cast<dmt::Scaleable<juce::Component>*>(scaleableComponent);
+      if (scaleableBase != nullptr) {
+        float* sizePtr = const_cast<float*>(&(scaleableBase->size));
+        *sizePtr = sizeFactor;
+      }
     }
 
     for (auto& child : component->getChildren()) {
@@ -637,7 +642,7 @@ private:
   Alerts alerts;
   int baseHeight = 0;
   int baseWidth = 0;
-  float size = 2.0f;
+  const float& sizeFactor;
 };
 
 } // namespace window

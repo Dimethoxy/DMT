@@ -4,14 +4,20 @@
 #include <JuceHeader.h>
 //==============================================================================
 namespace dmt {
+
 //==============================================================================
+// Add a non-template base interface for RTTI
+struct IScaleable
+{
+  virtual ~IScaleable() = default;
+};
 
 //==============================================================================
 /**
  *  @brief This is an extension of the JUCE Component class via the CRTP idiom.
  */
 template<typename Derived>
-class Scaleable
+class Scaleable : public IScaleable
 {
 public:
   //============================================================================
