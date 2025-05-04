@@ -33,7 +33,7 @@
 //==============================================================================
 
 #include "BinaryData.h"
-#include "configuration/Container.h"
+#include "dmt/configuration/Container.h"
 #include <JuceHeader.h>
 
 //==============================================================================
