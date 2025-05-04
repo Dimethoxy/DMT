@@ -32,6 +32,7 @@
 
 //==============================================================================
 
+#include "dmt/utility/Scaleable.h"
 #include "gui/widget/Shadow.h"
 #include "utility/RepaintTimer.h"
 #include "utility/Settings.h"
@@ -57,6 +58,7 @@ namespace display {
 class AbstractDisplay
   : public juce::Component
   , public dmt::utility::RepaintTimer
+  , public dmt::Scaleable<AbstractDisplay>
 {
   //============================================================================
   // Aliases for convenience
@@ -68,7 +70,6 @@ class AbstractDisplay
   const juce::Colour& backgroundColour = Display::backgroundColour;
 
   // Layout
-  const float& size = Settings::Window::size;
   const float& rawCornerSize = Display::cornerSize;
   const float& rawPadding = Display::padding;
 

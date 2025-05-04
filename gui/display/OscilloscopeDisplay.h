@@ -31,7 +31,6 @@ class OscilloscopeDisplay
   const Colour& backgroundColour = DisplaySettings::backgroundColour;
 
   // Layout
-  const float& size = Settings::Window::size;
   const float& rawCornerSize = DisplaySettings::cornerSize;
   const float& rawPadding = DisplaySettings::padding;
   // Border

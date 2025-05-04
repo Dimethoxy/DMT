@@ -24,16 +24,14 @@ class SettingsEditorDisplay : public dmt::gui::display::AbstractDisplay
   using SettingsEditor = dmt::gui::component::SettingsEditor;
 
   //==============================================================================
-  // Window
-  const float& size = Settings::Window::size;
-
   // SettingsEditor
   const float& rawPadding = SettingsEditorSettings::padding;
 
 public:
-  SettingsEditorDisplay() { 
+  SettingsEditorDisplay()
+  {
     TRACER("SettingsEditorDisplay::SettingsEditorDisplay");
-    addAndMakeVisible(settingsEditor); 
+    addAndMakeVisible(settingsEditor);
   }
 
   ~SettingsEditorDisplay() override = default;
