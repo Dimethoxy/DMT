@@ -745,6 +745,9 @@ private:
   int baseHeight = 0;
   int baseWidth = 0;
   const float& sizeFactor;
+
+  //==============================================================================
+  JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Compositor)
 };
 
 } // namespace window

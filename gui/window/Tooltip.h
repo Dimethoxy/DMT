@@ -247,6 +247,9 @@ private:
   // Shadow members
   Shadow outerShadow;
   Shadow innerShadow;
+
+  //==============================================================================
+  JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Tooltip)
 };
 
 } // namespace window

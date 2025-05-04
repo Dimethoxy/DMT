@@ -326,6 +326,9 @@ protected:
 private:
   juce::Array<AlertData> alerts; // Store active alerts
   Fonts fonts;
+
+  //==============================================================================
+  JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Alerts)
 };
 } // namespace window
 } // namespace gui
