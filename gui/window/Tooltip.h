@@ -98,7 +98,7 @@ public:
    * Sets up shadow rendering and starts the custom repaint timer. Mouse clicks
    * are not intercepted to allow interaction with underlying components.
    */
-  constexpr Tooltip() noexcept
+  inline Tooltip() noexcept
     : outerShadow(drawOuterShadow, outerShadowColour, outerShadowRadius, false)
     , innerShadow(drawInnerShadow, innerShadowColour, innerShadowRadius, true)
   {

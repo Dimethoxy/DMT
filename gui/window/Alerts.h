@@ -168,7 +168,7 @@ public:
    * Sets up repaint timer and disables mouse interception. Alerts are
    * non-interactive overlays.
    */
-  constexpr inline Alerts() noexcept
+  inline Alerts() noexcept
   {
     TRACER("Alerts::Alerts");
     setInterceptsMouseClicks(false, false);
