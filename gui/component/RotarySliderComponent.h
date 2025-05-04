@@ -16,6 +16,7 @@ namespace component {
 class RotarySliderComponent
   : public juce::Component
   , public juce::Slider::Listener
+  , public dmt::Scaleable<RotarySliderComponent>
 {
   using RotarySlider = dmt::gui::widget::RotarySlider;
   using Type = RotarySlider::Type;
@@ -23,11 +24,11 @@ class RotarySliderComponent
   using Unit = dmt::utility::Unit;
   using Label = dmt::gui::widget::Label;
   using Fonts = dmt::utility::Fonts;
-  //==============================================================================
   using Settings = dmt::Settings;
   using Layout = dmt::Settings::Window;
   using Slider = Settings::Slider;
-  const float& size = Layout::size;
+
+  //============================================================================
   const float& baseWidth = Slider::baseWidth;
   const float& baseHeight = Slider::baseHeight;
   const float& rawSliderSize = Slider::sliderSize;
@@ -92,7 +93,11 @@ public:
       g.drawEllipse(bounds.getCentreX(), bounds.getCentreY(), 5, 5, 1);
     }
   }
-  void sliderValueChanged(juce::Slider*) { TRACER("RotarySliderComponent::sliderValueChanged"); updateLabel(); }
+  void sliderValueChanged(juce::Slider*)
+  {
+    TRACER("RotarySliderComponent::sliderValueChanged");
+    updateLabel();
+  }
   void setSizeAndCentre(juce::Point<int> centrePoint)
   {
     TRACER("RotarySliderComponent::setSizeAndCentre");

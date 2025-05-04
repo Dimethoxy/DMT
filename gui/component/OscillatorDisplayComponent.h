@@ -16,14 +16,17 @@ namespace component {
 class OscillatorDisplayComponent
   : public juce::Component
   , public juce::Timer
+  , public dmt::Scaleable<OscillatorDisplayComponent>
 {
   using Shadow = dmt::gui::widget::Shadow;
   using AnalogOscillator = dmt::dsp::synth::AnalogOscillator;
 
+  //============================================================================
   // General
-  const int& fps = dmt::Settings::framerate;
   using Settings = dmt::Settings::OscillatorDisplay;
+  const int& fps = dmt::Settings::framerate;
   const int& resolution = Settings::resolution;
+
   // Shadows
   const bool& drawOuterShadow = Settings::drawOuterShadow;
   const bool& drawInnerShadow = Settings::drawInnerShadow;
@@ -69,9 +72,9 @@ protected:
       resolution);
   }
 
-  bool isParametersChanged() 
-  { 
-    TRACER("OscillatorDisplayComponent::isParametersChanged"); 
+  bool isParametersChanged()
+  {
+    TRACER("OscillatorDisplayComponent::isParametersChanged");
   }
 
   //==============================================================================

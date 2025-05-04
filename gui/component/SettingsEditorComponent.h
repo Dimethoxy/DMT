@@ -7,6 +7,7 @@
 #include "dmt/configuration/TreeAdapter.h"
 #include "dmt/gui/widget/ValueCategoryList.h"
 #include "dmt/gui/widget/ValueEditorList.h"
+#include "dmt/utility/Scaleable.h"
 #include "dmt/utility/Settings.h"
 #include <JuceHeader.h>
 
@@ -16,7 +17,9 @@ namespace dmt {
 namespace gui {
 namespace component {
 //==============================================================================
-class SettingsEditor : public juce::Component
+class SettingsEditor
+  : public juce::Component
+  , public dmt::Scaleable<SettingsEditor>
 {
   using Colour = juce::Colour;
   using Settings = dmt::Settings;
@@ -29,18 +32,18 @@ class SettingsEditor : public juce::Component
   using Component = juce::Component;
 
   //==============================================================================
-  // Window
-  const float& size = Settings::Window::size;
-
   // SettingsEditor
   const Colour& scrollBarColour = SettingsEditorSettings::scrollBarColour;
-  const float rawScrollBarThickness = SettingsEditorSettings::scrollBarThickness;
+  const float rawScrollBarThickness =
+    SettingsEditorSettings::scrollBarThickness;
   const Colour& scrollBarBackgroundColour =
     SettingsEditorSettings::scrollBarBackgroundColour;
   const float& rawFontSize = SettingsEditorSettings::fontSize;
 
   // TODO: Move somewhere else
-  std::vector<juce::String> blockedCategories = { "TriangleButton", "OscillatorDisplay", "Carousel" };
+  std::vector<juce::String> blockedCategories = { "TriangleButton",
+                                                  "OscillatorDisplay",
+                                                  "Carousel" };
 
 public:
   SettingsEditor()
@@ -67,7 +70,7 @@ public:
 
   ~SettingsEditor() override = default;
 
-  void paint(juce::Graphics& /*_g*/) override 
+  void paint(juce::Graphics& /*_g*/) override
   {
     TRACER("SettingsEditor::paint");
   }
@@ -132,9 +135,11 @@ protected:
       juce::ScrollBar::ColourIds::thumbColourId, scrollBarColour);
 
     categoryViewport.getVerticalScrollBar().setColour(
-      juce::ScrollBar::ColourIds::backgroundColourId, scrollBarBackgroundColour);
+      juce::ScrollBar::ColourIds::backgroundColourId,
+      scrollBarBackgroundColour);
     editorViewport.getVerticalScrollBar().setColour(
-      juce::ScrollBar::ColourIds::backgroundColourId, scrollBarBackgroundColour);
+      juce::ScrollBar::ColourIds::backgroundColourId,
+      scrollBarBackgroundColour);
   }
 
 private:

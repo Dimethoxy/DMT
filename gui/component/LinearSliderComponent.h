@@ -16,6 +16,7 @@ namespace component {
 class LinearSliderComponent
   : public juce::Component
   , public juce::Slider::Listener
+  , public dmt::Scaleable<LinearSliderComponent>
 {
   using LinearSlider = dmt::gui::widget::LinearSlider;
   using Type = LinearSlider::Type;
@@ -29,7 +30,7 @@ class LinearSliderComponent
   using Layout = Settings::Window;
   using Slider = Settings::Slider;
 
-  const float& size = Layout::size;
+  //==============================================================================
   const float& baseWidth = Slider::baseWidth;
   const float& baseHeight = Slider::baseHeight;
   const float& rawSliderSize = Slider::sliderSize;
@@ -141,7 +142,11 @@ public:
     }
   }
   //==============================================================================
-  void sliderValueChanged(juce::Slider*) { TRACER("LinearSliderComponent::sliderValueChanged"); updateLabel(); }
+  void sliderValueChanged(juce::Slider*)
+  {
+    TRACER("LinearSliderComponent::sliderValueChanged");
+    updateLabel();
+  }
   //==============================================================================
   void setBoundsByPoints(juce::Point<int> primaryPoint,
                          juce::Point<int> secondaryPoint)
@@ -172,7 +177,11 @@ public:
     }
   }
   //==============================================================================
-  juce::Slider& getSlider() { TRACER("LinearSliderComponent::getSlider"); return slider; }
+  juce::Slider& getSlider()
+  {
+    TRACER("LinearSliderComponent::getSlider");
+    return slider;
+  }
   //==============================================================================
 protected:
   void updateLabel()
