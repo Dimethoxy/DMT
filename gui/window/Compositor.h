@@ -66,6 +66,7 @@ class Compositor
   , public juce::Timer
   , public dmt::gui::component::ValueEditor::Listener
   , public dmt::Scaleable<Compositor>
+  , public juce::ComponentListener
 {
   //============================================================================
   // Aliases for convenience
@@ -135,11 +136,14 @@ public:
 
     // Start the timer to check if update is found
     startTimer(1000);
+
+    // Start listening for hierarchy changes
+    addListenerRecursively(this);
   }
 
   //============================================================================
   /** @brief Destructor for `Compositor`. */
-  ~Compositor() noexcept override = default;
+  ~Compositor() noexcept override { removeListenerRecursively(this); }
 
   //============================================================================
   /** @brief Paints the component. */
@@ -558,6 +562,64 @@ protected:
     }
   }
 
+public:
+  void setSizeFactor() noexcept
+  {
+    TRACER("Compositor::setSizeFactor");
+    setSizeFactorRecursively(this);
+  }
+
+protected:
+  void setSizeFactorRecursively(juce::Component* component) noexcept
+  {
+    TRACER("Compositor::setSizeFactorRecursively");
+    if (component == nullptr)
+      return;
+
+    // Try to cast the component to a Scaleable
+    if (auto* scaleableComponent =
+          dynamic_cast<dmt::Scaleable<juce::Component>*>(component)) {
+      size = const_cast<float&>(scaleableComponent->size);
+    }
+
+    for (auto& child : component->getChildren()) {
+      if (auto* childComponent = dynamic_cast<juce::Component*>(child)) {
+        setSizeFactorRecursively(childComponent);
+      }
+    }
+  }
+
+  // Listen for children added/removed anywhere in the tree
+  void componentChildrenChanged(juce::Component& component) override
+  {
+    setSizeFactor();
+    // Ensure we listen to all new children
+    addListenerRecursively(&component);
+    setSizeFactor();
+  }
+
+  // Recursively add this as a ComponentListener to all descendants
+  void addListenerRecursively(juce::Component* c)
+  {
+    if (!c)
+      return;
+    c->addComponentListener(this);
+    for (auto* child : c->getChildren())
+      if (auto* cc = dynamic_cast<juce::Component*>(child))
+        addListenerRecursively(cc);
+  }
+
+  // Recursively remove this as a ComponentListener from all descendants
+  void removeListenerRecursively(juce::Component* c)
+  {
+    if (!c)
+      return;
+    c->removeComponentListener(this);
+    for (auto* child : c->getChildren())
+      if (auto* cc = dynamic_cast<juce::Component*>(child))
+        removeListenerRecursively(cc);
+  }
+
 private:
   //==============================================================================
   // Members initialized in the initializer list
@@ -575,6 +637,7 @@ private:
   Alerts alerts;
   int baseHeight = 0;
   int baseWidth = 0;
+  float size = 2.0f;
 };
 
 } // namespace window

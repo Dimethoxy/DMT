@@ -5,12 +5,7 @@
 //==============================================================================
 namespace dmt {
 //==============================================================================
-class SizeServer
-{
-public:
-  virtual ~SizeServer() = default;
-  virtual float& getSizeFactor() const = 0;
-};
+
 //==============================================================================
 /**
  *  @brief This is an extension of the JUCE Component class via the CRTP idiom.
@@ -18,7 +13,7 @@ public:
 template<typename Derived>
 class Scaleable
 {
-protected:
+public:
   //============================================================================
   // Helper Variables
   const float& size;
@@ -26,7 +21,7 @@ protected:
 
   //============================================================================
   Scaleable()
-    : size(getSizeFactor())
+    : size(fallBackSize)
     , scale(getScaleFactor())
   {
   }
@@ -36,15 +31,16 @@ private:
   inline Derived* getSelf() noexcept { return static_cast<Derived*>(this); }
 
   //============================================================================
-  inline float& getSizeFactor() noexcept { return dmt::Settings::Window::size; }
-
-  //============================================================================
-  inline const float& getScaleFactor() noexcept
+  const float& getScaleFactor() noexcept
   {
     static float tempScale = getSelf()->getDesktopScaleFactor();
     if (OS_IS_DARWIN)
       tempScale *= 2.0f;
     return tempScale;
   }
+
+private:
+  const float fallBackSize = 1.0f;
+  const float fallBackScale = 1.0f;
 };
 } // namespace dmt
