@@ -52,8 +52,8 @@ namespace widget {
  */
 class BorderButton
   : public juce::Button
+  , public dmt::Scaleable<BorderButton>
   , private dmt::utility::RepaintTimer
-  , private dmt::Scaleable<BorderButton>
 {
   using Settings = dmt::Settings;
   using Colour = juce::Colour;

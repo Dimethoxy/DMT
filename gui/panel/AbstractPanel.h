@@ -31,6 +31,7 @@
 
 //==============================================================================
 
+#include "dmt/utility/Scaleable.h"
 #include "gui/widget/Label.h"
 #include "gui/widget/Shadow.h"
 #include "gui/widget/TriangleButton.h"
@@ -59,6 +60,7 @@ namespace panel {
 class AbstractPanel
   : public juce::Component
   , public juce::Button::Listener
+  , public dmt::Scaleable<AbstractPanel>
 {
 public:
   //==============================================================================
@@ -74,8 +76,8 @@ public:
   using Carousel = LibrarySettings::Carousel;
 
   // Layout
-  const float& size = LibrarySettings::Window::size;
-  const float& margin = LibrarySettings::Window::margin;
+  const float& margin =
+    LibrarySettings::Window::margin; // TODO: Make sure this is used properly
   // General
   const juce::Colour& backgroundColour = Settings::backgroundColour;
   const float& cornerSize = Settings::cornerSize;
@@ -277,9 +279,10 @@ public:
    * @details
    * Override in subclasses to provide a custom name.
    */
-  virtual inline const juce::String getName() noexcept { 
+  virtual inline const juce::String getName() noexcept
+  {
     TRACER("AbstractPanel::getName");
-    return "Panel"; 
+    return "Panel";
   }
 
   //==============================================================================
@@ -308,18 +311,20 @@ public:
   /**
    * @brief Invokes the "next" callback.
    */
-  inline void next() { 
+  inline void next()
+  {
     TRACER("AbstractPanel::next");
-    nextCallback(); 
+    nextCallback();
   }
 
   //==============================================================================
   /**
    * @brief Invokes the "previous" callback.
    */
-  inline void prev() { 
+  inline void prev()
+  {
     TRACER("AbstractPanel::prev");
-    prevCallback(); 
+    prevCallback();
   }
 
   //==============================================================================
@@ -349,9 +354,10 @@ protected:
    *
    * @return The current Layout struct.
    */
-  [[nodiscard]] inline const Layout getLayout() noexcept { 
+  [[nodiscard]] inline const Layout getLayout() noexcept
+  {
     TRACER("AbstractPanel::getLayout");
-    return layout; 
+    return layout;
   }
 
   //==============================================================================
