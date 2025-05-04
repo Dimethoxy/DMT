@@ -18,7 +18,7 @@ namespace window {
 class Tooltip
   : public juce::Component
   , public dmt::utility::RepaintTimer
-  , public dmt::Scaleable
+  , public dmt::Scaleable<Tooltip>
 {
   template<typename T>
   using Rectangle = juce::Rectangle<T>;
@@ -71,7 +71,7 @@ public:
   {
     TRACER("Tooltip::paint");
     if (!tooltipImage.isNull()) {
-      const float scale = getScaleFactor(this);
+      const float scale = getScaleFactor();
       const int imageWidth = tooltipImage.getWidth();
       const int imageHeight = tooltipImage.getHeight();
       const int width = getWidth();
@@ -197,7 +197,7 @@ protected:
     const auto innerCornerRadius = cornerRadius - borderWidth;
 
     // HiDPI scaling stuff
-    const float scale = getScaleFactor(this);
+    const float scale = getScaleFactor();
     const auto scaledTooltipWidth = juce::roundToInt(tooltipWidth * scale);
     const auto scaledTooltipHeight = juce::roundToInt(tooltipHeight * scale);
 

@@ -60,7 +60,7 @@ namespace widget {
  */
 class AbstractButton
   : public juce::Button
-  , public dmt::Scaleable
+  , public dmt::Scaleable<AbstractButton>
 {
   using String = juce::String;
   using Settings = dmt::Settings;
@@ -324,7 +324,7 @@ private:
       return;
 
     // HiDPI support: render background images at higher resolution
-    const float scale = getScaleFactor(this);
+    const float scale = getScaleFactor();
     const int hiResWidth = static_cast<int>(_innerBounds.getWidth() * scale);
     const int hiResHeight = static_cast<int>(_innerBounds.getHeight() * scale);
 
@@ -358,7 +358,7 @@ private:
       return;
 
     // Get the scale factor for HiDPI displays
-    const float scale = getScaleFactor(this);
+    const float scale = getScaleFactor();
 
     // Render the icon images at higher resolution
     const int hiResWidth = static_cast<int>(iconArea.getWidth() * scale);
@@ -385,7 +385,7 @@ private:
     if (!shouldDrawBackground)
       return;
 
-    const float scale = getScaleFactor(this);
+    const float scale = getScaleFactor();
     const auto cornerRadius = rawCornerRadius * size;
     // Use the hi-res image bounds, but draw at logical size
     const auto hiResBackgroundArea = backgroundImage.getBounds().toFloat();
@@ -430,7 +430,7 @@ private:
     TRACER("AbstractButton::drawIcon");
     if (icon != nullptr) {
       // Get the scale factor for HiDPI displays
-      const float scale = getScaleFactor(this);
+      const float scale = getScaleFactor();
 
       // Draw normal icon at high res, then scale down for display
       juce::Graphics iconGraphics(iconImage);

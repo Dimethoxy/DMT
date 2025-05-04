@@ -49,7 +49,7 @@ namespace widget {
  */
 class Shadow
   : public juce::Component
-  , protected dmt::Scaleable
+  , public dmt::Scaleable<Shadow>
 {
   //==============================================================================
   // Alias for convenience
@@ -114,7 +114,7 @@ public:
     imageGraphics.setColour(*colour); // dereference pointer
 
     // Get scale factor for HiDPI
-    const float scale = getScaleFactor(this);
+    const float scale = getScaleFactor();
 
     if (inner)
       drawInnerForPath(imageGraphics, path, scale);
@@ -193,7 +193,7 @@ public:
   inline void directDraw(juce::Graphics& _g, juce::Path _target)
   {
     TRACER("Shadow::directDraw");
-    const float scale = getScaleFactor(this);
+    const float scale = getScaleFactor();
     if (inner)
       drawInnerForPath(_g, _target, scale);
     else
