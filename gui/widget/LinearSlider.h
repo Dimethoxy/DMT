@@ -284,6 +284,32 @@ public:
     _g.fillEllipse(thumbBounds.reduced(thumbStrength));
   }
 
+  //==============================================================================
+  /**
+   * @brief Callback type for context menu requests.
+   */
+  std::function<void()> onContextMenuRequested;
+
+  //==============================================================================
+  /**
+   * @brief Handles mouse down events.
+   *
+   * @param e The mouse event.
+   *
+   * @details
+   * Detects right-clicks and triggers the context menu callback if set.
+   */
+  void mouseDown(const juce::MouseEvent& e) override
+  {
+    auto modifiers = e.mods;
+    if (modifiers.isRightButtonDown()) {
+      if (onContextMenuRequested)
+        onContextMenuRequested();
+      return;
+    }
+    juce::Slider::mouseDown(e);
+  }
+
 private:
   //==============================================================================
   // Members initialized in the initializer list

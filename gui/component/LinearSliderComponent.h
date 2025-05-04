@@ -4,6 +4,7 @@
 #include "gui/widget/Label.h"
 #include "gui/widget/LinearSlider.h"
 #include "utility/Fonts.h"
+#include "utility/HostContextMenu.h"
 #include "utility/Icon.h"
 #include "utility/Settings.h"
 #include "utility/Unit.h"
@@ -17,6 +18,7 @@ class LinearSliderComponent
   : public juce::Component
   , public juce::Slider::Listener
   , public dmt::Scaleable<LinearSliderComponent>
+  , public dmt::HostContextMenu<LinearSliderComponent>
 {
   using LinearSlider = dmt::gui::widget::LinearSlider;
   using Type = LinearSlider::Type;
@@ -25,10 +27,10 @@ class LinearSliderComponent
   using Unit = dmt::utility::Unit;
   using Label = dmt::gui::widget::Label;
   using Fonts = dmt::utility::Fonts;
-
   using Settings = dmt::Settings;
   using Layout = Settings::Window;
   using Slider = Settings::Slider;
+  using RangedAudioParameter = juce::RangedAudioParameter;
 
   //==============================================================================
   const float& baseWidth = Slider::baseWidth;
@@ -43,25 +45,26 @@ class LinearSliderComponent
 
 public:
   //==============================================================================
-  LinearSliderComponent(juce::AudioProcessorValueTreeState& apvts,
-                        const juce::String text,
-                        const juce::String param,
-                        const Unit::Type unitType,
-                        const Type type = Type::Positive,
-                        const Orientation orientation = Orientation::Horizontal,
-                        const bool svgTitle = false)
-    : orientation(orientation)
-    , slider(type, orientation)
-    , sliderAttachment(apvts, param, slider)
-    , titleLabel(text, fonts.medium, titleFontSize, titleFontColour)
+  LinearSliderComponent(
+    juce::AudioProcessorValueTreeState& _apvts,
+    const juce::String _text,
+    const juce::String _param,
+    const Unit::Type _unitType,
+    const Type _type = Type::Positive,
+    const Orientation _orientation = Orientation::Horizontal,
+    const bool _svgTitle = false)
+    : orientation(_orientation)
+    , slider(_type, _orientation)
+    , sliderAttachment(_apvts, _param, slider)
+    , titleLabel(_text, fonts.medium, titleFontSize, titleFontColour)
     , infoLabel(juce::String("Info Label"),
                 fonts.light,
                 infoFontSize,
                 infoFontColour,
                 juce::Justification::centredBottom)
-    , unitType(unitType)
-    , svgTitle(svgTitle)
-    , svgPadding(dmt::icons::getPadding(param))
+    , unitType(_unitType)
+    , svgTitle(_svgTitle)
+    , svgPadding(dmt::icons::getPadding(_param))
   {
     TRACER("LinearSliderComponent::LinearSliderComponent");
     slider.addListener(this);
@@ -69,12 +72,18 @@ public:
     addAndMakeVisible(slider);
     addAndMakeVisible(infoLabel);
 
-    if (!svgTitle)
+    if (!_svgTitle)
       addAndMakeVisible(titleLabel);
 
-    if (svgTitle) {
-      titleIcon = dmt::icons::getIcon(param);
+    if (_svgTitle) {
+      titleIcon = dmt::icons::getIcon(_param);
     }
+
+    // Let's find the pointer to the parameter in the apvts
+    parameter = _apvts.getParameter(_param);
+
+    // Set up context menu callback
+    slider.onContextMenuRequested = [this]() { showContextMenuForSlider(); };
   }
   //==============================================================================
   void resized()
@@ -192,6 +201,13 @@ protected:
     infoLabel.repaint();
   }
   //==============================================================================
+
+  void showContextMenuForSlider()
+  {
+    // Use HostContextMenu helper to show context menu for this parameter
+    showContextMenu(parameter);
+  }
+
 private:
   Fonts fonts;
   Orientation orientation;
@@ -202,6 +218,7 @@ private:
   Label infoLabel;
   const bool svgTitle;
   std::unique_ptr<juce::Drawable> titleIcon;
+  RangedAudioParameter* parameter;
   const float svgPadding;
   //============================================================================
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(LinearSliderComponent)
