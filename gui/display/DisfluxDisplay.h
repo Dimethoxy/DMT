@@ -56,6 +56,9 @@ public:
         true)        // This tells the display to not listen to the apvts
   {
   }
+
+private:
+  JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(DisfluxDisplay)
 };
 } // namespace component
 } // namespace gui

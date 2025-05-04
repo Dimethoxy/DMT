@@ -121,6 +121,7 @@ private:
   AnalogOscillator osc;
   juce::dsp::LookupTable<float> table;
   juce::AudioProcessorValueTreeState& apvts;
+  JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(OscillatorDisplayComponent)
 };
 } // namespace components
 } // namespace gui
