@@ -1,13 +1,42 @@
+//==============================================================================
+/*
+ * ██████  ██ ███    ███ ███████ ████████ ██   ██  ██████  ██   ██ ██    ██
+ * ██   ██ ██ ████  ████ ██         ██    ██   ██ ██    ██  ██ ██   ██  ██
+ * ██   ██ ██ ██ ████ ██ █████      ██    ███████ ██    ██   ███     ████
+ * ██   ██ ██ ██  ██  ██ ██         ██    ██   ██ ██    ██  ██ ██     ██
+ * ██████  ██ ██      ██ ███████    ██    ██   ██  ██████  ██   ██    ██
+ *
+ * Copyright (C) 2024 Dimethoxy Audio (https://dimethoxy.com)
+ *
+ * This file is part of the Dimethoxy Library, a collection of essential
+ * classes used across various Dimethoxy projects.
+ * These files are primarily designed for internal use within our repositories.
+ *
+ * License:
+ * This code is licensed under the GPLv3 license. You are permitted to use and
+ * modify this code under the terms of this license.
+ * You must adhere GPLv3 license for any project using this code or parts of it.
+ * Your are not allowed to use this code in any closed-source project.
+ *
+ * Description:
+ * Alerts overlay component for displaying transient notifications in the GUI.
+ * Designed for real-time performance and visual consistency.
+ *
+ * Authors:
+ * Lunix-420 (Primary Author)
+ */
+//==============================================================================
+
 #pragma once
 
 //==============================================================================
 
 #include "dmt/gui/widget/Shadow.h"
 #include "dmt/utility/Fonts.h"
+#include "dmt/utility/Icon.h"
 #include "dmt/utility/RepaintTimer.h"
 #include "dmt/utility/Scaleable.h"
 #include "dmt/utility/Settings.h"
-#include "utility/Icon.h"
 #include <JuceHeader.h>
 
 //==============================================================================
@@ -17,12 +46,28 @@ namespace gui {
 namespace window {
 
 //==============================================================================
-
+/**
+ * @brief Overlay component for displaying transient alert notifications.
+ *
+ * @details
+ * Alerts are rendered as cached images for performance. This class manages
+ * their lifecycle, fade-out, and stacking. Alerts are intended for
+ * non-blocking, non-modal notifications. All painting is handled internally.
+ *
+ * Alerts are pushed via pushAlert(), and will fade out and remove themselves
+ * after a configurable duration. Designed for use in real-time GUI contexts.
+ */
 class Alerts
   : public juce::Component
   , public dmt::utility::RepaintTimer
   , public dmt::Scaleable<Alerts>
 {
+  //==============================================================================
+  /**
+   * @brief Rectangle alias for convenience.
+   *
+   * @tparam T Rectangle coordinate type.
+   */
   template<typename T>
   using Rectangle = juce::Rectangle<T>;
   using Settings = dmt::Settings;
@@ -84,6 +129,10 @@ class Alerts
   const bool& drawInnerShadow = AlertSettings::drawInnerShadow;
 
 public:
+  //==============================================================================
+  /**
+   * @brief Alert type enumeration.
+   */
   enum class AlertType
   {
     Info,
@@ -93,6 +142,13 @@ public:
   };
 
 protected:
+  //==============================================================================
+  /**
+   * @brief Internal data structure for a single alert.
+   *
+   * @details
+   * Holds all state and cached image for a single alert instance.
+   */
   struct AlertData
   {
     juce::String title;
@@ -104,42 +160,81 @@ protected:
   };
 
 public:
-  Alerts() noexcept
+  //==============================================================================
+  /**
+   * @brief Constructs the Alerts overlay component.
+   *
+   * @details
+   * Sets up repaint timer and disables mouse interception. Alerts are
+   * non-interactive overlays.
+   */
+  constexpr inline Alerts() noexcept
   {
     TRACER("Alerts::Alerts");
     setInterceptsMouseClicks(false, false);
     startRepaintTimer();
   }
 
-  // Push a new alert to the list
-  void pushAlert(const juce::String title,
-                 const juce::String message,
-                 AlertType type,
-                 const juce::String iconName = {})
+  //==============================================================================
+  /**
+   * @brief Pushes a new alert to the overlay.
+   *
+   * @param _title The alert title.
+   * @param _message The alert message.
+   * @param _type The alert type.
+   * @param _iconName Optional icon name override.
+   *
+   * @details
+   * When a new alert is pushed, existing alerts are aged to fade out sooner,
+   * ensuring new alerts are always visible. The alert is rendered to a cached
+   * image for performance.
+   */
+  inline void pushAlert(const juce::String _title,
+                        const juce::String _message,
+                        AlertType _type,
+                        const juce::String _iconName = {}) noexcept
   {
     TRACER("Alerts::pushAlert");
     // When we push a new alert, let old ones age quicker
     const auto quickAgeTarget = maxAge - fadeOutTime;
-    for (int i = 0; i < alerts.size(); ++i)
+    for (int i = 0; i < static_cast<int>(alerts.size()); ++i)
       if (alerts.getReference(i).age < quickAgeTarget)
         alerts.getReference(i).age = quickAgeTarget;
 
-    AlertData alert{ title, message, iconName, type, 0.0f };
+    AlertData alert{ _title, _message, _iconName, _type, 0.0f };
     renderAlertToImage(alert);
     alerts.add(alert);
     repaint();
   }
 
-  void resized() override
+  //==============================================================================
+  /**
+   * @brief Handles component resize events.
+   *
+   * @details
+   * Re-renders all cached alert images to match new scaling. This ensures
+   * HiDPI and scaling correctness.
+   */
+  inline void resized() override
   {
     TRACER("Alerts::resized");
     // Re-render all alert images on resize
-    for (int i = 0; i < alerts.size(); ++i)
+    for (int i = 0; i < static_cast<int>(alerts.size()); ++i)
       renderAlertToImage(alerts.getReference(i));
     repaint();
   }
 
-  void paint(juce::Graphics& g) override
+  //==============================================================================
+  /**
+   * @brief Paints all active alerts.
+   *
+   * @param _g The graphics context.
+   *
+   * @details
+   * Alerts are drawn from bottom up, with fade-out alpha applied as they age.
+   * Cached images are used for performance.
+   */
+  inline void paint(juce::Graphics& _g) override
   {
     TRACER("Alerts::paint");
     if (alerts.size() == 0)
@@ -148,12 +243,12 @@ public:
     // Calculate scaled alert size and spacing
     const auto alertWidth = rawAlertWidth * size;
     const auto alertHeight = rawAlertHeight * size;
-    const int spacing = int(8 * size);
-    const int marginBottom = int(24 * size);
+    const int spacing = static_cast<int>(8 * size);
+    const int marginBottom = static_cast<int>(24 * size);
 
     const int totalHeight =
-      alerts.size() * alertHeight +
-      (alerts.size() > 0 ? (alerts.size() - 1) * spacing : 0);
+      static_cast<int>(alerts.size()) * static_cast<int>(alertHeight) +
+      (alerts.size() > 0 ? (static_cast<int>(alerts.size()) - 1) * spacing : 0);
     const int areaWidth = getWidth();
     const int areaHeight = getHeight();
     int y = areaHeight - totalHeight - marginBottom;
@@ -163,26 +258,34 @@ public:
       if (alert.age > maxAge - fadeOutTime)
         alpha = juce::jlimit(0.0f, 1.0f, (maxAge - alert.age) / fadeOutTime);
 
-      g.setOpacity(alpha);
-      int x = (areaWidth - alertWidth) / 2;
-      g.drawImage(alert.cachedComponentImage,
-                  (float)x,
-                  (float)y,
-                  (float)alertWidth,
-                  (float)alertHeight,
-                  0,
-                  0,
-                  alert.cachedComponentImage.getWidth(),
-                  alert.cachedComponentImage.getHeight());
-      y += alertHeight + spacing;
+      _g.setOpacity(alpha);
+      int x = (areaWidth - static_cast<int>(alertWidth)) / 2;
+      _g.drawImage(alert.cachedComponentImage,
+                   static_cast<float>(x),
+                   static_cast<float>(y),
+                   static_cast<float>(alertWidth),
+                   static_cast<float>(alertHeight),
+                   0,
+                   0,
+                   alert.cachedComponentImage.getWidth(),
+                   alert.cachedComponentImage.getHeight());
+      y += static_cast<int>(alertHeight) + spacing;
     }
-    g.setOpacity(1.0f);
+    _g.setOpacity(1.0f);
   }
 
-  void repaintTimerCallback() noexcept override
+  //==============================================================================
+  /**
+   * @brief Called periodically to update alert ages and trigger repaint.
+   *
+   * @details
+   * Removes alerts that have exceeded their maximum age. Triggers repaint if
+   * any alerts remain.
+   */
+  inline void repaintTimerCallback() noexcept override
   {
     TRACER("Alerts::repaintTimerCallback");
-    for (int i = alerts.size(); --i >= 0;) {
+    for (int i = static_cast<int>(alerts.size()); --i >= 0;) {
       alerts.getReference(i).age += Settings::framerate / 1000.0f;
       if (alerts.getReference(i).age >= maxAge)
         alerts.remove(i);
@@ -192,8 +295,17 @@ public:
   }
 
 protected:
-  // Helper to render an alert into its cached image
-  void renderAlertToImage(AlertData& alert)
+  //==============================================================================
+  /**
+   * @brief Renders an alert to its cached image.
+   *
+   * @param _alert The alert data to render.
+   *
+   * @details
+   * This function is called whenever an alert is created or resized. It
+   * pre-renders the alert to an image for fast compositing.
+   */
+  inline void renderAlertToImage(AlertData& _alert)
   {
     TRACER("Alerts::renderAlertToImage");
     const auto alertWidth = rawAlertWidth * size;
@@ -203,15 +315,15 @@ protected:
     const int hiResWidth = static_cast<int>(alertWidth * scale);
     const int hiResHeight = static_cast<int>(alertHeight * scale);
 
-    alert.cachedComponentImage =
+    _alert.cachedComponentImage =
       juce::Image(juce::Image::ARGB, hiResWidth, hiResHeight, true);
-    juce::Graphics g(alert.cachedComponentImage);
+    juce::Graphics g(_alert.cachedComponentImage);
     g.addTransform(juce::AffineTransform::scale(scale, scale));
 
     // copy the colours to use
     Colour backgroundColour, borderColour, fontColour, iconColour,
       outerShadowColour, innerShadowColour;
-    switch (alert.type) {
+    switch (_alert.type) {
       case AlertType::Info:
         backgroundColour = infoBackgroundColour;
         borderColour = infoBorderColour;
@@ -271,10 +383,10 @@ protected:
     g.fillRoundedRectangle(innerBounds, innerCornerRadius);
 
     // Draw Icon
-    auto icon = icons::getIcon(alert.iconName);
-    auto uniqueIconPadding = icons::getPadding(alert.iconName) * size;
+    auto icon = icons::getIcon(_alert.iconName);
+    auto uniqueIconPadding = icons::getPadding(_alert.iconName) * size;
     if (icon == nullptr) {
-      switch (alert.type) {
+      switch (_alert.type) {
         case AlertType::Info:
           icon = icons::getIcon("Info");
           uniqueIconPadding = icons::getPadding("Info") * size;
@@ -308,7 +420,7 @@ protected:
                                .removeFromRight(contentWidth);
     g.setFont(titleFont);
     g.setColour(fontColour);
-    g.drawFittedText(alert.title,
+    g.drawFittedText(_alert.title,
                      titleBounds.toNearestInt(),
                      juce::Justification::bottomLeft,
                      1);
@@ -317,15 +429,20 @@ protected:
     const auto messageBounds = contentBounds.removeFromRight(contentWidth);
     g.setFont(messageFont);
     g.setColour(fontColour);
-    g.drawFittedText(alert.message,
+    g.drawFittedText(_alert.message,
                      messageBounds.toNearestInt(),
                      juce::Justification::centredLeft,
                      1);
   }
 
 private:
-  juce::Array<AlertData> alerts; // Store active alerts
+  //==============================================================================
+  // Members initialized in the initializer list
   Fonts fonts;
+
+  //==============================================================================
+  // Other members
+  juce::Array<AlertData> alerts; // Store active alerts
 
   //==============================================================================
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Alerts)

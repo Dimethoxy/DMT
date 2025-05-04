@@ -33,10 +33,10 @@
 
 //==============================================================================
 
+#include "dmt/gui/widget/CallbackButton.h"
+#include "dmt/utility/Math.h"
 #include "dmt/utility/Scaleable.h"
-#include "gui/widget/CallbackButton.h"
-#include "utility/Math.h"
-#include "utility/Settings.h"
+#include "dmt/utility/Settings.h"
 #include <JuceHeader.h>
 
 //==============================================================================

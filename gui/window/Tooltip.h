@@ -1,3 +1,32 @@
+//==============================================================================
+/*
+ * ██████  ██ ███    ███ ███████ ████████ ██   ██  ██████  ██   ██ ██    ██
+ * ██   ██ ██ ████  ████ ██         ██    ██   ██ ██    ██  ██ ██   ██  ██
+ * ██   ██ ██ ██ ████ ██ █████      ██    ██   ██ ██    ██   ███     ████
+ * ██   ██ ██ ██  ██  ██ ██         ██    ██   ██ ██    ██  ██ ██     ██
+ * ██████  ██ ██      ██ ███████    ██    ██   ██  ██████  ██   ██    ██
+ *
+ * Copyright (C) 2024 Dimethoxy Audio (https://dimethoxy.com)
+ *
+ * This file is part of the Dimethoxy Library, a collection of essential
+ * classes used across various Dimethoxy projects.
+ * These files are primarily designed for internal use within our repositories.
+ *
+ * License:
+ * This code is licensed under the GPLv3 license. You are permitted to use and
+ * modify this code under the terms of this license.
+ * You must adhere GPLv3 license for any project using this code or parts of it.
+ * Your are not allowed to use this code in any closed-source project.
+ *
+ * Description:
+ * Tooltip overlay component for displaying contextual help in DMT GUIs.
+ * Designed for real-time performance and DPI-aware rendering.
+ *
+ * Authors:
+ * Lunix-420 (Primary Author)
+ */
+//==============================================================================
+
 #pragma once
 
 //==============================================================================
@@ -16,12 +45,24 @@ namespace gui {
 namespace window {
 
 //==============================================================================
-
+/**
+ * @brief Tooltip overlay for contextual help in DMT GUIs.
+ *
+ * @details
+ * This class provides a high-performance, DPI-aware tooltip overlay for
+ * displaying contextual help text. It uses a custom repaint timer to minimize
+ * overhead and supports shadow rendering for visual clarity. The tooltip
+ * automatically tracks mouse position and updates its content by traversing
+ * the component hierarchy for JUCE TooltipClient instances.
+ *
+ * Intended for use as a top-level overlay in DMT-based applications.
+ */
 class Tooltip
   : public juce::Component
   , public dmt::utility::RepaintTimer
   , public dmt::Scaleable<Tooltip>
 {
+  //==============================================================================
   template<typename T>
   using Rectangle = juce::Rectangle<T>;
   using Settings = dmt::Settings;
@@ -31,6 +72,7 @@ class Tooltip
 
   //==============================================================================
   // Tooltip
+
   const Colour& backgroundColour = TooltipSettings::backgroundColour;
   const Colour& borderColour = TooltipSettings::borderColour;
   const Colour& fontColour = TooltipSettings::fontColour;
@@ -48,25 +90,55 @@ class Tooltip
   const bool& drawInnerShadow = TooltipSettings::drawInnerShadow;
 
 public:
-  Tooltip() noexcept
+  //==============================================================================
+  /**
+   * @brief Constructs a Tooltip overlay component.
+   *
+   * @details
+   * Sets up shadow rendering and starts the custom repaint timer. Mouse clicks
+   * are not intercepted to allow interaction with underlying components.
+   */
+  constexpr Tooltip() noexcept
     : outerShadow(drawOuterShadow, outerShadowColour, outerShadowRadius, false)
     , innerShadow(drawInnerShadow, innerShadowColour, innerShadowRadius, true)
   {
     TRACER("Tooltip::Tooltip");
     setInterceptsMouseClicks(false, false);
-    startRepaintTimer(); // Use custom repaint timer
+    startRepaintTimer();
   }
 
-  ~Tooltip() override = default;
+  //==============================================================================
+  /**
+   * @brief Destructor.
+   */
+  inline ~Tooltip() override = default;
 
-  void resized() override
+  //==============================================================================
+  /**
+   * @brief Handles resizing of the tooltip overlay.
+   *
+   * @details
+   * If a tooltip image is present, triggers a re-render to ensure DPI and
+   * layout correctness after a size change.
+   */
+  inline void resized() override
   {
     TRACER("Tooltip::resized");
     if (!tooltipImage.isNull())
       renderTooltipImage(currentTooltipText);
   }
 
-  void paint(juce::Graphics& graphics) override
+  //==============================================================================
+  /**
+   * @brief Paints the tooltip overlay.
+   *
+   * @param _graphics The graphics context.
+   *
+   * @details
+   * Draws the tooltip image at the current mouse position, flipping to avoid
+   * drawing offscreen if necessary.
+   */
+  inline void paint(juce::Graphics& _graphics) override
   {
     TRACER("Tooltip::paint");
     if (!tooltipImage.isNull()) {
@@ -78,29 +150,38 @@ public:
       int drawPositionX = lastMousePosition.x;
       int drawPositionY = lastMousePosition.y;
 
-      // If drawing at (x, y) would go off the right edge, flip to left of mouse
+      // Flip horizontally if tooltip would go off right edge
       if (drawPositionX + imageWidth / scale > width)
-        drawPositionX =
-          std::max(0, lastMousePosition.x - (int)(imageWidth / scale));
+        drawPositionX = std::max(
+          0, lastMousePosition.x - static_cast<int>(imageWidth / scale));
 
-      // If drawing at (x, y) would go off the bottom, flip to above mouse
+      // Flip vertically if tooltip would go off bottom edge
       if (drawPositionY + imageHeight / scale > height)
-        drawPositionY =
-          std::max(0, lastMousePosition.y - (int)(imageHeight / scale));
+        drawPositionY = std::max(
+          0, lastMousePosition.y - static_cast<int>(imageHeight / scale));
 
-      graphics.drawImage(tooltipImage,
-                         (float)drawPositionX,
-                         (float)drawPositionY,
-                         imageWidth / scale,
-                         imageHeight / scale,
-                         0,
-                         0,
-                         imageWidth,
-                         imageHeight);
+      _graphics.drawImage(tooltipImage,
+                          static_cast<float>(drawPositionX),
+                          static_cast<float>(drawPositionY),
+                          imageWidth / scale,
+                          imageHeight / scale,
+                          0,
+                          0,
+                          imageWidth,
+                          imageHeight);
     }
   }
 
-  void repaintTimerCallback() noexcept override
+  //==============================================================================
+  /**
+   * @brief Called periodically by the custom repaint timer.
+   *
+   * @details
+   * Traverses the parent component hierarchy to find a JUCE TooltipClient
+   * under the mouse, updating the tooltip text and image as needed. Only
+   * triggers a repaint if the tooltip text or mouse position has changed.
+   */
+  inline void repaintTimerCallback() noexcept override
   {
     TRACER("Tooltip::repaintTimerCallback");
     // Get the parent component of the tooltip
@@ -137,8 +218,7 @@ public:
       if (currentTooltipText.isNotEmpty())
         renderTooltipImage(currentTooltipText);
       else
-        tooltipImage = juce::Image(); // Clear the tooltip image if no text
-
+        tooltipImage = juce::Image();
       needsRepaint = true;
     }
 
@@ -154,7 +234,18 @@ public:
   }
 
 protected:
-  void renderTooltipImage(const juce::String& text)
+  //==============================================================================
+  /**
+   * @brief Renders the tooltip image for the given text.
+   *
+   * @param _text The tooltip text to render.
+   *
+   * @details
+   * Calculates layout, DPI scaling, and draws all visual elements including
+   * shadows, border, background, and text. Uses AttributedString for
+   * high-quality text rendering.
+   */
+  inline void renderTooltipImage(const juce::String& _text)
   {
     TRACER("Tooltip::renderTooltipImage");
     // Font size and style
@@ -166,7 +257,7 @@ protected:
     const auto justification = juce::Justification::centredLeft;
 
     // Prepare the AttributedString
-    juce::AttributedString attributedString(text);
+    juce::AttributedString attributedString(_text);
     attributedString.setFont(font);
     attributedString.setColour(fontColour);
     attributedString.setJustification(justification);
@@ -235,18 +326,21 @@ protected:
     // Text
     graphics.setColour(fontColour);
     graphics.setFont(font);
-    graphics.drawText(text, textBounds, justification, true);
+    graphics.drawText(_text, textBounds, justification, true);
   }
 
 private:
+  //==============================================================================
+  // Members initialized in the initializer list
+  Shadow outerShadow;
+  Shadow innerShadow;
+
+  //==============================================================================
+  // Other members
   juce::String currentTooltipText;
   juce::Image tooltipImage;
   juce::Point<int> lastMousePosition;
   Fonts fonts;
-
-  // Shadow members
-  Shadow outerShadow;
-  Shadow innerShadow;
 
   //==============================================================================
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Tooltip)

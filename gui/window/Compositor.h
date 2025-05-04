@@ -31,16 +31,16 @@
 
 //==============================================================================
 
-#include "configuration/Properties.h"
+#include "dmt/configuration/Properties.h"
+#include "dmt/gui/panel/AbstractPanel.h"
+#include "dmt/gui/panel/SettingsPanel.h"
+#include "dmt/gui/widget/BorderButton.h"
+#include "dmt/gui/window/Alerts.h"
+#include "dmt/gui/window/Header.h"
+#include "dmt/gui/window/Popover.h"
+#include "dmt/gui/window/Tooltip.h"
 #include "dmt/utility/Scaleable.h"
 #include "dmt/version/Info.h"
-#include "gui/panel/AbstractPanel.h"
-#include "gui/panel/SettingsPanel.h"
-#include "gui/widget/BorderButton.h"
-#include "gui/window/Alerts.h"
-#include "gui/window/Header.h"
-#include "gui/window/Popover.h"
-#include "gui/window/Tooltip.h"
 #include <JuceHeader.h>
 
 //==============================================================================
