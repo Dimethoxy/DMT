@@ -19,7 +19,9 @@
  * Your are not allowed to use this code in any closed-source project.
  *
  * Description:
- * Version module umbrella header.
+ * Aggregates all Dimethoxy version management headers for convenient inclusion.
+ * Provides a single entry point for version management classes, including Info,
+ * Manager, Networking, and Utility.
  *
  * Authors:
  * Lunix-420 (Primary Author)
@@ -30,14 +32,20 @@
 
 //==============================================================================
 /**
- * @brief Umbrella include for all version management components.
+ * @brief Aggregates all Dimethoxy version management headers for convenient
+ *        inclusion.
  *
  * @details
- * This header provides a single include point for all version-related
- * functionality, including Info, Manager, Networking, and Utility.
- * Use this header in modules that require version management.
+ * This header includes all core version management modules (Info, Manager,
+ * Networking, and Utility) in a single file. Use this header to ensure
+ * consistent access to all version management features across the codebase.
+ * Designed for real-time safety and deterministic resource management.
  */
+//==============================================================================
+
 #include "./Info.h"
 #include "./Manager.h"
 #include "./Networking.h"
 #include "./Utility.h"
+
+//==============================================================================
