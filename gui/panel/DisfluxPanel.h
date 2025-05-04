@@ -69,7 +69,6 @@ class DisfluxPanel : public dmt::gui::panel::AbstractPanel
   using RotarySliderType = dmt::gui::widget::RotarySlider::Type;
   using Unit = dmt::utility::Unit;
   using Settings = dmt::Settings;
-  const float& size = Settings::Window::size;
   const float& rawPadding = Settings::Panel::padding;
 
 public:

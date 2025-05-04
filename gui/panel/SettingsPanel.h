@@ -23,7 +23,7 @@ class SettingsPanel : public dmt::gui::panel::AbstractPanel
   using SettingsEditorDisplay = dmt::gui::display::SettingsEditorDisplay;
   using Settings = dmt::Settings;
 
-  const float& size = Settings::Window::size;
+  //==============================================================================
   const float& rawPadding = Settings::Panel::padding;
 
 public:
