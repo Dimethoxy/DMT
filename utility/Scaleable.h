@@ -4,7 +4,13 @@
 #include <JuceHeader.h>
 //==============================================================================
 namespace dmt {
-
+//==============================================================================
+class SizeServer
+{
+public:
+  virtual ~SizeServer() = default;
+  virtual float& getSizeFactor() const = 0;
+};
 //==============================================================================
 /**
  *  @brief This is an extension of the JUCE Component class via the CRTP idiom.
