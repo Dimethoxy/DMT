@@ -4,6 +4,7 @@
 #include "gui/widget/Label.h"
 #include "gui/widget/RotarySlider.h"
 #include "utility/Fonts.h"
+#include "utility/HostContextMenu.h"
 #include "utility/Icon.h"
 #include "utility/Settings.h"
 #include "utility/Unit.h"
@@ -17,6 +18,7 @@ class RotarySliderComponent
   : public juce::Component
   , public juce::Slider::Listener
   , public dmt::Scaleable<RotarySliderComponent>
+  , public dmt::HostContextMenu<RotarySliderComponent>
 {
   using RotarySlider = dmt::gui::widget::RotarySlider;
   using Type = RotarySlider::Type;
@@ -27,6 +29,7 @@ class RotarySliderComponent
   using Settings = dmt::Settings;
   using Layout = dmt::Settings::Window;
   using Slider = Settings::Slider;
+  using RangedAudioParameter = juce::RangedAudioParameter;
 
   //============================================================================
   const float& baseWidth = Slider::baseWidth;
@@ -40,20 +43,20 @@ class RotarySliderComponent
   const float& infoFontSize = Slider::infoFontSize;
 
 public:
-  RotarySliderComponent(juce::AudioProcessorValueTreeState& apvts,
-                        const juce::String text,
-                        const juce::String param,
-                        const Unit::Type unitType,
+  RotarySliderComponent(juce::AudioProcessorValueTreeState& _apvts,
+                        const juce::String _text,
+                        const juce::String _param,
+                        const Unit::Type _unitType,
                         const Type type = Type::Positive)
     : slider(type)
-    , sliderAttachment(apvts, param, slider)
-    , titleLabel(text, fonts.medium, titleFontSize, titleFontColour)
+    , sliderAttachment(_apvts, _param, slider)
+    , titleLabel(_text, fonts.medium, titleFontSize, titleFontColour)
     , infoLabel(juce::String("Info Label"),
                 fonts.light,
                 infoFontSize,
                 infoFontColour,
                 juce::Justification::centredBottom)
-    , unitType(unitType)
+    , unitType(_unitType)
   {
     TRACER("RotarySliderComponent::RotarySliderComponent");
     slider.addListener(this);
@@ -61,6 +64,12 @@ public:
     addAndMakeVisible(slider);
     addAndMakeVisible(titleLabel);
     addAndMakeVisible(infoLabel);
+
+    // Let's find the pointer to the parameter in the apvts
+    parameter = _apvts.getParameter(_param);
+
+    // Set up context menu callback
+    slider.onContextMenuRequested = [this]() { showContextMenuForSlider(); };
   }
   void resized()
   {
@@ -116,6 +125,12 @@ protected:
     infoLabel.repaint();
   }
 
+  void showContextMenuForSlider()
+  {
+    // Use HostContextMenu helper to show context menu for this parameter
+    showContextMenu(parameter);
+  }
+
 private:
   RotarySlider slider;
   SliderAttachment sliderAttachment;
@@ -123,6 +138,7 @@ private:
   Label infoLabel;
   Unit::Type unitType;
   Fonts fonts;
+  RangedAudioParameter* parameter;
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(RotarySliderComponent)
 };
 //==============================================================================
