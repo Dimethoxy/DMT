@@ -16,7 +16,9 @@ namespace dmt {
 namespace gui {
 namespace component {
 //==============================================================================
-class ValueEditor : public juce::Component
+class ValueEditor
+  : public juce::Component
+  , public dmt::Scaleable<ValueEditor>
 {
   using Colour = juce::Colour;
   using Fonts = dmt::utility::Fonts;
@@ -28,9 +30,6 @@ class ValueEditor : public juce::Component
   using SettingsEditorSettings = dmt::Settings::SettingsEditor;
 
   //==============================================================================
-  // Window
-  const float& size = Settings::Window::size;
-
   // SettingsEditor
   const float& labelHorizontalPadding =
     SettingsEditorSettings::labelHorizontalPadding;

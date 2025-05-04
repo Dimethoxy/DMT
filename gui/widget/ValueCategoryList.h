@@ -6,6 +6,7 @@
 
 #include "dmt/gui/widget/ValueEditor.h"
 #include "dmt/utility/Fonts.h"
+#include "dmt/utility/Scaleable.h"
 #include "dmt/utility/Settings.h"
 #include <JuceHeader.h>
 
@@ -15,7 +16,9 @@ namespace dmt {
 namespace gui {
 namespace component {
 //==============================================================================
-class ValueCategoryList : public juce::Component
+class ValueCategoryList
+  : public juce::Component
+  , public dmt::Scaleable<ValueCategoryList>
 {
   using Colour = juce::Colour;
   using Settings = dmt::Settings;
@@ -29,14 +32,14 @@ class ValueCategoryList : public juce::Component
   using CategoryList = std::vector<TreeAdapter::Category>;
   using CategoryCallback = std::function<void(TreeAdapter::Category&)>;
 
-  const float& size = Settings::Window::size;
-
+  //==============================================================================
   // TODO: Move to settings
   const Colour& fontColour = SettingsEditorSettings::fontColour;
   const Colour& selectedFontColour = SettingsEditorSettings::selectedFontColour;
-  const Colour& selectedBackgroundColour = SettingsEditorSettings::selectedLabelBackgroundColour;
+  const Colour& selectedBackgroundColour =
+    SettingsEditorSettings::selectedLabelBackgroundColour;
   const Colour& seperatorColour = SettingsEditorSettings::seperatorColour;
-    const float& rawFontSize = SettingsEditorSettings::fontSize;
+  const float& rawFontSize = SettingsEditorSettings::fontSize;
   const float& labelHorizontalPadding =
     SettingsEditorSettings::labelHorizontalPadding;
 
@@ -63,7 +66,8 @@ public:
     // Draw top line
     _g.drawLine(0.0f, 0.0f, static_cast<float>(getWidth()), 0.0f, 1.0f);
 
-    // Draw separator lines at the top of each child component (except the first)
+    // Draw separator lines at the top of each child component (except the
+    // first)
     for (int i = 1; i < getNumChildComponents(); ++i) {
       auto* comp = getChildComponent(i);
       if (comp) {
@@ -77,7 +81,8 @@ public:
       auto* last = getChildComponent(getNumChildComponents() - 1);
       if (last) {
         float bottomY = static_cast<float>(last->getBottom());
-        _g.drawLine(0.0f, bottomY, static_cast<float>(getWidth()), bottomY, 1.0f);
+        _g.drawLine(
+          0.0f, bottomY, static_cast<float>(getWidth()), bottomY, 1.0f);
       }
     }
   }

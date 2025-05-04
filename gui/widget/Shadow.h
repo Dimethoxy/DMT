@@ -58,10 +58,6 @@ class Shadow
   using String = juce::String;
   using PixelFormat = juce::Image::PixelFormat;
 
-  //==============================================================================
-  // Window
-  const float& size = Settings::Window::size;
-
 public:
   /**
    * @brief Constructs a Shadow component.

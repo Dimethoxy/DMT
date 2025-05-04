@@ -32,6 +32,7 @@
 
 //==============================================================================
 
+#include "dmt/utility/Scaleable.h"
 #include "utility/Math.h"
 #include "utility/Settings.h"
 #include <JuceHeader.h>
@@ -54,7 +55,9 @@ namespace widget {
  *
  * Platform-specific scaling is applied for consistent appearance.
  */
-class RotarySlider : public juce::Slider
+class RotarySlider
+  : public juce::Slider
+  , public dmt::Scaleable<RotarySlider>
 {
   //==============================================================================
   // Alias for convenience
@@ -62,9 +65,6 @@ class RotarySlider : public juce::Slider
   using StrokeType = juce::PathStrokeType;
 
   //==============================================================================
-  // Window
-  const float& size = Settings::Window::size;
-
   // General
   const float& rawPadding = Settings::Settings::Slider::padding;
 
@@ -165,10 +165,10 @@ public:
    *
    * @return The slider type.
    */
-  [[nodiscard]] inline Type getType() const noexcept 
-  { 
+  [[nodiscard]] inline Type getType() const noexcept
+  {
     TRACER("RotarySlider::getType");
-    return type; 
+    return type;
   }
 
 protected:

@@ -31,6 +31,7 @@
 
 //==============================================================================
 
+#include "dmt/utility/Scaleable.h"
 #include "utility/Settings.h"
 #include <JuceHeader.h>
 
@@ -49,13 +50,16 @@ namespace widget {
  * Triangle shaped button used for carousel to switch between panels.
  * Not really designed for general use.
  */
-class TriangleButton : public juce::Button
+class TriangleButton
+  : public juce::Button
+  , public dmt::Scaleable<TriangleButton>
 {
   //==============================================================================
   using Shadow = dmt::gui::widget::Shadow;
   using Settings = dmt::Settings;
-  const float& size = Settings::Window::size;
-  const float& margin = Settings::Window::margin;
+
+  //==============================================================================
+  const float& margin = Settings::Window::margin; // TODO: Remove this
   // General
   const juce::Colour& standbyColour = Settings::TriangleButton::standbyColour;
   const juce::Colour& hoverColour = Settings::TriangleButton::hoverColour;
@@ -204,7 +208,11 @@ protected:
    * @brief
    *   Called when the button's state changes. Triggers a repaint.
    */
-  inline void buttonStateChanged() override { TRACER("TriangleButton::buttonStateChanged"); repaint(); }
+  inline void buttonStateChanged() override
+  {
+    TRACER("TriangleButton::buttonStateChanged");
+    repaint();
+  }
 
   //==============================================================================
   /**

@@ -5,6 +5,7 @@
 //==============================================================================
 
 #include "dmt/gui/widget/ValueEditor.h"
+#include "dmt/utility/Scaleable.h"
 #include "dmt/utility/Settings.h"
 #include <JuceHeader.h>
 
@@ -14,7 +15,9 @@ namespace dmt {
 namespace gui {
 namespace component {
 //==============================================================================
-class ValueEditorList : public juce::Component
+class ValueEditorList
+  : public juce::Component
+  , public dmt::Scaleable<ValueEditorList>
 {
   using Colour = juce::Colour;
   using Settings = dmt::Settings;
@@ -24,8 +27,6 @@ class ValueEditorList : public juce::Component
   using ValueEditor = dmt::gui::component::ValueEditor;
   using ValueEditorPointer = std::unique_ptr<ValueEditor>;
   using ValueEditorPointerList = std::vector<ValueEditorPointer>;
-
-  const float& size = Settings::Window::size;
 
   // TODO: Move to settings
   const float& rawFontSize = SettingsEditorSettings::fontSize;
