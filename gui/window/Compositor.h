@@ -555,9 +555,9 @@ public:
    * @note This is typically triggered by the Compositor in response to
    *       hierarchy changes or user scaling actions.
    */
-  void setSizeFactor() noexcept
+  void propagateSizeFactor() noexcept
   {
-    TRACER("Compositor::setSizeFactor");
+    TRACER("Compositor::propagateSizeFactor");
     setSizeFactorRecursively(this);
   }
 
@@ -724,7 +724,7 @@ protected:
   void componentChildrenChanged(juce::Component& component) override
   {
     addListenerToChildren(&component);
-    setSizeFactor();
+    propagateSizeFactor();
   }
 
 private:

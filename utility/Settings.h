@@ -87,7 +87,6 @@ private:
 public:
   struct Window
   {
-    static inline auto& size = container.add<float>("Window.Size", 1.0f);
     static inline auto& margin = container.add<float>("Window.Margin", 10.0f);
     static inline auto& backgroundColour =
       container.add<Colour>("Window.BackgroundColour", Colours::background);
