@@ -141,8 +141,14 @@ public:
     addChildComponent(settingsPanel);
 
     // Start the timer to check if update is found
-    timerCallback(); // Call one to speed up the process on consensecutive runs
-    startTimer(1000);
+    if (!dmt::version::Info::wasPopoverShown) {
+      startTimer(1000);
+    } else {
+      if (dmt::version::Info::isLatest != nullptr &&
+          !(*dmt::version::Info::isLatest)) {
+        showUpdateButton();
+      }
+    }
 
     // Start listening for hierarchy changes
     addListenerRecursively(this);
