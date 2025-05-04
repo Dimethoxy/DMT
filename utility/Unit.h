@@ -104,9 +104,8 @@ struct alignas(8) Unit
    * The formatting logic is intentionally explicit to avoid ambiguity and
    * ensure correct display in all UI contexts.
    */
-  [[nodiscard]] static constexpr inline juce::String getString(
-    Type _type,
-    float _value) noexcept
+  [[nodiscard]] static inline juce::String getString(Type _type,
+                                                     float _value) noexcept
   {
     switch (_type) {
       case Type::OscilloscopeZoom:
