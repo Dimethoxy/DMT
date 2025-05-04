@@ -140,7 +140,7 @@ getIcon(const juce::String _iconName) noexcept
  * If the icon name is not recognized, returns 0.0f.
  */
 //==============================================================================
-[[nodiscard]] static inline constexpr float
+[[nodiscard]] static inline float
 getPadding(const juce::String& _iconName) noexcept
 {
   if (_iconName == "OscilloscopeZoom")
