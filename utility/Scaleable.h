@@ -1,7 +1,45 @@
-#pragma once
 //==============================================================================
+/*
+ * ██████  ██ ███    ███ ███████ ████████ ██   ██  ██████  ██   ██ ██    ██
+ * ██   ██ ██ ████  ████ ██         ██    ██   ██ ██    ██  ██ ██   ██  ██
+ * ██   ██ ██ ██ ████ ██ █████      ██    ██   ██ ██    ██   ███     ████
+ * ██   ██ ██ ██  ██  ██ ██         ██    ██   ██ ██    ██  ██ ██     ██
+ * ██████  ██ ██      ██ ███████    ██    ██   ██  ██████  ██   ██    ██
+ *
+ * Copyright (C) 2024 Dimethoxy Audio (https://dimethoxy.com)
+ *
+ * This file is part of the Dimethoxy Library, a collection of essential
+ * classes used across various Dimethoxy projects.
+ * These files are primarily designed for internal use within our repositories.
+ *
+ * License:
+ * This code is licensed under the GPLv3 license. You are permitted to use and
+ * modify this code under the terms of this license.
+ * You must adhere GPLv3 license for any project using this code or parts of it.
+ * Your are not allowed to use this code in any closed-source project.
+ *
+ * Description:
+ * This file contains the Resizable class and its helper interface. It provides
+ * a mechanism for scaling GUI components in a platform- and DPI-aware way. The
+ * class uses the Curiously Recurring Template Pattern (CRTP) to allow derived
+ * classes to access their own implementation details, while also providing a
+ * non-template RTTI interface (IScaleable) for dynamic discovery.
+ *
+ * Authors:
+ * Lunix-420 (Primary Author)
+ */
+//==============================================================================
+
+#pragma once
+
+//==============================================================================
+
 #include "utility/Settings.h"
-// Forward declaration to avoid circular dependency
+#include <JuceHeader.h>
+
+//==============================================================================
+
+// Forward declaration of Compositor to avoid circular dependency
 namespace dmt {
 namespace gui {
 namespace window {
@@ -9,8 +47,9 @@ class Compositor;
 }
 }
 }
-#include <JuceHeader.h>
+
 //==============================================================================
+
 namespace dmt {
 
 //==============================================================================

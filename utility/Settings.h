@@ -1,9 +1,41 @@
 //==============================================================================
-#pragma once
+/*
+ * ██████  ██ ███    ███ ███████ ████████ ██   ██  ██████  ██   ██ ██    ██
+ * ██   ██ ██ ████  ████ ██         ██    ██   ██ ██    ██  ██ ██   ██  ██
+ * ██   ██ ██ ██ ████ ██ █████      ██    ███████ ██    ██   ███     ████
+ * ██   ██ ██ ██  ██  ██ ██         ██    ██   ██ ██    ██  ██ ██     ██
+ * ██████  ██ ██      ██ ███████    ██    ██   ██  ██████  ██   ██    ██
+ *
+ * Copyright (C) 2024 Dimethoxy Audio (https://dimethoxy.com)
+ *
+ * This file is part of the Dimethoxy Library, a collection of essential
+ * classes used across various Dimethoxy projects.
+ * These files are primarily designed for internal use within our repositories.
+ *
+ * License:
+ * This code is licensed under the GPLv3 license. You are permitted to use and
+ * modify this code under the terms of this license.
+ * You must adhere GPLv3 license for any project using this code or parts of it.
+ * Your are not allowed to use this code in any closed-source project.
+ *
+ * Description:
+ * Centralized settings and theme configuration for Dimethoxy UI components.
+ * Provides a static, type-safe, and high-performance container for all
+ * runtime-tunable UI parameters, including colors, layout, and feature toggles.
+ *
+ * Authors:
+ * Lunix-420 (Primary Author)
+ */
 //==============================================================================
+
+#pragma once
+
+//==============================================================================
+
 #include "BinaryData.h"
 #include "configuration/Container.h"
 #include <JuceHeader.h>
+
 //==============================================================================
 // OS constexprs set by CMake preprocessor definitions
 #if defined(CMAKE_OS_IS_WINDOWS) && CMAKE_OS_IS_WINDOWS
@@ -35,21 +67,55 @@ static constexpr bool DMT_DISABLE_UPDATE_NOTIFICATION = true;
 static constexpr bool DMT_DISABLE_UPDATE_NOTIFICATION = false;
 #endif
 //==============================================================================
+
 namespace dmt {
+
 //==============================================================================
+/**
+ * @brief Centralized static settings and theme configuration for Dimethoxy UI.
+ *
+ * @details
+ * This struct is designed as a static-only, non-instantiable container for all
+ * runtime-tunable UI parameters, including colors, layout, and feature toggles.
+ * All members are static and thread-safe for real-time access.
+ *
+ * @note
+ * This struct cannot be instantiated or copied. All access is via static
+ * members.
+ */
 struct Settings
 {
 public:
+  //==============================================================================
   using Colour = juce::Colour;
 
-  Settings() = delete;
-  Settings(const Settings& obj) = delete;
+  //==============================================================================
+  /**
+   * @brief Deleted default constructor to enforce static-only usage.
+   */
+  constexpr Settings() = delete;
+
+  //==============================================================================
+  /**
+   * @brief Deleted destructor to enforce static-only usage.
+   */
   ~Settings() = delete;
 
+  //==============================================================================
+  /**
+   * @brief Static container for all configuration parameters.
+   *
+   * @details
+   * This container is used to register and manage all tunable parameters.
+   * It is thread-safe and optimized for real-time access.
+   */
   static inline dmt::configuration::Container container;
 
+  //==============================================================================
   static inline auto appName = juce::String(""); // TODO: Remove this
 
+  //==============================================================================
+  // General settings
   static inline auto& framerate =
     container.add<int>("General.TargetFramerate", 30);
   static inline auto& debugBounds =
@@ -62,8 +128,17 @@ public:
     container.add<int>("General.ThemeVersion", 1);
 
 private:
+  //==============================================================================
+  /**
+   * @brief Internal color palette for theme consistency.
+   *
+   * @details
+   * Provides a set of base colors used throughout the UI for consistency.
+   * Not exposed directly; used as defaults for color parameters.
+   */
   struct Colours
   {
+    //==============================================================================
     using Colour = juce::Colour;
     static inline Colour background = Colour(25, 26, 33);
     static inline Colour solidDark = Colour(40, 42, 54);
@@ -85,15 +160,31 @@ private:
   };
 
 public:
+  //==============================================================================
+  /**
+   * @brief Window layout and appearance settings.
+   *
+   * @details
+   * Contains parameters for window margins and background color.
+   */
   struct Window
   {
+    //==============================================================================
     static inline auto& margin = container.add<float>("Window.Margin", 10.0f);
     static inline auto& backgroundColour =
       container.add<Colour>("Window.BackgroundColour", Colours::background);
   };
 
+  //==============================================================================
+  /**
+   * @brief Header bar appearance and layout settings.
+   *
+   * @details
+   * Controls all aspects of the header, including colors, fonts, and sizing.
+   */
   struct Header
   {
+    //==============================================================================
     static inline auto& backgroundColour =
       container.add<Colour>("Header.BackgroundColour", Colours::solidMedium);
     static inline auto& borderColor =
@@ -122,8 +213,16 @@ public:
       container.add<int>("Header.BorderButtonHeight", 25);
   };
 
+  //==============================================================================
+  /**
+   * @brief Popover dialog appearance settings.
+   *
+   * @details
+   * Controls popover background, border, shadow, and font appearance.
+   */
   struct Popover
   {
+    //==============================================================================
     static inline auto& backgroundColour =
       container.add<Colour>("Popover.BackgroundColour", Colours::solidDark);
     static inline auto& borderColour =
@@ -156,8 +255,16 @@ public:
       container.add<bool>("Popover.DrawInnerShadow", true);
   };
 
+  //==============================================================================
+  /**
+   * @brief Tooltip appearance and layout settings.
+   *
+   * @details
+   * Controls tooltip background, border, font, and shadow appearance.
+   */
   struct Tooltip
   {
+    //==============================================================================
     static inline auto& backgroundColour =
       container.add<Colour>("Tooltip.BackgroundColour", Colours::solidDark);
     static inline auto& borderColour =
@@ -188,8 +295,17 @@ public:
       container.add<bool>("Tooltip.DrawInnerShadow", true);
   };
 
+  //==============================================================================
+  /**
+   * @brief Alert dialog appearance and behavior settings.
+   *
+   * @details
+   * Controls all alert types (warning, error, info, success) and their
+   * appearance.
+   */
   struct Alerts
   {
+    //==============================================================================
     static inline auto& warningBackgroundColour =
       container.add<Colour>("Alert.WarningBackgroundColour", Colours::warning);
     static inline auto& warningBorderColour =
@@ -280,8 +396,16 @@ public:
       container.add<int>("Alert.AlertHeight", 70);
   };
 
+  //==============================================================================
+  /**
+   * @brief Button appearance and shadow settings.
+   *
+   * @details
+   * Controls button background, font, hover/click, and shadow appearance.
+   */
   struct Button
   {
+    //==============================================================================
     static inline auto& backgroundColour =
       container.add<Colour>("Button.BackgroundColour", Colours::solidDark);
     static inline auto& outerShadowColour =
@@ -309,8 +433,16 @@ public:
       container.add<bool>("Button.DrawOuterShadow", false);
   };
 
+  //==============================================================================
+  /**
+   * @brief Panel appearance and layout settings.
+   *
+   * @details
+   * Controls panel padding, border, background, and shadow appearance.
+   */
   struct Panel
   {
+    //==============================================================================
     static inline auto& padding = container.add<float>("Panel.Padding", 10.0f);
     static inline auto& cornerSize =
       container.add<float>("Panel.CornerSize", 15.0f);
@@ -340,16 +472,32 @@ public:
       container.add<float>("Panel.FontSize", 30.0f);
   };
 
+  //==============================================================================
+  /**
+   * @brief Carousel navigation button sizing.
+   *
+   * @details
+   * Controls the width and height of carousel navigation buttons.
+   */
   struct Carousel
   {
+    //==============================================================================
     static inline auto& buttonWidth =
       container.add<float>("Carousel.ButtonWidth", 60.0f);
     static inline auto& buttonHeight =
       container.add<float>("Carousel.ButtonHeight", 180.0f);
   };
 
+  //==============================================================================
+  /**
+   * @brief Settings editor appearance and layout.
+   *
+   * @details
+   * Controls font, selection, scrollbar, and padding for the settings editor.
+   */
   struct SettingsEditor
   {
+    //==============================================================================
     static inline auto& fontColour =
       container.add<Colour>("SettingsEditor.FontColour", Colours::font);
     static inline auto& selectedFontColour =
@@ -376,8 +524,17 @@ public:
       container.add<float>("SettingsEditor.LabelHorizontalPadding", 10.0f);
   };
 
+  //==============================================================================
+  /**
+   * @brief Slider appearance and layout settings.
+   *
+   * @details
+   * Controls all aspects of slider appearance, including shaft, rail, thumb,
+   * and selection.
+   */
   struct Slider
   {
+    //==============================================================================
     // General
     static inline auto& padding = container.add<float>("Slider.Padding", 8.0f);
     static inline auto& baseWidth =
@@ -437,8 +594,16 @@ public:
       container.add<float>("Slider.SelectionActivePadding", 2.0f);
   };
 
+  //==============================================================================
+  /**
+   * @brief Display panel appearance and layout settings.
+   *
+   * @details
+   * Controls background, border, shadow, and layout for display panels.
+   */
   struct Display
   {
+    //==============================================================================
     // General
     static inline auto& backgroundColour =
       container.add<Colour>("Display.BackgroundColour", Colours::background);
@@ -469,8 +634,16 @@ public:
       container.add<float>("Display.InnerShadowRadius", 4.0f);
   };
 
+  //==============================================================================
+  /**
+   * @brief Triangle button appearance and layout settings.
+   *
+   * @details
+   * Controls triangle button color, border, shadow, and margin.
+   */
   struct TriangleButton
   {
+    //==============================================================================
     // General
     static inline auto& standbyColour =
       container.add<Colour>("TriangleButton.StandbyColour",
@@ -505,8 +678,16 @@ public:
       container.add<float>("TriangleButton.InnerShadowRadius", 4.0f);
   };
 
+  //==============================================================================
+  /**
+   * @brief Oscillator display appearance and resolution settings.
+   *
+   * @details
+   * Controls resolution and shadow appearance for oscillator displays.
+   */
   struct OscillatorDisplay
   {
+    //==============================================================================
     // General
     static inline auto& resolution =
       container.add<int>("OscillatorDisplay.Resolution", 256);
@@ -527,8 +708,16 @@ public:
       container.add<float>("OscillatorDisplay.InnerShadowRadius", 4.0f);
   };
 
+  //==============================================================================
+  /**
+   * @brief Oscilloscope default parameter settings.
+   *
+   * @details
+   * Controls default zoom, gain, and thickness for oscilloscopes.
+   */
   struct Oscilloscope
   {
+    //==============================================================================
     // General
     static inline auto& defaultZoom =
       container.add<float>("Oscilloscope.DefaultZoom", 25.0f);
@@ -537,6 +726,9 @@ public:
     static inline auto& defaultThickness =
       container.add<float>("Oscilloscope.DefaultThickness", 3.0f);
   };
+
+  //==============================================================================
+  JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Settings)
 };
 
 } // namespace dmt

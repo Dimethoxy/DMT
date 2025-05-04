@@ -1,3 +1,32 @@
+//==============================================================================
+/*
+ * ██████  ██ ███    ███ ███████ ████████ ██   ██  ██████  ██   ██ ██    ██
+ * ██   ██ ██ ████  ████ ██         ██    ██   ██ ██    ██  ██ ██   ██  ██
+ * ██   ██ ██ ██ ████ ██ █████      ██    ███████ ██    ██   ███     ████
+ * ██   ██ ██ ██  ██  ██ ██         ██    ██   ██ ██    ██  ██ ██     ██
+ * ██████  ██ ██      ██ ███████    ██    ██   ██  ██████  ██   ██    ██
+ *
+ * Copyright (C) 2024 Dimethoxy Audio (https://dimethoxy.com)
+ *
+ * This file is part of the Dimethoxy Library, a collection of essential
+ * classes used across various Dimethoxy projects.
+ * These files are primarily designed for internal use within our repositories.
+ *
+ * License:
+ * This code is licensed under the GPLv3 license. You are permitted to use and
+ * modify this code under the terms of this license.
+ * You must adhere GPLv3 license for any project using this code or parts of it.
+ * Your are not allowed to use this code in any closed-source project.
+ *
+ * Description:
+ * Provides a strongly-typed enumeration for units and a utility for converting
+ * unit values to formatted strings for display. Designed for real-time audio
+ * parameter visualization and UI feedback.
+ *
+ * Authors:
+ * Lunix-420 (Primary Author)
+ */
+//==============================================================================
 
 #pragma once
 
@@ -5,9 +34,32 @@
 
 namespace dmt {
 namespace utility {
-struct Unit
+
+//==============================================================================
+/**
+ * @brief Utility struct for handling unit types and formatting their values.
+ *
+ * @details
+ * This struct provides a strongly-typed enumeration for various unit types
+ * relevant to audio and DSP parameters. It also offers a static utility
+ * function to convert a unit value to a formatted string suitable for UI
+ * display. The design ensures type safety and extensibility for future units.
+ *
+ * Intended for use in real-time audio applications where formatted parameter
+ * values must be displayed efficiently and safely.
+ */
+struct alignas(8) Unit
 {
-  enum class Type
+  //==============================================================================
+  /**
+   * @brief Enumeration of supported unit types.
+   *
+   * @details
+   * Each enumerator represents a distinct unit relevant to audio processing
+   * or UI display. The order and naming are stable for serialization and
+   * switch-based logic.
+   */
+  enum class Type : int32_t
   {
     Degree,
     Percent,
@@ -36,38 +88,70 @@ struct Unit
     DisfluxMix
   };
 
-  static inline juce::String getString(Type type, float value)
+  //==============================================================================
+  /**
+   * @brief Converts a unit value to a formatted string for display.
+   *
+   * @param _type The unit type to format.
+   * @param _value The value to be formatted.
+   * @return Formatted string representing the value with its unit.
+   *
+   * @details
+   * This function is optimized for real-time usage and avoids heap allocations
+   * where possible. Explicit casts are used for clarity and type safety.
+   * Edge cases (such as unknown types) return "ERROR" for debugging.
+   *
+   * The formatting logic is intentionally explicit to avoid ambiguity and
+   * ensure correct display in all UI contexts.
+   */
+  [[nodiscard]] static constexpr inline juce::String getString(
+    Type _type,
+    float _value) noexcept
   {
-    switch (type) {
+    switch (_type) {
       case Type::OscilloscopeZoom:
-        return { juce::String((int)value) + juce::String("%") };
+        return juce::String(static_cast<int>(static_cast<float>(_value))) +
+               juce::String("%");
         break;
       case Type::OscilloscopeThickness:
-        return { juce::String((int)value) + juce::String("px") };
+        return juce::String(static_cast<int>(static_cast<float>(_value))) +
+               juce::String("px");
         break;
       case Type::OscilloscopeHeight:
-        return { juce::String((int)value) + juce::String("dB") };
+        return juce::String(static_cast<int>(static_cast<float>(_value))) +
+               juce::String("dB");
         break;
       case Type::DisfluxAmount:
-        return { juce::String((int)value) + juce::String("x") };
+        return juce::String(static_cast<int>(static_cast<float>(_value))) +
+               juce::String("x");
         break;
       case Type::DisfluxSpread:
-        return { juce::String((int)value) + juce::String("Hz") };
+        return juce::String(static_cast<int>(static_cast<float>(_value))) +
+               juce::String("Hz");
         break;
       case Type::DisfluxFrequency:
-        return { juce::String((int)value) + juce::String("Hz") };
+        return juce::String(static_cast<int>(static_cast<float>(_value))) +
+               juce::String("Hz");
         break;
       case Type::DisfluxPinch:
-        return { juce::String((int)(value * 100)) + juce::String("%") };
+        return juce::String(
+                 static_cast<int>(static_cast<float>(_value * 100.0f))) +
+               juce::String("%");
         break;
       case Type::DisfluxMix:
-        return { juce::String((int)(value * 100)) + juce::String("%") };
+        return juce::String(
+                 static_cast<int>(static_cast<float>(_value * 100.0f))) +
+               juce::String("%");
         break;
       default:
-        return { juce::String("ERROR") };
+        return juce::String("ERROR");
         break;
     }
   }
+
+  //==============================================================================
+  JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Unit)
 };
+
 } // namespace utility
 } // namespace dmt
