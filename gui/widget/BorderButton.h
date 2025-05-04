@@ -32,6 +32,7 @@
 //==============================================================================
 
 #include "utility/RepaintTimer.h"
+#include "utility/Scaleable.h"
 #include "utility/Settings.h"
 #include <JuceHeader.h>
 
@@ -52,6 +53,7 @@ namespace widget {
 class BorderButton
   : public juce::Button
   , private dmt::utility::RepaintTimer
+  , private dmt::Scaleable<BorderButton>
 {
   using Settings = dmt::Settings;
   using Colour = juce::Colour;
@@ -59,9 +61,7 @@ class BorderButton
   using Image = juce::Image;
   using Rectangle = juce::Rectangle<int>;
 
-  // General
-  const float& size = Settings::Window::size;
-
+  //==============================================================================
   // Header
   const Colour& backgroundColour =
     Settings::Header::borderButtonBackgroundColour;

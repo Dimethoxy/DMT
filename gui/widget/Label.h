@@ -33,6 +33,7 @@
 
 //==============================================================================
 
+#include "dmt/utility/Scaleable.h"
 #include "utility/Settings.h"
 #include <JuceHeader.h>
 
@@ -56,12 +57,13 @@ namespace widget {
  * The label can be justified and colored as needed, and is intended to be used
  * as a lightweight alternative to more complex text components.
  */
-class Label : public juce::Component
+class Label
+  : public juce::Component
+  , public dmt::Scaleable<Label>
 {
   using String = juce::String;
   using Settings = dmt::Settings;
   using Justification = juce::Justification;
-  const float& size = Settings::Window::size;
 
 public:
   //==============================================================================

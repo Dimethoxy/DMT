@@ -70,9 +70,6 @@ class AbstractButton
   using ButtonSettings = dmt::Settings::Button;
 
   //==============================================================================
-  // General
-  const float& size = Settings::Window::size;
-
   // Button
   const Colour& backgroundColour = ButtonSettings::backgroundColour;
   const Colour& outerShadowColour = ButtonSettings::outerShadowColour;

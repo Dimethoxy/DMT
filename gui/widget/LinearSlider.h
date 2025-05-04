@@ -33,6 +33,7 @@
 
 //==============================================================================
 
+#include "dmt/utility/Scaleable.h"
 #include "utility/Settings.h"
 #include <JuceHeader.h>
 
@@ -57,7 +58,9 @@ namespace widget {
  * Platform-specific scaling is applied for consistent appearance
  * across operating systems.
  */
-class LinearSlider : public juce::Slider
+class LinearSlider
+  : public juce::Slider
+  , public dmt::Scaleable<LinearSlider>
 {
   //==============================================================================
   // Alias for convenience
@@ -65,9 +68,6 @@ class LinearSlider : public juce::Slider
   using StrokeType = juce::PathStrokeType;
 
   //==============================================================================
-  // Window
-  const float& size = Settings::Window::size;
-
   // General
   const float& rawPadding = Settings::Slider::padding;
 
