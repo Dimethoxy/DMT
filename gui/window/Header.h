@@ -34,6 +34,7 @@
 #include "dmt/gui/widget/Shadow.h"
 #include "dmt/gui/widget/ToggleButton.h"
 #include "dmt/utility/Fonts.h"
+#include "dmt/utility/Scaleable.h"
 #include "dmt/utility/Settings.h"
 #include <JuceHeader.h>
 
@@ -50,7 +51,9 @@ namespace window {
  * and functionality of the header section, including buttons, shadows,
  * and the title. It ensures a responsive and visually appealing design.
  */
-class Header : public juce::Component
+class Header
+  : public juce::Component
+  , public dmt::Scaleable<Header>
 {
   //==============================================================================
   // Aliases
@@ -65,9 +68,6 @@ class Header : public juce::Component
   using Shadow = dmt::gui::widget::Shadow;
 
   //==============================================================================
-  // Window
-  const float& size = dmt::Settings::Window::size;
-
   // Panel
   const Colour& outerShadowColour = PanelSettings::outerShadowColour;
   const Colour& innerShadowColour = PanelSettings::innerShadowColour;
@@ -118,7 +118,11 @@ public:
     , updateButton("UpdateButton",
                    "Download",
                    "Update available - click to install")
-    , bypassButton("BypassButton", "Bypass", "GlobalBypass", _apvts, "Toggle bypass")
+    , bypassButton("BypassButton",
+                   "Bypass",
+                   "GlobalBypass",
+                   _apvts,
+                   "Toggle bypass")
     , presetsButton("PresetsButton", "Presets", "Browse presets")
     // Add new buttons for settings view
     , resetButton("HeaderResetButton", "Reload", "Reset settings")

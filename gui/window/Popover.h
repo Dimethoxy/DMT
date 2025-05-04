@@ -33,6 +33,7 @@
 
 //==============================================================================
 
+#include "dmt/utility/Scaleable.h"
 #include "gui/widget/CallbackButton.h"
 #include "utility/Math.h"
 #include "utility/Settings.h"
@@ -56,7 +57,9 @@ namespace window {
  * mouse clicks through to the components below it if the mouse doesn't hover
  * over the actual popover part.
  */
-class Popover : public juce::Component
+class Popover
+  : public juce::Component
+  , public dmt::Scaleable<Popover>
 {
   //==============================================================================
   // Aliases
@@ -73,9 +76,6 @@ class Popover : public juce::Component
   using PopoverSettings = Settings::Popover;
 
   //==============================================================================
-  // Window
-  const float& size = dmt::Settings::Window::size;
-
   // Popover
   const Colour backgroundColour = PopoverSettings::backgroundColour;
   const Colour borderColour = PopoverSettings::borderColour;

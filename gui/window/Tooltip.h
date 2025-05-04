@@ -15,6 +15,8 @@ namespace dmt {
 namespace gui {
 namespace window {
 
+//==============================================================================
+
 class Tooltip
   : public juce::Component
   , public dmt::utility::RepaintTimer
@@ -28,9 +30,6 @@ class Tooltip
   using Shadow = dmt::gui::widget::Shadow;
 
   //==============================================================================
-  // Window
-  const float& size = Settings::Window::size;
-
   // Tooltip
   const Colour& backgroundColour = TooltipSettings::backgroundColour;
   const Colour& borderColour = TooltipSettings::borderColour;

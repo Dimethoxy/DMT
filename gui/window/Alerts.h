@@ -31,9 +31,6 @@ class Alerts
   using AlertSettings = dmt::Settings::Alerts;
 
   //==============================================================================
-  // Window
-  const float& size = Settings::Window::size;
-
   // Alerts
   const Colour& warningBackgroundColour =
     AlertSettings::warningBackgroundColour;

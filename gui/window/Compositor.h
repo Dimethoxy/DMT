@@ -32,6 +32,7 @@
 //==============================================================================
 
 #include "configuration/Properties.h"
+#include "dmt/utility/Scaleable.h"
 #include "dmt/version/Info.h"
 #include "gui/panel/AbstractPanel.h"
 #include "gui/panel/SettingsPanel.h"
@@ -64,6 +65,7 @@ class Compositor
   : public juce::Component
   , public juce::Timer
   , public dmt::gui::component::ValueEditor::Listener
+  , public dmt::Scaleable<Compositor>
 {
   //============================================================================
   // Aliases for convenience
@@ -77,13 +79,11 @@ class Compositor
   using String = juce::String;
   using Tooltip = dmt::gui::window::Tooltip;
   using Alerts = dmt::gui::window::Alerts;
-  //============================================================================
-  // Window size
-  const float& size = dmt::Settings::Window::size;
-  const int& rawHeaderHeight = dmt::Settings::Header::height;
 
+  //============================================================================
   // Header
   const int& rawBorderButtonHeight = Settings::Header::borderButtonHeight;
+  const int& rawHeaderHeight = dmt::Settings::Header::height;
 
 public:
   //============================================================================
