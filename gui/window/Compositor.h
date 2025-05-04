@@ -141,6 +141,7 @@ public:
     addChildComponent(settingsPanel);
 
     // Start the timer to check if update is found
+    timerCallback(); // Call one to speed up the process on consensecutive runs
     startTimer(1000);
 
     // Start listening for hierarchy changes
