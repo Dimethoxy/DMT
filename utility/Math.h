@@ -1,4 +1,31 @@
 //==============================================================================
+/*
+ * ██████  ██ ███    ███ ███████ ████████ ██   ██  ██████  ██   ██ ██    ██
+ * ██   ██ ██ ████  ████ ██         ██    ██   ██ ██    ██  ██ ██   ██  ██
+ * ██   ██ ██ ██ ████ ██ █████      ██    ██   ██ ██    ██   ███     ████
+ * ██   ██ ██ ██  ██  ██ ██         ██    ██   ██ ██    ██  ██ ██     ██
+ * ██████  ██ ██      ██ ███████    ██    ██   ██  ██████  ██   ██    ██
+ *
+ * Copyright (C) 2024 Dimethoxy Audio (https://dimethoxy.com)
+ *
+ * This file is part of the Dimethoxy Library, a collection of essential
+ * classes used across various Dimethoxy projects.
+ * These files are primarily designed for internal use within our repositories.
+ *
+ * License:
+ * This code is licensed under the GPLv3 license. You are permitted to use and
+ * modify this code under the terms of this license.
+ * You must adhere GPLv3 license for any project using this code or parts of it.
+ * Your are not allowed to use this code in any closed-source project.
+ *
+ * Description:
+ * Math utility functions for geometry, trigonometry, and coordinate
+ * transformations, optimized for real-time audio and graphics applications.
+ *
+ * Authors:
+ * Lunix-420 (Primary Author)
+ */
+//==============================================================================
 
 #pragma once
 
@@ -8,8 +35,16 @@
 namespace dmt {
 namespace math {
 //==============================================================================
-static inline const float pi = juce::MathConstants<float>::pi;
-static inline const float twoPi = juce::MathConstants<float>::twoPi;
+
+/**
+ * @brief Mathematical constant π (pi) as a float.
+ */
+constexpr float pi = juce::MathConstants<float>::pi;
+
+/**
+ * @brief Mathematical constant 2π (two pi) as a float.
+ */
+constexpr float twoPi = juce::MathConstants<float>::twoPi;
 
 /**
  * Calculates the angle in radians from a given slope.
@@ -261,12 +296,47 @@ intersectInfiniteLines(const juce::Point<CoordType>& a1,
   return juce::Point<CoordType>{ ix, iy };
 }
 
+/**
+ * Converts a linear value to its exponential equivalent.
+ *
+ * This function maps a linear value to an exponential scale. For non-negative
+ * values, it returns (value + 1). For negative values, it returns the
+ * reciprocal of -(value + 1). This is useful for mapping linear controls to
+ * exponential responses, such as in audio parameter scaling.
+ *
+ * @param value The linear value to convert.
+ * @return The exponential equivalent of the input value.
+ *
+ * @note For value >= 0, result is (value + 1). For value < 0, result is
+ *       1 / -(value + 1).
+ *
+ * @example
+ * float expValue = linearToExponent(0.5f); // returns 1.5f
+ * float expValueNeg = linearToExponent(-0.5f); // returns 2.0f
+ */
 static inline float
 linearToExponent(float value) noexcept
 {
   return (value >= 0.0f) ? (value + 1.0f) : (1.0f / -(value + 1.0f));
 }
 
+/**
+ * Calculates the coordinates of a point on a circle given a radius and angle.
+ *
+ * This function computes the (x, y) coordinates of a point on a circle centered
+ * at the origin, for a given radius and angle in radians. The angle is measured
+ * from the positive X axis, with 0 at the top (12 o'clock).
+ *
+ * @param radius           The radius of the circle.
+ * @param angleInRadians   The angle in radians, where 0 is at the top.
+ * @return A juce::Point<float> representing the coordinates on the circle.
+ *
+ * @note The angle is offset by -π/2 so that 0 radians is at the top.
+ *
+ * @example
+ * juce::Point<float> p = pointOnCircle(1.0f,
+ * juce::MathConstants<float>::halfPi);
+ */
 static inline const juce::Point<float>
 pointOnCircle(const float radius, const float angleInRadians) noexcept
 {
@@ -274,6 +344,24 @@ pointOnCircle(const float radius, const float angleInRadians) noexcept
                             radius * std::sin(angleInRadians - pi * 0.5f));
 }
 
+/**
+ * Calculates the coordinates of a point on a circle given a center, radius, and
+ * angle.
+ *
+ * This function computes the (x, y) coordinates of a point on a circle centered
+ * at a specified point, for a given radius and angle in radians. The angle is
+ * measured from the positive X axis, with 0 at the top (12 o'clock).
+ *
+ * @param centre           The center of the circle.
+ * @param radius           The radius of the circle.
+ * @param angleInRadians   The angle in radians, where 0 is at the top.
+ * @return A juce::Point<float> representing the coordinates on the circle.
+ *
+ * @note The angle is offset by -π/2 so that 0 radians is at the top.
+ *
+ * @example
+ * juce::Point<float> p = pointOnCircle({ 10.0f, 10.0f }, 5.0f, 0.0f);
+ */
 static inline const juce::Point<float>
 pointOnCircle(juce::Point<float> centre,
               const float radius,
@@ -284,12 +372,34 @@ pointOnCircle(juce::Point<float> centre,
   return raw + centre;
 }
 
+/**
+ * Converts an angle from degrees to radians.
+ *
+ * @param angleInDegree The angle in degrees.
+ * @return The angle in radians.
+ *
+ * @example
+ * float radians = degreeToRadians(180.0f); // returns π
+ */
 static inline const float
 degreeToRadians(float angleInDegree) noexcept
 {
   return angleInDegree * (juce::MathConstants<float>::pi / 180.0f);
 }
 
+/**
+ * Normalizes an angle in radians to the range [0, 2π).
+ *
+ * If the input angle is negative, this function adds 2π to bring it into the
+ * standard positive range. If the angle is already positive, it is returned
+ * unchanged.
+ *
+ * @param angleInRadians The angle in radians.
+ * @return The normalized angle in radians, in the range [0, 2π).
+ *
+ * @example
+ * float norm = normalizeAngleInRadians(-1.0f); // returns value in [0, 2π)
+ */
 static inline const float
 normalizeAngleInRadians(float angleInRadians) noexcept
 {
@@ -298,6 +408,16 @@ normalizeAngleInRadians(float angleInRadians) noexcept
   return angleInRadians;
 }
 
+/**
+ * Converts an angle from radians to degrees.
+ *
+ * @param angleInRadians The angle in radians.
+ * @return The angle in degrees.
+ *
+ * @example
+ * float degrees = radiansToDegree(juce::MathConstants<float>::pi); // returns
+ * 180.0f
+ */
 static inline const float
 radiansToDegree(float angleInRadians) noexcept
 {
@@ -305,5 +425,5 @@ radiansToDegree(float angleInRadians) noexcept
 }
 
 //==============================================================================
-} // namespace Math
+} // namespace math
 } // namespace dmt
