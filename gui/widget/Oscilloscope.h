@@ -74,10 +74,6 @@ public:
   using Settings = dmt::Settings;
 
   //==============================================================================
-  // Window
-  const float& size = Settings::Window::size;
-
-  //==============================================================================
   /**
    * @brief Constructs the oscilloscope and starts the rendering thread.
    *
@@ -89,10 +85,12 @@ public:
    * from the provided ring buffer and visualize the specified channel.
    */
   explicit Oscilloscope(RingBuffer& _ringBuffer,
-                        const int32_t _channel) noexcept
+                        const int32_t _channel,
+                        const float& _sizeFactor) noexcept
     : Thread(String("Oscilloscope" + juce::String(_channel)))
     , ringBuffer(_ringBuffer)
     , channel(_channel)
+    , size(_sizeFactor)
   {
     startThread();
   }
@@ -330,6 +328,7 @@ private:
   float rawSamplesPerPixel = 10.0f;
   float amplitude = 1.0f;
   float thickness = 3.0f;
+  const float& size;
 
   //==============================================================================
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Oscilloscope)

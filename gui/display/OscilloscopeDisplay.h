@@ -52,8 +52,8 @@ public:
                       bool _useDefaultSettings = false)
     : ringBuffer(2, 4096)
     , fifoBuffer(_fifoBuffer)
-    , leftOscilloscope(ringBuffer, 0)
-    , rightOscilloscope(ringBuffer, 1)
+    , leftOscilloscope(ringBuffer, 0, size)
+    , rightOscilloscope(ringBuffer, 1, size)
     , useDefaultSettings(_useDefaultSettings)
   {
     if (!useDefaultSettings) {
