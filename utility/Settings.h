@@ -37,6 +37,7 @@
 #include <JuceHeader.h>
 
 //==============================================================================
+
 // OS constexprs set by CMake preprocessor definitions
 #if defined(CMAKE_OS_IS_WINDOWS) && CMAKE_OS_IS_WINDOWS
 static constexpr bool OS_IS_WINDOWS = true;
@@ -66,6 +67,7 @@ static constexpr bool DMT_DISABLE_UPDATE_NOTIFICATION = true;
 #else
 static constexpr bool DMT_DISABLE_UPDATE_NOTIFICATION = false;
 #endif
+
 //==============================================================================
 
 namespace dmt {
