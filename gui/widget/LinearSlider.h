@@ -2,7 +2,7 @@
 /*
  * ██████  ██ ███    ███ ███████ ████████ ██   ██  ██████  ██   ██ ██    ██
  * ██   ██ ██ ████  ████ ██         ██    ██   ██ ██    ██  ██ ██   ██  ██
- * ██   ██ ██ ██ ████ ██ █████      ██    ███████ ██    ██   ███     ████
+ * ██   ██ ██ ██ ████ ██ █████      ██    ██   ██ ██    ██   ███     ████
  * ██   ██ ██ ██  ██  ██ ██         ██    ██   ██ ██    ██  ██ ██     ██
  * ██████  ██ ██      ██ ███████    ██    ██   ██  ██████  ██   ██    ██
  *
@@ -139,11 +139,11 @@ public:
     TRACER("LinearSlider::LinearSlider");
     switch (_orientation) {
       case Orientation::Horizontal: {
-        setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalDrag);
+        setSliderStyle(juce::Slider::LinearHorizontal);
         break;
       }
       case Orientation::Vertical: {
-        setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
+        setSliderStyle(juce::Slider::LinearVertical);
         break;
       }
       default: {
