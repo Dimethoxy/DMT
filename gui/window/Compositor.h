@@ -543,15 +543,39 @@ public:
     return header.isVisible();
   }
 
+  /**
+   * @brief Propagates the current size factor to all scaleable components in
+   * the tree.
+   *
+   * This method is called when we notice a change to the component tree,
+   * such as when a new component is added or removed. It ensures that all
+   * components that implement the IScaleable interface receive the updated
+   * size factor.
+   *
+   * @note This is typically triggered by the Compositor in response to
+   *       hierarchy changes or user scaling actions.
+   */
+  void setSizeFactor() noexcept
+  {
+    TRACER("Compositor::setSizeFactor");
+    setSizeFactorRecursively(this);
+  }
+
 protected:
   //==============================================================================
   /**
-   * @brief Resizes the component and its children recursively.
+   * @brief Recursively triggers a resize event for a component and all its
+   * descendants.
    *
-   * @param component The component to resize.
+   * This function is used to ensure that any changes in scaling, layout, or
+   * appearance are propagated throughout the entire component tree. It is
+   * especially useful after global scaling changes or when cached resources
+   * (such as images) need to be invalidated and redrawn.
    *
-   * @note This function is used to trigger a resize event for all child
-   *       components.
+   * @param component The root component to start the recursion from.
+   *
+   * @note This is a brute-force approach that guarantees all children are
+   *       updated, regardless of their type or depth in the hierarchy.
    */
   void resizedRecursively(juce::Component* component)
   {
@@ -568,14 +592,20 @@ protected:
     }
   }
 
-public:
-  void setSizeFactor() noexcept
-  {
-    TRACER("Compositor::setSizeFactor");
-    setSizeFactorRecursively(this);
-  }
-
-protected:
+  /**
+   * @brief Recursively applies the current size factor to all scaleable
+   * descendants.
+   *
+   * This function walks the component tree, and for each component that
+   * implements dmt::IScaleable, it calls setSizeFactor. This is necessary
+   * because C++ templates do not allow dynamic_cast across different template
+   * instantiations, so we rely on the IScaleable interface for RTTI.
+   *
+   * @param component The root component to start the recursion from.
+   *
+   * @note This ensures that even dynamically added components receive the
+   *       correct scaling, but does not assume all components are scaleable.
+   */
   void setSizeFactorRecursively(juce::Component* component) noexcept
   {
     TRACER("Compositor::setSizeFactorRecursively");
@@ -593,16 +623,21 @@ protected:
     }
   }
 
-  // Listen for children added/removed anywhere in the tree
-  void componentChildrenChanged(juce::Component& component) override
-  {
-    setSizeFactor();
-    // Ensure we listen to all new children
-    addListenerRecursively(&component);
-    setSizeFactor();
-  }
-
-  // Recursively add this as a ComponentListener to all descendants
+  /**
+   * @brief Recursively adds this Compositor as a ComponentListener to all
+   * descendants.
+   *
+   * This is required to detect changes in the component hierarchy (such as
+   * children being added or removed) at any depth. By listening to all
+   * descendants, the Compositor can react to dynamic UI changes and ensure
+   * scaling and layout remain consistent.
+   *
+   * @param c The root component to start the recursion from.
+   *
+   * @warning This must be used with care to avoid excessive listener
+   *          registration, which can cause performance issues if done
+   *          repeatedly on the same subtree.
+   */
   void addListenerRecursively(juce::Component* c)
   {
     if (!c)
@@ -613,7 +648,16 @@ protected:
         addListenerRecursively(cc);
   }
 
-  // Recursively remove this as a ComponentListener from all descendants
+  /**
+   * @brief Recursively removes this Compositor as a ComponentListener from all
+   * descendants.
+   *
+   * This is the counterpart to addListenerRecursively and is essential for
+   * proper cleanup and to avoid dangling pointers when the component tree is
+   * destroyed or restructured.
+   *
+   * @param c The root component to start the recursion from.
+   */
   void removeListenerRecursively(juce::Component* c)
   {
     if (!c)
@@ -622,6 +666,65 @@ protected:
     for (auto* child : c->getChildren())
       if (auto* cc = dynamic_cast<juce::Component*>(child))
         removeListenerRecursively(cc);
+  }
+
+  /**
+   * @brief Adds this Compositor as a listener to all immediate children of a
+   * component.
+   *
+   * This helper is used in response to hierarchy changes, ensuring that any
+   * newly added children (and their descendants) are tracked for further
+   * changes. It avoids redundant recursion by only targeting direct children.
+   *
+   * @param c The component whose immediate children should be updated.
+   */
+  void addListenerToChildren(juce::Component* c)
+  {
+    if (!c)
+      return;
+    for (auto* child : c->getChildren())
+      if (auto* cc = dynamic_cast<juce::Component*>(child))
+        addListenerRecursively(cc);
+  }
+
+  /**
+   * @brief Removes this Compositor as a listener from all immediate children of
+   * a component.
+   *
+   * This is the counterpart to addListenerToChildren, used for cleanup when
+   * children are removed from the hierarchy.
+   *
+   * @param c The component whose immediate children should be updated.
+   */
+  void removeListenerFromChildren(juce::Component* c)
+  {
+    if (!c)
+      return;
+    for (auto* child : c->getChildren())
+      if (auto* cc = dynamic_cast<juce::Component*>(child))
+        removeListenerRecursively(cc);
+  }
+
+  /**
+   * @brief Handles notification when children are added or removed anywhere in
+   * the tree.
+   *
+   * This override is the core of the dynamic scaling and listener management
+   * system. When JUCE notifies us that a component's children have changed,
+   * we ensure that all new children (and their descendants) are tracked by
+   * adding this as a listener, and then propagate the current size factor to
+   * the entire tree.
+   *
+   * @param component The component whose children have changed.
+   *
+   * @note This approach ensures that even deeply nested dynamic UI changes
+   *       are handled, but avoids the performance pitfalls of re-listening
+   *       to the entire tree on every change.
+   */
+  void componentChildrenChanged(juce::Component& component) override
+  {
+    addListenerToChildren(&component);
+    setSizeFactor();
   }
 
 private:
