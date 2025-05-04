@@ -128,7 +128,8 @@ public:
   {
     TRACER("BorderButton::paintButton");
     _g.setOpacity(currentOpacity);
-    _g.drawImageAt(cachedImage, 0, 0);
+    // Draw the cached image scaled to fit the button area
+    _g.drawImage(cachedImage, getLocalBounds().toFloat());
   }
 
   //==============================================================================
@@ -219,15 +220,21 @@ protected:
       return; // Avoid invalid dimensions
     }
 
-    cachedImage = Image(juce::Image::ARGB, getWidth(), getHeight(), true);
+    // HiDPI support: render cached image at higher resolution
+    const int hiResWidth = static_cast<int>(width * scale);
+    const int hiResHeight = static_cast<int>(height * scale);
+
+    cachedImage = Image(juce::Image::ARGB, hiResWidth, hiResHeight, true);
     Graphics g(cachedImage);
 
+    g.addTransform(juce::AffineTransform::scale(scale, scale));
     g.fillAll(juce::Colours::transparentBlack);
     g.fillAll(backgroundColour);
 
     g.setColour(fontColour);
-    g.drawText(
-      "Click to Show Header", getLocalBounds(), juce::Justification::centred);
+    g.drawText("Click to Show Header",
+               juce::Rectangle<int>(0, 0, width, height),
+               juce::Justification::centred);
   }
 
   //==============================================================================
