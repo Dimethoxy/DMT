@@ -60,6 +60,10 @@ namespace window {
  *
  * @note This class is designed to be used as a top-level component within a
  *       DMT-based application.
+ *
+ * @warning This class hides a lot of dark magic and is not intended to be
+ *          subclassed or modified directly. Keep your hands off unless you
+ *          know what you're doing.
  */
 class Compositor
   : public juce::Component
@@ -578,13 +582,8 @@ protected:
     if (component == nullptr)
       return;
 
-    if (auto* scaleableComponent = dynamic_cast<dmt::IScaleable*>(component)) {
-      auto* scaleableBase =
-        reinterpret_cast<dmt::Scaleable<juce::Component>*>(scaleableComponent);
-      if (scaleableBase != nullptr) {
-        float* sizePtr = const_cast<float*>(&(scaleableBase->size));
-        *sizePtr = sizeFactor;
-      }
+    if (auto* scaleable = dynamic_cast<dmt::IScaleable*>(component)) {
+      scaleable->setSizeFactor(sizeFactor);
     }
 
     for (auto& child : component->getChildren()) {
