@@ -83,7 +83,7 @@ public:
    *
    * This is automatically calculated based on the OS and display.
    */
-  const float& scale;
+  const float scale;
 
   //============================================================================
   /**
@@ -109,9 +109,9 @@ private:
    *
    * On macOS, multiplies by 2.0 for Retina displays.
    */
-  const float& getScaleFactor() noexcept
+  const float getScaleFactor() noexcept
   {
-    static float tempScale = getSelf()->getDesktopScaleFactor();
+    float tempScale = getSelf()->getDesktopScaleFactor();
     if (OS_IS_DARWIN)
       tempScale *= 2.0f;
     return tempScale;
