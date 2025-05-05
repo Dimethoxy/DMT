@@ -150,9 +150,17 @@ private:
    */
   const float getScaleFactor() noexcept
   {
-    float tempScale = getSelf()->getDesktopScaleFactor();
-    if (OS_IS_DARWIN)
-      tempScale *= 2.0f;
+    // Find the main display
+    auto* mainDisplay =
+      juce::Desktop::getInstance().getDisplays().getPrimaryDisplay();
+
+    if (mainDisplay == nullptr) {
+      jassertfalse; // Could not find main display
+      return 1.0f;
+    }
+
+    // Get the scale factor from the main display
+    float tempScale = static_cast<float>(mainDisplay->scale);
     return tempScale;
   }
 
