@@ -58,7 +58,6 @@ public:
     spec.numChannels = 2;
     delayLine.prepare(spec);
     delayLine.setMaximumDelayInSamples((int)sampleRate);
-    feedbackBuffer.resize(2);
   }
 
   //==============================================================================
@@ -82,6 +81,9 @@ public:
 
     // Applay the delay line to the input buffer
     for (int channel = 0; channel < _buffer.getNumChannels(); ++channel) {
+      Filter& filter = channel == 0 ? leftFilter : rightFilter;
+      filter.setCoefficients(
+        juce::IIRCoefficients::makeLowPass(sampleRate, tone, 0.5f));
       auto* channelData = _buffer.getWritePointer(channel);
       for (int sample = 0; sample < _buffer.getNumSamples(); ++sample) {
         // Dry signal
@@ -89,7 +91,8 @@ public:
         delayLine.pushSample(channel, drySample);
 
         // Set delay time
-        const int delayInSamples = getDelayInSamples(drySample, drive, range);
+        const int delayInSamples =
+          getDelayInSamples(drySample, drive, range, filter);
         delayLine.setDelay(delayInSamples);
 
         // Output
@@ -104,9 +107,11 @@ public:
 protected:
   int getDelayInSamples(const float _drySample,
                         const float _drive,
-                        const float _range) const noexcept
+                        const float _range,
+                        Filter& _filter) const noexcept
   {
-    const float driveSample = _drySample * _drive;
+    const float filteredSample = _filter.processSingleSampleRaw(_drySample);
+    const float driveSample = filteredSample * _drive;
     const float clampedSample = std::clamp(driveSample, -1.0f, 1.0f);
     const float denormalizedSample = (clampedSample + 1.0f) * 0.5f;
     const float multipliedSample = denormalizedSample * _range;
@@ -125,7 +130,9 @@ private:
   juce::AudioProcessorValueTreeState& apvts;
   DelayLine delayLine;
   float sampleRate = -1.0f;
-  std::vector<float> feedbackBuffer;
+  std::array<float, 2> feedbackBuffer;
+  Filter leftFilter;
+  Filter rightFilter;
 };
 
 //==============================================================================

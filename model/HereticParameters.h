@@ -45,7 +45,7 @@ hereticParameterGroup(juce::String parentUid)
                                                        20000.0f, // rangeEnd
                                                        1.0f,   // intervalValue
                                                        0.25f), // skewFactor
-                                     20.0f),                   // defaultValue
+                                     20000.0f),                // defaultValue
     std::make_unique<ParameterFloat>(uid + "Feedback",
                                      "Feedback",
                                      NormalisableRange(0.0f,  // rangeStart
