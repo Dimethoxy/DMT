@@ -27,25 +27,25 @@ hereticParameterGroup(juce::String parentUid)
     "|",       // separator
     std::make_unique<ParameterFloat>(uid + "Drive",
                                      "Drive",
-                                     NormalisableRange(1.0f,   // rangeStart
-                                                       256.0f, // rangeEnd
-                                                       1.0f,   // intervalValue
-                                                       0.5f),  // skewFactor
-                                     3.0f),                    // defaultValue
+                                     NormalisableRange(0.0f,  // rangeStart
+                                                       2.0f,  // rangeEnd
+                                                       0.01f, // intervalValue
+                                                       0.5f), // skewFactor
+                                     1.0f),                   // defaultValue
     std::make_unique<ParameterFloat>(uid + "Range",
                                      "Range",
                                      NormalisableRange(0.0f,   // rangeStart
                                                        120.0f, // rangeEnd
                                                        0.1f,   // intervalValue
                                                        1.0f),  // skewFactor
-                                     200.0f),                  // defaultValue
+                                     10.0f),                   // defaultValue
     std::make_unique<ParameterFloat>(uid + "Tone",
                                      "Tone",
                                      NormalisableRange(20.0f,    // rangeStart
                                                        20000.0f, // rangeEnd
                                                        1.0f,   // intervalValue
                                                        0.25f), // skewFactor
-                                     50.0f),                   // defaultValue
+                                     20.0f),                   // defaultValue
     std::make_unique<ParameterFloat>(uid + "Feedback",
                                      "Feedback",
                                      NormalisableRange(0.0f,  // rangeStart
