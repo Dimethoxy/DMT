@@ -30,6 +30,7 @@
 
 #pragma once
 //==============================================================================
+#include "gui/component/AbstractSliderComponent.h"
 #include "gui/widget/Label.h"
 #include "gui/widget/LinearSlider.h"
 #include "utility/Fonts.h"
@@ -56,38 +57,15 @@ namespace component {
  * leak-detectable.
  */
 class LinearSliderComponent
-  : public juce::Component
-  , public juce::Slider::Listener
-  , public dmt::Scaleable<LinearSliderComponent>
-  , public dmt::HostContextMenu<LinearSliderComponent>
+  : public AbstractSliderComponent<LinearSliderComponent,
+                                   dmt::gui::widget::LinearSlider>
 {
-  //==============================================================================
   using LinearSlider = dmt::gui::widget::LinearSlider;
   using Type = LinearSlider::Type;
   using Orientation = LinearSlider::Orientation;
   using SliderAttachment = juce::AudioProcessorValueTreeState::SliderAttachment;
-  using Unit = dmt::utility::Unit;
-  using Label = dmt::gui::widget::Label;
-  using Fonts = dmt::utility::Fonts;
-  using Settings = dmt::Settings;
-  using Layout = Settings::Window;
-  using Slider = Settings::Slider;
-  using RangedAudioParameter = juce::RangedAudioParameter;
-
-  //==============================================================================
-  // Members initialized as references to settings constants
-  const float& baseWidth = Slider::baseWidth;
-  const float& baseHeight = Slider::baseHeight;
-  const float& rawSliderSize = Slider::sliderSize;
-  const float& rawLabelsSize = Slider::labelsSize;
-  const float& rawPadding = Slider::padding;
-  const juce::Colour& titleFontColour = Slider::titleFontColour;
-  const juce::Colour& infoFontColour = Slider::infoFontColour;
-  const float& titleFontSize = Slider::titleFontSize;
-  const float& infoFontSize = Slider::infoFontSize;
 
 public:
-  //==============================================================================
   /**
    * @brief Constructs a LinearSliderComponent.
    *
@@ -113,62 +91,33 @@ public:
     const Type _type = Type::Positive,
     const Orientation _orientation = Orientation::Horizontal,
     const bool _svgTitle = false) noexcept
-    : orientation(_orientation)
+    : AbstractSliderComponent(_apvts, _text, _param, _unitType)
+    , orientation(_orientation)
     , slider(_type, _orientation)
     , sliderAttachment(_apvts, _param, slider)
-    , titleLabel(_text, fonts.medium, titleFontSize, titleFontColour)
-    , infoLabel(juce::String("Info Label"),
-                fonts.light,
-                infoFontSize,
-                infoFontColour,
-                juce::Justification::centredBottom)
-    , unitType(_unitType)
     , svgTitle(_svgTitle)
     , svgPadding(dmt::icons::getPadding(_param))
   {
     TRACER("LinearSliderComponent::LinearSliderComponent");
     slider.addListener(this);
-    updateLabel();
+    updateLabel(static_cast<float>(slider.getValue()));
     addAndMakeVisible(slider);
-    addAndMakeVisible(infoLabel);
+    addAndMakeVisible(this->infoLabel);
 
     if (!_svgTitle)
-      addAndMakeVisible(titleLabel);
+      addAndMakeVisible(this->titleLabel);
 
     if (_svgTitle) {
       titleIcon = dmt::icons::getIcon(_param);
     }
 
-    // Let's find the pointer to the parameter in the apvts
-    parameter = _apvts.getParameter(_param);
+    this->parameter = _apvts.getParameter(_param);
 
-    // Set up context menu callback
-    slider.onContextMenuRequested = [this]() { showContextMenuForSlider(); };
+    slider.onContextMenuRequested = [this]() {
+      this->showContextMenuForSlider();
+    };
   }
 
-  //==============================================================================
-  /**
-   * @brief Pointer to the attached parameter.
-   *
-   * @details
-   * This is set during construction for context menu and value display.
-   */
-  RangedAudioParameter* parameter;
-
-  //==============================================================================
-  /**
-   * @brief Shows the context menu for the attached parameter.
-   *
-   * @details
-   * Uses HostContextMenu helper to display a context menu for the parameter.
-   */
-  inline void showContextMenuForSlider() noexcept
-  {
-    // Use HostContextMenu helper to show context menu for this parameter
-    showContextMenu(parameter);
-  }
-
-  //==============================================================================
   /**
    * @brief Lays out the child components.
    *
@@ -180,13 +129,13 @@ public:
   {
     TRACER("LinearSliderComponent::resized");
     const auto bounds = getLocalBounds();
-    const auto padding = rawPadding * size;
+    const auto padding = rawPadding * this->size;
 
     slider.setAlwaysOnTop(true);
     switch (orientation) {
       case Orientation::Horizontal: {
         const int32_t rawHorizontalSliderOffset =
-          static_cast<int32_t>(1.0f * size);
+          static_cast<int32_t>(1.0f * this->size);
         const juce::Point<int32_t> offset(0, rawHorizontalSliderOffset);
         const auto centre = bounds.getCentre() + offset;
         auto sliderBounds =
@@ -195,40 +144,39 @@ public:
           bounds.reduced(static_cast<int32_t>(padding)).withCentre(centre));
         auto titleLabelBounds = sliderBounds;
         const auto titleLabelHeight =
-          static_cast<int32_t>(2 * titleFontSize * size);
-        const auto titleLabelOffset = static_cast<int32_t>(4 * size);
+          static_cast<int32_t>(2 * titleFontSize * this->size);
+        const auto titleLabelOffset = static_cast<int32_t>(4 * this->size);
         const auto titleSliderBounds =
           titleLabelBounds.removeFromTop(titleLabelHeight)
             .reduced(titleLabelOffset);
-        titleLabel.setBounds(titleSliderBounds);
+        this->titleLabel.setBounds(titleSliderBounds);
         auto infoLabelBounds = sliderBounds;
         const auto infoLabelHeight =
-          static_cast<int32_t>(2 * infoFontSize * size);
-        const auto infoLabelOffset = static_cast<int32_t>(9 * size);
+          static_cast<int32_t>(2 * infoFontSize * this->size);
+        const auto infoLabelOffset = static_cast<int32_t>(9 * this->size);
         const auto infoSliderBounds =
           infoLabelBounds.removeFromBottom(infoLabelHeight)
             .reduced(infoLabelOffset);
-        infoLabel.setBounds(infoSliderBounds);
+        this->infoLabel.setBounds(infoSliderBounds);
         return;
       }
       case Orientation::Vertical: {
-        titleLabel.setBounds(
+        this->titleLabel.setBounds(
           bounds.withTrimmedTop(static_cast<int32_t>(padding)));
-        infoLabel.setBounds(
+        this->infoLabel.setBounds(
           bounds.withTrimmedBottom(static_cast<int32_t>(padding)));
 
         auto sliderBounds = bounds;
         sliderBounds.removeFromTop(
-          static_cast<int32_t>(titleFontSize * size + padding));
+          static_cast<int32_t>(titleFontSize * this->size + padding));
         sliderBounds.removeFromBottom(
-          static_cast<int32_t>(infoFontSize * size + padding));
+          static_cast<int32_t>(infoFontSize * this->size + padding));
         slider.setBounds(sliderBounds);
         return;
       }
     }
   }
 
-  //==============================================================================
   /**
    * @brief Paints the component, including optional SVG icon.
    *
@@ -252,14 +200,13 @@ public:
     if (svgTitle) {
       juce::Rectangle<float> iconArea =
         bounds.removeFromTop(slider.getY()).toFloat();
-      iconArea = iconArea.withY(iconArea.getY() + 6.0f * size);
-      iconArea = iconArea.reduced((svgPadding + baseSvgPadding) * size);
+      iconArea = iconArea.withY(iconArea.getY() + 6.0f * this->size);
+      iconArea = iconArea.reduced((svgPadding + baseSvgPadding) * this->size);
       titleIcon->drawWithin(
         _g, iconArea, juce::RectanglePlacement::centred, 1.0f);
     }
   }
 
-  //==============================================================================
   /**
    * @brief Called when the slider value changes.
    *
@@ -269,10 +216,9 @@ public:
   inline void sliderValueChanged(juce::Slider* /*_slider*/) override
   {
     TRACER("LinearSliderComponent::sliderValueChanged");
-    updateLabel();
+    updateLabel(static_cast<float>(slider.getValue()));
   }
 
-  //==============================================================================
   /**
    * @brief Sets the bounds of the component based on two points.
    *
@@ -287,9 +233,9 @@ public:
                                 juce::Point<int32_t> _secondaryPoint) noexcept
   {
     TRACER("LinearSliderComponent::setBoundsByPoints");
-    const float padding = 2.0f * rawPadding * size;
-    const float minHeight = 50 * size;
-    const float minWidth = 40 * size;
+    const float padding = 2.0f * rawPadding * this->size;
+    const float minHeight = 50 * this->size;
+    const float minWidth = 40 * this->size;
 
     const auto centre = (_primaryPoint + _secondaryPoint).toFloat() / 2.0f;
     const int32_t pointDistance =
@@ -313,7 +259,6 @@ public:
     }
   }
 
-  //==============================================================================
   /**
    * @brief Returns a reference to the internal slider.
    *
@@ -328,43 +273,14 @@ public:
     return slider;
   }
 
-  //==============================================================================
-protected:
-  //==============================================================================
-  /**
-   * @brief Updates the info label with the current slider value.
-   *
-   * @details
-   * Converts the slider value to a string using the specified unit type.
-   * Forces a repaint of the info label for immediate feedback.
-   */
-  inline void updateLabel() noexcept
-  {
-    TRACER("LinearSliderComponent::updateLabel");
-    auto text =
-      Unit::getString(unitType, static_cast<float>(slider.getValue()));
-    infoLabel.setText(text);
-    infoLabel.repaint();
-  }
-
 private:
-  //==============================================================================
-  // Members initialized in the initializer list
   LinearSlider slider;
   SliderAttachment sliderAttachment;
-  Label titleLabel;
-  Label infoLabel;
-  Unit::Type unitType;
   Orientation orientation;
-  Fonts fonts;
   const bool svgTitle;
   const float svgPadding;
-
-  //==============================================================================
-  // Other members
   std::unique_ptr<juce::Drawable> titleIcon;
 
-  //==============================================================================
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(LinearSliderComponent)
 };
 //==============================================================================
