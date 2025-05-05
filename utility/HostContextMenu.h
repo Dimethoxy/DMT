@@ -54,7 +54,23 @@ public:
     }
 
     // Find the mouse position
-    const auto position = editor->getMouseXYRelative();
+    auto position = editor->getMouseXYRelative().toFloat();
+
+    // Try to get the scale from Scaleable, if available
+    float scale = 1.0f;
+    if (auto* scaleable = dynamic_cast<const dmt::IScaleable*>(getSelf())) {
+      // Try to get the scale value from the Scaleable base
+      // This assumes the scale member is public and accessible
+      // Use reinterpret_cast to get the actual Scaleable<Derived> pointer
+      // since IScaleable does not expose scale directly
+      // This is safe if getSelf() is a Scaleable<Derived>
+      auto* derivedScaleable =
+        reinterpret_cast<const dmt::Scaleable<Derived>*>(scaleable);
+      scale = derivedScaleable->scale;
+    }
+
+    // Multiply the position by the scale
+    position = position * scale;
 
     // Find the host context
     const auto* hostContext = editor->getHostContext();
@@ -72,7 +88,7 @@ public:
     }
 
     // Show the context menu
-    contextMenu->showNativeMenu(position);
+    contextMenu->showNativeMenu(position.toInt());
   }
 
 private:
