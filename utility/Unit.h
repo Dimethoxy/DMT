@@ -152,12 +152,12 @@ struct alignas(8) Unit
                juce::String("%");
         break;
       case Type::HereticDrive:
-        return juce::String(static_cast<int>(static_cast<float>(_value))) +
-               juce::String("x");
+        return juce::String(_value, 2) + juce::String("x");
         break;
       case Type::HereticRange:
-        return juce::String(static_cast<int>(static_cast<float>(_value))) +
-               juce::String("ms");
+        return juce::String(
+                 static_cast<int>(static_cast<float>(_value * 1000.0f))) +
+               juce::String("\u00B5s").substring(1, 3);
         break;
       case Type::HereticTone:
         return juce::String(static_cast<int>(static_cast<float>(_value))) +
