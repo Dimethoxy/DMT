@@ -58,6 +58,7 @@ public:
     spec.numChannels = 2;
     delayLine.prepare(spec);
     delayLine.setMaximumDelayInSamples((int)sampleRate);
+    feedbackBuffer.resize(2);
   }
 
   //==============================================================================
@@ -84,7 +85,7 @@ public:
       auto* channelData = _buffer.getWritePointer(channel);
       for (int sample = 0; sample < _buffer.getNumSamples(); ++sample) {
         // Dry signal
-        const float drySample = channelData[sample];
+        const float drySample = channelData[sample] + feedbackBuffer[channel];
         delayLine.pushSample(channel, drySample);
 
         // Set delay time
@@ -95,6 +96,7 @@ public:
         const float wetSample = delayLine.popSample(channel);
         const float mixSample = (wetSample * mix) + (drySample * (1.0f - mix));
         channelData[sample] = mixSample;
+        feedbackBuffer[channel] = wetSample * feedback;
       }
     }
   }
@@ -123,6 +125,7 @@ private:
   juce::AudioProcessorValueTreeState& apvts;
   DelayLine delayLine;
   float sampleRate = -1.0f;
+  std::vector<float> feedbackBuffer;
 };
 
 //==============================================================================

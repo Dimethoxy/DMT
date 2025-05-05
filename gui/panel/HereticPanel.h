@@ -64,28 +64,28 @@ public:
     , driveSlider(_apvts,
                   juce::String("Drive"),
                   juce::String("HereticDrive"),
-                  Unit::Type::DisfluxMix,
+                  Unit::Type::HereticDrive,
                   RotarySliderType::Positive)
     , rangeSlider(_apvts,
                   juce::String("Range"),
                   juce::String("HereticRange"),
-                  Unit::Type::DisfluxSpread, // TODO: Change
+                  Unit::Type::HereticRange,
                   RotarySliderType::Positive)
     , toneSlider(_apvts,
                  juce::String("Tone"),
                  juce::String("HereticTone"),
-                 Unit::Type::DisfluxFrequency, // TODO: Change
+                 Unit::Type::HereticTone,
                  LinearSliderType::Positive,
                  LinearSliderOrientation::Horizontal)
     , feedbackSlider(_apvts,
                      juce::String("Feedback"),
-                     juce::String("HereticPinch"),
-                     Unit::Type::DisfluxMix, // TODO: Change
+                     juce::String("HereticFeedback"),
+                     Unit::Type::HereticFeedback,
                      RotarySliderType::Positive)
     , mixSlider(_apvts,
                 juce::String("Mix"),
                 juce::String("HereticMix"),
-                Unit::Type::DisfluxMix, // TODO: Change
+                Unit::Type::HereticMix,
                 RotarySliderType::Positive)
   {
     TRACER("DisfluxPanel::DisfluxPanel");

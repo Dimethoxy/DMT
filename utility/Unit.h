@@ -89,7 +89,12 @@ struct alignas(8) Unit
     DisfluxSpread,
     DisfluxFrequency,
     DisfluxPinch,
-    DisfluxMix
+    DisfluxMix,
+    HereticDrive,
+    HereticRange,
+    HereticTone,
+    HereticFeedback,
+    HereticMix,
   };
 
   //==============================================================================
@@ -142,6 +147,28 @@ struct alignas(8) Unit
                juce::String("%");
         break;
       case Type::DisfluxMix:
+        return juce::String(
+                 static_cast<int>(static_cast<float>(_value * 100.0f))) +
+               juce::String("%");
+        break;
+      case Type::HereticDrive:
+        return juce::String(static_cast<int>(static_cast<float>(_value))) +
+               juce::String("x");
+        break;
+      case Type::HereticRange:
+        return juce::String(static_cast<int>(static_cast<float>(_value))) +
+               juce::String("ms");
+        break;
+      case Type::HereticTone:
+        return juce::String(static_cast<int>(static_cast<float>(_value))) +
+               juce::String("Hz");
+        break;
+      case Type::HereticFeedback:
+        return juce::String(
+                 static_cast<int>(static_cast<float>(_value * 100.0f))) +
+               juce::String("%");
+        break;
+      case Type::HereticMix:
         return juce::String(
                  static_cast<int>(static_cast<float>(_value * 100.0f))) +
                juce::String("%");
