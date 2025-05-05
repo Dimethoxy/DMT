@@ -31,6 +31,7 @@
 
 //==============================================================================
 
+#include "dmt/utility/Fonts.h"
 #include "utility/RepaintTimer.h"
 #include "utility/Scaleable.h"
 #include "utility/Settings.h"
@@ -60,12 +61,14 @@ class BorderButton
   using Graphics = juce::Graphics;
   using Image = juce::Image;
   using Rectangle = juce::Rectangle<int>;
+  using Fonts = dmt::utility::Fonts;
 
   //==============================================================================
   // Header
   const Colour& backgroundColour =
     Settings::Header::borderButtonBackgroundColour;
   const Colour& fontColour = Settings::Header::borderButtonFontColour;
+  const float& rawFontSize = Settings::Header::borderButtonFontSize;
 
   // Constants for opacity and raw fade speed
   static constexpr float MAX_OPACITY = 1.0f;    // Fully visible
@@ -231,6 +234,10 @@ protected:
     g.fillAll(juce::Colours::transparentBlack);
     g.fillAll(backgroundColour);
 
+    const auto fontSize = static_cast<int>(rawFontSize * scale * size);
+    const auto font = fonts.medium.withHeight(fontSize);
+
+    g.setFont(font);
     g.setColour(fontColour);
     g.drawText("Click to Show Header",
                juce::Rectangle<int>(0, 0, width, height),
@@ -265,6 +272,7 @@ private:
 
   //==============================================================================
   // Other members
+  Fonts fonts;
   Image cachedImage; // Cached image for optimized rendering
 
   //==============================================================================
