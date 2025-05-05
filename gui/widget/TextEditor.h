@@ -87,6 +87,7 @@ public:
       auto character = key.getTextCharacter();
       auto string = String::charToString(character);
       insertTextAtCaret(string);
+      return true;
     }
 
     return juce::TextEditor::keyPressed(key);
