@@ -27,8 +27,8 @@ hereticParameterGroup(juce::String parentUid)
     "|",       // separator
     std::make_unique<ParameterFloat>(uid + "Drive",
                                      "Drive",
-                                     NormalisableRange(0.0f,  // rangeStart
-                                                       2.0f,  // rangeEnd
+                                     NormalisableRange(1.0f,  // rangeStart
+                                                       10.0f, // rangeEnd
                                                        0.01f, // intervalValue
                                                        0.5f), // skewFactor
                                      1.0f),                   // defaultValue
