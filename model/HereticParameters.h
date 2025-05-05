@@ -34,11 +34,11 @@ hereticParameterGroup(juce::String parentUid)
                                      1.0f),                   // defaultValue
     std::make_unique<ParameterFloat>(uid + "Range",
                                      "Range",
-                                     NormalisableRange(0.0f,   // rangeStart
-                                                       120.0f, // rangeEnd
-                                                       0.1f,   // intervalValue
-                                                       1.0f),  // skewFactor
-                                     10.0f),                   // defaultValue
+                                     NormalisableRange(0.0f,  // rangeStart
+                                                       16.0f, // rangeEnd
+                                                       0.1f,  // intervalValue
+                                                       1.0f), // skewFactor
+                                     8.0f),                   // defaultValue
     std::make_unique<ParameterFloat>(uid + "Tone",
                                      "Tone",
                                      NormalisableRange(20.0f,    // rangeStart
@@ -52,7 +52,7 @@ hereticParameterGroup(juce::String parentUid)
                                                        1.0f,  // rangeEnd
                                                        0.01f, // intervalValue
                                                        1.0f), // skewFactor
-                                     0.2f),                   // defaultValue
+                                     0.0f),                   // defaultValue
     std::make_unique<ParameterFloat>(uid + "Mix",
                                      "Mix",
                                      NormalisableRange(0.0f,  // rangeStart
