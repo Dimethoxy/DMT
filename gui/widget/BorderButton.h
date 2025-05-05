@@ -234,7 +234,7 @@ protected:
     g.fillAll(juce::Colours::transparentBlack);
     g.fillAll(backgroundColour);
 
-    const auto fontSize = static_cast<int>(rawFontSize * scale * size);
+    const auto fontSize = static_cast<int>(rawFontSize * size);
     const auto font = fonts.medium.withHeight(fontSize);
 
     g.setFont(font);
