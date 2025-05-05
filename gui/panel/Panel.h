@@ -6,6 +6,7 @@
 #include "./Carousel.h"
 #include "./DisfluxPanel.h"
 #include "./GainPanel.h"
+#include "./HereticPanel.h"
 #include "./ModernGainPanel.h"
 #include "./ModernOscillatorPanel.h"
 #include "./ModernPitchPanel.h"
