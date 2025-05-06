@@ -50,8 +50,18 @@ namespace effect {
 class alignas(64) DisfluxProcessor
 {
   constexpr static int FILTER_AMOUNT = 256;
-  constexpr static float MIN_FREQUENCY = 20.0f;
+  constexpr static float MIN_FREQUENCY = 38.0f;
   constexpr static float MAX_FREQUENCY = 20000.0f;
+
+  // Smoothing times (seconds) for each parameter
+  constexpr static float FREQUENCY_SMOOTH_TIME = 0.4f;
+  constexpr static float SPREAD_SMOOTH_TIME = 0.02f;
+  constexpr static float PINCH_SMOOTH_TIME = 0.1f;
+  constexpr static float MIX_SMOOTH_TIME = 0.02f;
+
+  // Smoothing interval (samples)
+  constexpr static int SMOOTHING_INTERVAL = 16;
+
   using AudioBuffer = juce::AudioBuffer<float>;
   using Filter = juce::IIRFilter;
   using FilterArray = std::array<Filter, FILTER_AMOUNT>;
@@ -77,7 +87,19 @@ public:
   inline void prepare(const double _newSampleRate) noexcept
   {
     sampleRate = static_cast<float>(_newSampleRate);
-    setCoefficients();
+
+    smoothedFrequency.reset(sampleRate, FREQUENCY_SMOOTH_TIME);
+    smoothedSpread.reset(sampleRate, SPREAD_SMOOTH_TIME);
+    smoothedPinch.reset(sampleRate, PINCH_SMOOTH_TIME);
+    smoothedMix.reset(sampleRate, MIX_SMOOTH_TIME);
+
+    // Set initial values
+    smoothedFrequency.setCurrentAndTargetValue(frequency);
+    smoothedSpread.setCurrentAndTargetValue(static_cast<float>(spread));
+    smoothedPinch.setCurrentAndTargetValue(pinch);
+    smoothedMix.setCurrentAndTargetValue(1.0f);
+
+    setCoefficients(frequency, static_cast<float>(spread), pinch);
   }
 
   //==============================================================================
@@ -92,31 +114,76 @@ public:
       return;
     }
 
+    // Load parameters
     const int newAmount = apvts.getRawParameterValue("DisfluxAmount")->load();
     const int newSpread = apvts.getRawParameterValue("DisfluxSpread")->load();
     const auto newFrequency =
       apvts.getRawParameterValue("DisfluxFrequency")->load();
     const auto newPinch = apvts.getRawParameterValue("DisfluxPinch")->load();
-    const auto mix = apvts.getRawParameterValue("DisfluxMix")->load();
+    const auto newMix = apvts.getRawParameterValue("DisfluxMix")->load();
 
+    // Set smoothing targets
+    smoothedFrequency.setTargetValue(newFrequency);
+    smoothedSpread.setTargetValue(static_cast<float>(newSpread));
+    smoothedPinch.setTargetValue(newPinch);
+    smoothedMix.setTargetValue(newMix);
+
+    // Only reset filters if amount changes
+    bool needUpdateCoeffs = false;
+
+    // Check if any parameters have changed
+    if (spread != newSpread) {
+      spread = newSpread;
+      needUpdateCoeffs = true;
+    }
+    if (!juce::approximatelyEqual(frequency, newFrequency)) {
+      frequency = newFrequency;
+      needUpdateCoeffs = true;
+    }
+    if (!juce::approximatelyEqual(pinch, newPinch)) {
+      pinch = newPinch;
+      needUpdateCoeffs = true;
+    }
+
+    // If the amount of filters has changed, reset the filters
     if (amount != newAmount) {
+      amount = newAmount;
       for (size_t filterIndex = 0; filterIndex < amount; ++filterIndex) {
         leftFilters[filterIndex].reset();
         rightFilters[filterIndex].reset();
       }
+      needUpdateCoeffs = false;
+      smoothedFrequency.skip(
+        static_cast<int>(sampleRate * FREQUENCY_SMOOTH_TIME));
+      smoothedSpread.skip(static_cast<int>(sampleRate * SPREAD_SMOOTH_TIME));
+      smoothedPinch.skip(static_cast<int>(sampleRate * PINCH_SMOOTH_TIME));
+      smoothedMix.skip(static_cast<int>(sampleRate * MIX_SMOOTH_TIME));
     }
 
-    if (amount != newAmount || spread != newSpread ||
-        !juce::approximatelyEqual(frequency, newFrequency) ||
-        !juce::approximatelyEqual(pinch, newPinch)) {
-      amount = newAmount;
-      spread = newSpread;
-      frequency = newFrequency;
-      pinch = newPinch;
-      setCoefficients();
-    }
+    int numSamples = _buffer.getNumSamples();
+    int smoothingCountdown = smoothingIntervalCountdown;
+    float currentFrequency = smoothedFrequency.getCurrentValue();
+    float currentSpread = smoothedSpread.getCurrentValue();
+    float currentPinch = smoothedPinch.getCurrentValue();
 
-    for (size_t sample = 0; sample < _buffer.getNumSamples(); ++sample) {
+    for (int sample = 0; sample < numSamples; ++sample) {
+      // Smoothing interval logic: update filter coefficients every
+      // SMOOTHING_INTERVAL samples
+      if (smoothingCountdown <= 0) {
+        currentFrequency = smoothedFrequency.getCurrentValue();
+        currentSpread = smoothedSpread.getCurrentValue();
+        currentPinch = smoothedPinch.getCurrentValue();
+        setCoefficients(currentFrequency, currentSpread, currentPinch);
+        smoothingCountdown = SMOOTHING_INTERVAL;
+      }
+
+      // Advance smoothing values for each sample
+      currentFrequency = smoothedFrequency.getNextValue();
+      currentSpread = smoothedSpread.getNextValue();
+      currentPinch = smoothedPinch.getNextValue();
+
+      smoothingCountdown--;
+
       auto const leftDry = _buffer.getSample(0, sample);
       auto const rightDry = _buffer.getSample(1, sample);
       auto left = leftDry;
@@ -127,13 +194,14 @@ public:
         right = rightFilters[filterIndex].processSingleSampleRaw(right);
       }
 
-      const auto wetGain = mix;
-      const auto dryGain = 1.0f - mix;
+      const auto wetGain = smoothedMix.getNextValue();
+      const auto dryGain = 1.0f - wetGain;
       left = (left * wetGain) + (leftDry * dryGain);
       right = (right * wetGain) + (rightDry * dryGain);
       _buffer.setSample(0, sample, left);
       _buffer.setSample(1, sample, right);
     }
+    smoothingIntervalCountdown = smoothingCountdown;
   }
 
 protected:
@@ -141,13 +209,13 @@ protected:
   /**
    * @brief Sets the coefficients for the filters.
    */
-  inline void setCoefficients() noexcept
+  inline void setCoefficients(float freq, float sprd, float pnch) noexcept
   {
-    const float spreadAmount = static_cast<float>(spread);
-    const float rangeStartFrequency = juce::jlimit(
-      MIN_FREQUENCY, MAX_FREQUENCY, frequency - (spreadAmount / 2.0f));
-    const float rangeEndFrequency = juce::jlimit(
-      MIN_FREQUENCY, MAX_FREQUENCY, frequency + (spreadAmount / 2.0f));
+    const float spreadAmount = sprd;
+    const float rangeStartFrequency =
+      juce::jlimit(MIN_FREQUENCY, MAX_FREQUENCY, freq - (spreadAmount / 2.0f));
+    const float rangeEndFrequency =
+      juce::jlimit(MIN_FREQUENCY, MAX_FREQUENCY, freq + (spreadAmount / 2.0f));
 
     const float logStartFrequency = std::log(rangeStartFrequency);
     const float logEndFrequency = std::log(rangeEndFrequency);
@@ -161,7 +229,7 @@ protected:
         logStartFrequency + (logFrequencyDelta * logFrequencyOffsetFactor));
 
       const auto coefficients = juce::IIRCoefficients::makeAllPass(
-        static_cast<double>(sampleRate), logFrequency, pinch);
+        static_cast<double>(sampleRate), logFrequency, pnch);
 
       leftFilters[filterIndex].setCoefficients(coefficients);
       rightFilters[filterIndex].setCoefficients(coefficients);
@@ -178,6 +246,14 @@ private:
   float pinch = 1.0f;
   FilterArray leftFilters;
   FilterArray rightFilters;
+
+  // Smoothing
+  juce::SmoothedValue<float, juce::ValueSmoothingTypes::Linear>
+    smoothedFrequency;
+  juce::SmoothedValue<float, juce::ValueSmoothingTypes::Linear> smoothedSpread;
+  juce::SmoothedValue<float, juce::ValueSmoothingTypes::Linear> smoothedPinch;
+  juce::SmoothedValue<float, juce::ValueSmoothingTypes::Linear> smoothedMix;
+  int smoothingIntervalCountdown = 0;
 };
 
 //==============================================================================
