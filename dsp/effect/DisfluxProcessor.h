@@ -99,6 +99,13 @@ public:
     const auto newPinch = apvts.getRawParameterValue("DisfluxPinch")->load();
     const auto mix = apvts.getRawParameterValue("DisfluxMix")->load();
 
+    if (amount != newAmount) {
+      for (size_t filterIndex = 0; filterIndex < amount; ++filterIndex) {
+        leftFilters[filterIndex].reset();
+        rightFilters[filterIndex].reset();
+      }
+    }
+
     if (amount != newAmount || spread != newSpread ||
         !juce::approximatelyEqual(frequency, newFrequency) ||
         !juce::approximatelyEqual(pinch, newPinch)) {
