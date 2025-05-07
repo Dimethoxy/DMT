@@ -14,7 +14,7 @@ From custom DSP algorithms to GUI systems and utility wrappers, this library pow
 - 🧪 Designed for maintainability and extensibility across multiple projects
 
 ## Used In
-- [Disflux](https://github.com/Dimethoxy/Disflux) — Work in Progress Transient Smearing Audio Plugin for Windows, MacOS and Linux 
+- [Disflux](https://github.com/Dimethoxy/Disflux) — Transient Smearing Audio Plugin for Windows, MacOS and Linux 
 - [Oscilloscope](https://github.com/Dimethoxy/Oscilloscope) — Work in Progress Oscilloscope Audio Plugin for Windows, MacOS and Linux 
 
 
