@@ -49,18 +49,18 @@ namespace effect {
  */
 class alignas(64) DisfluxProcessor
 {
-  constexpr static int FILTER_AMOUNT = 256;
-  constexpr static float MIN_FREQUENCY = 38.0f;
+  constexpr static int FILTER_AMOUNT = 128;
+  constexpr static float MIN_FREQUENCY = 20.0f;
   constexpr static float MAX_FREQUENCY = 20000.0f;
 
   // Smoothing times (seconds) for each parameter
-  constexpr static float FREQUENCY_SMOOTH_TIME = 0.4f;
+  constexpr static float FREQUENCY_SMOOTH_TIME = 0.2f;
   constexpr static float SPREAD_SMOOTH_TIME = 0.05f;
-  constexpr static float PINCH_SMOOTH_TIME = 0.1f;
+  constexpr static float PINCH_SMOOTH_TIME = 0.2f;
   constexpr static float MIX_SMOOTH_TIME = 0.05f;
 
   // Smoothing interval (samples)
-  constexpr static int SMOOTHING_INTERVAL = 42;
+  constexpr static int SMOOTHING_INTERVAL = 32;
 
   using AudioBuffer = juce::AudioBuffer<float>;
   using Filter = juce::IIRFilter;
@@ -248,9 +248,10 @@ private:
   FilterArray rightFilters;
 
   // Smoothing
-  juce::SmoothedValue<float, juce::ValueSmoothingTypes::Linear>
+  juce::SmoothedValue<float, juce::ValueSmoothingTypes::Multiplicative>
     smoothedFrequency;
-  juce::SmoothedValue<float, juce::ValueSmoothingTypes::Linear> smoothedSpread;
+  juce::SmoothedValue<float, juce::ValueSmoothingTypes::Multiplicative>
+    smoothedSpread;
   juce::SmoothedValue<float, juce::ValueSmoothingTypes::Linear> smoothedPinch;
   juce::SmoothedValue<float, juce::ValueSmoothingTypes::Linear> smoothedMix;
   int smoothingIntervalCountdown = 0;
