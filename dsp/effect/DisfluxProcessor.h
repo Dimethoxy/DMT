@@ -54,7 +54,7 @@ class alignas(64) DisfluxProcessor
   constexpr static float MAX_FREQUENCY = 20000.0f;
 
   // Smoothing times (seconds) for each parameter
-  constexpr static float FREQUENCY_SMOOTH_TIME = 0.2f;
+  constexpr static float FREQUENCY_SMOOTH_TIME = 0.4f;
   constexpr static float SPREAD_SMOOTH_TIME = 0.05f;
   constexpr static float PINCH_SMOOTH_TIME = 0.2f;
   constexpr static float MIX_SMOOTH_TIME = 0.05f;
@@ -100,6 +100,13 @@ public:
     smoothedMix.setCurrentAndTargetValue(1.0f);
 
     setCoefficients(frequency, static_cast<float>(spread), pinch);
+
+    // Prepare output lowpass filter (1st order Butterworth, 20 Hz)
+    auto lowpassCoeffs = juce::IIRCoefficients::makeHighPass(sampleRate, 20.0);
+    outputLowpassLeft.setCoefficients(lowpassCoeffs);
+    outputLowpassRight.setCoefficients(lowpassCoeffs);
+    outputLowpassLeft.reset();
+    outputLowpassRight.reset();
   }
 
   //==============================================================================
@@ -198,6 +205,11 @@ public:
       const auto dryGain = 1.0f - wetGain;
       left = (left * wetGain) + (leftDry * dryGain);
       right = (right * wetGain) + (rightDry * dryGain);
+
+      // Apply output lowpass filter (20 Hz, shallow roll-off)
+      left = outputLowpassLeft.processSingleSampleRaw(left);
+      right = outputLowpassRight.processSingleSampleRaw(right);
+
       _buffer.setSample(0, sample, left);
       _buffer.setSample(1, sample, right);
     }
@@ -255,6 +267,10 @@ private:
   juce::SmoothedValue<float, juce::ValueSmoothingTypes::Linear> smoothedPinch;
   juce::SmoothedValue<float, juce::ValueSmoothingTypes::Linear> smoothedMix;
   int smoothingIntervalCountdown = 0;
+
+  // Output lowpass filter (20 Hz, shallow roll-off)
+  juce::IIRFilter outputLowpassLeft;
+  juce::IIRFilter outputLowpassRight;
 };
 
 //==============================================================================
