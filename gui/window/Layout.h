@@ -19,8 +19,8 @@ class Layout : public juce::Component
 
 public:
   // Constructor takes column and row separators
-  Layout(const GridSeparatorLayout& _columnSeparators,
-         const GridSeparatorLayout& _rowSeparators)
+  Layout(const GridSeparatorLayout _columnSeparators,
+         const GridSeparatorLayout _rowSeparators)
     : columnSeparators(_columnSeparators)
     , rowSeparators(_rowSeparators)
   {
@@ -29,11 +29,7 @@ public:
   virtual ~Layout() = default;
 
   // JUCE paint
-  void paint(juce::Graphics& g) override
-  {
-    g.fillAll(juce::Colours::darkgrey);
-    // Optionally draw grid lines here if desired
-  }
+  void paint(juce::Graphics& g) override {}
 
   // JUCE resized
   void resized() override
@@ -82,3 +78,7 @@ protected:
   GridSeparatorLayout columnSeparators;
   GridSeparatorLayout rowSeparators;
 };
+
+} // namespace window
+} // namespace gui
+} // namespace dmt
