@@ -137,8 +137,9 @@ struct alignas(8) Unit
                juce::String("Hz");
         break;
       case Type::DisfluxPinch:
-        return juce::String(
-                 static_cast<int>(static_cast<float>(_value * 100.0f))) +
+        // Map 0.5–16.0 to 0–100%
+        return juce::String(static_cast<int>(
+                 ((_value - 0.5f) / (16.0f - 0.5f)) * 100.0f)) +
                juce::String("%");
         break;
       case Type::DisfluxMix:

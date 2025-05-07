@@ -55,12 +55,12 @@ class alignas(64) DisfluxProcessor
 
   // Smoothing times (seconds) for each parameter
   constexpr static float FREQUENCY_SMOOTH_TIME = 0.4f;
-  constexpr static float SPREAD_SMOOTH_TIME = 0.02f;
+  constexpr static float SPREAD_SMOOTH_TIME = 0.05f;
   constexpr static float PINCH_SMOOTH_TIME = 0.1f;
-  constexpr static float MIX_SMOOTH_TIME = 0.02f;
+  constexpr static float MIX_SMOOTH_TIME = 0.05f;
 
   // Smoothing interval (samples)
-  constexpr static int SMOOTHING_INTERVAL = 16;
+  constexpr static int SMOOTHING_INTERVAL = 42;
 
   using AudioBuffer = juce::AudioBuffer<float>;
   using Filter = juce::IIRFilter;
