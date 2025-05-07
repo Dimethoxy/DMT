@@ -31,7 +31,7 @@ namespace panel {
  * AbstractPanel and uses a grid layout for positioning components.
  */
 template<typename SampleType>
-class HereticPanel : public dmt::gui::panel::AbstractPanel
+class HereticFeedbackPanel : public dmt::gui::panel::AbstractPanel
 {
   using FifoAudioBuffer = dmt::dsp::data::FifoAudioBuffer<float>;
   using DisfluxDisplay = dmt::gui::display::DisfluxDisplay;
@@ -56,7 +56,7 @@ public:
    * Initializes all display and slider components, sets up the grid layout,
    * and adds all subcomponents to the panel.
    */
-  constexpr inline explicit HereticPanel(
+  constexpr inline explicit HereticFeedbackPanel(
     juce::AudioProcessorValueTreeState& _apvts,
     FifoAudioBuffer& _oscilloscopeBuffer) noexcept
     : AbstractPanel("Oscilloscope", false)
@@ -89,7 +89,7 @@ public:
                 RotarySliderType::Positive)
   {
     TRACER("DisfluxPanel::DisfluxPanel");
-    setLayout({ 20, 60 });
+    setLayout({ 22, 60 });
 
     addAndMakeVisible(display);
     addAndMakeVisible(driveSlider);
@@ -128,8 +128,8 @@ public:
 
     const int driveSliderCol = 3;
     const int leftToneSliderCol = 6;
-    const int rightToneSliderCol = 15;
-    const int feedbackSliderCol = 18;
+    const int rightToneSliderCol = 17;
+    const int feedbackSliderCol = 20;
 
     const auto driveSliderPoint =
       this->getGridPoint(bounds, driveSliderCol, upperRotarySliderRow);
@@ -169,7 +169,7 @@ private:
   // Other members
 
   //==============================================================================
-  JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(HereticPanel)
+  JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(HereticFeedbackPanel)
 };
 
 } // namespace panel

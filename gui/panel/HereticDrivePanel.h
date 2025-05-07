@@ -31,7 +31,7 @@ namespace panel {
  * AbstractPanel and uses a grid layout for positioning components.
  */
 template<typename SampleType>
-class HereticPanel : public dmt::gui::panel::AbstractPanel
+class HereticDrivePanel : public dmt::gui::panel::AbstractPanel
 {
   using FifoAudioBuffer = dmt::dsp::data::FifoAudioBuffer<float>;
   using DisfluxDisplay = dmt::gui::display::DisfluxDisplay;
@@ -56,7 +56,7 @@ public:
    * Initializes all display and slider components, sets up the grid layout,
    * and adds all subcomponents to the panel.
    */
-  constexpr inline explicit HereticPanel(
+  constexpr inline explicit HereticDrivePanel(
     juce::AudioProcessorValueTreeState& _apvts,
     FifoAudioBuffer& _oscilloscopeBuffer) noexcept
     : AbstractPanel("Oscilloscope", false)
@@ -89,7 +89,7 @@ public:
                 RotarySliderType::Positive)
   {
     TRACER("DisfluxPanel::DisfluxPanel");
-    setLayout({ 20, 60 });
+    setLayout({ 20, 40 });
 
     addAndMakeVisible(display);
     addAndMakeVisible(driveSlider);
@@ -113,45 +113,45 @@ public:
     TRACER("DisfluxPanel::extendResize");
     auto bounds = getLocalBounds();
 
-    const float padding = rawPadding * size;
-    auto displayBounds = bounds.reduced(padding);
-    const float displayHorizontalPadding = 100.0f;
-    const float displayVerticalPadding = 57.0f;
-    displayBounds.removeFromBottom(displayVerticalPadding * size);
-    displayBounds.removeFromLeft(displayHorizontalPadding * size);
-    displayBounds.removeFromRight(displayHorizontalPadding * size);
-    display.setBounds(displayBounds);
+    // const float padding = rawPadding * size;
+    // auto displayBounds = bounds.reduced(padding);
+    // const float displayHorizontalPadding = 100.0f;
+    // const float displayVerticalPadding = 57.0f;
+    // displayBounds.removeFromBottom(displayVerticalPadding * size);
+    // displayBounds.removeFromLeft(displayHorizontalPadding * size);
+    // displayBounds.removeFromRight(displayHorizontalPadding * size);
+    // display.setBounds(displayBounds);
 
     const int upperRotarySliderRow = 17;
-    const int lowerRotarySliderRow = 43;
-    const int linearSliderRow = 51;
+    // const int lowerRotarySliderRow = 43;
+    // const int linearSliderRow = 51;
 
-    const int driveSliderCol = 3;
-    const int leftToneSliderCol = 6;
-    const int rightToneSliderCol = 15;
-    const int feedbackSliderCol = 18;
+    const int driveSliderCol = 6;
+    // const int leftToneSliderCol = 6;
+    // const int rightToneSliderCol = 17;
+    const int feedbackSliderCol = 15;
 
     const auto driveSliderPoint =
       this->getGridPoint(bounds, driveSliderCol, upperRotarySliderRow);
     driveSlider.setSizeAndCentre(driveSliderPoint);
 
-    const auto rangeSliderPoint =
-      this->getGridPoint(bounds, driveSliderCol, lowerRotarySliderRow);
-    rangeSlider.setSizeAndCentre(rangeSliderPoint);
-
-    const auto leftToneSliderPoint =
-      this->getGridPoint(bounds, leftToneSliderCol, linearSliderRow);
-    const auto rightToneSliderPoint =
-      this->getGridPoint(bounds, rightToneSliderCol, linearSliderRow);
-    toneSlider.setBoundsByPoints(leftToneSliderPoint, rightToneSliderPoint);
-
-    const auto feedbackSliderPoint =
-      this->getGridPoint(bounds, feedbackSliderCol, lowerRotarySliderRow);
-    feedbackSlider.setSizeAndCentre(feedbackSliderPoint);
-
     const auto mixSliderPoint =
       this->getGridPoint(bounds, feedbackSliderCol, upperRotarySliderRow);
     mixSlider.setSizeAndCentre(mixSliderPoint);
+
+    // const auto rangeSliderPoint =
+    //   this->getGridPoint(bounds, driveSliderCol, lowerRotarySliderRow);
+    // rangeSlider.setSizeAndCentre(rangeSliderPoint);
+
+    // const auto leftToneSliderPoint =
+    //   this->getGridPoint(bounds, leftToneSliderCol, linearSliderRow);
+    // const auto rightToneSliderPoint =
+    //   this->getGridPoint(bounds, rightToneSliderCol, linearSliderRow);
+    // toneSlider.setBoundsByPoints(leftToneSliderPoint, rightToneSliderPoint);
+
+    // const auto feedbackSliderPoint =
+    //   this->getGridPoint(bounds, feedbackSliderCol, lowerRotarySliderRow);
+    // feedbackSlider.setSizeAndCentre(feedbackSliderPoint);
   }
   //==============================================================================
 
@@ -169,7 +169,7 @@ private:
   // Other members
 
   //==============================================================================
-  JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(HereticPanel)
+  JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(HereticDrivePanel)
 };
 
 } // namespace panel
