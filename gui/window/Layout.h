@@ -14,8 +14,8 @@ class Layout : public juce::Component
   using AbstractPanel = dmt::gui::panel::AbstractPanel;
   using PanelPtr = std::shared_ptr<dmt::gui::panel::AbstractPanel>;
   using PanelList = std::vector<PanelPtr>;
-  using PanelPosition = std::pair<size_t, size_t>;
-  using PanelPositionList = std::vector<PanelPosition>;
+  using PanelSpan = std::tuple<size_t, size_t, size_t, size_t>;
+  using PanelSpanList = std::vector<PanelSpan>;
 
 public:
   // Constructor takes column and row separators
@@ -45,11 +45,11 @@ public:
     rows.push_back(1.0f);
 
     for (size_t i = 0; i < panels.size(); ++i) {
-      auto [colIdx, rowIdx] = panelPositions[i];
-      float x0 = cols[colIdx] * bounds.getWidth();
-      float x1 = cols[colIdx + 1] * bounds.getWidth();
-      float y0 = rows[rowIdx] * bounds.getHeight();
-      float y1 = rows[rowIdx + 1] * bounds.getHeight();
+      auto [startCol, startRow, endCol, endRow] = panelSpans[i];
+      float x0 = cols[startCol] * bounds.getWidth();
+      float x1 = cols[endCol] * bounds.getWidth();
+      float y0 = rows[startRow] * bounds.getHeight();
+      float y1 = rows[endRow] * bounds.getHeight();
       juce::Rectangle<int> panelBounds(static_cast<int>(x0),
                                        static_cast<int>(y0),
                                        static_cast<int>(x1 - x0),
@@ -58,23 +58,28 @@ public:
     }
   }
 
-  // Template method to add a panel of type T at (columnIndex, rowIndex)
+  // Template method to add a panel of type T at (startCol, startRow, endCol,
+  // endRow)
   template<typename PanelType, typename... Args>
-  void addPanel(size_t _columnIndex, size_t _rowIndex, Args&&... _args)
+  void addPanel(size_t _startCol,
+                size_t _startRow,
+                size_t _endCol,
+                size_t _endRow,
+                Args&&... _args)
   {
     static_assert(std::is_base_of<AbstractPanel, PanelType>::value,
                   "PanelType must derive from Panel");
     auto panel = std::make_shared<PanelType>(std::forward<Args>(_args)...);
     panels.push_back(panel);
-    panelPositions.emplace_back(_columnIndex, _rowIndex);
+    panelSpans.emplace_back(_startCol, _startRow, _endCol, _endRow);
     // Add to JUCE component tree
     addAndMakeVisible(panel.get());
   }
 
 protected:
   PanelList panels;
-  // Stores (columnIndex, rowIndex) for each panel
-  PanelPositionList panelPositions;
+  // Stores (startCol, startRow, endCol, endRow) for each panel
+  PanelSpanList panelSpans;
   GridSeparatorLayout columnSeparators;
   GridSeparatorLayout rowSeparators;
 };
