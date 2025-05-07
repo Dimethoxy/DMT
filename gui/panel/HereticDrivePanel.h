@@ -89,7 +89,7 @@ public:
                 RotarySliderType::Positive)
   {
     TRACER("DisfluxPanel::DisfluxPanel");
-    setLayout({ 20, 40 });
+    setLayout({ 20, 42 });
 
     addAndMakeVisible(display);
     addAndMakeVisible(driveSlider);
