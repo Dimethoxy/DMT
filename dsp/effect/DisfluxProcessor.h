@@ -62,6 +62,12 @@ class alignas(64) DisfluxProcessor
   const float& outputHighpassFrequency;
   const int& smoothingInterval;
 
+  float lastFrequencySmoothTime = 0.0f;
+  float lastSpreadSmoothTime = 0.0f;
+  float lastPinchSmoothTime = 0.0f;
+  float lastMixSmoothTime = 0.0f;
+  int lastSmoothingInterval = 0;
+
   using AudioBuffer = juce::AudioBuffer<float>;
   using Filter = juce::IIRFilter;
   using FilterArray = std::array<Filter, FILTER_AMOUNT>;
@@ -97,6 +103,16 @@ public:
     , outputHighpassFrequency(_outputHighpassFrequency)
     , smoothingInterval(_smoothingInterval)
   {
+    cacheLastSmoothingValues();
+  }
+  //==============================================================================
+  inline void cacheLastSmoothingValues() noexcept
+  {
+    lastFrequencySmoothTime = frequencySmoothTime;
+    lastSpreadSmoothTime = spreadSmoothTime;
+    lastPinchSmoothTime = pinchSmoothTime;
+    lastMixSmoothTime = mixSmoothTime;
+    lastSmoothingInterval = smoothingInterval;
   }
 
   //==============================================================================
@@ -152,6 +168,29 @@ public:
       apvts.getRawParameterValue("DisfluxFrequency")->load();
     const auto newPinch = apvts.getRawParameterValue("DisfluxPinch")->load();
     const auto newMix = apvts.getRawParameterValue("DisfluxMix")->load();
+
+    // Test if smoothing values have changed
+    if (lastFrequencySmoothTime != frequencySmoothTime) {
+      smoothedFrequency.reset(sampleRate, frequencySmoothTime);
+      lastFrequencySmoothTime = frequencySmoothTime;
+    }
+    if (lastSpreadSmoothTime != spreadSmoothTime) {
+      smoothedSpread.reset(sampleRate, spreadSmoothTime);
+      lastSpreadSmoothTime = spreadSmoothTime;
+    }
+    if (lastPinchSmoothTime != pinchSmoothTime) {
+      smoothedPinch.reset(sampleRate, pinchSmoothTime);
+      lastPinchSmoothTime = pinchSmoothTime;
+    }
+    if (lastMixSmoothTime != mixSmoothTime) {
+      smoothedMix.reset(sampleRate, mixSmoothTime);
+      lastMixSmoothTime = mixSmoothTime;
+    }
+    // We last highpass values here as it's recalculated on each run anyways
+    if (lastSmoothingInterval != smoothingInterval) {
+      smoothingIntervalCountdown = smoothingInterval;
+      lastSmoothingInterval = smoothingInterval;
+    }
 
     // Set smoothing targets
     smoothedFrequency.setTargetValue(newFrequency);
