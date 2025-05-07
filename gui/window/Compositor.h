@@ -37,6 +37,7 @@
 #include "dmt/gui/widget/BorderButton.h"
 #include "dmt/gui/window/Alerts.h"
 #include "dmt/gui/window/Header.h"
+#include "dmt/gui/window/Layout.h"
 #include "dmt/gui/window/Popover.h"
 #include "dmt/gui/window/Tooltip.h"
 #include "dmt/utility/Scaleable.h"
@@ -53,7 +54,6 @@ namespace window {
 /**
  * @brief Manages the layout and behavior of the main application window.
  *
- * The `Compositor` class handles the dynamic resizing, visibility toggling,
  * and interaction logic for the header, panels, and popovers. It ensures
  * that the UI remains responsive and intuitive while adhering to real-time
  * performance constraints.
