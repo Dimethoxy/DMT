@@ -54,13 +54,13 @@ class alignas(64) DisfluxProcessor
   constexpr static float MAX_FREQUENCY = 20000.0f;
 
   // Smoothing times (seconds) for each parameter
-  constexpr static float FREQUENCY_SMOOTH_TIME = 0.4f;
-  constexpr static float SPREAD_SMOOTH_TIME = 0.05f;
-  constexpr static float PINCH_SMOOTH_TIME = 0.2f;
-  constexpr static float MIX_SMOOTH_TIME = 0.05f;
-
-  // Smoothing interval (samples)
-  constexpr static int SMOOTHING_INTERVAL = 32;
+  const float& frequencySmoothTime;
+  const float& spreadSmoothTime;
+  const float& pinchSmoothTime;
+  const float& mixSmoothTime;
+  const bool& useOutputHighpass;
+  const float& outputHighpassFrequency;
+  const int& smoothingInterval;
 
   using AudioBuffer = juce::AudioBuffer<float>;
   using Filter = juce::IIRFilter;
@@ -72,9 +72,30 @@ public:
    * @brief Constructs a DisfluxProcessor with the given parameters.
    *
    * @param _apvts The AudioProcessorValueTreeState containing the parameters.
+   * @param _frequencySmoothTime Smoothing time for frequency parameter.
+   * @param _spreadSmoothTime Smoothing time for spread parameter.
+   * @param _pinchSmoothTime Smoothing time for pinch parameter.
+   * @param _mixSmoothTime Smoothing time for mix parameter.
+   * @param _useOutputHighpass Whether to use output highpass filter.
+   * @param _outputHighpassFrequency Frequency for output highpass filter.
+   * @param _smoothingInterval Smoothing interval (samples).
    */
-  DisfluxProcessor(juce::AudioProcessorValueTreeState& _apvts) noexcept
+  DisfluxProcessor(juce::AudioProcessorValueTreeState& _apvts,
+                   const float& _frequencySmoothTime = 0.20f,
+                   const float& _spreadSmoothTime = 0.02f,
+                   const float& _pinchSmoothTime = 0.20f,
+                   const float& _mixSmoothTime = 0.02f,
+                   const bool& _useOutputHighpass = true,
+                   const float& _outputHighpassFrequency = 20.0f,
+                   const int& _smoothingInterval = 32) noexcept
     : apvts(_apvts)
+    , frequencySmoothTime(_frequencySmoothTime)
+    , spreadSmoothTime(_spreadSmoothTime)
+    , pinchSmoothTime(_pinchSmoothTime)
+    , mixSmoothTime(_mixSmoothTime)
+    , useOutputHighpass(_useOutputHighpass)
+    , outputHighpassFrequency(_outputHighpassFrequency)
+    , smoothingInterval(_smoothingInterval)
   {
   }
 
@@ -88,10 +109,10 @@ public:
   {
     sampleRate = static_cast<float>(_newSampleRate);
 
-    smoothedFrequency.reset(sampleRate, FREQUENCY_SMOOTH_TIME);
-    smoothedSpread.reset(sampleRate, SPREAD_SMOOTH_TIME);
-    smoothedPinch.reset(sampleRate, PINCH_SMOOTH_TIME);
-    smoothedMix.reset(sampleRate, MIX_SMOOTH_TIME);
+    smoothedFrequency.reset(sampleRate, frequencySmoothTime);
+    smoothedSpread.reset(sampleRate, spreadSmoothTime);
+    smoothedPinch.reset(sampleRate, pinchSmoothTime);
+    smoothedMix.reset(sampleRate, mixSmoothTime);
 
     // Set initial values
     smoothedFrequency.setCurrentAndTargetValue(frequency);
@@ -101,12 +122,15 @@ public:
 
     setCoefficients(frequency, static_cast<float>(spread), pinch);
 
-    // Prepare output lowpass filter (1st order Butterworth, 20 Hz)
-    auto lowpassCoeffs = juce::IIRCoefficients::makeHighPass(sampleRate, 20.0);
-    outputLowpassLeft.setCoefficients(lowpassCoeffs);
-    outputLowpassRight.setCoefficients(lowpassCoeffs);
-    outputLowpassLeft.reset();
-    outputLowpassRight.reset();
+    // Prepare output highpass filter (default to 20 Hz)
+    auto highpassCoeffs = juce::IIRCoefficients::makeHighPass(sampleRate, 20.0);
+    outputHighpassLeft.setCoefficients(highpassCoeffs);
+    outputHighpassRight.setCoefficients(highpassCoeffs);
+    outputHighpassLeft.reset();
+    outputHighpassRight.reset();
+
+    // Track last used frequency for output highpass
+    lastHighpassFrequency = -1.0f;
   }
 
   //==============================================================================
@@ -161,10 +185,21 @@ public:
       }
       needUpdateCoeffs = false;
       smoothedFrequency.skip(
-        static_cast<int>(sampleRate * FREQUENCY_SMOOTH_TIME));
-      smoothedSpread.skip(static_cast<int>(sampleRate * SPREAD_SMOOTH_TIME));
-      smoothedPinch.skip(static_cast<int>(sampleRate * PINCH_SMOOTH_TIME));
-      smoothedMix.skip(static_cast<int>(sampleRate * MIX_SMOOTH_TIME));
+        static_cast<int>(sampleRate * frequencySmoothTime));
+      smoothedSpread.skip(static_cast<int>(sampleRate * spreadSmoothTime));
+      smoothedPinch.skip(static_cast<int>(sampleRate * pinchSmoothTime));
+      smoothedMix.skip(static_cast<int>(sampleRate * mixSmoothTime));
+    }
+
+    // Output highpass filter: recalc coeffs only if freq changed and enabled
+    if (useOutputHighpass &&
+        !juce::approximatelyEqual(lastHighpassFrequency,
+                                  outputHighpassFrequency)) {
+      auto highpassCoeffs = juce::IIRCoefficients::makeHighPass(
+        sampleRate, outputHighpassFrequency);
+      outputHighpassLeft.setCoefficients(highpassCoeffs);
+      outputHighpassRight.setCoefficients(highpassCoeffs);
+      lastHighpassFrequency = outputHighpassFrequency;
     }
 
     int numSamples = _buffer.getNumSamples();
@@ -175,13 +210,13 @@ public:
 
     for (int sample = 0; sample < numSamples; ++sample) {
       // Smoothing interval logic: update filter coefficients every
-      // SMOOTHING_INTERVAL samples
+      // smoothingInterval samples
       if (smoothingCountdown <= 0) {
         currentFrequency = smoothedFrequency.getCurrentValue();
         currentSpread = smoothedSpread.getCurrentValue();
         currentPinch = smoothedPinch.getCurrentValue();
         setCoefficients(currentFrequency, currentSpread, currentPinch);
-        smoothingCountdown = SMOOTHING_INTERVAL;
+        smoothingCountdown = smoothingInterval;
       }
 
       // Advance smoothing values for each sample
@@ -206,9 +241,11 @@ public:
       left = (left * wetGain) + (leftDry * dryGain);
       right = (right * wetGain) + (rightDry * dryGain);
 
-      // Apply output lowpass filter (20 Hz, shallow roll-off)
-      left = outputLowpassLeft.processSingleSampleRaw(left);
-      right = outputLowpassRight.processSingleSampleRaw(right);
+      // Apply output highpass filter if enabled
+      if (useOutputHighpass) {
+        left = outputHighpassLeft.processSingleSampleRaw(left);
+        right = outputHighpassRight.processSingleSampleRaw(right);
+      }
 
       _buffer.setSample(0, sample, left);
       _buffer.setSample(1, sample, right);
@@ -268,9 +305,10 @@ private:
   juce::SmoothedValue<float, juce::ValueSmoothingTypes::Linear> smoothedMix;
   int smoothingIntervalCountdown = 0;
 
-  // Output lowpass filter (20 Hz, shallow roll-off)
-  juce::IIRFilter outputLowpassLeft;
-  juce::IIRFilter outputLowpassRight;
+  // Output highpass filter (configurable)
+  juce::IIRFilter outputHighpassLeft;
+  juce::IIRFilter outputHighpassRight;
+  float lastHighpassFrequency = -1.0f;
 };
 
 //==============================================================================
