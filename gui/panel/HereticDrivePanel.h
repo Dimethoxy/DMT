@@ -62,19 +62,19 @@ public:
     : AbstractPanel("Oscilloscope", false)
     , driveTypeSlider(_apvts,
                       juce::String("Type"),
-                      juce::String("HereticDrive"),
-                      Unit::Type::HereticDrive,
-                      RotarySliderType::Positive)
+                      juce::String("HereticDriveType"),
+                      Unit::Type::HereticDriveType,
+                      RotarySliderType::Selector)
     , driveSlider(_apvts,
                   juce::String("Amount"),
-                  juce::String("HereticTone"),
-                  Unit::Type::HereticTone,
+                  juce::String("HereticDrive"),
+                  Unit::Type::HereticDrive,
                   LinearSliderType::Positive,
                   LinearSliderOrientation::Horizontal)
     , biasSlider(_apvts,
                  juce::String("Symmetry"),
-                 juce::String("HereticMix"),
-                 Unit::Type::HereticMix,
+                 juce::String("HereticDriveBias"),
+                 Unit::Type::HereticDriveBias,
                  RotarySliderType::Bipolar)
   {
     TRACER("DisfluxPanel::DisfluxPanel");

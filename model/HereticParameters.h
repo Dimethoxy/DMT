@@ -83,6 +83,13 @@ hereticParameterGroup(juce::String parentUid)
                                                               "Harmonic",
                                                               "Weird" },
                                            0), // defaultItemIndex
+    std::make_unique<ParameterFloat>(uid + "DriveBias",
+                                     "Drive Bias",
+                                     NormalisableRange(-1.0f, // rangeStart
+                                                       1.0f,  // rangeEnd
+                                                       0.01f, // intervalValue
+                                                       1.0f), // skewFactor
+                                     0.0f),                   // defaultValue
     std::make_unique<ParameterFloat>(uid + "Feedback",
                                      "Feedback",
                                      NormalisableRange(0.0f,  // rangeStart

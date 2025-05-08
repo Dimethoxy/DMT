@@ -62,25 +62,25 @@ public:
     : AbstractPanel("Oscilloscope", false)
     , display(_oscilloscopeBuffer, _apvts)
     , driveSlider(_apvts,
-                  juce::String("Drive"),
-                  juce::String("HereticDrive"),
-                  Unit::Type::HereticDrive,
-                  RotarySliderType::Positive)
+                  juce::String("PreGain"),
+                  juce::String("HereticPreGain"),
+                  Unit::Type::HereticPreGain,
+                  RotarySliderType::Bipolar)
     , rangeSlider(_apvts,
-                  juce::String("Range"),
-                  juce::String("HereticRange"),
-                  Unit::Type::HereticRange,
+                  juce::String("Stereo"),
+                  juce::String("HereticSpread"),
+                  Unit::Type::HereticStereo,
                   RotarySliderType::Positive)
     , toneSlider(_apvts,
-                 juce::String("Tone"),
-                 juce::String("HereticTone"),
-                 Unit::Type::HereticTone,
+                 juce::String("Range"),
+                 juce::String("HereticRange"),
+                 Unit::Type::HereticRange,
                  LinearSliderType::Positive,
                  LinearSliderOrientation::Horizontal)
     , feedbackSlider(_apvts,
-                     juce::String("Feedback"),
-                     juce::String("HereticFeedback"),
-                     Unit::Type::HereticFeedback,
+                     juce::String("Saturation"),
+                     juce::String("HereticDistortion"),
+                     Unit::Type::HereticDistortion,
                      RotarySliderType::Positive)
     , mixSlider(_apvts,
                 juce::String("Mix"),

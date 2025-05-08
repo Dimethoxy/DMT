@@ -90,11 +90,20 @@ struct alignas(8) Unit
     DisfluxFrequency,
     DisfluxPinch,
     DisfluxMix,
-    HereticDrive,
+
+    HereticPreGain,
+    HereticStereo,
     HereticRange,
-    HereticTone,
-    HereticFeedback,
+    HereticDistortion,
     HereticMix,
+
+    HereticDrive,
+    HereticDriveType,
+    HereticDriveBias,
+
+    HereticFeedback,
+    HereticFeedbackFilterSlope,
+    HereticFeedbackFilterCutoff,
   };
 
   //==============================================================================
@@ -151,19 +160,23 @@ struct alignas(8) Unit
                  static_cast<int>(static_cast<float>(_value * 100.0f))) +
                juce::String("%");
         break;
-      case Type::HereticDrive:
-        return juce::String(_value, 2) + juce::String("x");
+
+        // Heretic
+      case Type::HereticPreGain:
+        return juce::String(static_cast<int>(static_cast<float>(_value))) +
+               juce::String("dB");
+        break;
+      case Type::HereticStereo:
+        return juce::String(
+                 static_cast<int>(static_cast<float>(_value * 100.0f))) +
+               juce::String("%");
         break;
       case Type::HereticRange:
         return juce::String(
                  static_cast<int>(static_cast<float>(_value * 1000.0f))) +
                juce::String("\u00B5s").substring(1, 3);
         break;
-      case Type::HereticTone:
-        return juce::String(static_cast<int>(static_cast<float>(_value))) +
-               juce::String("Hz");
-        break;
-      case Type::HereticFeedback:
+      case Type::HereticDistortion:
         return juce::String(
                  static_cast<int>(static_cast<float>(_value * 100.0f))) +
                juce::String("%");
@@ -173,6 +186,33 @@ struct alignas(8) Unit
                  static_cast<int>(static_cast<float>(_value * 100.0f))) +
                juce::String("%");
         break;
+
+      case Type::HereticDrive:
+        return juce::String(_value, 2) + juce::String("x");
+        break;
+      case Type::HereticDriveType:
+        // Return the name od the current parameter value
+        return juce::String(_value);
+        break;
+      case Type::HereticDriveBias:
+        return juce::String(static_cast<int>(static_cast<float>(_value))) +
+               juce::String("%");
+        break;
+
+      case Type::HereticFeedback:
+        return juce::String(
+                 static_cast<int>(static_cast<float>(_value * 100.0f))) +
+               juce::String("%");
+        break;
+      case Type::HereticFeedbackFilterSlope:
+        return juce::String(static_cast<int>(static_cast<float>(_value))) +
+               juce::String("dB/Oct");
+        break;
+      case Type::HereticFeedbackFilterCutoff:
+        return juce::String(static_cast<int>(static_cast<float>(_value))) +
+               juce::String("Hz");
+        break;
+
       default:
         return juce::String("ERROR");
         break;
