@@ -87,6 +87,9 @@ class Compositor
   using Layout = dmt::gui::window::Layout;
 
   //============================================================================
+  // Window
+  const float& rawPadding = dmt::Settings::Window::margin;
+
   // Header
   const int& rawBorderButtonHeight = Settings::Header::borderButtonHeight;
   const int& rawHeaderHeight = dmt::Settings::Header::height;
@@ -197,9 +200,12 @@ public:
         static_cast<int>(headerHeight * 2.0f));
       header.setBounds(headerBounds);
 
-      const auto contentHeight = bounds.getHeight() - headerHeight;
-      const auto contentBounds = juce::Rectangle(bounds).removeFromBottom(
-        static_cast<int>(contentHeight));
+      const auto padding = rawPadding * size;
+      const auto contentHeight =
+        bounds.getHeight() - headerHeight - 2 * padding;
+      const auto contentBounds =
+        juce::Rectangle(bounds.reduced(padding))
+          .removeFromBottom(static_cast<int>(contentHeight));
       mainLayout.setBounds(contentBounds);
       settingsPanel.setBounds(contentBounds);
 
