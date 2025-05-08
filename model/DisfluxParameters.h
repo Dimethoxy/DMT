@@ -23,7 +23,7 @@ disfluxParameterGroup(juce::String parentUid, int versionHint)
       juce::ParameterID(uid + "Amount", versionHint),
       "Amount",
       NormalisableRange(1.0f,   // rangeStart
-                        128.0f, // rangeEnd
+                        256.0f, // rangeEnd
                         1.0f,   // intervalValue
                         0.5f),  // skewFactor
       1.0f,                     // defaultValue

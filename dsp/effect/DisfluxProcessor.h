@@ -49,7 +49,7 @@ namespace effect {
  */
 class alignas(64) DisfluxProcessor
 {
-  constexpr static int FILTER_AMOUNT = 128;
+  constexpr static int FILTER_AMOUNT = 256;
   constexpr static float MIN_FREQUENCY = 20.0f;
   constexpr static float MAX_FREQUENCY = 20000.0f;
 
