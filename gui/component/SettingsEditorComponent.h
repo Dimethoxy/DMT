@@ -43,7 +43,8 @@ class SettingsEditor
   // TODO: Move somewhere else
   std::vector<juce::String> blockedCategories = { "TriangleButton",
                                                   "OscillatorDisplay",
-                                                  "Carousel" };
+                                                  "Carousel",
+                                                  "Audio" };
 
 public:
   SettingsEditor()
