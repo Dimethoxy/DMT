@@ -338,8 +338,7 @@ private:
   // Smoothing
   juce::SmoothedValue<float, juce::ValueSmoothingTypes::Multiplicative>
     smoothedFrequency;
-  juce::SmoothedValue<float, juce::ValueSmoothingTypes::Multiplicative>
-    smoothedSpread;
+  juce::SmoothedValue<float, juce::ValueSmoothingTypes::Linear> smoothedSpread;
   juce::SmoothedValue<float, juce::ValueSmoothingTypes::Linear> smoothedPinch;
   juce::SmoothedValue<float, juce::ValueSmoothingTypes::Linear> smoothedMix;
   int smoothingIntervalCountdown = 0;
