@@ -87,13 +87,13 @@ public:
    * @param _smoothingInterval Smoothing interval (samples).
    */
   DisfluxProcessor(juce::AudioProcessorValueTreeState& _apvts,
-                   const float& _frequencySmoothTime = 0.20f,
-                   const float& _spreadSmoothTime = 0.02f,
-                   const float& _pinchSmoothTime = 0.20f,
-                   const float& _mixSmoothTime = 0.02f,
-                   const bool& _useOutputHighpass = true,
-                   const float& _outputHighpassFrequency = 20.0f,
-                   const int& _smoothingInterval = 32) noexcept
+                   const float& _frequencySmoothTime,
+                   const float& _spreadSmoothTime,
+                   const float& _pinchSmoothTime,
+                   const float& _mixSmoothTime,
+                   const bool& _useOutputHighpass,
+                   const float& _outputHighpassFrequency,
+                   const int& _smoothingInterval) noexcept
     : apvts(_apvts)
     , frequencySmoothTime(_frequencySmoothTime)
     , spreadSmoothTime(_spreadSmoothTime)
@@ -124,11 +124,13 @@ public:
   inline void prepare(const double _newSampleRate) noexcept
   {
     sampleRate = static_cast<float>(_newSampleRate);
-
-    smoothedFrequency.reset(sampleRate, frequencySmoothTime);
-    smoothedSpread.reset(sampleRate, spreadSmoothTime);
-    smoothedPinch.reset(sampleRate, pinchSmoothTime);
-    smoothedMix.reset(sampleRate, mixSmoothTime);
+    smoothedFrequency.reset(sampleRate,
+                            juce::jlimit(0.001f, 1.0f, frequencySmoothTime));
+    smoothedSpread.reset(sampleRate,
+                         juce::jlimit(0.001f, 1.0f, spreadSmoothTime));
+    smoothedPinch.reset(sampleRate,
+                        juce::jlimit(0.001f, 1.0f, pinchSmoothTime));
+    smoothedMix.reset(sampleRate, juce::jlimit(0.001f, 1.0f, mixSmoothTime));
 
     // Set initial values
     smoothedFrequency.setCurrentAndTargetValue(frequency);
@@ -170,21 +172,33 @@ public:
     const auto newMix = apvts.getRawParameterValue("DisfluxMix")->load();
 
     // Test if smoothing values have changed
-    if (lastFrequencySmoothTime != frequencySmoothTime) {
-      smoothedFrequency.reset(sampleRate, frequencySmoothTime);
-      lastFrequencySmoothTime = frequencySmoothTime;
+    const float clampedFrequencySmoothTime =
+      juce::jlimit(0.001f, 1.0f, frequencySmoothTime);
+    const float clampedSpreadSmoothTime =
+      juce::jlimit(0.001f, 1.0f, spreadSmoothTime);
+    const float clampedPinchSmoothTime =
+      juce::jlimit(0.001f, 1.0f, pinchSmoothTime);
+    const float clampedMixSmoothTime =
+      juce::jlimit(0.001f, 1.0f, mixSmoothTime);
+
+    if (!juce::approximatelyEqual(lastFrequencySmoothTime,
+                                  clampedFrequencySmoothTime)) {
+      smoothedFrequency.reset(sampleRate, clampedFrequencySmoothTime);
+      lastFrequencySmoothTime = clampedFrequencySmoothTime;
     }
-    if (lastSpreadSmoothTime != spreadSmoothTime) {
-      smoothedSpread.reset(sampleRate, spreadSmoothTime);
-      lastSpreadSmoothTime = spreadSmoothTime;
+    if (!juce::approximatelyEqual(lastSpreadSmoothTime,
+                                  clampedSpreadSmoothTime)) {
+      smoothedSpread.reset(sampleRate, clampedSpreadSmoothTime);
+      lastSpreadSmoothTime = clampedSpreadSmoothTime;
     }
-    if (lastPinchSmoothTime != pinchSmoothTime) {
-      smoothedPinch.reset(sampleRate, pinchSmoothTime);
-      lastPinchSmoothTime = pinchSmoothTime;
+    if (!juce::approximatelyEqual(lastPinchSmoothTime,
+                                  clampedPinchSmoothTime)) {
+      smoothedPinch.reset(sampleRate, clampedPinchSmoothTime);
+      lastPinchSmoothTime = clampedPinchSmoothTime;
     }
-    if (lastMixSmoothTime != mixSmoothTime) {
-      smoothedMix.reset(sampleRate, mixSmoothTime);
-      lastMixSmoothTime = mixSmoothTime;
+    if (!juce::approximatelyEqual(lastMixSmoothTime, clampedMixSmoothTime)) {
+      smoothedMix.reset(sampleRate, clampedMixSmoothTime);
+      lastMixSmoothTime = clampedMixSmoothTime;
     }
     // We last highpass values here as it's recalculated on each run anyways
     if (lastSmoothingInterval != smoothingInterval) {
