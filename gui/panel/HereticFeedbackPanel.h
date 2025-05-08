@@ -60,43 +60,29 @@ public:
     juce::AudioProcessorValueTreeState& _apvts,
     FifoAudioBuffer& _oscilloscopeBuffer) noexcept
     : AbstractPanel("Oscilloscope", false)
-    , display(_oscilloscopeBuffer, _apvts)
+    , driveTypeSlider(_apvts,
+                      juce::String("Cutoff"),
+                      juce::String("HereticDrive"),
+                      Unit::Type::HereticDrive,
+                      RotarySliderType::Bipolar)
     , driveSlider(_apvts,
-                  juce::String("Drive"),
-                  juce::String("HereticDrive"),
-                  Unit::Type::HereticDrive,
-                  RotarySliderType::Positive)
-    , rangeSlider(_apvts,
-                  juce::String("Range"),
-                  juce::String("HereticRange"),
-                  Unit::Type::HereticRange,
-                  RotarySliderType::Positive)
-    , toneSlider(_apvts,
-                 juce::String("Tone"),
-                 juce::String("HereticTone"),
-                 Unit::Type::HereticTone,
-                 LinearSliderType::Positive,
-                 LinearSliderOrientation::Horizontal)
-    , feedbackSlider(_apvts,
-                     juce::String("Feedback"),
-                     juce::String("HereticFeedback"),
-                     Unit::Type::HereticFeedback,
-                     RotarySliderType::Positive)
-    , mixSlider(_apvts,
-                juce::String("Mix"),
-                juce::String("HereticMix"),
-                Unit::Type::HereticMix,
-                RotarySliderType::Positive)
+                  juce::String("Feedback"),
+                  juce::String("HereticTone"),
+                  Unit::Type::HereticTone,
+                  LinearSliderType::Negative,
+                  LinearSliderOrientation::Horizontal)
+    , biasSlider(_apvts,
+                 juce::String("Slope"),
+                 juce::String("HereticMix"),
+                 Unit::Type::HereticMix,
+                 RotarySliderType::Positive)
   {
     TRACER("DisfluxPanel::DisfluxPanel");
-    setLayout({ 20, 42 });
+    setLayout({ 20, 47 });
 
-    addAndMakeVisible(display);
+    addAndMakeVisible(driveTypeSlider);
     addAndMakeVisible(driveSlider);
-    addAndMakeVisible(rangeSlider);
-    addAndMakeVisible(toneSlider);
-    addAndMakeVisible(feedbackSlider);
-    addAndMakeVisible(mixSlider);
+    addAndMakeVisible(biasSlider);
   }
 
   //==============================================================================
@@ -113,57 +99,37 @@ public:
     TRACER("DisfluxPanel::extendResize");
     auto bounds = getLocalBounds();
 
-    // const float padding = rawPadding * size;
-    // auto displayBounds = bounds.reduced(padding);
-    // const float displayHorizontalPadding = 100.0f;
-    // const float displayVerticalPadding = 57.0f;
-    // displayBounds.removeFromBottom(displayVerticalPadding * size);
-    // displayBounds.removeFromLeft(displayHorizontalPadding * size);
-    // displayBounds.removeFromRight(displayHorizontalPadding * size);
-    // display.setBounds(displayBounds);
-
-    const int upperRotarySliderRow = 17;
-    // const int lowerRotarySliderRow = 43;
-    // const int linearSliderRow = 51;
+    const int upperRotarySliderRow = 16;
+    const int linearSliderRow = 38;
 
     const int driveSliderCol = 6;
-    // const int leftToneSliderCol = 6;
-    // const int rightToneSliderCol = 17;
     const int feedbackSliderCol = 15;
+
+    const int leftToneSliderCol = 3;
+    const int rightToneSliderCol = 18;
 
     const auto driveSliderPoint =
       this->getGridPoint(bounds, driveSliderCol, upperRotarySliderRow);
-    driveSlider.setSizeAndCentre(driveSliderPoint);
+    driveTypeSlider.setSizeAndCentre(driveSliderPoint);
 
     const auto mixSliderPoint =
       this->getGridPoint(bounds, feedbackSliderCol, upperRotarySliderRow);
-    mixSlider.setSizeAndCentre(mixSliderPoint);
+    biasSlider.setSizeAndCentre(mixSliderPoint);
 
-    // const auto rangeSliderPoint =
-    //   this->getGridPoint(bounds, driveSliderCol, lowerRotarySliderRow);
-    // rangeSlider.setSizeAndCentre(rangeSliderPoint);
-
-    // const auto leftToneSliderPoint =
-    //   this->getGridPoint(bounds, leftToneSliderCol, linearSliderRow);
-    // const auto rightToneSliderPoint =
-    //   this->getGridPoint(bounds, rightToneSliderCol, linearSliderRow);
-    // toneSlider.setBoundsByPoints(leftToneSliderPoint, rightToneSliderPoint);
-
-    // const auto feedbackSliderPoint =
-    //   this->getGridPoint(bounds, feedbackSliderCol, lowerRotarySliderRow);
-    // feedbackSlider.setSizeAndCentre(feedbackSliderPoint);
+    const auto leftToneSliderPoint =
+      this->getGridPoint(bounds, leftToneSliderCol, linearSliderRow);
+    const auto rightToneSliderPoint =
+      this->getGridPoint(bounds, rightToneSliderCol, linearSliderRow);
+    driveSlider.setBoundsByPoints(leftToneSliderPoint, rightToneSliderPoint);
   }
   //==============================================================================
 
 private:
   //==============================================================================
   // Members initialized in the initializer list
-  DisfluxDisplay display;
-  RotarySlider driveSlider;
-  RotarySlider rangeSlider;
-  LinearSlider toneSlider;
-  RotarySlider feedbackSlider;
-  RotarySlider mixSlider;
+  RotarySlider driveTypeSlider;
+  LinearSlider driveSlider;
+  RotarySlider biasSlider;
 
   //==============================================================================
   // Other members
