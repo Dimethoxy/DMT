@@ -72,6 +72,9 @@ public:
   {
     juce::String name;
     Container::SettingValue* value;
+    // Add pointers for range checking
+    Container* container = nullptr;
+    juce::String fullKey;
 
     juce::String toString() const
     {
@@ -132,6 +135,14 @@ public:
           if (_textToSet.trim().isEmpty() ||
               !_textToSet.containsOnly("0123456789-+"))
             return false;
+          // Range check
+          if (container) {
+            auto range = container->getRange(fullKey);
+            if (range.min && v < static_cast<int>(*range.min))
+              return false;
+            if (range.max && v > static_cast<int>(*range.max))
+              return false;
+          }
           *value = v;
           return true;
         }
@@ -141,6 +152,14 @@ public:
           // Optionally, check if _textToSet is a valid float string
           if (_textToSet.trim().isEmpty())
             return false;
+          // Range check
+          if (container) {
+            auto range = container->getRange(fullKey);
+            if (range.min && v < *range.min)
+              return false;
+            if (range.max && v > *range.max)
+              return false;
+          }
           *value = static_cast<float>(v);
           return true;
         }
@@ -264,7 +283,8 @@ protected:
       // Hide "General.ThemeVersion"
       if (category == "General" && leaf == "ThemeVersion")
         continue;
-      Leaf leafObj{ leaf, &value };
+      // Pass container pointer and full key for range checking
+      Leaf leafObj{ leaf, &value, &container, key };
       categoryMap[category].push_back(leafObj);
     }
 

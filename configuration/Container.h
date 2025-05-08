@@ -54,6 +54,13 @@ class Container
   using String = juce::String;
   using Colour = juce::Colour;
 
+  // Struct to hold optional min/max for numeric types
+  struct NumericRange
+  {
+    std::optional<double> min;
+    std::optional<double> max;
+  };
+
 public:
   //============================================================================
   /**
@@ -91,8 +98,8 @@ public:
   {
     auto it = settings.find(_name);
     if (it != settings.end()) {
-      if (std::holds_alternative<T>(it->second)) {
-        return std::get<T>(it->second);
+      if (std::holds_alternative<T>(it->second.value)) {
+        return std::get<T>(it->second.value);
       } else {
         jassertfalse;
         throw std::runtime_error("Type mismatch for setting: " +
@@ -122,19 +129,88 @@ public:
    * it is added to the collection.
    */
   template<typename T>
-  inline T& add(const String _name, const T _value)
+  inline T& add(const String _name,
+                const T _value,
+                std::optional<double> min = std::nullopt,
+                std::optional<double> max = std::nullopt)
   {
+    static_assert(std::is_same_v<T, int> || std::is_same_v<T, float> ||
+                    std::is_same_v<T, String> || std::is_same_v<T, Colour> ||
+                    std::is_same_v<T, bool>,
+                  "Unsupported type for Container::add");
+
     auto it = settings.find(_name);
     if (it != settings.end()) {
-      if (!std::holds_alternative<T>(it->second)) {
+      if (!std::holds_alternative<T>(it->second.value)) {
         jassertfalse;
         throw std::runtime_error("Type mismatch for setting: " +
                                  _name.toStdString());
       }
+      // Update min/max if numeric
+      if constexpr (std::is_same_v<T, int> || std::is_same_v<T, float>) {
+        if (min)
+          it->second.range.min = min;
+        if (max)
+          it->second.range.max = max;
+      }
     } else {
-      settings[_name] = _value;
+      SettingEntry entry;
+      entry.value = _value;
+      if constexpr (std::is_same_v<T, int> || std::is_same_v<T, float>) {
+        entry.range.min = min;
+        entry.range.max = max;
+      }
+      settings[_name] = entry;
     }
-    return std::get<T>(settings[_name]);
+    return std::get<T>(settings[_name].value);
+  }
+
+  //==============================================================================
+  /**
+   * @brief Sets the optional min/max range for an existing numeric setting.
+   *
+   * @param _name The name of the setting.
+   * @param min The optional minimum value.
+   * @param max The optional maximum value.
+   *
+   * @details
+   * This only applies to numeric types (int, float). For other types, this
+   * function has no effect.
+   */
+  inline void setRange(const String& _name,
+                       std::optional<double> min,
+                       std::optional<double> max)
+  {
+    auto it = settings.find(_name);
+    if (it != settings.end()) {
+      if (std::holds_alternative<int>(it->second.value) ||
+          std::holds_alternative<float>(it->second.value)) {
+        it->second.range.min = min;
+        it->second.range.max = max;
+      }
+    }
+  }
+
+  //==============================================================================
+  /**
+   * @brief Gets the optional min/max range for a numeric setting.
+   *
+   * @param _name The name of the setting.
+   * @return The NumericRange struct containing optional min and max values.
+   *
+   * @details
+   * Returns an empty NumericRange if the setting is not numeric or not found.
+   */
+  inline NumericRange getRange(const String& _name) const
+  {
+    auto it = settings.find(_name);
+    if (it != settings.end()) {
+      if (std::holds_alternative<int>(it->second.value) ||
+          std::holds_alternative<float>(it->second.value)) {
+        return it->second.range;
+      }
+    }
+    return {};
   }
 
   //==============================================================================
@@ -149,7 +225,8 @@ public:
   inline juce::PropertySet toPropertySet() const
   {
     juce::PropertySet propertySet;
-    for (const auto& [key, value] : settings) {
+    for (const auto& [key, entry] : settings) {
+      const auto& value = entry.value;
       if (std::holds_alternative<String>(value)) {
         propertySet.setValue(key, std::get<String>(value));
       } else if (std::holds_alternative<Colour>(value)) {
@@ -161,6 +238,7 @@ public:
       } else if (std::holds_alternative<bool>(value)) {
         propertySet.setValue(key, std::get<bool>(value));
       }
+      // Optionally, could serialize min/max as well if needed
     }
     return propertySet;
   }
@@ -177,18 +255,19 @@ public:
    */
   inline void applyPropertySet(juce::PropertySet* _propertySet)
   {
-    for (auto& [key, storedValue] : settings) {
+    for (auto& [key, entry] : settings) {
+      auto& storedValue = entry.value;
       if (_propertySet->containsKey(key)) {
         if (std::holds_alternative<String>(storedValue)) {
-          settings[key] = _propertySet->getValue(key);
+          storedValue = _propertySet->getValue(key);
         } else if (std::holds_alternative<Colour>(storedValue)) {
-          settings[key] = Colour::fromString(_propertySet->getValue(key));
+          storedValue = Colour::fromString(_propertySet->getValue(key));
         } else if (std::holds_alternative<int>(storedValue)) {
-          settings[key] = _propertySet->getValue(key).getIntValue();
+          storedValue = _propertySet->getValue(key).getIntValue();
         } else if (std::holds_alternative<float>(storedValue)) {
-          settings[key] = _propertySet->getValue(key).getFloatValue();
+          storedValue = _propertySet->getValue(key).getFloatValue();
         } else if (std::holds_alternative<bool>(storedValue)) {
-          settings[key] = _propertySet->getBoolValue(key);
+          storedValue = _propertySet->getBoolValue(key);
         }
       }
     }
@@ -203,17 +282,24 @@ public:
    */
   inline std::map<String, SettingValue>& getAllSettingsMutable()
   {
-    return settings;
+    // For backward compatibility, return a map of just the values
+    static std::map<String, SettingValue> legacy;
+    legacy.clear();
+    for (auto& [k, v] : settings)
+      legacy[k] = v.value;
+    return legacy;
   }
 
+  //==============================================================================
 private:
-  //==============================================================================
-  // Members initialized in the initializer list
-  // (none for this class)
+  // Each setting stores its value and optional numeric range
+  struct SettingEntry
+  {
+    SettingValue value;
+    NumericRange range;
+  };
 
-  //==============================================================================
-  // Other members
-  std::map<String, SettingValue> settings;
+  std::map<String, SettingEntry> settings;
 
   //==============================================================================
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Container)

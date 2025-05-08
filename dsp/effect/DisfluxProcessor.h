@@ -124,13 +124,10 @@ public:
   inline void prepare(const double _newSampleRate) noexcept
   {
     sampleRate = static_cast<float>(_newSampleRate);
-    smoothedFrequency.reset(sampleRate,
-                            juce::jlimit(0.001f, 1.0f, frequencySmoothTime));
-    smoothedSpread.reset(sampleRate,
-                         juce::jlimit(0.001f, 1.0f, spreadSmoothTime));
-    smoothedPinch.reset(sampleRate,
-                        juce::jlimit(0.001f, 1.0f, pinchSmoothTime));
-    smoothedMix.reset(sampleRate, juce::jlimit(0.001f, 1.0f, mixSmoothTime));
+    smoothedFrequency.reset(sampleRate, frequencySmoothTime);
+    smoothedSpread.reset(sampleRate, spreadSmoothTime);
+    smoothedPinch.reset(sampleRate, pinchSmoothTime);
+    smoothedMix.reset(sampleRate, mixSmoothTime);
 
     // Set initial values
     smoothedFrequency.setCurrentAndTargetValue(frequency);
@@ -172,33 +169,22 @@ public:
     const auto newMix = apvts.getRawParameterValue("DisfluxMix")->load();
 
     // Test if smoothing values have changed
-    const float clampedFrequencySmoothTime =
-      juce::jlimit(0.001f, 1.0f, frequencySmoothTime);
-    const float clampedSpreadSmoothTime =
-      juce::jlimit(0.001f, 1.0f, spreadSmoothTime);
-    const float clampedPinchSmoothTime =
-      juce::jlimit(0.001f, 1.0f, pinchSmoothTime);
-    const float clampedMixSmoothTime =
-      juce::jlimit(0.001f, 1.0f, mixSmoothTime);
-
     if (!juce::approximatelyEqual(lastFrequencySmoothTime,
-                                  clampedFrequencySmoothTime)) {
-      smoothedFrequency.reset(sampleRate, clampedFrequencySmoothTime);
-      lastFrequencySmoothTime = clampedFrequencySmoothTime;
+                                  frequencySmoothTime)) {
+      smoothedFrequency.reset(sampleRate, frequencySmoothTime);
+      lastFrequencySmoothTime = frequencySmoothTime;
     }
-    if (!juce::approximatelyEqual(lastSpreadSmoothTime,
-                                  clampedSpreadSmoothTime)) {
-      smoothedSpread.reset(sampleRate, clampedSpreadSmoothTime);
-      lastSpreadSmoothTime = clampedSpreadSmoothTime;
+    if (!juce::approximatelyEqual(lastSpreadSmoothTime, spreadSmoothTime)) {
+      smoothedSpread.reset(sampleRate, spreadSmoothTime);
+      lastSpreadSmoothTime = spreadSmoothTime;
     }
-    if (!juce::approximatelyEqual(lastPinchSmoothTime,
-                                  clampedPinchSmoothTime)) {
-      smoothedPinch.reset(sampleRate, clampedPinchSmoothTime);
-      lastPinchSmoothTime = clampedPinchSmoothTime;
+    if (!juce::approximatelyEqual(lastPinchSmoothTime, pinchSmoothTime)) {
+      smoothedPinch.reset(sampleRate, pinchSmoothTime);
+      lastPinchSmoothTime = pinchSmoothTime;
     }
-    if (!juce::approximatelyEqual(lastMixSmoothTime, clampedMixSmoothTime)) {
-      smoothedMix.reset(sampleRate, clampedMixSmoothTime);
-      lastMixSmoothTime = clampedMixSmoothTime;
+    if (!juce::approximatelyEqual(lastMixSmoothTime, mixSmoothTime)) {
+      smoothedMix.reset(sampleRate, mixSmoothTime);
+      lastMixSmoothTime = mixSmoothTime;
     }
     // We last highpass values here as it's recalculated on each run anyways
     if (lastSmoothingInterval != smoothingInterval) {
@@ -214,20 +200,6 @@ public:
 
     // Only reset filters if amount changes
     bool needUpdateCoeffs = false;
-
-    // Check if any parameters have changed
-    if (spread != newSpread) {
-      spread = newSpread;
-      needUpdateCoeffs = true;
-    }
-    if (!juce::approximatelyEqual(frequency, newFrequency)) {
-      frequency = newFrequency;
-      needUpdateCoeffs = true;
-    }
-    if (!juce::approximatelyEqual(pinch, newPinch)) {
-      pinch = newPinch;
-      needUpdateCoeffs = true;
-    }
 
     // If the amount of filters has changed, reset the filters
     if (amount != newAmount) {
