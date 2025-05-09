@@ -72,6 +72,7 @@ public:
   {
     juce::String name;
     Container::SettingValue* value;
+    std::shared_ptr<void> range; // Pointer to range, nullptr if not found
 
     juce::String toString() const
     {
@@ -132,6 +133,12 @@ public:
           if (_textToSet.trim().isEmpty() ||
               !_textToSet.containsOnly("0123456789-+"))
             return false;
+          // Check for range
+          if (range != nullptr) {
+            auto* rangePtr = static_cast<Container::Range<int>*>(range.get());
+            if (v < rangePtr->min || v > rangePtr->max)
+              return false;
+          }
           *value = v;
           return true;
         }
@@ -141,6 +148,12 @@ public:
           // Optionally, check if _textToSet is a valid float string
           if (_textToSet.trim().isEmpty())
             return false;
+          // Check for range
+          if (range != nullptr) {
+            auto* rangePtr = static_cast<Container::Range<float>*>(range.get());
+            if (v < rangePtr->min || v > rangePtr->max)
+              return false;
+          }
           *value = static_cast<float>(v);
           return true;
         }
@@ -264,7 +277,32 @@ protected:
       // Hide "General.ThemeVersion"
       if (category == "General" && leaf == "ThemeVersion")
         continue;
-      Leaf leafObj{ leaf, &value };
+
+      // Find range pointer (nullptr if not found)
+      std::shared_ptr<void> rangePtr = nullptr;
+      int typeIndex = static_cast<int>(value.index());
+      try {
+        switch (typeIndex) {
+          case 2: { // int
+            auto opt = container.getRange<int>(key);
+            if (opt)
+              rangePtr = std::make_shared<Container::Range<int>>(*opt);
+            break;
+          }
+          case 3: { // float
+            auto opt = container.getRange<float>(key);
+            if (opt)
+              rangePtr = std::make_shared<Container::Range<float>>(*opt);
+            break;
+          }
+          default:
+            break;
+        }
+      } catch (...) {
+        // ignore errors, leave rangePtr as nullptr
+      }
+
+      Leaf leafObj{ leaf, &value, rangePtr };
       categoryMap[category].push_back(leafObj);
     }
 

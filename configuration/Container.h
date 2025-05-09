@@ -32,6 +32,7 @@
 //==============================================================================
 
 #include <JuceHeader.h>
+#include <any>
 
 //==============================================================================
 
@@ -64,6 +65,27 @@ public:
    * Used for type-safe, runtime-checked configuration storage.
    */
   typedef std::variant<String, Colour, int, float, bool> SettingValue;
+
+  //============================================================================
+  /**
+   * @brief Type for storing a range limit.
+   *
+   * @details
+   * Used for storing the range limits of settings.
+   * The range is inclusive.
+   */
+  template<typename T>
+  struct Range
+  {
+    T min;
+    T max;
+
+    Range(T _min, T _max)
+      : min(_min)
+      , max(_max)
+    {
+    }
+  };
 
   //============================================================================
   /**
@@ -122,7 +144,10 @@ public:
    * it is added to the collection.
    */
   template<typename T>
-  inline T& add(const String _name, const T _value)
+  inline T& add(const String _name,
+                const T _value,
+                const T* min = nullptr,
+                const T* max = nullptr)
   {
     auto it = settings.find(_name);
     if (it != settings.end()) {
@@ -133,6 +158,9 @@ public:
       }
     } else {
       settings[_name] = _value;
+      if (min && max) {
+        ranges[_name] = Range<T>(*min, *max);
+      }
     }
     return std::get<T>(settings[_name]);
   }
@@ -206,6 +234,27 @@ public:
     return settings;
   }
 
+  //==============================================================================
+  /**
+   * @brief Tries to retrieve the range of a setting by its name.
+   *
+   */
+  template<typename T>
+  inline std::optional<Range<T>> getRange(const String _name)
+  {
+    auto pair = ranges.find(_name);
+    if (pair != ranges.end()) {
+      if (auto rangePtr = std::any_cast<Range<T>>(&pair->second)) {
+        return *rangePtr;
+      } else {
+        jassertfalse;
+        throw std::runtime_error("Type mismatch for range: " +
+                                 _name.toStdString());
+      }
+    }
+    return std::nullopt; // Return empty optional if range is not found
+  }
+
 private:
   //==============================================================================
   // Members initialized in the initializer list
@@ -214,6 +263,7 @@ private:
   //==============================================================================
   // Other members
   std::map<String, SettingValue> settings;
+  std::map<String, std::any> ranges;
 
   //==============================================================================
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Container)
