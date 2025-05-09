@@ -22,10 +22,10 @@ disfluxParameterGroup(juce::String parentUid, int versionHint)
     std::make_unique<juce::AudioParameterFloat>(
       juce::ParameterID(uid + "Amount", versionHint),
       "Amount",
-      NormalisableRange(1.0f,   // rangeStart
+      NormalisableRange(0.0f,   // rangeStart
                         256.0f, // rangeEnd
                         1.0f,   // intervalValue
-                        0.5f),  // skewFactor
+                        0.4f),  // skewFactor
       1.0f,                     // defaultValue
       juce::String()),          // label
     std::make_unique<juce::AudioParameterFloat>(

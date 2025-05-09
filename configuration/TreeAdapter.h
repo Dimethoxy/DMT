@@ -306,13 +306,19 @@ protected:
       categoryMap[category].push_back(leafObj);
     }
 
-    // Prepare to sort categories: "General" should be first
+    // Prepare to sort categories: "General" should be first, "Audio" second
     std::vector<std::pair<juce::String, std::vector<Leaf>>> sortedCategories;
     auto generalIt = categoryMap.find("General");
     if (generalIt != categoryMap.end()) {
       // Add "General" first if it exists
       sortedCategories.push_back(*generalIt);
       categoryMap.erase(generalIt);
+    }
+    auto audioIt = categoryMap.find("Audio");
+    if (audioIt != categoryMap.end()) {
+      // Add "Audio" second if it exists
+      sortedCategories.push_back(*audioIt);
+      categoryMap.erase(audioIt);
     }
     // Add the rest
     for (auto& entry : categoryMap) {
