@@ -85,22 +85,27 @@ struct alignas(8) Unit
     OscilloscopeZoom,
     OscilloscopeThickness,
     OscilloscopeHeight,
+
+    // Disflux
     DisfluxAmount,
     DisfluxSpread,
     DisfluxFrequency,
     DisfluxPinch,
     DisfluxMix,
 
+    // Heretic Main Panel
     HereticPreGain,
     HereticStereo,
     HereticRange,
     HereticDistortion,
     HereticMix,
 
+    // Heretic Drive Panel
     HereticDrive,
     HereticDriveType,
     HereticDriveBias,
 
+    // Heretic Feedback Panel
     HereticFeedback,
     HereticFeedbackFilterSlope,
     HereticFeedbackFilterCutoff,
