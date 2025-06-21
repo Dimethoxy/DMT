@@ -57,7 +57,6 @@ class alignas(64) DisfluxProcessor
   const float& frequencySmoothTime;
   const float& spreadSmoothTime;
   const float& pinchSmoothTime;
-  const float& mixSmoothTime;
   const bool& useOutputHighpass;
   const float& outputHighpassFrequency;
   const int& smoothingInterval;
@@ -65,7 +64,6 @@ class alignas(64) DisfluxProcessor
   float lastFrequencySmoothTime = 0.0f;
   float lastSpreadSmoothTime = 0.0f;
   float lastPinchSmoothTime = 0.0f;
-  float lastMixSmoothTime = 0.0f;
   int lastSmoothingInterval = 0;
 
   using AudioBuffer = juce::AudioBuffer<float>;
@@ -81,7 +79,6 @@ public:
    * @param _frequencySmoothTime Smoothing time for frequency parameter.
    * @param _spreadSmoothTime Smoothing time for spread parameter.
    * @param _pinchSmoothTime Smoothing time for pinch parameter.
-   * @param _mixSmoothTime Smoothing time for mix parameter.
    * @param _useOutputHighpass Whether to use output highpass filter.
    * @param _outputHighpassFrequency Frequency for output highpass filter.
    * @param _smoothingInterval Smoothing interval (samples).
@@ -90,7 +87,6 @@ public:
                    const float& _frequencySmoothTime,
                    const float& _spreadSmoothTime,
                    const float& _pinchSmoothTime,
-                   const float& _mixSmoothTime,
                    const bool& _useOutputHighpass,
                    const float& _outputHighpassFrequency,
                    const int& _smoothingInterval) noexcept
@@ -98,7 +94,6 @@ public:
     , frequencySmoothTime(_frequencySmoothTime)
     , spreadSmoothTime(_spreadSmoothTime)
     , pinchSmoothTime(_pinchSmoothTime)
-    , mixSmoothTime(_mixSmoothTime)
     , useOutputHighpass(_useOutputHighpass)
     , outputHighpassFrequency(_outputHighpassFrequency)
     , smoothingInterval(_smoothingInterval)
@@ -111,7 +106,6 @@ public:
     lastFrequencySmoothTime = frequencySmoothTime;
     lastSpreadSmoothTime = spreadSmoothTime;
     lastPinchSmoothTime = pinchSmoothTime;
-    lastMixSmoothTime = mixSmoothTime;
     lastSmoothingInterval = smoothingInterval;
   }
 
@@ -127,13 +121,11 @@ public:
     smoothedFrequency.reset(sampleRate, frequencySmoothTime);
     smoothedSpread.reset(sampleRate, spreadSmoothTime);
     smoothedPinch.reset(sampleRate, pinchSmoothTime);
-    smoothedMix.reset(sampleRate, mixSmoothTime);
 
     // Set initial values
     smoothedFrequency.setCurrentAndTargetValue(frequency);
     smoothedSpread.setCurrentAndTargetValue(static_cast<float>(spread));
     smoothedPinch.setCurrentAndTargetValue(pinch);
-    smoothedMix.setCurrentAndTargetValue(1.0f);
 
     setCoefficients(frequency, static_cast<float>(spread), pinch);
 
@@ -166,7 +158,7 @@ public:
     const auto newFrequency =
       apvts.getRawParameterValue("DisfluxFrequency")->load();
     const auto newPinch = apvts.getRawParameterValue("DisfluxPinch")->load();
-    const auto newMix = apvts.getRawParameterValue("DisfluxMix")->load();
+    const auto mix = apvts.getRawParameterValue("DisfluxMix")->load();
 
     // Test if smoothing values have changed
     if (!juce::approximatelyEqual(lastFrequencySmoothTime,
@@ -182,10 +174,6 @@ public:
       smoothedPinch.reset(sampleRate, pinchSmoothTime);
       lastPinchSmoothTime = pinchSmoothTime;
     }
-    if (!juce::approximatelyEqual(lastMixSmoothTime, mixSmoothTime)) {
-      smoothedMix.reset(sampleRate, mixSmoothTime);
-      lastMixSmoothTime = mixSmoothTime;
-    }
     // We last highpass values here as it's recalculated on each run anyways
     if (lastSmoothingInterval != smoothingInterval) {
       smoothingIntervalCountdown = smoothingInterval;
@@ -196,7 +184,6 @@ public:
     smoothedFrequency.setTargetValue(newFrequency);
     smoothedSpread.setTargetValue(static_cast<float>(newSpread));
     smoothedPinch.setTargetValue(newPinch);
-    smoothedMix.setTargetValue(newMix);
 
     // Only reset filters if amount changes
     bool needUpdateCoeffs = false;
@@ -213,7 +200,6 @@ public:
         static_cast<int>(sampleRate * frequencySmoothTime));
       smoothedSpread.skip(static_cast<int>(sampleRate * spreadSmoothTime));
       smoothedPinch.skip(static_cast<int>(sampleRate * pinchSmoothTime));
-      smoothedMix.skip(static_cast<int>(sampleRate * mixSmoothTime));
     }
 
     // Output highpass filter: recalc coeffs only if freq changed and enabled
@@ -261,7 +247,7 @@ public:
         right = rightFilters[filterIndex].processSingleSampleRaw(right);
       }
 
-      const auto wetGain = smoothedMix.getNextValue();
+      const auto wetGain = mix;
       const auto dryGain = 1.0f - wetGain;
       left = (left * wetGain) + (leftDry * dryGain);
       right = (right * wetGain) + (rightDry * dryGain);
@@ -326,7 +312,6 @@ private:
     smoothedFrequency;
   juce::SmoothedValue<float, juce::ValueSmoothingTypes::Linear> smoothedSpread;
   juce::SmoothedValue<float, juce::ValueSmoothingTypes::Linear> smoothedPinch;
-  juce::SmoothedValue<float, juce::ValueSmoothingTypes::Linear> smoothedMix;
   int smoothingIntervalCountdown = 0;
 
   // Output highpass filter (configurable)
