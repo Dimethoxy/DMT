@@ -179,7 +179,7 @@ struct alignas(8) Unit
       case Type::HereticRange:
         return juce::String(
                  static_cast<int>(static_cast<float>(_value * 1000.0f))) +
-               juce::String("\u00B5s").substring(1, 3);
+               juce::String(juce::CharPointer_UTF8("\u00B5s"));
         break;
       case Type::HereticDistortion:
         return juce::String(
