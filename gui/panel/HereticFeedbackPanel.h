@@ -69,7 +69,7 @@ public:
                   juce::String("Feedback"),
                   juce::String("HereticFeedback"),
                   Unit::Type::HereticFeedback,
-                  LinearSliderType::Negative,
+                  LinearSliderType::Positive,
                   LinearSliderOrientation::Horizontal)
     , biasSlider(_apvts,
                  juce::String("Slope"),
