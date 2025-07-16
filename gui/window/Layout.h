@@ -58,8 +58,25 @@ public:
     }
   }
 
-  // Template method to add a panel of type T at (startCol, startRow, endCol,
-  // endRow)
+  /**
+   * Adds a new panel of type PanelType to the layout grid.
+   *
+   * Template Parameters:
+   * - PanelType: The specific panel class to instantiate, must derive from
+   * AbstractPanel.
+   * - Args: The types of constructor arguments to forward to PanelType's
+   * constructor.
+   *
+   * This uses a variadic template (Args&&... _args) to forward any number
+   * of constructor arguments into the PanelType constructor via std::forward.
+   *
+   * This makes the function flexible enough to handle any panel type with any
+   * constructor signature, while preserving move/copy semantics.
+   *
+   * Example usage:
+   *   addPanel<OscPanel>(0, 0, 1, 1, "waveform_saw", 42);
+   *   -> constructs OscPanel("waveform_saw", 42)
+   */
   template<typename PanelType, typename... Args>
   void addPanel(size_t _startCol,
                 size_t _startRow,
