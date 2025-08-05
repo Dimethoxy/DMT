@@ -78,7 +78,7 @@ public:
                  RotarySliderType::Selector)
   {
     TRACER("DisfluxPanel::DisfluxPanel");
-    setLayout({ 20, 47 });
+    setLayout({ 20, 60 });
 
     addAndMakeVisible(driveTypeSlider);
     addAndMakeVisible(driveSlider);
@@ -99,8 +99,8 @@ public:
     TRACER("DisfluxPanel::extendResize");
     auto bounds = getLocalBounds();
 
-    const int upperRotarySliderRow = 16;
-    const int linearSliderRow = 38;
+    const int upperRotarySliderRow = 21;
+    const int linearSliderRow = 49;
 
     const int driveSliderCol = 6;
     const int feedbackSliderCol = 15;

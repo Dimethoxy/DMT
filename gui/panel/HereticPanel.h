@@ -89,7 +89,7 @@ public:
                 RotarySliderType::Positive)
   {
     TRACER("DisfluxPanel::DisfluxPanel");
-    setLayout({ 20, 60 });
+    setLayout({ 60, 60 });
 
     addAndMakeVisible(display);
     addAndMakeVisible(driveSlider);
@@ -115,21 +115,21 @@ public:
 
     const float padding = rawPadding * size;
     auto displayBounds = bounds.reduced(padding);
-    const float displayHorizontalPadding = 100.0f;
-    const float displayVerticalPadding = 57.0f;
+    const float displayHorizontalPadding = 90.0f;
+    const float displayVerticalPadding = 53.0f;
     displayBounds.removeFromBottom(displayVerticalPadding * size);
     displayBounds.removeFromLeft(displayHorizontalPadding * size);
     displayBounds.removeFromRight(displayHorizontalPadding * size);
     display.setBounds(displayBounds);
 
-    const int upperRotarySliderRow = 17;
+    const int upperRotarySliderRow = 16;
     const int lowerRotarySliderRow = 43;
     const int linearSliderRow = 51;
 
-    const int driveSliderCol = 3;
-    const int leftToneSliderCol = 6;
-    const int rightToneSliderCol = 15;
-    const int feedbackSliderCol = 18;
+    const int driveSliderCol = 8;
+    const int leftToneSliderCol = 16;
+    const int rightToneSliderCol = 44;
+    const int feedbackSliderCol = 53;
 
     const auto driveSliderPoint =
       this->getGridPoint(bounds, driveSliderCol, upperRotarySliderRow);
