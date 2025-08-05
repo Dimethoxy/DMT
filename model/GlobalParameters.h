@@ -6,7 +6,7 @@
 namespace dmt {
 namespace model {
 static inline juce::AudioProcessorParameterGroup
-globalParameterGroup()
+globalParameterGroup(int versionHint)
 {
   using ParameterBool = juce::AudioParameterBool;
   using ParameterInt = juce::AudioParameterInt;
@@ -17,20 +17,20 @@ globalParameterGroup()
   juce::String uid = "Global";
 
   return juce::AudioProcessorParameterGroup(
-    uid,                                                       // group ID
-    "Global",                                                  // group name
-    "|",                                                       // separator
-    std::make_unique<ParameterFloat>(uid + "Gain",             // parameter ID
-                                     "Gain",                   // parameter name
-                                     NormalisableRange(-100.f, // rangeStart
-                                                       100.f,  // rangeEnd
-                                                       0.01f,  // intervalValue
-                                                       1.f),   // skewFactor
-                                     0),
-    std::make_unique<ParameterBool>(uid + "Bypass", // parameter ID
-                                    "Bypass",       // parameter name
-                                    false)          // defaultValue
-  );
+    uid,      // group ID
+    "Global", // group name
+    "|",      // separator
+    std::make_unique<ParameterFloat>(
+      juce::ParameterID(uid + "Gain", versionHint),
+      "Gain",
+      NormalisableRange(-100.f, 100.f, 0.01f, 1.f),
+      0,
+      juce::String()),
+    std::make_unique<ParameterBool>(
+      juce::ParameterID(uid + "Bypass", versionHint),
+      "Bypass",
+      false,
+      juce::String()));
 }
 } // namespace model
 } // namespace dmt

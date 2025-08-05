@@ -732,6 +732,18 @@ public:
   };
 
   //==============================================================================
+  /**
+   * @brief Audio settings forwards declaretion.
+   *
+   * @details
+   * This struct is used to forward declare the audio settings. We do this so
+   * each user of this library can create their own audio settings struct. This
+   * is useful for example if you want to use a different audio library than
+   * JUCE.
+   */
+  struct Audio;
+
+  //==============================================================================
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Settings)
 };
 
