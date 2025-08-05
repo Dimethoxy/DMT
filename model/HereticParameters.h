@@ -3,6 +3,7 @@
 //==============================================================================
 
 #include <JuceHeader.h>
+#include <dmt/utility/Unit.h>
 
 //==============================================================================
 
@@ -18,7 +19,7 @@ hereticParameterGroup(juce::String parentUid)
   using ParameterFloat = juce::AudioParameterFloat;
   // using ParameterChoice = juce::AudioParameterChoice;
   using NormalisableRange = juce::NormalisableRange<float>;
-
+  using Unit = dmt::utility::Unit;
   juce::String uid = parentUid + "Heretic";
 
   return juce::AudioProcessorParameterGroup(
@@ -97,21 +98,11 @@ hereticParameterGroup(juce::String parentUid)
                                                        0.01f, // intervalValue
                                                        1.0f), // skewFactor
                                      0.0f),                   // defaultValue
-    std::make_unique<AudioParameterChoice>(uid + "FeedbackFilterSlope",
-                                           "Feedback Filter Slope",
-                                           juce::StringArray{ "LP 12dB/Oct",
-                                                              "LP 24dB/Oct",
-                                                              "LP 36dB/Oct",
-                                                              "LP 48dB/Oct",
-                                                              "BP 12dB/Oct",
-                                                              "BP 24dB/Oct",
-                                                              "BP 36dB/Oct",
-                                                              "BP 48dB/Oct",
-                                                              "HP 12dB/Oct",
-                                                              "HP 24dB/Oct",
-                                                              "HP 36dB/Oct",
-                                                              "HP 48dB/Oct" },
-                                           0), // defaultItemIndex
+    std::make_unique<AudioParameterChoice>(
+      uid + "FeedbackFilterSlope",                  // parameter ID
+      "Feedback Filter Slope",                      // parameter name
+      juce::StringArray{ Unit::multiFilterSlopes }, // choices
+      0),                                           // defaultItemIndex
     std::make_unique<ParameterFloat>(uid + "FeedbackFilterCutoff",
                                      "Feedback Filter Cutoff",
                                      NormalisableRange(20.0f,    // rangeStart

@@ -203,15 +203,14 @@ struct alignas(8) Unit
         return juce::String(static_cast<int>(static_cast<float>(_value))) +
                juce::String("%");
         break;
-
       case Type::HereticFeedback:
         return juce::String(
                  static_cast<int>(static_cast<float>(_value * 100.0f))) +
                juce::String("%");
         break;
       case Type::HereticFeedbackFilterSlope:
-        return juce::String(static_cast<int>(static_cast<float>(_value))) +
-               juce::String("dB/Oct");
+        return juce::String(
+          multiFilterSlopes[static_cast<int>(static_cast<float>(_value))]);
         break;
       case Type::HereticFeedbackFilterCutoff:
         return juce::String(static_cast<int>(static_cast<float>(_value))) +
@@ -223,6 +222,14 @@ struct alignas(8) Unit
         break;
     }
   }
+
+  //==============================================================================
+
+  static constexpr const char* multiFilterSlopes[]{
+    "LP 12dB/Oct", "LP 24dB/Oct", "LP 36dB/Oct", "LP 48dB/Oct",
+    "BP 12dB/Oct", "BP 24dB/Oct", "BP 36dB/Oct", "BP 48dB/Oct",
+    "HP 12dB/Oct", "HP 24dB/Oct", "HP 36dB/Oct", "HP 48dB/Oct"
+  };
 
   //==============================================================================
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Unit)
