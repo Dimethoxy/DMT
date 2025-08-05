@@ -212,11 +212,17 @@ struct alignas(8) Unit
         return juce::String(
           multiFilterSlopes[static_cast<int>(static_cast<float>(_value))]);
         break;
-      case Type::HereticFeedbackFilterCutoff:
-        return juce::String(static_cast<int>(static_cast<float>(_value))) +
+      case Type::HereticFeedbackFilterCutoff: {
+        const int minHz = 20;
+        const int maxHz = 20000;
+        const float minInput = 0.0f;
+        const float maxInput = 10.0f;
+        const float scaledValue =
+          juce::jmap<float>(_value, minInput, maxInput, minHz, maxHz);
+        return juce::String(static_cast<int>(static_cast<float>(scaledValue))) +
                juce::String("Hz");
         break;
-
+      }
       default:
         return juce::String("ERROR");
         break;
