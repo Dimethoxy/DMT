@@ -28,11 +28,11 @@ hereticParameterGroup(juce::String parentUid)
     "|",       // separator
     std::make_unique<ParameterFloat>(uid + "PreGain",
                                      "PreGain",
-                                     NormalisableRange(0.0f,  // rangeStart
-                                                       1.0f,  // rangeEnd
-                                                       0.01f, // intervalValue
-                                                       1.0f), // skewFactor
-                                     1.0f),                   // defaultValue
+                                     NormalisableRange(-32.0f, // rangeStart
+                                                       32.0f,  // rangeEnd
+                                                       0.01f,  // intervalValue
+                                                       1.0f),  // skewFactor
+                                     0.0f),                    // defaultValue
     std::make_unique<ParameterFloat>(uid + "Spread",
                                      "Spread",
                                      NormalisableRange(0.0f,  // rangeStart
