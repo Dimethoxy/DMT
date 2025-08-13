@@ -31,7 +31,7 @@ namespace panel {
  * AbstractPanel and uses a grid layout for positioning components.
  */
 template<typename SampleType>
-class HereticPanel : public dmt::gui::panel::AbstractPanel
+class HeretikPanel : public dmt::gui::panel::AbstractPanel
 {
   using FifoAudioBuffer = dmt::dsp::data::FifoAudioBuffer<float>;
   using DisfluxDisplay = dmt::gui::display::DisfluxDisplay;
@@ -56,36 +56,36 @@ public:
    * Initializes all display and slider components, sets up the grid layout,
    * and adds all subcomponents to the panel.
    */
-  constexpr inline explicit HereticPanel(
+  constexpr inline explicit HeretikPanel(
     juce::AudioProcessorValueTreeState& _apvts,
     FifoAudioBuffer& _oscilloscopeBuffer) noexcept
     : AbstractPanel("Oscilloscope", false)
     , display(_oscilloscopeBuffer, _apvts)
     , driveSlider(_apvts,
                   juce::String("PreGain"),
-                  juce::String("HereticPreGain"),
-                  Unit::Type::HereticPreGain,
+                  juce::String("HeretikPreGain"),
+                  Unit::Type::HeretikPreGain,
                   RotarySliderType::Bipolar)
     , rangeSlider(_apvts,
                   juce::String("Stereo"),
-                  juce::String("HereticSpread"),
-                  Unit::Type::HereticStereo,
+                  juce::String("HeretikSpread"),
+                  Unit::Type::HeretikStereo,
                   RotarySliderType::Positive)
     , toneSlider(_apvts,
                  juce::String("Range"),
-                 juce::String("HereticRange"),
-                 Unit::Type::HereticRange,
+                 juce::String("HeretikRange"),
+                 Unit::Type::HeretikRange,
                  LinearSliderType::Positive,
                  LinearSliderOrientation::Horizontal)
     , feedbackSlider(_apvts,
                      juce::String("Saturation"),
-                     juce::String("HereticDistortion"),
-                     Unit::Type::HereticDistortion,
+                     juce::String("HeretikDistortion"),
+                     Unit::Type::HeretikDistortion,
                      RotarySliderType::Positive)
     , mixSlider(_apvts,
                 juce::String("Mix"),
-                juce::String("HereticMix"),
-                Unit::Type::HereticMix,
+                juce::String("HeretikMix"),
+                Unit::Type::HeretikMix,
                 RotarySliderType::Positive)
   {
     TRACER("DisfluxPanel::DisfluxPanel");
@@ -169,7 +169,7 @@ private:
   // Other members
 
   //==============================================================================
-  JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(HereticPanel)
+  JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(HeretikPanel)
 };
 
 } // namespace panel

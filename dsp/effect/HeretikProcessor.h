@@ -20,7 +20,7 @@ namespace effect {
  *
  * This class processes audio buffers with a series of all-pass filters.
  */
-class alignas(64) HereticProcessor
+class alignas(64) HeretikProcessor
 {
   using AudioBuffer = juce::AudioBuffer<float>;
   using DelayLine = juce::dsp::DelayLine<float>;
@@ -37,7 +37,7 @@ public:
    *
    * @param _apvts The AudioProcessorValueTreeState containing the parameters.
    */
-  HereticProcessor(juce::AudioProcessorValueTreeState& _apvts) noexcept
+  HeretikProcessor(juce::AudioProcessorValueTreeState& _apvts) noexcept
     : apvts(_apvts)
   {
   }
@@ -72,12 +72,12 @@ public:
       return;
     }
 
-    const float drive = apvts.getRawParameterValue("HereticDrive")->load();
-    const float range = apvts.getRawParameterValue("HereticRange")->load();
-    const float tone = apvts.getRawParameterValue("HereticTone")->load();
+    const float drive = apvts.getRawParameterValue("HeretikDrive")->load();
+    const float range = apvts.getRawParameterValue("HeretikRange")->load();
+    const float tone = apvts.getRawParameterValue("HeretikTone")->load();
     const float feedback =
-      apvts.getRawParameterValue("HereticFeedback")->load();
-    const float mix = apvts.getRawParameterValue("HereticMix")->load();
+      apvts.getRawParameterValue("HeretikFeedback")->load();
+    const float mix = apvts.getRawParameterValue("HeretikMix")->load();
 
     // Applay the delay line to the input buffer
     for (int channel = 0; channel < _buffer.getNumChannels(); ++channel) {

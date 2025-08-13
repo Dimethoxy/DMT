@@ -31,7 +31,7 @@ namespace panel {
  * AbstractPanel and uses a grid layout for positioning components.
  */
 template<typename SampleType>
-class HereticDrivePanel : public dmt::gui::panel::AbstractPanel
+class HeretikDrivePanel : public dmt::gui::panel::AbstractPanel
 {
   using FifoAudioBuffer = dmt::dsp::data::FifoAudioBuffer<float>;
   using DisfluxDisplay = dmt::gui::display::DisfluxDisplay;
@@ -56,25 +56,25 @@ public:
    * Initializes all display and slider components, sets up the grid layout,
    * and adds all subcomponents to the panel.
    */
-  constexpr inline explicit HereticDrivePanel(
+  constexpr inline explicit HeretikDrivePanel(
     juce::AudioProcessorValueTreeState& _apvts,
     FifoAudioBuffer& _oscilloscopeBuffer) noexcept
     : AbstractPanel("Oscilloscope", false)
     , driveTypeSlider(_apvts,
                       juce::String("Type"),
-                      juce::String("HereticDriveType"),
-                      Unit::Type::HereticDriveType,
+                      juce::String("HeretikDriveType"),
+                      Unit::Type::HeretikDriveType,
                       RotarySliderType::Selector)
     , driveSlider(_apvts,
                   juce::String("Amount"),
-                  juce::String("HereticDrive"),
-                  Unit::Type::HereticDrive,
+                  juce::String("HeretikDrive"),
+                  Unit::Type::HeretikDrive,
                   LinearSliderType::Positive,
                   LinearSliderOrientation::Horizontal)
     , biasSlider(_apvts,
                  juce::String("Symmetry"),
-                 juce::String("HereticDriveBias"),
-                 Unit::Type::HereticDriveBias,
+                 juce::String("HeretikDriveBias"),
+                 Unit::Type::HeretikDriveBias,
                  RotarySliderType::Bipolar)
   {
     TRACER("DisfluxPanel::DisfluxPanel");
@@ -135,7 +135,7 @@ private:
   // Other members
 
   //==============================================================================
-  JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(HereticDrivePanel)
+  JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(HeretikDrivePanel)
 };
 
 } // namespace panel

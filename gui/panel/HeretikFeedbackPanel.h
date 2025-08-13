@@ -31,7 +31,7 @@ namespace panel {
  * AbstractPanel and uses a grid layout for positioning components.
  */
 template<typename SampleType>
-class HereticFeedbackPanel : public dmt::gui::panel::AbstractPanel
+class HeretikFeedbackPanel : public dmt::gui::panel::AbstractPanel
 {
   using FifoAudioBuffer = dmt::dsp::data::FifoAudioBuffer<float>;
   using DisfluxDisplay = dmt::gui::display::DisfluxDisplay;
@@ -56,25 +56,25 @@ public:
    * Initializes all display and slider components, sets up the grid layout,
    * and adds all subcomponents to the panel.
    */
-  constexpr inline explicit HereticFeedbackPanel(
+  constexpr inline explicit HeretikFeedbackPanel(
     juce::AudioProcessorValueTreeState& _apvts,
     FifoAudioBuffer& _oscilloscopeBuffer) noexcept
     : AbstractPanel("Oscilloscope", false)
     , driveTypeSlider(_apvts,
                       juce::String("Cutoff"),
                       juce::String("FeedbackFilterCutoff"),
-                      Unit::Type::HereticFeedbackFilterCutoff,
+                      Unit::Type::HeretikFeedbackFilterCutoff,
                       RotarySliderType::Bipolar)
     , driveSlider(_apvts,
                   juce::String("Feedback"),
-                  juce::String("HereticFeedback"),
-                  Unit::Type::HereticFeedback,
+                  juce::String("HeretikFeedback"),
+                  Unit::Type::HeretikFeedback,
                   LinearSliderType::Positive,
                   LinearSliderOrientation::Horizontal)
     , biasSlider(_apvts,
                  juce::String("Slope"),
-                 juce::String("HereticFeedbackFilterSlope"),
-                 Unit::Type::HereticFeedbackFilterSlope,
+                 juce::String("HeretikFeedbackFilterSlope"),
+                 Unit::Type::HeretikFeedbackFilterSlope,
                  RotarySliderType::Selector)
   {
     TRACER("DisfluxPanel::DisfluxPanel");
@@ -135,7 +135,7 @@ private:
   // Other members
 
   //==============================================================================
-  JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(HereticFeedbackPanel)
+  JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(HeretikFeedbackPanel)
 };
 
 } // namespace panel
