@@ -13,18 +13,18 @@ namespace model {
 //==============================================================================
 
 static inline juce::AudioProcessorParameterGroup
-hereticParameterGroup(juce::String parentUid)
+heretikParameterGroup(juce::String parentUid)
 {
   using ParameterInt = juce::AudioParameterInt;
   using ParameterFloat = juce::AudioParameterFloat;
   // using ParameterChoice = juce::AudioParameterChoice;
   using NormalisableRange = juce::NormalisableRange<float>;
   using Unit = dmt::utility::Unit;
-  juce::String uid = parentUid + "Heretic";
+  juce::String uid = parentUid + "Heretik";
 
   return juce::AudioProcessorParameterGroup(
     uid,       // group ID
-    "Heretic", // group name
+    "Heretik", // group name
     "|",       // separator
     std::make_unique<ParameterFloat>(uid + "PreGain",
                                      "PreGain",
