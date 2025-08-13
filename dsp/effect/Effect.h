@@ -32,7 +32,7 @@
 
 #include "./DisfluxProcessor.h"
 #include "./Distortion.h"
-#include "./HereticProcessor.h"
+#include "./HeretikProcessor.h"
 #include "./LowpassProcessor.h"
 
 //==============================================================================
