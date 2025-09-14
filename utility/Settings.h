@@ -521,7 +521,7 @@ public:
     static inline auto& padding =
       container.add<float>("SettingsEditor.Padding", 5.0f);
     static inline auto& fontSize =
-      container.add<float>("SettingsEditor.FontSize", 16.0f);
+      container.add<float>("SettingsEditor.FontSize", 15.0f);
     static inline auto& scrollBarThickness =
       container.add<float>("SettingsEditor.ScrollBarThickness", 8.0f);
     static inline auto& labelHorizontalPadding =
