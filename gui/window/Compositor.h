@@ -37,6 +37,7 @@
 #include "dmt/gui/widget/BorderButton.h"
 #include "dmt/gui/window/Alerts.h"
 #include "dmt/gui/window/Header.h"
+#include "dmt/gui/window/Layout.h"
 #include "dmt/gui/window/Popover.h"
 #include "dmt/gui/window/Tooltip.h"
 #include "dmt/utility/Scaleable.h"
@@ -53,7 +54,6 @@ namespace window {
 /**
  * @brief Manages the layout and behavior of the main application window.
  *
- * The `Compositor` class handles the dynamic resizing, visibility toggling,
  * and interaction logic for the header, panels, and popovers. It ensures
  * that the UI remains responsive and intuitive while adhering to real-time
  * performance constraints.
@@ -84,8 +84,12 @@ class Compositor
   using String = juce::String;
   using Tooltip = dmt::gui::window::Tooltip;
   using Alerts = dmt::gui::window::Alerts;
+  using Layout = dmt::gui::window::Layout;
 
   //============================================================================
+  // Window
+  const float& rawPadding = dmt::Settings::Window::margin;
+
   // Header
   const int& rawBorderButtonHeight = Settings::Header::borderButtonHeight;
   const int& rawHeaderHeight = dmt::Settings::Header::height;
@@ -96,17 +100,17 @@ public:
    * @brief Constructs a `Compositor` instance.
    *
    * @param _titleText The title text to display in the header.
-   * @param _mainPanel The main panel to manage within the window.
+   * @param _mainLayout The main layout to manage within the window.
    * @param _apvts The audio processor value tree state for parameter
    * management.
    */
   Compositor(String _titleText,
-             AbstractPanel& _mainPanel,
+             Layout& _mainLayout,
              AudioProcessorValueTreeState& _apvts,
              Properties& _properties,
              const float& _sizeFactor) noexcept
     : juce::Component("Compositor")
-    , mainPanel(_mainPanel)
+    , mainLayout(_mainLayout)
     , properties(_properties)
     , header(_titleText, _apvts)
     , settingsPanel()
@@ -136,8 +140,8 @@ public:
     // Alerts
     addAndMakeVisible(alerts);
 
-    // Panels
-    addAndMakeVisible(mainPanel);
+    // Main layout
+    addAndMakeVisible(mainLayout);
     addChildComponent(settingsPanel);
 
     // Start the timer to check if update is found
@@ -189,24 +193,27 @@ public:
     tooltip.setBounds(bounds);
     tooltip.setAlwaysOnTop(true);
 
-    // Main panel
+    // Main layout
     if (header.isVisible()) {
       const auto headerHeight = rawHeaderHeight * size;
       const auto headerBounds = juce::Rectangle(bounds).removeFromTop(
         static_cast<int>(headerHeight * 2.0f));
       header.setBounds(headerBounds);
 
-      const auto contentHeight = bounds.getHeight() - headerHeight;
-      const auto contentBounds = juce::Rectangle(bounds).removeFromBottom(
-        static_cast<int>(contentHeight));
-      mainPanel.setBounds(contentBounds);
+      const auto padding = rawPadding * size;
+      const auto contentHeight =
+        bounds.getHeight() - headerHeight - 2 * padding;
+      const auto contentBounds =
+        juce::Rectangle(bounds.reduced(padding))
+          .removeFromBottom(static_cast<int>(contentHeight));
+      mainLayout.setBounds(contentBounds);
       settingsPanel.setBounds(contentBounds);
 
       borderButton.setVisible(
         false); // Hide the BorderButton when the header is visible
     } else {
-      // If the header is hidden, the main panel takes the full bounds
-      mainPanel.setBounds(bounds);
+      // If the header is hidden, the main layout takes the full bounds
+      mainLayout.setBounds(bounds);
       settingsPanel.setBounds(bounds);
 
       // Show the BorderButton at the top with half the height of the header
@@ -223,7 +230,7 @@ public:
    * @brief Callback function for the settings button.
    *
    * @details This function is called when the settings button is clicked.
-   *          It hides the main panel and shows the settings panel.
+   *          It hides the main layout and shows the settings panel.
    *          The settings button is hidden and the exit button is shown.
    *
    * @note This function is only enabled if the settings panel is not
@@ -235,7 +242,7 @@ public:
     if (settingsPanel.isVisible())
       return;
 
-    mainPanel.setVisible(false);
+    mainLayout.setVisible(false);
     settingsPanel.setVisible(true);
 
     // Hide all header buttons except settingsExitButton
@@ -257,7 +264,7 @@ public:
    * @brief Callback function for the close settings button.
    *
    * @details This function is called when the close settings button is clicked.
-   *          It hides the settings panel and shows the main panel.
+   *          It hides the settings panel and shows the main layout.
    *
    * @note This function is only enabled if the settings panel is currently
    *       visible.
@@ -268,7 +275,7 @@ public:
     if (!settingsPanel.isVisible())
       return;
 
-    mainPanel.setVisible(true);
+    mainLayout.setVisible(true);
     settingsPanel.setVisible(false);
 
     // Rerun logic for which buttons to show
@@ -737,7 +744,7 @@ protected:
 private:
   //==============================================================================
   // Members initialized in the initializer list
-  AbstractPanel& mainPanel;
+  Layout& mainLayout;
   Properties& properties;
   Header header;
   SettingsPanel settingsPanel;

@@ -159,7 +159,7 @@ public:
     TRACER("AbstractPanel::paint");
     // Precalculation
     const auto bounds = this->getLocalBounds().toFloat();
-    const auto outerBounds = bounds.reduced(margin * size);
+    const auto outerBounds = bounds.reduced(margin * size * 0.5f);
     const auto innerBounds = outerBounds.reduced(borderStrength * size);
     const float outerCornerSize = cornerSize * size;
     const float innerCornerSize = std::clamp(
@@ -220,7 +220,7 @@ public:
   {
     TRACER("AbstractPanel::resized");
     const auto bounds = getLocalBounds();
-    const auto outerBounds = bounds.reduced(margin * size);
+    const auto outerBounds = bounds.reduced(margin * size * 0.5f);
     const auto innerBounds = outerBounds.reduced(borderStrength * size);
     const float outerCornerSize = cornerSize * size;
     const float innerCornerSize = std::clamp(
