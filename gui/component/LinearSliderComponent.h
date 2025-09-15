@@ -104,11 +104,9 @@ public:
     addAndMakeVisible(slider);
     addAndMakeVisible(this->infoLabel);
 
-    if (!_svgTitle)
-      addAndMakeVisible(this->titleLabel);
-
     if (_svgTitle) {
       titleIcon = dmt::icons::getIcon(_param);
+      this->titleLabel.setVisible(false);
     }
 
     this->parameter = _apvts.getParameter(_param);
@@ -158,7 +156,6 @@ public:
           infoLabelBounds.removeFromBottom(infoLabelHeight)
             .reduced(infoLabelOffset);
         this->infoLabel.setBounds(infoSliderBounds);
-        return;
       }
       case Orientation::Vertical: {
         this->titleLabel.setBounds(
@@ -172,7 +169,6 @@ public:
         sliderBounds.removeFromBottom(
           static_cast<int32_t>(infoFontSize * this->size + padding));
         slider.setBounds(sliderBounds);
-        return;
       }
     }
   }
