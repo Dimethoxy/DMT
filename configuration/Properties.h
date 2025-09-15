@@ -68,66 +68,8 @@ public:
     file.setStorageParameters(options);
     auto settings = file.getUserSettings();
 
-    // Apply overrides to the settings
-    for (const auto& [key, value] : _overwrites) {
-      if (std::holds_alternative<String>(value)) {
-        settings->setValue(key, std::get<String>(value));
-      } else if (std::holds_alternative<int>(value)) {
-        settings->setValue(key, std::get<int>(value));
-      } else if (std::holds_alternative<float>(value)) {
-        settings->setValue(key, std::get<float>(value));
-      } else if (std::holds_alternative<bool>(value)) {
-        settings->setValue(key, std::get<bool>(value));
-      } else if (std::holds_alternative<juce::Colour>(value)) {
-        settings->setValue(key, std::get<juce::Colour>(value).toString());
-      }
-    }
-
-    // Apply replacements to the settings (value-based)
-    for (const auto& [fromValue, toValue] : _replacements) {
-      auto allKeys = settings->getAllProperties().getAllKeys();
-      for (const auto& key : allKeys) {
-        const auto& currentValue = settings->getValue(key);
-
-        // Compare and replace for each supported type
-        bool match = false;
-        juce::var newValue;
-        if (std::holds_alternative<String>(fromValue)) {
-          if (currentValue == std::get<String>(fromValue))
-            match = true;
-        } else if (std::holds_alternative<int>(fromValue)) {
-          if (currentValue.getIntValue() == std::get<int>(fromValue))
-            match = true;
-        } else if (std::holds_alternative<float>(fromValue)) {
-          if (currentValue.getFloatValue() == std::get<float>(fromValue))
-            match = true;
-        } else if (std::holds_alternative<bool>(fromValue)) {
-          bool currentBool = (currentValue == "1" || currentValue == "true");
-          if (currentBool == std::get<bool>(fromValue))
-            match = true;
-        } else if (std::holds_alternative<juce::Colour>(fromValue)) {
-          if (juce::Colour::fromString(currentValue) ==
-              std::get<juce::Colour>(fromValue))
-            match = true;
-        }
-
-        if (match) {
-          // Set toValue as the new value
-          if (std::holds_alternative<String>(toValue)) {
-            newValue = std::get<String>(toValue);
-          } else if (std::holds_alternative<int>(toValue)) {
-            newValue = std::get<int>(toValue);
-          } else if (std::holds_alternative<float>(toValue)) {
-            newValue = std::get<float>(toValue);
-          } else if (std::holds_alternative<bool>(toValue)) {
-            newValue = std::get<bool>(toValue);
-          } else if (std::holds_alternative<juce::Colour>(toValue)) {
-            newValue = std::get<juce::Colour>(toValue).toString();
-          }
-          settings->setValue(key, newValue);
-        }
-      }
-    }
+    applyOverrides(settings, _overwrites);
+    applyReplacements(settings, _replacements);
 
     // Set the fallback property set by extracting it from the container
     fallbackPropertySet = dmt::Settings::container.toPropertySet();
@@ -189,6 +131,74 @@ public:
       settings->setValue(key, fallbackPropertySet.getValue(key));
     }
     settings->saveIfNeeded();
+  }
+
+protected:
+  void applyOverrides(juce::PropertySet* settings,
+                      const SettingsOverrides& _overwrites)
+  {
+    for (const auto& [key, value] : _overwrites) {
+      if (std::holds_alternative<String>(value)) {
+        settings->setValue(key, std::get<String>(value));
+      } else if (std::holds_alternative<int>(value)) {
+        settings->setValue(key, std::get<int>(value));
+      } else if (std::holds_alternative<float>(value)) {
+        settings->setValue(key, std::get<float>(value));
+      } else if (std::holds_alternative<bool>(value)) {
+        settings->setValue(key, std::get<bool>(value));
+      } else if (std::holds_alternative<juce::Colour>(value)) {
+        settings->setValue(key, std::get<juce::Colour>(value).toString());
+      }
+    }
+  }
+
+  void applyReplacements(juce::PropertySet* settings,
+                         const SettingsReplacements& _replacements)
+  {
+    for (const auto& [fromValue, toValue] : _replacements) {
+      auto allKeys = settings->getAllProperties().getAllKeys();
+      for (const auto& key : allKeys) {
+        const auto& currentValue = settings->getValue(key);
+
+        // Compare and replace for each supported type
+        bool match = false;
+        juce::var newValue;
+        if (std::holds_alternative<String>(fromValue)) {
+          if (currentValue == std::get<String>(fromValue))
+            match = true;
+        } else if (std::holds_alternative<int>(fromValue)) {
+          if (currentValue.getIntValue() == std::get<int>(fromValue))
+            match = true;
+        } else if (std::holds_alternative<float>(fromValue)) {
+          if (currentValue.getFloatValue() == std::get<float>(fromValue))
+            match = true;
+        } else if (std::holds_alternative<bool>(fromValue)) {
+          bool currentBool = (currentValue == "1" || currentValue == "true");
+          if (currentBool == std::get<bool>(fromValue))
+            match = true;
+        } else if (std::holds_alternative<juce::Colour>(fromValue)) {
+          if (juce::Colour::fromString(currentValue) ==
+              std::get<juce::Colour>(fromValue))
+            match = true;
+        }
+
+        if (match) {
+          // Set toValue as the new value
+          if (std::holds_alternative<String>(toValue)) {
+            newValue = std::get<String>(toValue);
+          } else if (std::holds_alternative<int>(toValue)) {
+            newValue = std::get<int>(toValue);
+          } else if (std::holds_alternative<float>(toValue)) {
+            newValue = std::get<float>(toValue);
+          } else if (std::holds_alternative<bool>(toValue)) {
+            newValue = std::get<bool>(toValue);
+          } else if (std::holds_alternative<juce::Colour>(toValue)) {
+            newValue = std::get<juce::Colour>(toValue).toString();
+          }
+          settings->setValue(key, newValue);
+        }
+      }
+    }
   }
 
 private:
