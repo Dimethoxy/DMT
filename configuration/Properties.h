@@ -68,14 +68,14 @@ public:
     file.setStorageParameters(options);
     auto settings = file.getUserSettings();
 
-    applyOverrides(settings, _overwrites);
-    applyReplacements(settings, _replacements);
-
-    // Set the fallback property set by extracting it from the container
+    // Build fallback property set from defaults
     fallbackPropertySet = dmt::Settings::container.toPropertySet();
+    // Apply overrides and replacements to fallback only
+    applyOverrides(&fallbackPropertySet, _overwrites);
+    applyReplacements(&fallbackPropertySet, _replacements);
     settings->setFallbackPropertySet(&fallbackPropertySet);
 
-    // Add missing keys from the fallback property set
+    // Add missing keys from the fallback property set to user settings
     bool newKeysAdded = false;
     const auto& fallbackKeys = fallbackPropertySet.getAllProperties();
     for (const auto& key : fallbackKeys.getAllKeys()) {
