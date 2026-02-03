@@ -31,10 +31,17 @@
 
 //==============================================================================
 
+// Define to 1 to exclude DisfluxDisplay from the build
+#define DMT_EXCLUDE_DISFLUX_DISPLAY 0
+
+//==============================================================================
+
 #include "dsp/data/FifoAudioBuffer.h"
 #include "gui/component/LinearSliderComponent.h"
 #include "gui/component/RotarySliderComponent.h"
+#if DMT_EXCLUDE_DISFLUX_DISPLAY == 0
 #include "gui/display/DisfluxDisplay.h"
+#endif
 #include "gui/panel/AbstractPanel.h"
 #include "utility/Settings.h"
 #include "utility/Unit.h"
@@ -61,7 +68,9 @@ template<typename SampleType>
 class DisfluxPanel : public dmt::gui::panel::AbstractPanel
 {
   using FifoAudioBuffer = dmt::dsp::data::FifoAudioBuffer<float>;
+#if DMT_EXCLUDE_DISFLUX_DISPLAY == 0
   using DisfluxDisplay = dmt::gui::display::DisfluxDisplay;
+#endif
   using LinearSlider = dmt::gui::component::LinearSliderComponent;
   using LinearSliderType = dmt::gui::widget::LinearSlider::Type;
   using LinearSliderOrientation = dmt::gui::widget::LinearSlider::Orientation;
@@ -87,7 +96,9 @@ public:
     juce::AudioProcessorValueTreeState& _apvts,
     FifoAudioBuffer& _oscilloscopeBuffer) noexcept
     : AbstractPanel("Oscilloscope", false)
+#if DMT_EXCLUDE_DISFLUX_DISPLAY == 0
     , display(_oscilloscopeBuffer, _apvts)
+#endif
     , amountSlider(_apvts,
                    juce::String("Amount"),
                    juce::String("DisfluxAmount"),
@@ -117,8 +128,9 @@ public:
   {
     TRACER("DisfluxPanel::DisfluxPanel");
     setLayout({ 22, 60 });
-
+#if DMT_EXCLUDE_DISFLUX_DISPLAY == 0
     addAndMakeVisible(display);
+#endif
     addAndMakeVisible(amountSlider);
     addAndMakeVisible(spreadSlider);
     addAndMakeVisible(fequencySlider);
@@ -147,7 +159,9 @@ public:
     displayBounds.removeFromBottom(displayVerticalPadding * size);
     displayBounds.removeFromLeft(displayHorizontalPadding * size);
     displayBounds.removeFromRight(displayHorizontalPadding * size);
+#if DMT_EXCLUDE_DISFLUX_DISPLAY == 0
     display.setBounds(displayBounds);
+#endif
 
     const int upperRotarySliderRow = 17;
     const int lowerRotarySliderRow = 43;
@@ -186,7 +200,9 @@ public:
 private:
   //==============================================================================
   // Members initialized in the initializer list
+#if DMT_EXCLUDE_DISFLUX_DISPLAY == 0
   DisfluxDisplay display;
+#endif
   RotarySlider amountSlider;
   RotarySlider spreadSlider;
   LinearSlider fequencySlider;
