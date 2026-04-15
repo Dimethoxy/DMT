@@ -1,145 +1,19 @@
-/*
-  ==============================================================================
-
-        This file contains the basic framework code for a JUCE plugin editor.
-
-  ==============================================================================
-*/
-
 #include "PluginEditor.h"
 #include "PluginProcessor.h"
 
 //==============================================================================
-NeutrinoAudioProcessorEditor::NeutrinoAudioProcessorEditor(
-  NeutrinoAudioProcessor& p)
-  : AudioProcessorEditor(&p)
-  , audioProcessor(p)
-  , voicingPanel(p.apvts)
-  , gainPanel(p.apvts)
-  , pitchPanel(p.apvts)
-  , distortionPanel(p.apvts)
-  , sendPanelA(p.apvts, juce::String("A"))
-  , sendPanelB(p.apvts, juce::String("B"))
-  , sendPanelC(p.apvts, juce::String("C"))
-  , keyboardComponent(p.keyboardState,
-                      juce::MidiKeyboardComponent::horizontalKeyboard)
+PluginEditor::PluginEditor(PluginProcessor& p)
+  : dmt::app::AbstractPluginEditor(
+      p,
+      "Neutrino",
+      500,
+      270,
+      [&p](dmt::gui::window::Layout& layout) {
+        layout.addPanel<dmt::gui::panel::NeutrinoPanel<float>>(
+          0, 0, 1, 1, p.apvts, p.oscilloscopeBuffer);
+      })
 {
-  openGLContext.setComponentPaintingEnabled(true);
-  openGLContext.setContinuousRepainting(false);
-  openGLContext.attachTo(*getTopLevelComponent());
-
-  using Settings = dmt::AppSettings;
-  using Layout = dmt::AppSettings::Layout;
-
-  addAndMakeVisible(oscillatorPanel);
-  addAndMakeVisible(voicingPanel);
-
-  addAndMakeVisible(gainPanel);
-  addAndMakeVisible(pitchPanel);
-  addAndMakeVisible(distortionPanel);
-
-  addAndMakeVisible(sendPanelA);
-  addAndMakeVisible(sendPanelB);
-  addAndMakeVisible(sendPanelC);
-
-  addAndMakeVisible(keyboardComponent);
-
-  float ratio = Layout::getWidth() / Layout::getHeight();
-  int minWidth = 600;
-  int maxWidth = 4000;
-  int startWidth = Layout::getWidth();
-  setResizeLimits(minWidth, minWidth / ratio, maxWidth, maxWidth / ratio);
-  getConstrainer()->setFixedAspectRatio(ratio);
-  setSize(startWidth, startWidth / ratio);
-  setResizable(true, true);
-}
-
-NeutrinoAudioProcessorEditor::~NeutrinoAudioProcessorEditor()
-{
-  openGLContext.detach();
 }
 
 //==============================================================================
-void
-NeutrinoAudioProcessorEditor::paint(juce::Graphics& g)
-{
-  g.fillAll(dmt::AppSettings::Colours::background);
-}
-
-void
-NeutrinoAudioProcessorEditor::resized()
-{
-  using Settings = dmt::AppSettings;
-  using Layout = dmt::AppSettings::Layout;
-  float& size = Layout::size;
-
-  const float rawMargin = Settings::Layout::margin;
-  const auto bounds = getLocalBounds();
-  const float width = (float)bounds.getWidth();
-  const float height = (float)bounds.getHeight();
-  size = height / Layout::getHeight();
-  const float margin = rawMargin * size;
-
-  const float rawLeftWidth = Settings::Layout::leftWidth;
-  const float leftWidth = rawLeftWidth * size + 2.0f * margin;
-  const float rawCenterWidth = Settings::Layout::centerWidth;
-  const float centerWidth = rawCenterWidth * size + 2.0f * margin;
-  const float rawRightWidth = Settings::Layout::rightWidth;
-  const float rightWidth = rawRightWidth * size + 2.0f * margin;
-
-  const float rawHeaderHeight = Settings::Layout::headerHeight;
-  const float headerHeight = rawHeaderHeight * size + 2.0f * margin;
-  const float rawTabHeight = Settings::Layout::tabHeight;
-  const float tabHeight = rawTabHeight * size + 2.0f * margin;
-  const float rawRowHeight = Settings::Layout::rowHeight;
-  const float rowHeight = rawRowHeight * size + 2.0f * margin;
-  const float rawKeyboardHeight = Settings::Layout::keyboardHeight;
-
-  auto innerBounds = bounds.reduced((int)margin);
-  // const auto headerBounds = innerBounds.removeFromTop((int)headerHeight);
-  // const auto tabBounds = innerBounds.removeFromTop((int)tabHeight);
-  const auto topBounds = innerBounds.removeFromTop((int)rowHeight);
-  const auto midBounds = innerBounds.removeFromTop((int)rowHeight);
-  const auto bottomBounds = innerBounds.removeFromTop((int)rowHeight);
-
-  const int keyboardWidth = (int)width;
-  const int keyboardX = 0;
-  const int keyboardHeight = (int)(rawKeyboardHeight * size);
-  const int keyboardY = (int)height - keyboardHeight;
-  const auto keyboardBounds =
-    juce::Rectangle<int>(keyboardX, keyboardY, keyboardWidth, keyboardHeight);
-
-  innerBounds = bounds.reduced((int)margin);
-  const auto leftBounds = innerBounds.removeFromLeft((int)leftWidth);
-  const auto centerBounds = innerBounds.removeFromLeft((int)centerWidth);
-  const auto rightBounds = innerBounds.removeFromLeft((int)rightWidth);
-
-  oscillatorPanel.setBounds(leftBounds.getX(),
-                            topBounds.getY(),
-                            leftBounds.getWidth(),
-                            2.0f * rowHeight);
-  voicingPanel.setBounds(leftBounds.getX(),
-                         bottomBounds.getY(),
-                         leftBounds.getWidth(),
-                         bottomBounds.getHeight());
-  gainPanel.setBounds(centerBounds.getX(),
-                      topBounds.getY(),
-                      centerBounds.getWidth(),
-                      topBounds.getHeight());
-  pitchPanel.setBounds(centerBounds.getX(),
-                       midBounds.getY(),
-                       centerBounds.getWidth(),
-                       midBounds.getHeight());
-  distortionPanel.setBounds(centerBounds.getX(),
-                            bottomBounds.getY(),
-                            centerBounds.getWidth(),
-                            bottomBounds.getHeight());
-  sendPanelA.setBounds(
-    rightBounds.getX(), topBounds.getY(), rightBounds.getWidth(), rowHeight);
-  sendPanelB.setBounds(
-    rightBounds.getX(), midBounds.getY(), rightBounds.getWidth(), rowHeight);
-  sendPanelC.setBounds(
-    rightBounds.getX(), bottomBounds.getY(), rightBounds.getWidth(), rowHeight);
-  keyboardComponent.setBounds(keyboardBounds);
-}
-//==============================================================================
+PluginEditor::~PluginEditor() {}
