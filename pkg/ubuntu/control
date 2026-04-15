@@ -1,8 +1,0 @@
-Package: dimethoxy-${PACKAGE_NAME}
-Version: ${PACKAGE_VERSION}-1
-Architecture: amd64
-Maintainer: David Hess (Lunix) <davidhess336@gmx.de>
-Depends: curl
-Priority: optional
-Section: sound
-Description: Transient Smearing Effect for VST3, CLAP and LV2 compatible hosts
