@@ -30,6 +30,8 @@
 
 //==============================================================================
 
+#include "dsp/synth/NeutrinoSynthVoice.h"
+#include "dsp/synth/SynthSound.h"
 #include <JuceHeader.h>
 #include <utility/Settings.h>
 
@@ -50,11 +52,15 @@ class alignas(64) NeutrinoProcessor
   constexpr static float MAX_FREQUENCY = 20000.0f;
 
   using AudioBuffer = juce::AudioBuffer<float>;
+  using SynthVoice = dmt::dsp::synth::NeutrinoSynthVoice;
+  using SynthSound = dmt::dsp::synth::SynthSound;
 
 public:
   NeutrinoProcessor(juce::AudioProcessorValueTreeState& _apvts)
     : apvts(_apvts)
   {
+    synth.addSound(new SynthSound());
+    synth.addVoice(new SynthVoice(apvts));
   }
 
   //==============================================================================
@@ -63,9 +69,17 @@ public:
    *
    * @param _newSampleRate The sample rate.
    */
-  inline void prepare(const double _newSampleRate) noexcept
+  inline void prepare(const double _newSampleRate,
+                      const int _samplesPerBlock) noexcept
   {
     sampleRate = static_cast<float>(_newSampleRate);
+
+    synth.setCurrentPlaybackSampleRate(sampleRate);
+
+    for (int i = 0; i < synth.getNumVoices(); i++) {
+      auto voice = dynamic_cast<SynthVoice*>(synth.getVoice(i));
+      voice->prepareToPlay(sampleRate, _samplesPerBlock, 2);
+    }
   }
 
   inline void processBlock(AudioBuffer& _buffer) noexcept
@@ -74,18 +88,15 @@ public:
       return;
     }
 
-    // Load parameters
-    // exampleParameter = apvts.getRawParameterValue("example")->load();
+    synth.renderNextBlock(
+      _buffer, juce::MidiBuffer(), 0, _buffer.getNumSamples());
   }
 
 private:
   //==============================================================================
+  juce::Synthesiser synth;
   juce::AudioProcessorValueTreeState& apvts;
   float sampleRate = -1.0f;
-
-  float exampleParameter = 0.0f;
-
-  juce::SmoothedValue<float, juce::ValueSmoothingTypes::Linear> smoothedExample;
 };
 
 //==============================================================================
