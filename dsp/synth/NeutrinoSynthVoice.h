@@ -192,8 +192,10 @@ public:
       // rightChannel[sample] = gainedSample;
 
       // Random sample
-      float randomSample =
-        static_cast<float>(std::rand()) / static_cast<float>(RAND_MAX);
+      juce::Random random;
+      const float randomSample = random.nextFloat() * 2.0f - 1;
+      leftChannel[sample] = randomSample;
+      rightChannel[sample] = randomSample;
     }
   }
 
