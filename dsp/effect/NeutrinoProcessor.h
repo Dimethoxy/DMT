@@ -82,14 +82,14 @@ public:
     }
   }
 
-  inline void processBlock(AudioBuffer& _buffer) noexcept
+  inline void processBlock(AudioBuffer& _buffer,
+                           juce::MidiBuffer& _midiMessages) noexcept
   {
     if (sampleRate <= 0.0f) {
       return;
     }
 
-    synth.renderNextBlock(
-      _buffer, juce::MidiBuffer(), 0, _buffer.getNumSamples());
+    synth.renderNextBlock(_buffer, _midiMessages, 0, _buffer.getNumSamples());
   }
 
 private:

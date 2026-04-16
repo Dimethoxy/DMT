@@ -148,6 +148,7 @@ public:
   void stopNote(float /*_velocity*/, bool /*_allowTailOff*/) noexcept override
   {
     TRACER("NeutrinoSynthVoice::stopNote");
+    clearCurrentNote();
   }
 
   /**
