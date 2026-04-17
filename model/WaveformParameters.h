@@ -1,7 +1,7 @@
 #pragma once
 
 #include <JuceHeader.h>
-#include "../dsp/synth/AnalogWaveform.h"
+#include "../dsp/synth/DigitalWaveform.h"
 
 //==============================================================================
 namespace dmt {
@@ -22,7 +22,7 @@ waveformParameterGroup(juce::String parentUid)
     "|",                                            // separator
     std::make_unique<ParameterChoice>(uid + "Type", // parameter ID
                                       "Type",       // parameter name
-                                      dmt::dsp::synth::AnalogWaveform::waveformNames, // choices
+                                      dmt::dsp::synth::DigitalWaveform::waveformNames, // choices
                                       2), // defaultIndex
     std::make_unique<ParameterFloat>(uid + "Bend",
                                      "Bend",

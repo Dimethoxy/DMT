@@ -231,28 +231,28 @@ protected:
   void updateEnvelopeParameters() noexcept
   {
     TRACER("SynthVoice::updateEnvelopeParameters");
-    // dmt::dsp::envelope::AhdEnvelope::Parameters gainEnvParameters;
-    // gainEnvParameters.attack =
-    //   apvts.getRawParameterValue("osc1GainEnvAttack")->load();
-    // gainEnvParameters.hold =
-    //   apvts.getRawParameterValue("osc1GainEnvHold")->load();
-    // gainEnvParameters.decay =
-    //   apvts.getRawParameterValue("osc1GainEnvDecay")->load();
-    // gainEnvParameters.decaySkew =
-    //   apvts.getRawParameterValue("osc1GainEnvSkew")->load();
-    // gainEnvParameters.attackSkew = 0;
-    // gainEnvelope.setParameters(gainEnvParameters);
+    dmt::dsp::envelope::AhdEnvelope::Parameters gainEnvParameters;
+    gainEnvParameters.attack =
+      apvts.getRawParameterValue("NeutrinoGainEnvAttack")->load();
+    gainEnvParameters.hold =
+      apvts.getRawParameterValue("NeutrinoGainEnvHold")->load();
+    gainEnvParameters.decay =
+      apvts.getRawParameterValue("NeutrinoGainEnvDecay")->load();
+    gainEnvParameters.decaySkew =
+      apvts.getRawParameterValue("NeutrinoGainEnvSkew")->load();
+    gainEnvParameters.attackSkew = 0;
+    gainEnvelope.setParameters(gainEnvParameters);
 
-    // dmt::dsp::envelope::AhdEnvelope::Parameters pitchEnvParameters;
-    // pitchEnvParameters.attack = 0;
-    // pitchEnvParameters.hold =
-    //   apvts.getRawParameterValue("osc1PitchEnvHold")->load();
-    // pitchEnvParameters.decay =
-    //   apvts.getRawParameterValue("osc1PitchEnvDecay")->load();
-    // pitchEnvParameters.decaySkew =
-    //   apvts.getRawParameterValue("osc1PitchEnvSkew")->load();
-    // pitchEnvParameters.attackSkew = 0;
-    // pitchEnvelope.setParameters(pitchEnvParameters);
+    dmt::dsp::envelope::AhdEnvelope::Parameters pitchEnvParameters;
+    pitchEnvParameters.attack = 0;
+    pitchEnvParameters.hold =
+      apvts.getRawParameterValue("NeutrinoPitchEnvHold")->load();
+    pitchEnvParameters.decay =
+      apvts.getRawParameterValue("NeutrinoPitchEnvDecay")->load();
+    pitchEnvParameters.decaySkew =
+      apvts.getRawParameterValue("NeutrinoPitchEnvSkew")->load();
+    pitchEnvParameters.attackSkew = 0;
+    pitchEnvelope.setParameters(pitchEnvParameters);
   }
 
   //==============================================================================
@@ -263,7 +263,7 @@ protected:
   void updateOscillatorParameters() noexcept
   {
     TRACER("SynthVoice::updateOscillatorParameters");
-    // osc.setWaveformType(static_cast<dmt::dsp::synth::AnalogWaveform::Type>(
+    // osc.setWaveformType(static_cast<dmt::dsp::synth::DigitalWaveform::Type>(
     // apvts.getRawParameterValue("osc1WaveformType")->load()));
     // osc.setDrive(apvts.getRawParameterValue("osc1DistortionType")->load());
     /// osc.setBias(apvts.getRawParameterValue("osc1DistortionSymmetry")->load());
