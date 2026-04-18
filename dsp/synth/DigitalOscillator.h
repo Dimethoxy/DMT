@@ -119,13 +119,19 @@ public:
   inline void setParameters(const juce::AudioProcessorValueTreeState& apvts,
                             String prefix)
   {
-    // Extract raw parameter values from the AudioProcessorValueTreeState
-    const auto type = static_cast<DigitalWaveform::Type>(
-      apvts.getRawParameterValue(prefix + "Type")->load());
-    const auto bend = apvts.getRawParameterValue(prefix + "Bend")->load();
-    const auto pwm = apvts.getRawParameterValue(prefix + "Pwm")->load();
-    const auto sync = apvts.getRawParameterValue(prefix + "Sync")->load();
-    const auto drive = apvts.getRawParameterValue(prefix + "Drive")->load();
+    auto type = params.type;
+    float bend = params.getBend();
+    float pwm = params.getPwm();
+    float sync = params.getSync();
+    float drive = params.drive;
+
+    String base = prefix + "DigitalOscillator";
+    type = static_cast<DigitalWaveform::Type>(
+      apvts.getRawParameterValue(base + "Type")->load());
+    bend = apvts.getRawParameterValue(base + "Bend")->load();
+    pwm = apvts.getRawParameterValue(base + "Pwm")->load();
+    sync = apvts.getRawParameterValue(base + "Sync")->load();
+    drive = apvts.getRawParameterValue(base + "Drive")->load();
 
     // These don't need mapping so we can set them directly
     params.type = type;
@@ -263,9 +269,6 @@ public:
 
     _sample = _sample + params.bias;
   }
-
-protected:
-  //==============================================================================
 
 private:
   DigitalWaveform waveform;

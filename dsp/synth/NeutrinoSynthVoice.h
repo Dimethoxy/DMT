@@ -173,13 +173,10 @@ public:
     updateEnvelopeParameters();
     updateOscillatorParameters();
 
-    const float oscGain =
-      apvts.getRawParameterValue("NeutrinoOscillatorGain")->load();
-    const int oscOctave = apvts.getRawParameterValue("NeutrinoOctave")->load();
-    const int oscSemitone =
-      apvts.getRawParameterValue("NeutrinoSemitone")->load();
-    const float oscModDepth =
-      apvts.getRawParameterValue("NeutrinoModDepth")->load();
+    const float oscGain = 0.0f;
+    const int oscOctave = 0;
+    const int oscSemitone = 0;
+    const float oscModDepth = gainEnvelope.getParameters().depth;
 
     const auto endSample = _numSamples + _startSample;
     auto* leftChannel = _outputBuffer.getWritePointer(0);

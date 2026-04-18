@@ -53,8 +53,8 @@ public:
     float attack = 0.015f;
     float hold = 0.08f;
     float decay = 0.5f;
-    float attackSkew = 0;
-    float decaySkew = 10;
+    float attackBend = 0;
+    float decayBend = 10;
     float depth = 1.0f;
   };
 
@@ -71,14 +71,13 @@ public:
   inline void setParameters(const juce::AudioProcessorValueTreeState& apvts,
                             juce::String prefix) noexcept
   {
-    params.attack = apvts.getRawParameterValue(prefix + "EnvAttack")->load();
-    params.hold = apvts.getRawParameterValue(prefix + "EnvHold")->load();
-    params.decay = apvts.getRawParameterValue(prefix + "EnvDecay")->load();
-    params.attackSkew =
-      apvts.getRawParameterValue(prefix + "EnvAttackSkew")->load();
-    params.decaySkew =
-      apvts.getRawParameterValue(prefix + "EnvDecaySkew")->load();
-    params.depth = apvts.getRawParameterValue(prefix + "EnvDepth")->load();
+    juce::String base = prefix + "Env";
+    params.attack = apvts.getRawParameterValue(base + "Attack")->load();
+    params.hold = apvts.getRawParameterValue(base + "Hold")->load();
+    params.decay = apvts.getRawParameterValue(base + "Decay")->load();
+    params.attackBend = apvts.getRawParameterValue(base + "AttackBend")->load();
+    params.decayBend = apvts.getRawParameterValue(base + "DecayBend")->load();
+    params.depth = apvts.getRawParameterValue(base + "Depth")->load();
   }
 
   /**
@@ -89,6 +88,13 @@ public:
   {
     params = _newParams;
   }
+
+  /**
+   * @brief Get the Parameters object
+   *
+   * @return The current Parameters object
+   */
+  inline Parameters getParameters() const noexcept { return params; }
 
   /**
    * @brief Set the sample rate.
@@ -146,8 +152,8 @@ private:
       case State::Attack: {
         const float normalizedPosition =
           static_cast<float>(sampleIndex) / sampleRate;
-        const float skew = getSkew(State::Attack);
-        return std::pow(normalizedPosition / params.attack, skew);
+        const float bend = getBend(State::Attack);
+        return std::pow(normalizedPosition / params.attack, bend);
       }
       case State::Hold:
         return one;
@@ -155,8 +161,8 @@ private:
         const float decayStart = static_cast<float>(getDecayStart());
         const float normalizedPosition =
           (static_cast<float>(sampleIndex) - decayStart) / sampleRate;
-        const float skew = getSkew(State::Decay);
-        return one - std::pow(normalizedPosition / params.decay, skew);
+        const float bend = getBend(State::Decay);
+        return one - std::pow(normalizedPosition / params.decay, bend);
       }
       default:
         return zero;
@@ -164,17 +170,17 @@ private:
   }
 
   /**
-   * @brief Get the skew value for the given state.
+   * @brief Get the bend value for the given state.
    * @param _state The current state of the envelope.
-   * @return The skew value.
+   * @return The bend value.
    */
-  [[nodiscard]] inline float getSkew(const State _state) const noexcept
+  [[nodiscard]] inline float getBend(const State _state) const noexcept
   {
     switch (_state) {
       case State::Attack:
-        return dmt::math::linearToExponent(params.attackSkew);
+        return dmt::math::linearToExponent(params.attackBend);
       case State::Decay:
-        return dmt::math::linearToExponent(-params.decaySkew);
+        return dmt::math::linearToExponent(-params.decayBend);
       default:
         return 1.0f;
     }
