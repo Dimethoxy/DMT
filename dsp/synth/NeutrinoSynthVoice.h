@@ -238,7 +238,7 @@ protected:
   void updateOscillatorParameters() noexcept
   {
     TRACER("SynthVoice::updateOscillatorParameters");
-    osc.setParameters(apvts);
+    osc.setParameters(apvts, "Neutrino");
   }
 
   //==============================================================================

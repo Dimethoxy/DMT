@@ -19,7 +19,6 @@ digitalOscillatorParameterGroup(juce::String parentUid)
   using DigitalWaveform = dmt::dsp::synth::DigitalWaveform;
 
   String uid = parentUid + "DigitalOscillator";
-  String uid = parentUid + "Waveform";
 
   return juce::AudioProcessorParameterGroup(
     uid,                                            // group ID

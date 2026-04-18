@@ -274,6 +274,7 @@ private:
   float sampleRate = -1.0f;
   float phase = 0.0f;
   //==============================================================================
+};
 } // namespace synth
 } // namespace dsp
 } // namespace dmt
