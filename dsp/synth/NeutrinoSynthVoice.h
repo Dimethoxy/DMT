@@ -30,6 +30,7 @@
 //==============================================================================
 
 #include "dsp/envelope/AdhEnvelope.h"
+#include "dsp/synth/DigitalOscillator.h"
 #include <JuceHeader.h>
 
 //==============================================================================
@@ -42,6 +43,10 @@ namespace synth {
 
 class alignas(64) NeutrinoSynthVoice : public juce::SynthesiserVoice
 {
+  using DigitalOscillator = dmt::dsp::synth::DigitalOscillator;
+  using DigitalWaveform = dmt::dsp::synth::DigitalWaveform;
+  using AhdEnvelope = dmt::dsp::envelope::AhdEnvelope;
+
 public:
   //==============================================================================
   /**
@@ -313,9 +318,9 @@ protected:
 
 private:
   juce::AudioProcessorValueTreeState& apvts;
-  // dmt::dsp::synth::AnalogOscillator osc;
-  dmt::dsp::envelope::AhdEnvelope gainEnvelope;
-  dmt::dsp::envelope::AhdEnvelope pitchEnvelope;
+  DigitalOscillator osc;
+  AhdEnvelope gainEnvelope;
+  AhdEnvelope pitchEnvelope;
   int note = 0;
   bool isPrepared = false;
   std::vector<std::function<void()>> onNoteReceivers;

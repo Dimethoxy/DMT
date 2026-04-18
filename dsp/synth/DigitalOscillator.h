@@ -29,7 +29,7 @@
 
 //==============================================================================
 
-#include "AnalogWaveform.h"
+#include "DigitalWaveform.h"
 #include <JuceHeader.h>
 
 //==============================================================================
@@ -51,6 +51,8 @@ namespace synth {
 class alignas(64) DigitalOscillator
 {
   using Math = juce::dsp::FastMathApproximations;
+  using DigitalWaveform = dmt::dsp::synth::DigitalWaveform;
+
   static constexpr float twoPi = juce::MathConstants<float>::twoPi;
   static constexpr float pi = juce::MathConstants<float>::pi;
 
@@ -63,10 +65,6 @@ public:
   inline void setSampleRate(const float _newSampleRate) noexcept
   {
     TRACER("DigitalOscillator::setSampleRate");
-    float rangeEnd =
-      std::nextafter(392000.0f, std::numeric_limits<float>::max());
-    const juce::Range<float> validRange(20.0f, rangeEnd);
-    jassert(validRange.contains(_newSampleRate));
     sampleRate = _newSampleRate;
   }
 
@@ -111,7 +109,7 @@ public:
    * @param _type The new waveform type.
    */
   inline void setWaveformType(
-    const dmt::dsp::synth::AnalogWaveform::Type _type) noexcept
+    const dmt::dsp::synth::DigitalWaveform::Type _type) noexcept
   {
     TRACER("DigitalOscillator::setWaveformType");
     waveform.type = _type;
@@ -198,18 +196,7 @@ public:
     syncModifier = targetRange.convertFrom0to1(normalisedValue);
   }
 
-private:
-  dmt::dsp::synth::AnalogWaveform waveform;
-  float frequency = 50.0f;
-  float sampleRate = -1.0f;
-  float phase = 0.0f;
-
-  float drive = 0.0f;
-  float bias = 0.0f;
-  float pwmModifier = 1.0f;
-  float syncModifier = 1.0f;
-  float posityCycleRatio = 0.5f;
-
+protected:
   //==============================================================================
   /**
    * @brief Advances the phase of the oscillator.
@@ -289,6 +276,18 @@ private:
 
     _sample = _sample + bias;
   }
+
+private:
+  DigitalWaveform waveform;
+  float frequency = 50.0f;
+  float sampleRate = -1.0f;
+  float phase = 0.0f;
+
+  float drive = 0.0f;
+  float bias = 0.0f;
+  float pwmModifier = 1.0f;
+  float syncModifier = 1.0f;
+  float posityCycleRatio = 0.5f;
 };
 
 //==============================================================================
