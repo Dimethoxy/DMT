@@ -51,15 +51,15 @@ envelopeParameterGroup(juce::String parentUid,
                                      defaultValues[3]),        // defaultValue
     std::make_unique<ParameterFloat>(uid + "AttackBend",       // parameter ID
                                      "Attack Bend",            // parameter name
-                                     NormalisableRange(0.0f,   // rangeStart
-                                                       16.0f,  // rangeEnd
+                                     NormalisableRange(-20.0f, // rangeStart
+                                                       20.0f,  // rangeEnd
                                                        0.1f,   // intervalValue
                                                        1.0f),  // skewFactor
                                      defaultValues[4]),        // defaultValue
     std::make_unique<ParameterFloat>(uid + "DecayBend",        // parameter ID
                                      "Decay Bend",             // parameter name
-                                     NormalisableRange(0.0f,   // rangeStart
-                                                       16.0f,  // rangeEnd
+                                     NormalisableRange(-20.0f, // rangeStart
+                                                       20.0f,  // rangeEnd
                                                        0.1f,   // intervalValue
                                                        1.0f),  // skewFactor
                                      defaultValues[5])         // defaultValue

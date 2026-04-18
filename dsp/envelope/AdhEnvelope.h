@@ -54,7 +54,7 @@ public:
     float hold = 0.08f;
     float decay = 0.5f;
     float attackBend = 0;
-    float decayBend = 10;
+    float decayBend = 0;
     float depth = 1.0f;
   };
 
@@ -152,8 +152,8 @@ private:
       case State::Attack: {
         const float normalizedPosition =
           static_cast<float>(sampleIndex) / sampleRate;
-        const float bend = getBend(State::Attack);
-        return std::pow(normalizedPosition / params.attack, bend);
+        const float phaseProgress = normalizedPosition / params.attack;
+        return applyAtanBend(phaseProgress, params.attackBend);
       }
       case State::Hold:
         return one;
@@ -161,8 +161,8 @@ private:
         const float decayStart = static_cast<float>(getDecayStart());
         const float normalizedPosition =
           (static_cast<float>(sampleIndex) - decayStart) / sampleRate;
-        const float bend = getBend(State::Decay);
-        return one - std::pow(normalizedPosition / params.decay, bend);
+        const float phaseProgress = normalizedPosition / params.decay;
+        return one - applyAtanBend(phaseProgress, params.decayBend);
       }
       default:
         return zero;
@@ -170,20 +170,28 @@ private:
   }
 
   /**
-   * @brief Get the bend value for the given state.
-   * @param _state The current state of the envelope.
-   * @return The bend value.
+   * @brief Apply atan-based bend to normalized phase in range [0, 1].
    */
-  [[nodiscard]] inline float getBend(const State _state) const noexcept
+  [[nodiscard]] static inline float applyAtanBend(float normalizedPhase,
+                                                  float bend) noexcept
   {
-    switch (_state) {
-      case State::Attack:
-        return dmt::math::linearToExponent(params.attackBend);
-      case State::Decay:
-        return dmt::math::linearToExponent(-params.decayBend);
-      default:
-        return 1.0f;
-    }
+    using juce::jlimit;
+    using std::atan, std::pow, std::abs;
+
+    const float k = pow(0.5f * abs(bend), 2.0f);
+    const float x = jlimit(0.0f, 1.0f, normalizedPhase);
+    const float normalizer = atan(k);
+
+    // No bend
+    if (k <= 0.01f) [[unlikely]]
+      return x;
+
+    // Positive bend
+    if (bend > 0.0f)
+      return atan(k * x) / normalizer;
+
+    // Negative bend
+    return 1.0f - (atan(k * (1.0f - x)) / normalizer);
   }
 
   /**
