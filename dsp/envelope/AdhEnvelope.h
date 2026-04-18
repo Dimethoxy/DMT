@@ -53,9 +53,9 @@ public:
     float attack = 0.015f;
     float hold = 0.08f;
     float decay = 0.5f;
-
     float attackSkew = 0;
     float decaySkew = 10;
+    float depth = 1.0f;
   };
 
   enum class State
@@ -67,6 +67,19 @@ public:
   };
 
   constexpr AhdEnvelope() noexcept = default;
+
+  inline void setParameters(const juce::AudioProcessorValueTreeState& apvts,
+                            juce::String prefix) noexcept
+  {
+    params.attack = apvts.getRawParameterValue(prefix + "EnvAttack")->load();
+    params.hold = apvts.getRawParameterValue(prefix + "EnvHold")->load();
+    params.decay = apvts.getRawParameterValue(prefix + "EnvDecay")->load();
+    params.attackSkew =
+      apvts.getRawParameterValue(prefix + "EnvAttackSkew")->load();
+    params.decaySkew =
+      apvts.getRawParameterValue(prefix + "EnvDecaySkew")->load();
+    params.depth = apvts.getRawParameterValue(prefix + "EnvDepth")->load();
+  }
 
   /**
    * @brief Set the envelope parameters.

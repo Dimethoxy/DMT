@@ -29,7 +29,7 @@
 
 //==============================================================================
 
-#include "DigitalWaveform.h"
+#include "dsp/synth/DigitalWaveform.h"
 #include <JuceHeader.h>
 
 //==============================================================================
@@ -37,7 +37,6 @@
 namespace dmt {
 namespace dsp {
 namespace synth {
-
 //==============================================================================
 
 /**
@@ -51,12 +50,93 @@ namespace synth {
 class alignas(64) DigitalOscillator
 {
   using Math = juce::dsp::FastMathApproximations;
+  using String = juce::String;
   using DigitalWaveform = dmt::dsp::synth::DigitalWaveform;
 
   static constexpr float twoPi = juce::MathConstants<float>::twoPi;
   static constexpr float pi = juce::MathConstants<float>::pi;
 
 public:
+  struct Parameters
+  {
+  public:
+    DigitalWaveform::Type type = DigitalWaveform::Type::Sine;
+    float bias = 0.0f;
+    float drive = 0.0f;
+
+  private:
+    float sync = 0.0f;
+    float bend = 0.0f;
+    float pwm = 4.0f;
+
+  public:
+    //==============================================================================
+    inline float getBend() const noexcept { return bend; }
+    inline void setBend(const float _newBend) noexcept
+    {
+      TRACER("DigitalOscillator::setBend");
+      float rangeEnd =
+        std::nextafter(100.0f, std::numeric_limits<float>::max());
+      const juce::NormalisableRange<float> sourceRange(-100.0f, rangeEnd);
+      jassert(sourceRange.getRange().contains(_newBend));
+      const auto normalisedValue = sourceRange.convertTo0to1(_newBend);
+      const juce::NormalisableRange<float> targetRange(0.1f, 0.9f);
+      bend = targetRange.convertFrom0to1(normalisedValue);
+    }
+
+    //==============================================================================
+    inline float getPwm() const noexcept { return pwm; }
+    inline void setPwm(const float _newPwm) noexcept
+    {
+      TRACER("DigitalOscillator::setPwm");
+      float rangeEnd =
+        std::nextafter(100.0f, std::numeric_limits<float>::max());
+      const juce::NormalisableRange<float> sourceRange(0.0f, rangeEnd);
+      jassert(sourceRange.getRange().contains(_newPwm));
+      const auto normalisedValue = sourceRange.convertTo0to1(_newPwm);
+      const juce::NormalisableRange<float> targetRange(1.0f, 5.0f);
+      pwm = targetRange.convertFrom0to1(normalisedValue);
+    }
+
+    //==============================================================================
+    inline float getSync() const noexcept { return sync; }
+    inline void setSync(const float _newSync) noexcept
+    {
+      TRACER("DigitalOscillator::setSync");
+      float rangeEnd =
+        std::nextafter(100.0f, std::numeric_limits<float>::max());
+      const juce::NormalisableRange<float> sourceRange(0.0f, rangeEnd);
+      jassert(sourceRange.getRange().contains(_newSync));
+      const auto normalisedValue = sourceRange.convertTo0to1(_newSync);
+      const juce::NormalisableRange<float> targetRange(1.0f, 5.0f);
+      sync = targetRange.convertFrom0to1(normalisedValue);
+    }
+  };
+
+  //==============================================================================
+  // Oscillator
+public:
+  inline void setParameters(const juce::AudioProcessorValueTreeState& apvts,
+                            String prefix)
+  {
+    // Extract raw parameter values from the AudioProcessorValueTreeState
+    const auto type = static_cast<DigitalWaveform::Type>(
+      apvts.getRawParameterValue(prefix + "Type")->load());
+    const auto bend = apvts.getRawParameterValue(prefix + "Bend")->load();
+    const auto pwm = apvts.getRawParameterValue(prefix + "Pwm")->load();
+    const auto sync = apvts.getRawParameterValue(prefix + "Sync")->load();
+    const auto drive = apvts.getRawParameterValue(prefix + "Drive")->load();
+
+    // These don't need mapping so we can set them directly
+    params.type = type;
+    params.drive = drive;
+
+    // These need mapping so we use setters to do that
+    params.setBend(bend);
+    params.setPwm(pwm);
+    params.setSync(sync);
+  }
+
   //==============================================================================
   /**
    * @brief Sets the sample rate for the oscillator.
@@ -80,11 +160,11 @@ public:
       return 0.0f;
 
     advancePhase();
-
-    auto syncedPhase = getSyncedPhase(phase * pwmModifier);
+    auto pwm = params.getPwm();
+    auto syncedPhase = getSyncedPhase(phase * pwm);
     auto bendedPhase = getBendedPhase(syncedPhase);
 
-    if (phase >= twoPi / pwmModifier)
+    if (phase >= twoPi / pwm)
       return 0.0f;
 
     float sample = waveform.getSample(bendedPhase);
@@ -103,100 +183,6 @@ public:
     frequency = _newFrequency;
   }
 
-  //==============================================================================
-  /**
-   * @brief Sets the waveform type of the oscillator.
-   * @param _type The new waveform type.
-   */
-  inline void setWaveformType(
-    const dmt::dsp::synth::DigitalWaveform::Type _type) noexcept
-  {
-    TRACER("DigitalOscillator::setWaveformType");
-    waveform.type = _type;
-  }
-
-  //==============================================================================
-  /**
-   * @brief Sets the drive level for waveform distortion.
-   * @param _newDrive The new drive level.
-   */
-  inline void setDrive(const float _newDrive) noexcept
-  {
-    TRACER("DigitalOscillator::setDrive");
-    drive = _newDrive;
-  }
-
-  //==============================================================================
-  /**
-   * @brief Sets the bias level for waveform distortion.
-   * @param _newBias The new bias level.
-   */
-  inline void setBias(const float _newBias) noexcept
-  {
-    TRACER("DigitalOscillator::setBias");
-    bias = _newBias;
-  }
-
-  //==============================================================================
-  /**
-   * @brief Sets the initial phase of the oscillator.
-   * @param _newPhase The new phase value.
-   */
-  inline void setPhase(const float _newPhase) noexcept
-  {
-    TRACER("DigitalOscillator::setPhase");
-    phase = _newPhase;
-  }
-
-  //==============================================================================
-  /**
-   * @brief Sets the bend modifier for waveform shaping.
-   * @param _newBendModifier The new bend modifier value.
-   */
-  inline void setBend(const float _newBendModifier) noexcept
-  {
-    TRACER("DigitalOscillator::setBend");
-    float rangeEnd = std::nextafter(100.0f, std::numeric_limits<float>::max());
-    const juce::NormalisableRange<float> sourceRange(-100.0f, rangeEnd);
-    jassert(sourceRange.getRange().contains(_newBendModifier));
-    const auto normalisedValue = sourceRange.convertTo0to1(_newBendModifier);
-    const juce::NormalisableRange<float> targetRange(0.1f, 0.9f);
-    posityCycleRatio = targetRange.convertFrom0to1(normalisedValue);
-  }
-
-  //==============================================================================
-  /**
-   * @brief Sets the PWM (Pulse Width Modulation) modifier.
-   * @param _newPwmModifier The new PWM modifier value.
-   */
-  inline void setPwm(const float _newPwmModifier) noexcept
-  {
-    TRACER("DigitalOscillator::setPwm");
-    float rangeEnd = std::nextafter(100.0f, std::numeric_limits<float>::max());
-    const juce::NormalisableRange<float> sourceRange(0.0f, rangeEnd);
-    jassert(sourceRange.getRange().contains(_newPwmModifier));
-    const auto normalisedValue = sourceRange.convertTo0to1(_newPwmModifier);
-    const juce::NormalisableRange<float> targetRange(1.0f, 5.0f);
-    pwmModifier = targetRange.convertFrom0to1(normalisedValue);
-  }
-
-  //==============================================================================
-  /**
-   * @brief Sets the sync modifier for phase synchronization.
-   * @param _newSyncModifier The new sync modifier value.
-   */
-  inline void setSync(const float _newSyncModifier) noexcept
-  {
-    TRACER("DigitalOscillator::setSync");
-    float rangeEnd = std::nextafter(100.0f, std::numeric_limits<float>::max());
-    const juce::NormalisableRange<float> sourceRange(0.0f, rangeEnd);
-    jassert(sourceRange.getRange().contains(_newSyncModifier));
-    const auto normalisedValue = sourceRange.convertTo0to1(_newSyncModifier);
-    const juce::NormalisableRange<float> targetRange(1.0f, 5.0f);
-    syncModifier = targetRange.convertFrom0to1(normalisedValue);
-  }
-
-protected:
   //==============================================================================
   /**
    * @brief Advances the phase of the oscillator.
@@ -222,7 +208,7 @@ protected:
   forcedinline float getSyncedPhase(float _rawPhase) const noexcept
   {
     TRACER("DigitalOscillator::getSyncedPhase");
-    float syncedPhase = _rawPhase * syncModifier;
+    float syncedPhase = _rawPhase * params.getSync();
     while (syncedPhase >= twoPi) {
       syncedPhase -= twoPi;
     }
@@ -240,12 +226,13 @@ protected:
     TRACER("DigitalOscillator::getBendedPhase");
     auto bendedPhase = _rawPhase;
 
-    float positiveCycleSize = posityCycleRatio * twoPi;
-    float negativeCycleRatio = 1.0f - posityCycleRatio;
+    const float bend = params.getBend();
+    float positiveCycleSize = bend * twoPi;
+    float negativeCycleRatio = 1.0f - bend;
     float negativeCycleSize = negativeCycleRatio * twoPi;
 
     if (_rawPhase <= positiveCycleSize) {
-      bendedPhase /= (posityCycleRatio * 2.0f);
+      bendedPhase /= (bend * 2.0f);
     }
 
     if (_rawPhase > positiveCycleSize) {
@@ -265,32 +252,28 @@ protected:
   {
     TRACER("DigitalOscillator::distortSample");
     constexpr float magicNumber = 0.7615941559558f;
-    if (drive >= 1.0f) {
-      _sample = Math::tanh(drive * _sample);
+    if (params.drive >= 1.0f) {
+      _sample = Math::tanh(params.drive * _sample);
     } else {
-      float invertedDrive = 1.0f - drive;
-      float wetSample = drive * Math::tanh(_sample);
+      float invertedDrive = 1.0f - params.drive;
+      float wetSample = params.drive * Math::tanh(_sample);
       float drySample = invertedDrive * _sample * magicNumber;
       _sample = wetSample + drySample;
     }
 
-    _sample = _sample + bias;
+    _sample = _sample + params.bias;
   }
+
+protected:
+  //==============================================================================
 
 private:
   DigitalWaveform waveform;
+  Parameters params;
   float frequency = 50.0f;
   float sampleRate = -1.0f;
   float phase = 0.0f;
-
-  float drive = 0.0f;
-  float bias = 0.0f;
-  float pwmModifier = 1.0f;
-  float syncModifier = 1.0f;
-  float posityCycleRatio = 0.5f;
-};
-
-//==============================================================================
+  //==============================================================================
 } // namespace synth
 } // namespace dsp
 } // namespace dmt

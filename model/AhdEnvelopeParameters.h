@@ -8,7 +8,7 @@ namespace model {
 static inline juce::AudioProcessorParameterGroup
 envelopeParameterGroup(juce::String parentUid,
                        juce::String suffix,
-                       std::array<float, 5> defaultValues)
+                       std::array<float, 6> defaultValues)
 {
   using ParameterInt = juce::AudioParameterInt;
   using ParameterFloat = juce::AudioParameterFloat;
@@ -55,7 +55,15 @@ envelopeParameterGroup(juce::String parentUid,
                                                        16.0f,  // rangeEnd
                                                        0.1f,   // intervalValue
                                                        1.0f),  // skewFactor
-                                     defaultValues[4]));       // defaultValue
+                                     defaultValues[4]),        // defaultValue
+    std::make_unique<ParameterFloat>(uid + "Depth",            // parameter ID
+                                     "Depth",                  // parameter name
+                                     NormalisableRange(0.0f,   // rangeStart
+                                                       1.0f,   // rangeEnd
+                                                       0.001f, // intervalValue
+                                                       0.5f),  // skewFactor
+                                     defaultValues[5])         // defaultValue
+  );
 }
 } // namespace model
 } // namespace dmt

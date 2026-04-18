@@ -120,7 +120,7 @@ public:
 
     gainEnvelope.setSampleRate(static_cast<float>(_sampleRate));
     pitchEnvelope.setSampleRate(static_cast<float>(_sampleRate));
-    // osc.setSampleRate(static_cast<float>(_sampleRate));
+    osc.setSampleRate(static_cast<float>(_sampleRate));
 
     isPrepared = true;
   }
@@ -173,34 +173,24 @@ public:
     updateEnvelopeParameters();
     updateOscillatorParameters();
 
-    std::cout << "Rendering Block" << std::endl;
-
-    // const float oscGain =
-    //   apvts.getRawParameterValue("osc1DistortionPreGain")->load();
-    // const int oscOctave =
-    // apvts.getRawParameterValue("osc1VoiceOctave")->load(); const int
-    // oscSemitone =
-    //   apvts.getRawParameterValue("osc1VoiceSemitone")->load();
-    // const float oscModDepth =
-    //   apvts.getRawParameterValue("osc1PitchEnvDepth")->load();
+    const float oscGain =
+      apvts.getRawParameterValue("NeutrinoOscillatorGain")->load();
+    const int oscOctave = apvts.getRawParameterValue("NeutrinoOctave")->load();
+    const int oscSemitone =
+      apvts.getRawParameterValue("NeutrinoSemitone")->load();
+    const float oscModDepth =
+      apvts.getRawParameterValue("NeutrinoModDepth")->load();
 
     const auto endSample = _numSamples + _startSample;
     auto* leftChannel = _outputBuffer.getWritePointer(0);
     auto* rightChannel = _outputBuffer.getWritePointer(1);
 
     for (int sample = _startSample; sample < endSample; ++sample) {
-      // osc.setFrequency(getNextFrequency(oscOctave, oscSemitone,
-      // oscModDepth));
-      // const auto rawSample = osc.getNextSample();
-      // const auto gainedSample = applyGain(rawSample, oscGain);
-      // leftChannel[sample] = gainedSample;
-      // rightChannel[sample] = gainedSample;
-
-      // Random sample
-      juce::Random random;
-      const float randomSample = random.nextFloat() * 2.0f - 1;
-      leftChannel[sample] = randomSample;
-      rightChannel[sample] = randomSample;
+      osc.setFrequency(getNextFrequency(oscOctave, oscSemitone, oscModDepth));
+      const auto rawSample = osc.getNextSample();
+      const auto gainedSample = applyGain(rawSample, oscGain);
+      leftChannel[sample] = gainedSample;
+      rightChannel[sample] = gainedSample;
     }
   }
 
@@ -236,28 +226,8 @@ protected:
   void updateEnvelopeParameters() noexcept
   {
     TRACER("SynthVoice::updateEnvelopeParameters");
-    dmt::dsp::envelope::AhdEnvelope::Parameters gainEnvParameters;
-    gainEnvParameters.attack =
-      apvts.getRawParameterValue("NeutrinoGainEnvAttack")->load();
-    gainEnvParameters.hold =
-      apvts.getRawParameterValue("NeutrinoGainEnvHold")->load();
-    gainEnvParameters.decay =
-      apvts.getRawParameterValue("NeutrinoGainEnvDecay")->load();
-    gainEnvParameters.decaySkew =
-      apvts.getRawParameterValue("NeutrinoGainEnvSkew")->load();
-    gainEnvParameters.attackSkew = 0;
-    gainEnvelope.setParameters(gainEnvParameters);
-
-    dmt::dsp::envelope::AhdEnvelope::Parameters pitchEnvParameters;
-    pitchEnvParameters.attack = 0;
-    pitchEnvParameters.hold =
-      apvts.getRawParameterValue("NeutrinoPitchEnvHold")->load();
-    pitchEnvParameters.decay =
-      apvts.getRawParameterValue("NeutrinoPitchEnvDecay")->load();
-    pitchEnvParameters.decaySkew =
-      apvts.getRawParameterValue("NeutrinoPitchEnvSkew")->load();
-    pitchEnvParameters.attackSkew = 0;
-    pitchEnvelope.setParameters(pitchEnvParameters);
+    gainEnvelope.setParameters(apvts, "NeutrinoGain");
+    pitchEnvelope.setParameters(apvts, "NeutrinoPitch");
   }
 
   //==============================================================================
@@ -268,13 +238,7 @@ protected:
   void updateOscillatorParameters() noexcept
   {
     TRACER("SynthVoice::updateOscillatorParameters");
-    // osc.setWaveformType(static_cast<dmt::dsp::synth::DigitalWaveform::Type>(
-    // apvts.getRawParameterValue("osc1WaveformType")->load()));
-    // osc.setDrive(apvts.getRawParameterValue("osc1DistortionType")->load());
-    /// osc.setBias(apvts.getRawParameterValue("osc1DistortionSymmetry")->load());
-    // osc.setBend(apvts.getRawParameterValue("osc1WaveformBend")->load());
-    // osc.setPwm(apvts.getRawParameterValue("osc1WaveformPwm")->load());
-    // osc.setSync(apvts.getRawParameterValue("osc1WaveformSync")->load());
+    osc.setParameters(apvts);
   }
 
   //==============================================================================
