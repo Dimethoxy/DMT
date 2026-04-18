@@ -134,7 +134,7 @@ public:
     drive = apvts.getRawParameterValue(base + "Drive")->load();
 
     // These don't need mapping so we can set them directly
-    params.type = type;
+    waveform.type = type;
     params.drive = drive;
 
     // These need mapping so we use setters to do that

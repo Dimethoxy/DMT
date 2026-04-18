@@ -176,7 +176,7 @@ public:
     const float oscGain = 0.0f;
     const int oscOctave = 0;
     const int oscSemitone = 0;
-    const float oscModDepth = gainEnvelope.getParameters().depth;
+    const float oscModDepth = pitchEnvelope.getParameters().depth;
 
     const auto endSample = _numSamples + _startSample;
     auto* leftChannel = _outputBuffer.getWritePointer(0);
@@ -186,8 +186,8 @@ public:
       osc.setFrequency(getNextFrequency(oscOctave, oscSemitone, oscModDepth));
       const auto rawSample = osc.getNextSample();
       const auto gainedSample = applyGain(rawSample, oscGain);
-      leftChannel[sample] = gainedSample;
-      rightChannel[sample] = gainedSample;
+      leftChannel[sample] += gainedSample;
+      rightChannel[sample] += gainedSample;
     }
   }
 
