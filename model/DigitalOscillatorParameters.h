@@ -34,14 +34,14 @@ digitalOscillatorParameterGroup(juce::String parentUid)
                                                        100.f,  // rangeEnd
                                                        .01f,   // intervalValue
                                                        1.f),   // skewFactor
-                                     .0f),                     // defaultValue
+                                     0.0f),                    // defaultValue
     std::make_unique<ParameterFloat>(uid + "Pwm",
                                      "Pwm",
                                      NormalisableRange(.0f,   // rangeStart
                                                        100.f, // rangeEnd
                                                        .01f,  // intervalValue
                                                        1.f),  // skewFactor
-                                     4.f),                    // defaultValue
+                                     0.0f),                   // defaultValue
     std::make_unique<ParameterFloat>(uid + "Sync",
                                      "Sync",
                                      NormalisableRange(0.f,   // rangeStart
@@ -55,7 +55,7 @@ digitalOscillatorParameterGroup(juce::String parentUid)
                                                        10.f, // rangeEnd
                                                        .01f, // intervalValue
                                                        1.f), // skewFactor
-                                     2.0f)                   // defaultValue
+                                     3.0f)                   // defaultValue
   );
 }
 } // namespace model

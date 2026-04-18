@@ -28,9 +28,9 @@ neutrinoParameterGroup(juce::String parentUid, [[maybe_unused]] int versionHint)
 
     // Envelopes
     std::make_unique<ParameterGroup>(envelopeParameterGroup(
-      uid, "Gain", { 0.0f, 0.04f, 0.335f, 0.0f, 2.0f, 1.0f })),
+      uid, "Gain", { 0.0f, 0.055f, 1.0f, 0.0f, 0.0f, 14.0f })),
     std::make_unique<ParameterGroup>(envelopeParameterGroup(
-      uid, "Pitch", { 0.0f, 0.0f, 0.144f, 1.0f, 7.5f, 0.5f })));
+      uid, "Pitch", { 0.0f, 0.0f, 0.3f, 1.0f, 0.0f, 10.5f })));
 }
 } // namespace model
 } // namespace dmt

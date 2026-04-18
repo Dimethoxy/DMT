@@ -179,6 +179,13 @@ public:
   }
 
   //==============================================================================
+  void reset() noexcept
+  {
+    TRACER("DigitalOscillator::reset");
+    phase = 0.0f;
+  }
+
+  //==============================================================================
   /**
    * @brief Sets the frequency of the oscillator.
    * @param _newFrequency The new frequency in Hz.

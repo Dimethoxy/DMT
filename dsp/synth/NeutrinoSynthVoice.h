@@ -145,6 +145,7 @@ public:
     updateEnvelopeParameters();
     gainEnvelope.noteOn();
     pitchEnvelope.noteOn();
+    osc.reset();
 
     callOnNoteReceivers();
   }
@@ -174,7 +175,7 @@ public:
     updateOscillatorParameters();
 
     const float oscGain = 0.0f;
-    const int oscOctave = 0;
+    const int oscOctave = -1;
     const int oscSemitone = 0;
     const float oscModDepth = pitchEnvelope.getParameters().depth;
 
