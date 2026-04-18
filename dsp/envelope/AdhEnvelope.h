@@ -178,6 +178,7 @@ private:
     using juce::jlimit;
     using std::atan, std::pow, std::abs;
 
+    // We make the bend curve more exponential to make it feel linear
     const float k = pow(0.5f * abs(bend), 2.0f);
     const float x = jlimit(0.0f, 1.0f, normalizedPhase);
     const float normalizer = atan(k);
