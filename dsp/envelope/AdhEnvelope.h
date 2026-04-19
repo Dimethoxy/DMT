@@ -50,6 +50,7 @@ class AhdEnvelope
 public:
   struct Parameters
   {
+    bool enabled = true;
     float attack = 0.015f;
     float hold = 0.08f;
     float decay = 0.5f;
@@ -60,6 +61,7 @@ public:
 
   enum class State
   {
+    Disabled,
     Attack,
     Hold,
     Decay,
@@ -72,6 +74,8 @@ public:
                             juce::String prefix) noexcept
   {
     juce::String base = prefix + "Env";
+    params.enabled =
+      apvts.getRawParameterValue(base + "Enabled")->load() > 0.5f;
     params.attack = apvts.getRawParameterValue(base + "Attack")->load();
     params.hold = apvts.getRawParameterValue(base + "Hold")->load();
     params.decay = apvts.getRawParameterValue(base + "Decay")->load();
@@ -116,11 +120,13 @@ public:
    */
   [[nodiscard]] inline State getState() const noexcept
   {
-    if (sampleIndex < getHoldStart()) [[likely]]
+    if (!params.enabled)
+      return State::Disabled;
+    if (sampleIndex < getHoldStart())
       return State::Attack;
-    if (sampleIndex < getDecayStart()) [[likely]]
+    if (sampleIndex < getDecayStart())
       return State::Hold;
-    if (sampleIndex < getDecayEnd()) [[likely]]
+    if (sampleIndex < getDecayEnd())
       return State::Decay;
     return State::Idle;
   }
@@ -149,6 +155,8 @@ private:
     constexpr float zero = 0.0f;
 
     switch (_state) {
+      case State::Disabled:
+        return 0.0f;
       case State::Attack: {
         const float normalizedPosition =
           static_cast<float>(sampleIndex) / sampleRate;

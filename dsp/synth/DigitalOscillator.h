@@ -63,7 +63,8 @@ public:
     DigitalWaveform::Type type = DigitalWaveform::Type::Sine;
     float bias = 0.0f;
     float drive = 0.0f;
-    float pwm = 4.0f;
+    float pwm = 0.0f;
+    float clip = 0.0f;
 
   private:
     float sync = 0.0f;
@@ -109,6 +110,8 @@ public:
     float bend = params.getBend();
     float pwm = params.pwm;
     float sync = params.getSync();
+    float bias = params.bias;
+    float clip = params.clip;
     float drive = params.drive;
 
     String base = prefix + "DigitalOscillator";
@@ -117,12 +120,16 @@ public:
     bend = apvts.getRawParameterValue(base + "Bend")->load();
     pwm = apvts.getRawParameterValue(base + "Pwm")->load();
     sync = apvts.getRawParameterValue(base + "Sync")->load();
+    bias = apvts.getRawParameterValue(base + "Bias")->load();
+    clip = apvts.getRawParameterValue(base + "Clip")->load();
     drive = apvts.getRawParameterValue(base + "Drive")->load();
 
     // These don't need mapping so we can set them directly
     waveform.type = type;
-    params.drive = drive;
     params.pwm = pwm;
+    params.bias = bias;
+    params.clip = clip;
+    params.drive = drive;
 
     // These need mapping so we use setters to do that
     params.setBend(bend);
@@ -152,6 +159,9 @@ public:
   [[nodiscard]] forcedinline float getNextSample() noexcept
   {
     TRACER("DigitalOscillator::getNextSample");
+
+    using std::pow, std::clamp;
+
     if (sampleRate <= 0.0f)
       return 0.0f;
 
@@ -161,13 +171,12 @@ public:
     auto bendedPhase = getBendedPhase(syncedPhase);
 
     if (phase >= twoPi / pwm) {
-      // Return cached PWM end sample (computed on demand)
       return pwmEndSample;
     }
 
     float sample = waveform.getSample(bendedPhase);
-    distortSample(sample);
-    return std::clamp(sample, -1.0f, +1.0f);
+    sample = distortSample(sample);
+    return clamp(sample, -1.0f, +1.0f);
   }
 
   //==============================================================================
@@ -254,20 +263,30 @@ public:
    * settings.
    * @param _sample The sample value to be distorted.
    */
-  forcedinline void distortSample(float& _sample) const noexcept
+  forcedinline float distortSample(float _sample) const noexcept
   {
     TRACER("DigitalOscillator::distortSample");
-    constexpr float magicNumber = 0.7615941559558f;
-    if (params.drive >= 1.0f) {
-      _sample = Math::tanh(params.drive * _sample);
-    } else {
-      float invertedDrive = 1.0f - params.drive;
-      float wetSample = params.drive * Math::tanh(_sample);
-      float drySample = invertedDrive * _sample * magicNumber;
-      _sample = wetSample + drySample;
-    }
 
-    _sample = _sample + params.bias;
+    using std::clamp, std::abs, std::atan, std::tan;
+
+    float drive = params.drive;
+    float bias = params.bias;
+    float clip = params.clip + 1.0f;
+    float k = abs(drive);
+
+    float biasSample = _sample + bias;
+    float clipSample = clamp(biasSample * clip, -1.0f, 1.0f);
+
+    if (k < 0.01f)
+      return clipSample;
+
+    if (drive > 0.0f) {
+      float normalizer = atan(k);
+      return atan(k * clipSample) / normalizer;
+    } else {
+      float normalizer = atan(k * 0.2f);
+      return tan(clipSample * normalizer) / (k * 0.2f);
+    }
   }
 
 private:
@@ -278,7 +297,9 @@ private:
   void computePwmEndSample() noexcept
   {
     TRACER("DigitalOscillator::computePwmEndSample");
-    // Sample at 2π (end of cycle) to get the natural end value for PWM fill
+
+    // We sample the waveform at 2π to get it's last sample and use it as PWM
+    // fill
     float endPhase = getBendedPhase(getSyncedPhase(twoPi));
     pwmEndSample = waveform.getSample(endPhase);
     distortSample(pwmEndSample);

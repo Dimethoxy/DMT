@@ -119,7 +119,8 @@ public:
       return;
 
     gainEnvelope.setSampleRate(static_cast<float>(_sampleRate));
-    pitchEnvelope.setSampleRate(static_cast<float>(_sampleRate));
+    pitchEnv1.setSampleRate(static_cast<float>(_sampleRate));
+    pitchEnv2.setSampleRate(static_cast<float>(_sampleRate));
     osc.setSampleRate(static_cast<float>(_sampleRate));
 
     isPrepared = true;
@@ -139,12 +140,13 @@ public:
                  int /*_currentPitchWheelPosition*/) noexcept override
   {
     TRACER("NeutrinoSynthVoice::startNote");
-    // osc.setPhase(0.0f);
+
     note = _midiNoteNumber;
 
     updateEnvelopeParameters();
     gainEnvelope.noteOn();
-    pitchEnvelope.noteOn();
+    pitchEnv1.noteOn();
+    pitchEnv2.noteOn();
     osc.reset();
 
     callOnNoteReceivers();
@@ -154,7 +156,7 @@ public:
   void stopNote(float /*_velocity*/, bool /*_allowTailOff*/) noexcept override
   {
     TRACER("NeutrinoSynthVoice::stopNote");
-    clearCurrentNote();
+    // clearCurrentNote();
   }
 
   /**
@@ -175,16 +177,13 @@ public:
     updateOscillatorParameters();
 
     const float oscGain = 0.0f;
-    const int oscOctave = -1;
-    const int oscSemitone = 0;
-    const float oscModDepth = pitchEnvelope.getParameters().depth;
 
     const auto endSample = _numSamples + _startSample;
     auto* leftChannel = _outputBuffer.getWritePointer(0);
     auto* rightChannel = _outputBuffer.getWritePointer(1);
 
     for (int sample = _startSample; sample < endSample; ++sample) {
-      const float freq = getNextFrequency(oscOctave, oscSemitone, oscModDepth);
+      const float freq = getNextFrequency();
       osc.setFrequency(freq);
 
       float rawSample = osc.getNextSample();
@@ -193,6 +192,39 @@ public:
       leftChannel[sample] += gainedSample;
       rightChannel[sample] += gainedSample;
     }
+  }
+
+  //==============================================================================
+  /**
+   * @brief Calculates the next frequency for the oscillator.
+   * @param _rawOctave The raw octave value.
+   * @param _rawSemitone The raw semitone value.
+   * @param _rawModDepth The raw modulation depth.
+   * @return The next frequency.
+   */
+  [[nodiscard]] float getNextFrequency() noexcept
+  {
+    TRACER("SynthVoice::getNextFrequency");
+
+    const int oscOctave = -1;
+    const int oscSemitone = 0;
+    const float oscModDepth1 = pitchEnv1.getParameters().depth;
+    const float oscModDepth2 = pitchEnv2.getParameters().depth;
+    const float oscModDepth = oscModDepth1 + oscModDepth2;
+
+    using juce::mapToLog10, juce::MidiMessage;
+    using std::clamp;
+    const int octaves = 12 * oscOctave;
+    const int semitone = octaves + oscSemitone;
+    const int baseNote = note + semitone;
+    const float baseFreq = MidiMessage::getMidiNoteInHertz(baseNote);
+    const float modDepth = oscModDepth * 2e4f;
+    const float env1Sample = pitchEnv1.getNextSample();
+    const float env2Sample = pitchEnv2.getNextSample();
+    const float envSample = env1Sample + env2Sample;
+    const float maxFreq = clamp(baseFreq + modDepth, baseFreq, 2e4f);
+    const float newFreq = mapToLog10(envSample, baseFreq, maxFreq);
+    return clamp(newFreq, 20.0f, 2e4f);
   }
 
   //==============================================================================
@@ -228,7 +260,8 @@ protected:
   {
     TRACER("SynthVoice::updateEnvelopeParameters");
     gainEnvelope.setParameters(apvts, "NeutrinoGain");
-    pitchEnvelope.setParameters(apvts, "NeutrinoPitch");
+    pitchEnv1.setParameters(apvts, "NeutrinoPitch1");
+    pitchEnv2.setParameters(apvts, "NeutrinoPitch2");
   }
 
   //==============================================================================
@@ -240,30 +273,6 @@ protected:
   {
     TRACER("SynthVoice::updateOscillatorParameters");
     osc.setParameters(apvts, "Neutrino");
-  }
-
-  //==============================================================================
-  /**
-   * @brief Calculates the next frequency for the oscillator.
-   * @param _rawOctave The raw octave value.
-   * @param _rawSemitone The raw semitone value.
-   * @param _rawModDepth The raw modulation depth.
-   * @return The next frequency.
-   */
-  [[nodiscard]] float getNextFrequency(const int _rawOctave,
-                                       const int _rawSemitone,
-                                       const float _rawModDepth) noexcept
-  {
-    TRACER("SynthVoice::getNextFrequency");
-    const int octaves = 12 * _rawOctave;
-    const int semitone = octaves + _rawSemitone;
-    const int baseNote = note + semitone;
-    const float baseFreq = juce::MidiMessage::getMidiNoteInHertz(baseNote);
-    const float modDepth = _rawModDepth * 2e4f;
-    const float envelopeSample = pitchEnvelope.getNextSample();
-    const float maxFreq = std::clamp(baseFreq + modDepth, baseFreq, 2e4f);
-    const float newFreq = juce::mapToLog10(envelopeSample, baseFreq, maxFreq);
-    return std::clamp(newFreq, 20.0f, 2e4f);
   }
 
   //==============================================================================
@@ -285,7 +294,8 @@ private:
   juce::AudioProcessorValueTreeState& apvts;
   DigitalOscillator osc;
   AhdEnvelope gainEnvelope;
-  AhdEnvelope pitchEnvelope;
+  AhdEnvelope pitchEnv1;
+  AhdEnvelope pitchEnv2;
   int note = 0;
   bool isPrepared = false;
   std::vector<std::function<void()>> onNoteReceivers;

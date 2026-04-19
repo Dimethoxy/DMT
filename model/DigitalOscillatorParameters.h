@@ -37,11 +37,11 @@ digitalOscillatorParameterGroup(juce::String parentUid)
                                      0.0f),                    // defaultValue
     std::make_unique<ParameterFloat>(uid + "Pwm",
                                      "Pwm",
-                                     NormalisableRange(.0f,   // rangeStart
-                                                       100.f, // rangeEnd
-                                                       .01f,  // intervalValue
-                                                       1.f),  // skewFactor
-                                     0.0f),                   // defaultValue
+                                     NormalisableRange(1.0f, // rangeStart
+                                                       10.f, // rangeEnd
+                                                       .1f,  // intervalValue
+                                                       1.f), // skewFactor
+                                     0.0f),                  // defaultValue
     std::make_unique<ParameterFloat>(uid + "Sync",
                                      "Sync",
                                      NormalisableRange(0.f,   // rangeStart
@@ -49,13 +49,27 @@ digitalOscillatorParameterGroup(juce::String parentUid)
                                                        .01f,  // intervalValue
                                                        1.f),  // skewFactor
                                      .0f),                    // defaultValue
-    std::make_unique<ParameterFloat>(uid + "Drive",
-                                     "Drive",
-                                     NormalisableRange(0.f,  // rangeStart
-                                                       10.f, // rangeEnd
+    std::make_unique<ParameterFloat>(uid + "Bias",
+                                     "Bias",
+                                     NormalisableRange(-1.f, // rangeStart
+                                                       1.f,  // rangeEnd
                                                        .01f, // intervalValue
                                                        1.f), // skewFactor
-                                     3.0f)                   // defaultValue
+                                     0.0f),                  // defaultValue
+    std::make_unique<ParameterFloat>(uid + "Clip",
+                                     "Clip",
+                                     NormalisableRange(0.f,  // rangeStart
+                                                       1.f,  // rangeEnd
+                                                       .01f, // intervalValue
+                                                       1.f), // skewFactor
+                                     0.0f),                  // defaultValue
+    std::make_unique<ParameterFloat>(uid + "Drive",
+                                     "Drive",
+                                     NormalisableRange(-20.f, // rangeStart
+                                                       +20.f, // rangeEnd
+                                                       .01f,  // intervalValue
+                                                       1.f),  // skewFactor
+                                     3.0f)                    // defaultValue
   );
 }
 } // namespace model

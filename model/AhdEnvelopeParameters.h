@@ -18,9 +18,13 @@ envelopeParameterGroup(juce::String parentUid,
   juce::String uid = parentUid + suffix + "Env";
 
   return juce::AudioProcessorParameterGroup(
-    uid,                                                       // group ID
-    suffix + "Envelope",                                       // group name
-    "|",                                                       // separator
+    uid,                                               // group ID
+    suffix + "Envelope",                               // group name
+    "|",                                               // separator
+    std::make_unique<ParameterChoice>(uid + "Enabled", // parameter ID
+                                      "Enabled",       // parameter name
+                                      StringArray{ "Off", "On" }, // choices
+                                      1),                      // defaultValue
     std::make_unique<ParameterFloat>(uid + "Attack",           // parameter ID
                                      "Attack",                 // parameter name
                                      NormalisableRange(0.0f,   // rangeStart
