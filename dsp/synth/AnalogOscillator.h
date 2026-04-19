@@ -28,7 +28,7 @@ public:
   inline void setSampleRate(float _newSampleRate) noexcept
   {
     sampleRate = _newSampleRate;
-    delta = frequency / sampleRate;
+    reset();
   }
   inline void setParameters(const juce::AudioProcessorValueTreeState& apvts,
                             String prefix)
@@ -46,7 +46,11 @@ public:
     delta = frequency / sampleRate;
   }
 
-  void reset() noexcept { phase = 0.0f; }
+  void reset() noexcept
+  {
+    phase = 0.0f;
+    delta = frequency / sampleRate;
+  }
 
 private:
   AnalogWaveform waveform;
