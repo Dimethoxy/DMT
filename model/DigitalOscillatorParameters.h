@@ -44,11 +44,11 @@ digitalOscillatorParameterGroup(juce::String parentUid)
                                      0.0f),                    // defaultValue
     std::make_unique<ParameterFloat>(uid + "Pwm",
                                      "Pwm",
-                                     NormalisableRange(1.0f, // rangeStart
-                                                       10.f, // rangeEnd
-                                                       .1f,  // intervalValue
-                                                       1.f), // skewFactor
-                                     0.0f),                  // defaultValue
+                                     NormalisableRange(1.0f,  // rangeStart
+                                                       100.f, // rangeEnd
+                                                       .1f,   // intervalValue
+                                                       1.f),  // skewFactor
+                                     0.0f),                   // defaultValue
     std::make_unique<ParameterFloat>(uid + "Sync",
                                      "Sync",
                                      NormalisableRange(0.f,   // rangeStart

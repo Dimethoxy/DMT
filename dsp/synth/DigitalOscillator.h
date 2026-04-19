@@ -171,16 +171,24 @@ public:
       return 0.0f;
 
     advancePhase();
-    auto pwm = params.pwm;
+
     auto warpedPhase = getWarpPhase(phase);
     auto syncedPhase = getSyncedPhase(warpedPhase);
     auto bendedPhase = getBendedPhase(syncedPhase);
 
-    if (phase >= twoPi / pwm) {
+    auto pwmPhase = bendedPhase;
+    auto pwm = params.pwm;
+    const float pwmNormalized = 1.0f - (pwm / 100.0f); // 0.8
+
+    if (pwmPhase >= twoPi * pwmNormalized) {
       return pwmEndSample;
     }
 
-    float sample = waveform.getSample(bendedPhase);
+    if (pwmNormalized > 0.0f || pwmNormalized < 1.0f) {
+      pwmPhase = clamp(pwmPhase / pwmNormalized, 0.0f, twoPi);
+    }
+
+    float sample = waveform.getSample(pwmPhase);
     sample = distortSample(sample);
     return clamp(sample, -1.0f, +1.0f);
   }
