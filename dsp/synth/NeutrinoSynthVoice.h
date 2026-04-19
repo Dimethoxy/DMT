@@ -205,26 +205,33 @@ public:
   [[nodiscard]] float getNextFrequency() noexcept
   {
     TRACER("SynthVoice::getNextFrequency");
-
-    const int oscOctave = -1;
-    const int oscSemitone = 0;
-    const float oscModDepth1 = pitchEnv1.getParameters().depth;
-    const float oscModDepth2 = pitchEnv2.getParameters().depth;
-    const float oscModDepth = oscModDepth1 + oscModDepth2;
-
     using juce::mapToLog10, juce::MidiMessage;
     using std::clamp;
-    const int octaves = 12 * oscOctave;
-    const int semitone = octaves + oscSemitone;
-    const int baseNote = note + semitone;
+
+    const int octave = -1;
+    const int semitone = 0;
+    const float minFreq = 20.0f;
+    const float maxFreq = 20000.0f;
+    const int baseNote = (note + semitone + (octave * 12));
     const float baseFreq = MidiMessage::getMidiNoteInHertz(baseNote);
-    const float modDepth = oscModDepth * 2e4f;
-    const float env1Sample = pitchEnv1.getNextSample();
-    const float env2Sample = pitchEnv2.getNextSample();
-    const float envSample = env1Sample + env2Sample;
-    const float maxFreq = clamp(baseFreq + modDepth, baseFreq, 2e4f);
-    const float newFreq = mapToLog10(envSample, baseFreq, maxFreq);
-    return clamp(newFreq, 20.0f, 2e4f);
+
+    // How far the envelope should modulate, in 0.0f to 1.0f representing 0% to
+    // 100% of the frequency range.
+    const float oscModDepth1 = pitchEnv1.getParameters().depth;
+    const float oscModDepth2 = pitchEnv2.getParameters().depth;
+
+    // These are 0.0f to +1.0f of the envelope value
+    const float osc1Sample = pitchEnv1.getNextSample();
+    const float osc2Sample = pitchEnv2.getNextSample();
+
+    const float osc1ModSample =
+      mapToLog10(osc1Sample * oscModDepth1, minFreq, maxFreq);
+
+    const float osc2ModSample =
+      mapToLog10(osc2Sample * oscModDepth2, minFreq, maxFreq);
+
+    const float modulatedFreq = baseFreq + osc1ModSample + osc2ModSample;
+    return clamp(modulatedFreq, minFreq, maxFreq);
   }
 
   //==============================================================================
