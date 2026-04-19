@@ -30,7 +30,6 @@
 //==============================================================================
 
 #include "dsp/envelope/AdhEnvelope.h"
-#include "dsp/synth/AnalogOscillator.h"
 #include "dsp/synth/DigitalOscillator.h"
 #include <JuceHeader.h>
 
@@ -45,7 +44,6 @@ namespace synth {
 class alignas(64) NeutrinoSynthVoice : public juce::SynthesiserVoice
 {
   using DigitalOscillator = dmt::dsp::synth::DigitalOscillator;
-  using AnalogOscillator = dmt::dsp::synth::AnalogOscillator;
   using DigitalWaveform = dmt::dsp::synth::DigitalWaveform;
   using AhdEnvelope = dmt::dsp::envelope::AhdEnvelope;
 
@@ -123,7 +121,6 @@ public:
     gainEnvelope.setSampleRate(static_cast<float>(_sampleRate));
     pitchEnvelope.setSampleRate(static_cast<float>(_sampleRate));
     osc.setSampleRate(static_cast<float>(_sampleRate));
-    analogOsc.setSampleRate(static_cast<float>(_sampleRate));
 
     isPrepared = true;
   }
@@ -149,7 +146,6 @@ public:
     gainEnvelope.noteOn();
     pitchEnvelope.noteOn();
     osc.reset();
-    analogOsc.reset();
 
     callOnNoteReceivers();
   }
@@ -192,15 +188,8 @@ public:
     for (int sample = _startSample; sample < endSample; ++sample) {
       const float freq = getNextFrequency(oscOctave, oscSemitone, oscModDepth);
       osc.setFrequency(freq);
-      analogOsc.setFrequency(freq);
 
-      float rawSample = 0.0f;
-      if (oscType == 0) // Digital
-        rawSample = osc.getNextSample();
-      else if (oscType == 1) // Analog
-        rawSample = analogOsc.getNextSample();
-      else // Both (mix equally)
-        rawSample = (osc.getNextSample() + analogOsc.getNextSample()) * 0.5f;
+      float rawSample = osc.getNextSample();
 
       const auto gainedSample = applyGain(rawSample, oscGain);
       leftChannel[sample] += gainedSample;
@@ -253,7 +242,6 @@ protected:
   {
     TRACER("SynthVoice::updateOscillatorParameters");
     osc.setParameters(apvts, "Neutrino");
-    analogOsc.setParameters(apvts, "Neutrino");
   }
 
   //==============================================================================
@@ -298,7 +286,6 @@ protected:
 private:
   juce::AudioProcessorValueTreeState& apvts;
   DigitalOscillator osc;
-  AnalogOscillator analogOsc;
   AhdEnvelope gainEnvelope;
   AhdEnvelope pitchEnvelope;
   int note = 0;
