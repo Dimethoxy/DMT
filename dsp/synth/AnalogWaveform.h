@@ -39,8 +39,6 @@ struct AnalogWaveform
   //==============================================================================
 
   Type type = Type::Sine;
-  float delta = 0.0f;
-  float lastPhase = 0.0f;
 
   //==============================================================================
   /**
@@ -48,11 +46,7 @@ struct AnalogWaveform
    * @param _x The phase of the waveform.
    * @return The waveform sample.
    */
-  inline float triangle(float _x) const noexcept
-  {
-    _x = juce::jlimit(0.0f, 1.0f, _x);
-    return _x < 0.5f ? 4.0f * _x - 1.0f : 3.0f - 4.0f * _x;
-  }
+  inline float triangle(float _x) const noexcept {}
 
   //==============================================================================
   /**
@@ -60,11 +54,7 @@ struct AnalogWaveform
    * @param _x The phase of the waveform.
    * @return The waveform sample.
    */
-  inline float saw(float _x) const noexcept
-  {
-    _x = juce::jlimit(0.0f, 1.0f, _x);
-    return 2.0f * _x - 1.0f;
-  }
+  inline float saw(float _x) const noexcept {}
 
   //==============================================================================
   /**
@@ -72,11 +62,7 @@ struct AnalogWaveform
    * @param _x The phase of the waveform.
    * @return The waveform sample.
    */
-  inline float sine(float _x) const noexcept
-  {
-    _x = juce::jlimit(0.0f, 1.0f, _x);
-    return std::sin(twoPi * _x);
-  }
+  inline float sine(float _x) const noexcept {}
 
   //==============================================================================
   /**
@@ -84,11 +70,7 @@ struct AnalogWaveform
    * @param _x The phase of the waveform.
    * @return The waveform sample.
    */
-  inline float square(float _x) const noexcept
-  {
-    _x = juce::jlimit(0.0f, 1.0f, _x);
-    return _x < 0.5f ? 1.0f : -1.0f;
-  }
+  inline float square(float _x) const noexcept {}
 
   //==============================================================================
   /**
@@ -96,57 +78,7 @@ struct AnalogWaveform
    * @param _x The phase of the waveform.
    * @return The waveform sample.
    */
-  [[nodiscard]] inline float getSample(float _x) noexcept
-  {
-    float sample = 0.0f;
-    bool discontinuity = false;
-    float t = 0.0f;
-
-    // Detect phase discontinuity (wraparound)
-    if (_x < lastPhase) {
-      discontinuity = true;
-      t = _x / delta;
-    }
-
-    switch (type) {
-      case Type::Sine:
-        sample = sine(_x);
-        break;
-      case Type::Saw:
-        sample = saw(_x);
-        if (discontinuity && std::abs(t) < 1.0f)
-          sample += polyBlepCorrection(t);
-        break;
-      case Type::Triangle:
-        sample = triangle(_x);
-        if (discontinuity && std::abs(t) < 1.0f)
-          sample += polyBlepCorrection(t);
-        break;
-      case Type::Square:
-        sample = square(_x);
-        if (discontinuity && std::abs(t) < 1.0f)
-          sample += polyBlepCorrection(t);
-        break;
-    }
-
-    lastPhase = _x;
-    return sample;
-  }
-
-  //==============================================================================
-  /**
-   * @brief PolyBLEP correction polynomial.
-   * @param _t Normalized time around discontinuity (-1 to 1).
-   * @return Correction sample.
-   */
-  [[nodiscard]] inline float polyBlepCorrection(float _t) const noexcept
-  {
-    if (_t > 0.0f && _t < 1.0f)
-      return _t * _t - _t;
-    if (_t < 0.0f && _t > -1.0f)
-      return _t * _t + _t;
-    return 0.0f;
-  }
+  [[nodiscard]] inline float getSample(float _x) noexcept {}
 
   //==============================================================================
 };

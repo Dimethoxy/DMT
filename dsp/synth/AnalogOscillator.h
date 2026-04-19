@@ -12,7 +12,6 @@ class alignas(64) AnalogOscillator
 public:
   struct Parameters
   {
-    // AnalogWaveform::Type type = AnalogWaveform::Type::Sine;
     float drive = 0.0f;
     float bias = 0.0f;
   };
@@ -20,10 +19,8 @@ public:
 public:
   inline float getNextSample() noexcept
   {
-    float sample = waveform.getSample(phase);
-    phase += waveform.delta;
-    if (phase >= 1.0f)
-      phase -= 1.0f;
+    float sample = waveform.getSample(phase, delta);
+    phase += delta;
     return sample;
   }
 
@@ -31,7 +28,7 @@ public:
   inline void setSampleRate(float _newSampleRate) noexcept
   {
     sampleRate = _newSampleRate;
-    updateDelta();
+    delta = frequency / sampleRate;
   }
   inline void setParameters(const juce::AudioProcessorValueTreeState& apvts,
                             String prefix)
@@ -46,21 +43,10 @@ public:
   inline void setFrequency(float _newFrequency) noexcept
   {
     frequency = _newFrequency;
-    updateDelta();
+    delta = frequency / sampleRate;
   }
 
-  void reset() noexcept
-  {
-    phase = 0.0f;
-    waveform.lastPhase = 0.0f;
-  }
-
-private:
-  inline void updateDelta() noexcept
-  {
-    if (sampleRate > 0.0f)
-      waveform.delta = frequency / sampleRate;
-  }
+  void reset() noexcept { phase = 0.0f; }
 
 private:
   AnalogWaveform waveform;
@@ -68,6 +54,7 @@ private:
   float frequency = 50.0f;
   float sampleRate = -1.0f;
   float phase = 0.0f;
+  float delta = 0.0f;
 };
 } // namespace synth
 } // namespace dsp
