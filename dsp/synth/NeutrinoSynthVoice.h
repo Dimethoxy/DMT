@@ -174,8 +174,6 @@ public:
     updateEnvelopeParameters();
     updateOscillatorParameters();
 
-    const int oscType = static_cast<int>(
-      apvts.getRawParameterValue("NeutrinoOscillatorType")->load());
     const float oscGain = 0.0f;
     const int oscOctave = -1;
     const int oscSemitone = 0;

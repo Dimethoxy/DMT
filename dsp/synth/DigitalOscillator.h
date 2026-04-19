@@ -63,11 +63,11 @@ public:
     DigitalWaveform::Type type = DigitalWaveform::Type::Sine;
     float bias = 0.0f;
     float drive = 0.0f;
+    float pwm = 4.0f;
 
   private:
     float sync = 0.0f;
     float bend = 0.0f;
-    float pwm = 4.0f;
 
   public:
     //==============================================================================
@@ -82,20 +82,6 @@ public:
       const auto normalisedValue = sourceRange.convertTo0to1(_newBend);
       const juce::NormalisableRange<float> targetRange(0.1f, 0.9f);
       bend = targetRange.convertFrom0to1(normalisedValue);
-    }
-
-    //==============================================================================
-    inline float getPwm() const noexcept { return pwm; }
-    inline void setPwm(const float _newPwm) noexcept
-    {
-      TRACER("DigitalOscillator::setPwm");
-      float rangeEnd =
-        std::nextafter(100.0f, std::numeric_limits<float>::max());
-      const juce::NormalisableRange<float> sourceRange(0.0f, rangeEnd);
-      jassert(sourceRange.getRange().contains(_newPwm));
-      const auto normalisedValue = sourceRange.convertTo0to1(_newPwm);
-      const juce::NormalisableRange<float> targetRange(1.0f, 5.0f);
-      pwm = targetRange.convertFrom0to1(normalisedValue);
     }
 
     //==============================================================================
@@ -121,7 +107,7 @@ public:
   {
     auto type = params.type;
     float bend = params.getBend();
-    float pwm = params.getPwm();
+    float pwm = params.pwm;
     float sync = params.getSync();
     float drive = params.drive;
 
@@ -136,11 +122,14 @@ public:
     // These don't need mapping so we can set them directly
     waveform.type = type;
     params.drive = drive;
+    params.pwm = pwm;
 
     // These need mapping so we use setters to do that
     params.setBend(bend);
-    params.setPwm(pwm);
     params.setSync(sync);
+
+    // Eagerly compute PWM end sample
+    computePwmEndSample();
   }
 
   //==============================================================================
@@ -152,6 +141,7 @@ public:
   {
     TRACER("DigitalOscillator::setSampleRate");
     sampleRate = _newSampleRate;
+    computePwmEndSample();
   }
 
   //==============================================================================
@@ -166,12 +156,14 @@ public:
       return 0.0f;
 
     advancePhase();
-    auto pwm = params.getPwm();
+    auto pwm = params.pwm;
     auto syncedPhase = getSyncedPhase(phase * pwm);
     auto bendedPhase = getBendedPhase(syncedPhase);
 
-    if (phase >= twoPi / pwm)
-      return 0.0f;
+    if (phase >= twoPi / pwm) {
+      // Return cached PWM end sample (computed on demand)
+      return pwmEndSample;
+    }
 
     float sample = waveform.getSample(bendedPhase);
     distortSample(sample);
@@ -183,6 +175,7 @@ public:
   {
     TRACER("DigitalOscillator::reset");
     phase = 0.0f;
+    computePwmEndSample();
   }
 
   //==============================================================================
@@ -278,11 +271,27 @@ public:
   }
 
 private:
+  //==============================================================================
+  /**
+   * @brief Computes the PWM end-of-cycle sample.
+   */
+  void computePwmEndSample() noexcept
+  {
+    TRACER("DigitalOscillator::computePwmEndSample");
+    // Sample at 2π (end of cycle) to get the natural end value for PWM fill
+    float endPhase = getBendedPhase(getSyncedPhase(twoPi));
+    pwmEndSample = waveform.getSample(endPhase);
+    distortSample(pwmEndSample);
+    pwmEndSample = std::clamp(pwmEndSample, -1.0f, +1.0f);
+  }
+
+  //==============================================================================
   DigitalWaveform waveform;
   Parameters params;
   float frequency = 50.0f;
   float sampleRate = -1.0f;
   float phase = 0.0f;
+  float pwmEndSample = 0.0f;
   //==============================================================================
 };
 } // namespace synth
