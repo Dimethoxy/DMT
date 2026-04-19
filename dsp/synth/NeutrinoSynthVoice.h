@@ -30,6 +30,7 @@
 //==============================================================================
 
 #include "dsp/envelope/AdhEnvelope.h"
+#include "dsp/synth/AnalogOscillator.h"
 #include "dsp/synth/DigitalOscillator.h"
 #include <JuceHeader.h>
 
@@ -44,6 +45,7 @@ namespace synth {
 class alignas(64) NeutrinoSynthVoice : public juce::SynthesiserVoice
 {
   using DigitalOscillator = dmt::dsp::synth::DigitalOscillator;
+  using AnalogOscillator = dmt::dsp::synth::AnalogOscillator;
   using DigitalWaveform = dmt::dsp::synth::DigitalWaveform;
   using AhdEnvelope = dmt::dsp::envelope::AhdEnvelope;
 
@@ -121,6 +123,7 @@ public:
     gainEnvelope.setSampleRate(static_cast<float>(_sampleRate));
     pitchEnvelope.setSampleRate(static_cast<float>(_sampleRate));
     osc.setSampleRate(static_cast<float>(_sampleRate));
+    analogOsc.setSampleRate(static_cast<float>(_sampleRate));
 
     isPrepared = true;
   }
@@ -146,6 +149,7 @@ public:
     gainEnvelope.noteOn();
     pitchEnvelope.noteOn();
     osc.reset();
+    analogOsc.reset();
 
     callOnNoteReceivers();
   }
@@ -174,6 +178,8 @@ public:
     updateEnvelopeParameters();
     updateOscillatorParameters();
 
+    const int oscType = static_cast<int>(
+      apvts.getRawParameterValue("NeutrinoOscillatorType")->load());
     const float oscGain = 0.0f;
     const int oscOctave = -1;
     const int oscSemitone = 0;
@@ -184,8 +190,18 @@ public:
     auto* rightChannel = _outputBuffer.getWritePointer(1);
 
     for (int sample = _startSample; sample < endSample; ++sample) {
-      osc.setFrequency(getNextFrequency(oscOctave, oscSemitone, oscModDepth));
-      const auto rawSample = osc.getNextSample();
+      const float freq = getNextFrequency(oscOctave, oscSemitone, oscModDepth);
+      osc.setFrequency(freq);
+      analogOsc.setFrequency(freq);
+
+      float rawSample = 0.0f;
+      if (oscType == 0) // Digital
+        rawSample = osc.getNextSample();
+      else if (oscType == 1) // Analog
+        rawSample = analogOsc.getNextSample();
+      else // Both (mix equally)
+        rawSample = (osc.getNextSample() + analogOsc.getNextSample()) * 0.5f;
+
       const auto gainedSample = applyGain(rawSample, oscGain);
       leftChannel[sample] += gainedSample;
       rightChannel[sample] += gainedSample;
@@ -237,6 +253,7 @@ protected:
   {
     TRACER("SynthVoice::updateOscillatorParameters");
     osc.setParameters(apvts, "Neutrino");
+    analogOsc.setParameters(apvts, "Neutrino");
   }
 
   //==============================================================================
@@ -281,6 +298,7 @@ protected:
 private:
   juce::AudioProcessorValueTreeState& apvts;
   DigitalOscillator osc;
+  AnalogOscillator analogOsc;
   AhdEnvelope gainEnvelope;
   AhdEnvelope pitchEnvelope;
   int note = 0;

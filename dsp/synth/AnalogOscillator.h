@@ -1,5 +1,6 @@
 #pragma once
 
+#include "dsp/synth/AnalogWaveform.h"
 #include <JuceHeader.h>
 
 namespace dmt {
@@ -36,6 +37,8 @@ public:
                             String prefix)
   {
     String base = prefix + "AnalogOscillator";
+    waveform.type = static_cast<AnalogWaveform::Type>(
+      static_cast<int>(apvts.getRawParameterValue(base + "Type")->load()));
     params.drive = apvts.getRawParameterValue(base + "Drive")->load();
     params.bias = apvts.getRawParameterValue(base + "Bias")->load();
   }

@@ -1,6 +1,7 @@
 #pragma once
 //==============================================================================
 #include "AhdEnvelopeParameters.h"
+#include "AnalogOscillatorParameters.h"
 #include "DigitalOscillatorParameters.h"
 #include <JuceHeader.h>
 //==============================================================================
@@ -23,8 +24,16 @@ neutrinoParameterGroup(juce::String parentUid, [[maybe_unused]] int versionHint)
     "Neutrino", // group name
     "|",        // separator
 
-    // Oscillatort
+    // Oscillator selector
+    std::make_unique<ParameterChoice>(
+      uid + "OscillatorType",                           // parameter ID
+      "Oscillator",                                     // parameter name
+      juce::StringArray{ "Digital", "Analog", "Both" }, // choices
+      0),                                               // defaultValue
+
+    // Oscillators
     std::make_unique<ParameterGroup>(digitalOscillatorParameterGroup(uid)),
+    std::make_unique<ParameterGroup>(analogOscillatorParameterGroup(uid)),
 
     // Envelopes
     std::make_unique<ParameterGroup>(envelopeParameterGroup(
