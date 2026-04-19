@@ -28,6 +28,13 @@ digitalOscillatorParameterGroup(juce::String parentUid)
                                       "Type",       // parameter name
                                       DigitalWaveform::waveformNames, // choices
                                       2), // defaultValue
+    std::make_unique<ParameterFloat>(uid + "Warp",
+                                     "Warp",
+                                     NormalisableRange(0.f,  // rangeStart
+                                                       1.f,  // rangeEnd
+                                                       .01f, // intervalValue
+                                                       1.f), // skewFactor
+                                     0.0f),
     std::make_unique<ParameterFloat>(uid + "Bend",
                                      "Bend",
                                      NormalisableRange(-100.f, // rangeStart

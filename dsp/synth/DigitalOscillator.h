@@ -54,6 +54,7 @@ class alignas(64) DigitalOscillator
   using DigitalWaveform = dmt::dsp::synth::DigitalWaveform;
 
   static constexpr float twoPi = juce::MathConstants<float>::twoPi;
+  static constexpr float halfPi = juce::MathConstants<float>::halfPi;
   static constexpr float pi = juce::MathConstants<float>::pi;
 
 public:
@@ -65,6 +66,7 @@ public:
     float drive = 0.0f;
     float pwm = 0.0f;
     float clip = 0.0f;
+    float warp = 0.0f;
 
   private:
     float sync = 0.0f;
@@ -107,6 +109,7 @@ public:
                             String prefix)
   {
     auto type = params.type;
+    float warp = params.warp;
     float bend = params.getBend();
     float pwm = params.pwm;
     float sync = params.getSync();
@@ -118,6 +121,7 @@ public:
     type = static_cast<DigitalWaveform::Type>(
       apvts.getRawParameterValue(base + "Type")->load());
     bend = apvts.getRawParameterValue(base + "Bend")->load();
+    warp = apvts.getRawParameterValue(base + "Warp")->load();
     pwm = apvts.getRawParameterValue(base + "Pwm")->load();
     sync = apvts.getRawParameterValue(base + "Sync")->load();
     bias = apvts.getRawParameterValue(base + "Bias")->load();
@@ -130,6 +134,7 @@ public:
     params.bias = bias;
     params.clip = clip;
     params.drive = drive;
+    params.warp = warp;
 
     // These need mapping so we use setters to do that
     params.setBend(bend);
@@ -167,7 +172,8 @@ public:
 
     advancePhase();
     auto pwm = params.pwm;
-    auto syncedPhase = getSyncedPhase(phase * pwm);
+    auto warpedPhase = getWarpPhase(phase);
+    auto syncedPhase = getSyncedPhase(warpedPhase);
     auto bendedPhase = getBendedPhase(syncedPhase);
 
     if (phase >= twoPi / pwm) {
@@ -177,6 +183,28 @@ public:
     float sample = waveform.getSample(bendedPhase);
     sample = distortSample(sample);
     return clamp(sample, -1.0f, +1.0f);
+  }
+
+  //==============================================================================
+  // Experimental phase warp function
+  float getWarpPhase(float _phase) const noexcept
+  {
+    const float k = params.warp;
+    const float normalizedPhase = _phase / pi; // Normalize phase to [0, 2]
+
+    auto b = [k](float x) { return (1.0 + 2.0 * k) * x; };
+    auto c = [k](float x) { return (1.0 - 2.0 * k) * x + 2.0 * k; };
+    auto d = [k](float x) { return (1.0 + 2.0 * k) * x - 4.0 * k; };
+
+    if (normalizedPhase < 0.5) {
+      return b(normalizedPhase) * pi;
+    }
+
+    if (normalizedPhase < 1.5) {
+      return c(normalizedPhase) * pi;
+    }
+
+    return d(normalizedPhase) * pi;
   }
 
   //==============================================================================
