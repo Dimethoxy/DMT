@@ -78,7 +78,7 @@ struct AnalogWaveform
    * @param _x The phase of the waveform.
    * @return The waveform sample.
    */
-  [[nodiscard]] inline float getSample(float _x) noexcept {}
+  [[nodiscard]] inline float getSample(float _x, float _delta) noexcept {}
 
   //==============================================================================
 };
