@@ -62,6 +62,8 @@ heretikParameterGroup(juce::String parentUid, int versionHint)
                                                        0.01f, // intervalValue
                                                        1.0f), // skewFactor
                                      0.1f),                   // defaultValue
+    //==============================================================================
+    // Heretik Drive parameters
     std::make_unique<ParameterFloat>(juce::ParameterID(uid + "Drive", versionHint),
                                      "Drive",
                                      NormalisableRange(0.0f,  // rangeStart
@@ -91,6 +93,8 @@ heretikParameterGroup(juce::String parentUid, int versionHint)
                                                        0.01f, // intervalValue
                                                        1.0f), // skewFactor
                                      0.0f),                   // defaultValue
+    //==============================================================================
+    // Heretik Feedback parameters
     std::make_unique<ParameterFloat>(juce::ParameterID(uid + "Feedback", versionHint),
                                      "Feedback",
                                      NormalisableRange(0.0f,  // rangeStart
