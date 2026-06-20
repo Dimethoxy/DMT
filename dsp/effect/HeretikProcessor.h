@@ -101,7 +101,8 @@ public:
 
     const float drive = apvts.getRawParameterValue("HeretikDrive")->load();
     const float range = apvts.getRawParameterValue("HeretikRange")->load();
-    const float tone = apvts.getRawParameterValue("HeretikTone")->load();
+    const float tone =
+      apvts.getRawParameterValue("HeretikFeedbackFilterCutoff")->load();
     const float feedback =
       apvts.getRawParameterValue("HeretikFeedback")->load();
     const float mix = apvts.getRawParameterValue("HeretikMix")->load();
@@ -153,7 +154,7 @@ protected:
   }
 
   float processSaturation(float _sample, float _drive) const noexcept
-  { 
+  {
     float raw = std::atan(_sample * _drive);
     float normalizer = std::atan(_drive);
     return raw / normalizer;

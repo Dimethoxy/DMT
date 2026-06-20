@@ -88,7 +88,7 @@ public:
     : AbstractPanel("Oscilloscope", false)
     , driveTypeSlider(_apvts,
                       juce::String("Cutoff"),
-                      juce::String("FeedbackFilterCutoff"),
+                      juce::String("HeretikFeedbackFilterCutoff"),
                       Unit::Type::HeretikFeedbackFilterCutoff,
                       RotarySliderType::Bipolar)
     , driveSlider(_apvts,
