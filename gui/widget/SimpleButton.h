@@ -18,9 +18,9 @@
  * Your are not allowed to use this code in any closed-source project.
  *
  * Description:
- * AbstractDisplay provides a base class for all display components
- * that require custom painting, shadow/border rendering, and repaint timing.
- * Designed for extensibility and real-time GUI performance.
+ * SimpleButton is more lightweight than AbstractButton, designed for use cases
+ * where shadows and background states are not needed. It still supports icons
+ * and tooltips, making it ideal for minimalist UI elements.
  *
  * Authors:
  * Lunix-420 (Primary Author)
@@ -31,69 +31,96 @@
 
 //==============================================================================
 
-#include "dmt/gui/component/SettingsEditorComponent.h"
-#include "dmt/gui/display/AbstractDisplay.h"
-#include "dmt/utility/Settings.h"
+#include "gui/widget/Shadow.h"
+#include "utility/Icon.h"
+#include "utility/Scaleable.h"
+#include "utility/Settings.h"
 #include <JuceHeader.h>
 
 //==============================================================================
 
 namespace dmt {
 namespace gui {
-namespace display {
-// TODO: Make this use the new display system with multithreading
-//==============================================================================
-class SettingsEditorDisplay : public dmt::gui::display::AbstractDisplay
-{
-  using Settings = dmt::Settings;
-  using SettingsEditorSettings = dmt::Settings::SettingsEditor;
-  using TextEditor = dmt::gui::widget::TextEditor;
-  using SettingsEditor = dmt::gui::component::SettingsEditor;
+namespace widget {
 
-  //==============================================================================
-  // SettingsEditor
-  const float& rawPadding = SettingsEditorSettings::padding;
+class SimpleButton
+  : public juce::Button
+  , public dmt::Scaleable<SimpleButton>
+{
+  using String = juce::String;
+  using Settings = dmt::Settings;
+  using Colour = juce::Colour;
+  using Image = juce::Image;
+
+  const Colour& backgroundColour = Settings::Display::backgroundColour;
 
 public:
-  SettingsEditorDisplay()
+  SimpleButton(String _name, String _displayString, String _tooltip = "")
+    : juce::Button(_name)
+    , tooltip(_tooltip)
   {
-    TRACER("SettingsEditorDisplay::SettingsEditorDisplay");
-    addAndMakeVisible(settingsEditor);
+    setButtonText(_displayString);
   }
 
-  ~SettingsEditorDisplay() override = default;
-
-  void resized() noexcept override
+  void resized() override
   {
-    TRACER("SettingsEditorDisplay::resized");
-    const auto bounds = getLocalBounds();
-    const auto padding = rawPadding * size;
-    auto settingsBounds = bounds.reduced(padding);
-    settingsEditor.setBounds(settingsBounds);
+    // No custom resizing logic needed for SimpleButton
   }
 
-  void paintDisplay(juce::Graphics& /*_g*/) noexcept override
+  void setActiveState()
   {
-    TRACER("SettingsEditorDisplay::paintDisplay");
-    if (cachedPadding != rawPadding) {
-      cachedPadding = rawPadding;
-      resized();
+    this->isActive = true;
+    repaint();
+  }
+
+  void setPassiveState()
+  {
+    this->isActive = false;
+    repaint();
+  }
+
+  void paintButton(juce::Graphics& g,
+                   bool isMouseOverButton,
+                   bool isButtonDown) override
+  {
+
+    const float borderThickness = 1.0f * size;
+    const float borderRadius = 3.0f * size;
+    const auto outerBounds = getLocalBounds().toFloat();
+    const auto innerBounds = outerBounds.reduced(borderThickness);
+
+    if (isButtonDown) {
+      g.setColour(juce::Colours::white);
+      g.fillRect(innerBounds);
+    } else if (isActive) {
+      g.fillAll(juce::Colours::white);
+    } else {
+      g.fillAll(backgroundColour);
+      g.setColour(juce::Colours::white);
+      g.drawRect(outerBounds, borderThickness);
     }
+
+    // g.fillAll(juce::Colours::red);
   }
 
-  void prepareNextFrame() noexcept override
+  //==============================================================================
+  /**
+   * @brief Retrieves the tooltip text for the button.
+   * @return The tooltip text as a String.
+   *
+   * @details Used by JUCE's tooltip system to display contextual help.
+   */
+  [[nodiscard]] inline String getTooltip() override
   {
-    TRACER("SettingsEditorDisplay::prepareNextFrame");
-    // Implement frame preparation logic here
+    TRACER("SimpleButton::getTooltip");
+    return tooltip;
   }
 
 private:
-  SettingsEditor settingsEditor;
-  float cachedPadding = 0.0f;
-
-  JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SettingsEditorDisplay)
+  String tooltip;
+  bool isActive = false;
 };
 
-} // namespace component
+} // namespace widget
 } // namespace gui
 } // namespace dmt
