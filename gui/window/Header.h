@@ -81,6 +81,7 @@ class Header
   const Colour& borderColor = HeaderSettings::borderColor;
   const Colour& titleFontColour = HeaderSettings::titleFontColour;
   const Colour& buttonColour = HeaderSettings::buttonColour;
+  const int& fontType = HeaderSettings::titleFontType;
 
   const float& titleFontSize = HeaderSettings::titleFontSize;
   const float& rawTitleOffset = HeaderSettings::titleOffset;
@@ -103,7 +104,7 @@ public:
     : outerShadow(drawOuterShadow, outerShadowColour, outerShadowRadius, false)
     , innerShadow(drawInnerShadow, innerShadowColour, innerShadowRadius, true)
     , title(String("ProjectLabel"),
-            fonts.display,
+            resolveFontType(fontType),
             titleFontSize,
             titleFontColour,
             juce::Justification::centred)
@@ -180,6 +181,25 @@ public:
     bounds.removeFromBottom(static_cast<int>(borderStrength));
     _g.setColour(backgroundColour);
     _g.fillRect(bounds);
+  }
+
+  //==============================================================================
+  /**
+   * @brief Resolves the font type setting from index to a concrete font
+   *
+   * @param _index The index of the font type as specified in settings
+   * @return The corresponding juce::Font object
+   */
+  const juce::Font& resolveFontType(int _index) const noexcept
+  {
+    switch (_index) {
+      case 0:
+        return fonts.display;
+      case 1:
+        return fonts.cenobyte;
+      case 2:
+        return fonts.macabre;
+    }
   }
 
   //==============================================================================

@@ -207,6 +207,8 @@ public:
       container.add<Colour>("Header.TitleFontColour", Colours::font);
     static inline auto& titleFontSize =
       container.add<float>("Header.TitleFontSize", 30.0f);
+    static inline auto& titleFontType =
+      container.add<int>("Header.TitleFontType", 0);
     static inline auto& titleOffset =
       container.add<float>("Header.TitleOffset", 2.5f);
     static inline auto& titleButtonWidth =
