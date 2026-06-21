@@ -56,7 +56,9 @@ public:
     , innerShadow(drawInnerShadow, innerShadowColour, innerShadowRadius, true)
   {
     addAndMakeVisible(outerShadow);
+    outerShadow.setInterceptsMouseClicks(false, false);
     addAndMakeVisible(innerShadow);
+    innerShadow.setInterceptsMouseClicks(false, false);
     addAndMakeVisible(chromeComponent);
   }
 
