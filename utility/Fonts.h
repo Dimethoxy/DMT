@@ -90,6 +90,14 @@ struct Fonts
     static_cast<const void*>(BinaryData::SedgwickAveDisplayRegular_ttf),
     static_cast<size_t>(BinaryData::SedgwickAveDisplayRegular_ttfSize));
 
+  alignas(8) Typeface::Ptr cenobyteTypeface = Typeface::createSystemTypefaceFor(
+    static_cast<const void*>(BinaryData::Cenobyte_ttf),
+    static_cast<size_t>(BinaryData::Cenobyte_ttfSize));
+
+  alignas(8) Typeface::Ptr macabreTypeface = Typeface::createSystemTypefaceFor(
+    static_cast<const void*>(BinaryData::MetalMacabre_ttf),
+    static_cast<size_t>(BinaryData::MetalMacabre_ttfSize));
+
   alignas(8) Typeface::Ptr lightTypeface = Typeface::createSystemTypefaceFor(
     static_cast<const void*>(BinaryData::PoppinsLight_ttf),
     static_cast<size_t>(BinaryData::PoppinsLight_ttfSize));
@@ -110,6 +118,8 @@ struct Fonts
   // Preloaded fonts
 
   alignas(8) Font display = Font(FontOptions(displayTypeface));
+  alignas(8) Font cenobyte = Font(FontOptions(cenobyteTypeface));
+  alignas(8) Font macabre = Font(FontOptions(macabreTypeface));
   alignas(8) Font light = Font(FontOptions(lightTypeface));
   alignas(8) Font regular = Font(FontOptions(regularTypeface));
   alignas(8) Font medium = Font(FontOptions(mediumTypeface));
