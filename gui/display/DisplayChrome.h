@@ -62,9 +62,13 @@ public:
 
   void paint(juce::Graphics& _g) noexcept override final
   {
+    const auto bounds = getLocalBounds();
+    const auto padding = rawPadding * size;
+    const auto outerBounds = bounds.reduced(static_cast<int>(padding));
+
     // Draw background for the entire multi-display area
     _g.setColour(backgroundColour);
-    _g.fillAll();
+    _g.fillRect(outerBounds);
   }
 
   void resized() noexcept
@@ -131,7 +135,7 @@ protected:
                                            _innerCornerSize);
       g.reduceClipRegion(fillClippingPath);
       g.setColour(displayForegroundColour);
-      g.fillRect(bounds);
+      g.fillRect(_outerBounds);
     }
 
     // Second Pass: Draw the border
