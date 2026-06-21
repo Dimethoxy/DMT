@@ -18,9 +18,10 @@
  * Your are not allowed to use this code in any closed-source project.
  *
  * Description:
- * AbstractDisplay provides a base class for all display components
- * that require custom painting, shadow/border rendering, and repaint timing.
- * Designed for extensibility and real-time GUI performance.
+ * SettingsEditorDisplay hosts a SettingsEditor component. It intentionally
+ * does NOT extend DisplayChrome directly to avoid the diamond ambiguity with
+ * AbstractDisplay. Instead, chrome (border/shadow) is provided by the host
+ * (typically a MultiDisplay).
  *
  * Authors:
  * Lunix-420 (Primary Author)
@@ -41,13 +42,12 @@
 namespace dmt {
 namespace gui {
 namespace display {
-// TODO: Make this use the new display system with multithreading
+
 //==============================================================================
 class SettingsEditorDisplay : public dmt::gui::display::AbstractDisplay
 {
   using Settings = dmt::Settings;
   using SettingsEditorSettings = dmt::Settings::SettingsEditor;
-  using TextEditor = dmt::gui::widget::TextEditor;
   using SettingsEditor = dmt::gui::component::SettingsEditor;
 
   //==============================================================================
@@ -58,6 +58,7 @@ public:
   SettingsEditorDisplay()
   {
     TRACER("SettingsEditorDisplay::SettingsEditorDisplay");
+    setName("Settings");
     addAndMakeVisible(settingsEditor);
   }
 
@@ -94,6 +95,6 @@ private:
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SettingsEditorDisplay)
 };
 
-} // namespace component
+} // namespace display
 } // namespace gui
 } // namespace dmt

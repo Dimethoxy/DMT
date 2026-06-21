@@ -112,7 +112,7 @@ public:
     , mainLayout(_mainLayout)
     , properties(_properties)
     , header(_titleText, _apvts)
-    , settingsPanel()
+    , settingsPanel(_apvts)
     , borderButton()
     , sizeFactor(_sizeFactor)
   {

@@ -19,6 +19,10 @@
  *
  * Description:
  * SettingsPanel is a GUI component that provides controls for global settings.
+ * It hosts a MultiDisplay (which provides chrome/border/shadow) containing a
+ * single SettingsEditorDisplay. This avoids the diamond ambiguity that would
+ * arise from having SettingsEditorDisplay extend both AbstractDisplay and
+ * DisplayChrome directly.
  *
  * Authors:
  * Lunix-420 (Primary Author)
@@ -31,6 +35,7 @@
 
 #include "gui/component/LinearSliderComponent.h"
 #include "gui/component/RotarySliderComponent.h"
+#include "gui/display/MultiDisplay.h"
 #include "gui/display/SettingsEditorDisplay.h"
 #include "gui/panel/AbstractPanel.h"
 #include "utility/Settings.h"
@@ -52,19 +57,31 @@ class SettingsPanel : public dmt::gui::panel::AbstractPanel
   using RotarySliderType = dmt::gui::widget::RotarySlider::Type;
   using LinearSliderType = dmt::gui::widget::LinearSlider::Type;
   using Unit = dmt::utility::Unit;
+  using Display = dmt::gui::display::AbstractDisplay;
+  using DisplayPtr = std::unique_ptr<Display>;
+  using DisplayList = std::vector<DisplayPtr>;
   using SettingsEditorDisplay = dmt::gui::display::SettingsEditorDisplay;
+  using MultiDisplay = dmt::gui::display::MultiDisplay;
   using Settings = dmt::Settings;
 
   //==============================================================================
   const float& rawPadding = Settings::Panel::padding;
 
 public:
-  SettingsPanel(/*juce::AudioProcessorValueTreeState& apvts*/)
+  explicit SettingsPanel(juce::AudioProcessorValueTreeState& _apvts)
     : AbstractPanel("Settings", false)
+    , settingsDisplay([&_apvts] {
+        DisplayList displays;
+        displays.push_back(std::make_unique<SettingsEditorDisplay>());
+        return std::make_unique<MultiDisplay>(
+          _apvts,
+          std::move(displays),
+          ParameterDisplayMap{});
+      }())
   {
     TRACER("SettingsPanel::SettingsPanel");
     setLayout({ 22, 60 });
-    addAndMakeVisible(settingsEditor);
+    addAndMakeVisible(settingsDisplay.get());
   }
 
   ~SettingsPanel() override = default;
@@ -76,18 +93,14 @@ public:
 
     const float padding = rawPadding * size;
     auto editorBounds = bounds.reduced(padding);
-    const float editorHorizontalPadding = 5.0f;
-    const float editorTopPadding = 5.0f;
-    const float editorBottomPadding = 5.0f;
-    editorBounds.removeFromTop(editorTopPadding * size);
-    editorBounds.removeFromBottom(editorBottomPadding * size);
-    editorBounds.removeFromLeft(editorHorizontalPadding * size);
-    editorBounds.removeFromRight(editorHorizontalPadding * size);
-    settingsEditor.setBounds(editorBounds);
+    settingsDisplay->setBounds(editorBounds);
   }
 
 private:
-  SettingsEditorDisplay settingsEditor;
+  using ParameterDisplayMap =
+    std::unordered_map<juce::String, juce::String>;
+
+  std::unique_ptr<MultiDisplay> settingsDisplay;
 
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SettingsPanel)
 };
