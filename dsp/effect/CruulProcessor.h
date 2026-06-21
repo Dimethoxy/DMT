@@ -18,7 +18,7 @@
  * Your are not allowed to use this code in any closed-source project.
  *
  * Description:
- * This file defines the HeretikProcessor class, which applies a special kind of
+ * This file defines the CruulProcessor class, which applies a special kind of
  * distortion effect to audio buffers that is based on a delay line that is
  * modulated by the input signal.
  *
@@ -47,7 +47,7 @@ namespace effect {
  *
  * This class processes audio buffers with a series of all-pass filters.
  */
-class alignas(64) HeretikProcessor
+class alignas(64) CruulProcessor
 {
   using AudioBuffer = juce::AudioBuffer<float>;
   using DelayLine = juce::dsp::DelayLine<float>;
@@ -64,7 +64,7 @@ public:
    *
    * @param _apvts The AudioProcessorValueTreeState containing the parameters.
    */
-  HeretikProcessor(juce::AudioProcessorValueTreeState& _apvts) noexcept
+  CruulProcessor(juce::AudioProcessorValueTreeState& _apvts) noexcept
     : apvts(_apvts)
   {
   }
@@ -99,13 +99,12 @@ public:
       return;
     }
 
-    const float drive = apvts.getRawParameterValue("HeretikDrive")->load();
-    const float range = apvts.getRawParameterValue("HeretikRange")->load();
+    const float drive = apvts.getRawParameterValue("CruulDrive")->load();
+    const float range = apvts.getRawParameterValue("CruulRange")->load();
     const float tone =
-      apvts.getRawParameterValue("HeretikFeedbackFilterCutoff")->load();
-    const float feedback =
-      apvts.getRawParameterValue("HeretikFeedback")->load();
-    const float mix = apvts.getRawParameterValue("HeretikMix")->load();
+      apvts.getRawParameterValue("CruulFeedbackFilterCutoff")->load();
+    const float feedback = apvts.getRawParameterValue("CruulFeedback")->load();
+    const float mix = apvts.getRawParameterValue("CruulMix")->load();
 
     // Applay the delay line to the input buffer
     for (int channel = 0; channel < _buffer.getNumChannels(); ++channel) {
@@ -169,7 +168,7 @@ private:
   Filter leftFilter;
   Filter rightFilter;
 
-  JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(HeretikProcessor)
+  JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(CruulProcessor)
 };
 
 //==============================================================================

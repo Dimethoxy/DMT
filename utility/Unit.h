@@ -96,22 +96,22 @@ struct alignas(8) Unit
     DisfluxPinch,
     DisfluxMix,
 
-    // Heretik Main Panel
-    HeretikPreGain,
-    HeretikStereo,
-    HeretikRange,
-    HeretikDistortion,
-    HeretikMix,
+    // Cruul Main Panel
+    CruulPreGain,
+    CruulStereo,
+    CruulRange,
+    CruulDistortion,
+    CruulMix,
 
-    // Heretik Drive Panel
-    HeretikDrive,
-    HeretikDriveType,
-    HeretikDriveBias,
+    // Cruul Drive Panel
+    CruulDrive,
+    CruulDriveType,
+    CruulDriveBias,
 
-    // Heretik Feedback Panel
-    HeretikFeedback,
-    HeretikFeedbackFilterSlope,
-    HeretikFeedbackFilterCutoff,
+    // Cruul Feedback Panel
+    CruulFeedback,
+    CruulFeedbackFilterSlope,
+    CruulFeedbackFilterCutoff,
   };
 
   //==============================================================================
@@ -172,35 +172,35 @@ struct alignas(8) Unit
         return String(_value, 1) + String("x");
         break;
 
-        // Heretik
-      case Type::HeretikPreGain:
+        // Cruul
+      case Type::CruulPreGain:
         return String(static_cast<int>(static_cast<float>(_value))) +
                String("dB");
         break;
-      case Type::HeretikStereo:
+      case Type::CruulStereo:
         return String(static_cast<int>(static_cast<float>(_value * 100.0f))) +
                String("%");
         break;
-      case Type::HeretikRange:
+      case Type::CruulRange:
         return String(static_cast<int>(static_cast<float>(_value * 1000.0f))) +
                String(juce::CharPointer_UTF8("\u00B5s"));
         break;
-      case Type::HeretikDistortion:
+      case Type::CruulDistortion:
         return String(static_cast<int>(static_cast<float>(_value * 100.0f))) +
                String("%");
         break;
-      case Type::HeretikMix:
+      case Type::CruulMix:
         return String(static_cast<int>(static_cast<float>(_value * 100.0f))) +
                String("%");
         break;
 
-      case Type::HeretikDrive:
+      case Type::CruulDrive:
         return String(_value, 2) + String("x");
         break;
-      case Type::HeretikDriveType:
+      case Type::CruulDriveType:
         return String(_value);
         break;
-      case Type::HeretikDriveBias: {
+      case Type::CruulDriveBias: {
         const int denormalizedValue =
           static_cast<int>(static_cast<float>(100 * _value));
         const String typeString =
@@ -210,15 +210,15 @@ struct alignas(8) Unit
         return resultString;
         break;
       }
-      case Type::HeretikFeedback:
+      case Type::CruulFeedback:
         return String(static_cast<int>(static_cast<float>(_value * 100.0f))) +
                String("%");
         break;
-      case Type::HeretikFeedbackFilterSlope:
+      case Type::CruulFeedbackFilterSlope:
         return String(
           multiFilterSlopes[static_cast<int>(static_cast<float>(_value))]);
         break;
-      case Type::HeretikFeedbackFilterCutoff: {
+      case Type::CruulFeedbackFilterCutoff: {
         const int minHz = 20;
         const int maxHz = 20000;
         const float minInput = 0.0f;

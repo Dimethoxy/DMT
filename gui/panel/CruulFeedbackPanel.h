@@ -18,7 +18,8 @@
  * Your are not allowed to use this code in any closed-source project.
  *
  * Description:
- * HeretikDrivePanel is one of three panels used to control the Heretik effect.
+ * CruulFeedbackPanel is one of three panels used to control the Cruul
+ * effect.
  *
  * Authors:
  * Lunix-420 (Primary Author)
@@ -56,7 +57,7 @@ namespace panel {
  * AbstractPanel and uses a grid layout for positioning components.
  */
 template<typename SampleType>
-class HeretikDrivePanel : public dmt::gui::panel::AbstractPanel
+class CruulFeedbackPanel : public dmt::gui::panel::AbstractPanel
 {
   using FifoAudioBuffer = dmt::dsp::data::FifoAudioBuffer<float>;
   using DisfluxDisplay = dmt::gui::display::DisfluxDisplay;
@@ -81,26 +82,26 @@ public:
    * Initializes all display and slider components, sets up the grid layout,
    * and adds all subcomponents to the panel.
    */
-  constexpr inline explicit HeretikDrivePanel(
+  constexpr inline explicit CruulFeedbackPanel(
     juce::AudioProcessorValueTreeState& _apvts,
     FifoAudioBuffer& _oscilloscopeBuffer) noexcept
     : AbstractPanel("Oscilloscope", false)
     , driveTypeSlider(_apvts,
-                      juce::String("Type"),
-                      juce::String("HeretikDriveType"),
-                      Unit::Type::HeretikDriveType,
-                      RotarySliderType::Selector)
+                      juce::String("Cutoff"),
+                      juce::String("CruulFeedbackFilterCutoff"),
+                      Unit::Type::CruulFeedbackFilterCutoff,
+                      RotarySliderType::Bipolar)
     , driveSlider(_apvts,
-                  juce::String("Amount"),
-                  juce::String("HeretikDrive"),
-                  Unit::Type::HeretikDrive,
+                  juce::String("Feedback"),
+                  juce::String("CruulFeedback"),
+                  Unit::Type::CruulFeedback,
                   LinearSliderType::Positive,
                   LinearSliderOrientation::Horizontal)
     , biasSlider(_apvts,
-                 juce::String("Symmetry"),
-                 juce::String("HeretikDriveBias"),
-                 Unit::Type::HeretikDriveBias,
-                 RotarySliderType::Bipolar)
+                 juce::String("Slope"),
+                 juce::String("CruulFeedbackFilterSlope"),
+                 Unit::Type::CruulFeedbackFilterSlope,
+                 RotarySliderType::Selector)
   {
     TRACER("DisfluxPanel::DisfluxPanel");
     setLayout({ 20, 60 });
@@ -160,7 +161,7 @@ private:
   // Other members
 
   //==============================================================================
-  JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(HeretikDrivePanel)
+  JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(CruulFeedbackPanel)
 };
 
 } // namespace panel
