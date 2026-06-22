@@ -220,15 +220,9 @@ struct alignas(8) Unit
           multiFilterSlopes[static_cast<int>(static_cast<float>(_value))]);
         break;
       case Type::CruulFeedbackFilterCutoff: {
-        const int minHz = 20;
-        const int maxHz = 20000;
-        const float minInput = 0.0f;
-        const float maxInput = 10.0f;
-        const float scaledValue =
-          juce::jmap<float>(_value, minInput, maxInput, minHz, maxHz);
-        return String(static_cast<int>(static_cast<float>(scaledValue))) +
-               String("Hz");
-        break;
+        const String valueString = String(_value);
+        const String unitString = String("Hz");
+        return valueString + unitString;
       }
       default:
         return String("ERROR");
