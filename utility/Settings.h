@@ -489,7 +489,9 @@ public:
     static inline auto& fontColor =
       container.add<Colour>("Panel.FontColor", Colours::font);
     static inline auto& fontSize =
-      container.add<float>("Panel.FontSize", 30.0f);
+      container.add<float>("Panel.FontSize", 24.0f);
+    static inline auto& fontPadding =
+      container.add<float>("Panel.FontPadding", 5.0f);
   };
 
   //==============================================================================

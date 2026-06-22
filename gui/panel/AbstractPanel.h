@@ -81,6 +81,7 @@ public:
   const juce::Colour& backgroundColour = Settings::backgroundColour;
   const float& cornerSize = Settings::cornerSize;
   const float& rawPadding = Settings::padding;
+  const float& rawFontPadding = Settings::fontPadding;
   // Border
   const bool& drawBorder = Settings::drawBorder;
   const juce::Colour& borderColour = Settings::borderColour;
@@ -268,7 +269,8 @@ public:
     rightBounds.setCentre(rightBounds.getCentreX(), bounds.getCentreY());
     nextButton.setBounds(rightBounds.reduced(marginSize));
 
-    titleLabel.setBounds(bounds.reduced(padding + marginSize));
+    const auto fontPadding = rawFontPadding * size;
+    titleLabel.setBounds(bounds.reduced(fontPadding));
 
     extendResize();
   }

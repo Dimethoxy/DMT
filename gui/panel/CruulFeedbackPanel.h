@@ -85,25 +85,25 @@ public:
   constexpr inline explicit CruulFeedbackPanel(
     juce::AudioProcessorValueTreeState& _apvts,
     FifoAudioBuffer& _oscilloscopeBuffer) noexcept
-    : AbstractPanel("Oscilloscope", false)
+    : AbstractPanel("Feedback", false)
     , driveTypeSlider(_apvts,
-                      juce::String("Cutoff"),
+                      juce::String("Filter Cutoff"),
                       juce::String("CruulFeedbackFilterCutoff"),
                       Unit::Type::CruulFeedbackFilterCutoff,
                       RotarySliderType::Bipolar)
     , driveSlider(_apvts,
-                  juce::String("Feedback"),
+                  juce::String("Feedback Amount"),
                   juce::String("CruulFeedback"),
                   Unit::Type::CruulFeedback,
                   LinearSliderType::Positive,
                   LinearSliderOrientation::Horizontal)
     , biasSlider(_apvts,
-                 juce::String("Slope"),
+                 juce::String("Filter Slope"),
                  juce::String("CruulFeedbackFilterSlope"),
                  Unit::Type::CruulFeedbackFilterSlope,
                  RotarySliderType::Selector)
   {
-    TRACER("DisfluxPanel::DisfluxPanel");
+    TRACER("CruulFeedbackPanel::CruulFeedbackPanel");
     setLayout({ 20, 60 });
 
     addAndMakeVisible(driveTypeSlider);
@@ -122,7 +122,7 @@ public:
    */
   inline void extendResize() noexcept override
   {
-    TRACER("DisfluxPanel::extendResize");
+    TRACER("CruulFeedbackPanel::extendResize");
     auto bounds = getLocalBounds();
 
     const int upperRotarySliderRow = 21;

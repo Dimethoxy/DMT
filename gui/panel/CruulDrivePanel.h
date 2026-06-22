@@ -84,7 +84,7 @@ public:
   constexpr inline explicit CruulDrivePanel(
     juce::AudioProcessorValueTreeState& _apvts,
     FifoAudioBuffer& _oscilloscopeBuffer) noexcept
-    : AbstractPanel("Oscilloscope", false)
+    : AbstractPanel("Mod Distortion", true)
     , driveTypeSlider(_apvts,
                       juce::String("Type"),
                       juce::String("CruulDriveType"),
@@ -102,7 +102,7 @@ public:
                  Unit::Type::CruulDriveBias,
                  RotarySliderType::Bipolar)
   {
-    TRACER("DisfluxPanel::DisfluxPanel");
+    TRACER("CruulDrivePanel::CruulDrivePanel");
     setLayout({ 20, 60 });
 
     addAndMakeVisible(driveTypeSlider);
