@@ -41,7 +41,7 @@ cruulParameterGroup(juce::String parentUid, int versionHint)
                         1.0f,  // rangeEnd
                         0.01f, // intervalValue
                         1.0f), // skewFactor
-      0.5f),                   // defaultValue
+      0.0f),                   // defaultValue
     std::make_unique<ParameterFloat>(
       juce::ParameterID(uid + "Range", versionHint),
       "Range",
@@ -66,7 +66,7 @@ cruulParameterGroup(juce::String parentUid, int versionHint)
                         1.0f,  // rangeEnd
                         0.01f, // intervalValue
                         1.0f), // skewFactor
-      0.1f),                   // defaultValue
+      0.0f),                   // defaultValue
     //==============================================================================
     // Cruul Drive parameters
     std::make_unique<ParameterFloat>(
@@ -76,7 +76,7 @@ cruulParameterGroup(juce::String parentUid, int versionHint)
                         1.0f,  // rangeEnd
                         0.01f, // intervalValue
                         1.0f), // skewFactor
-      0.5f),                   // defaultValue
+      0.0f),                   // defaultValue
     std::make_unique<AudioParameterChoice>(
       juce::ParameterID(uid + "DriveType", versionHint),
       "Drive Type",
