@@ -489,9 +489,9 @@ public:
     static inline auto& fontColor =
       container.add<Colour>("Panel.FontColor", Colours::font);
     static inline auto& fontSize =
-      container.add<float>("Panel.FontSize", 24.0f);
+      container.add<float>("Panel.FontSize", 28.0f);
     static inline auto& fontPadding =
-      container.add<float>("Panel.FontPadding", 5.0f);
+      container.add<float>("Panel.FontPadding", 12.0f);
   };
 
   //==============================================================================
@@ -573,7 +573,7 @@ public:
     static inline auto& infoFontColour =
       container.add<Colour>("Slider.InfoFontColour", Colours::font);
     static inline auto& titleFontSize =
-      container.add<float>("Slider.TitleFontSize", 22.0f);
+      container.add<float>("Slider.TitleFontSize", 20.0f);
     static inline auto& infoFontSize =
       container.add<float>("Slider.InfoFontSize", 16.0f);
     // Shaft
