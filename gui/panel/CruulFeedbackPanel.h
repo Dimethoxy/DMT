@@ -89,7 +89,7 @@ public:
                       juce::String("Filter Cutoff"),
                       juce::String("CruulFeedbackFilterCutoff"),
                       Unit::Type::CruulFeedbackFilterCutoff,
-                      RotarySliderType::Bipolar)
+                      RotarySliderType::Positive)
     , driveSlider(_apvts,
                   juce::String("Amount"),
                   juce::String("CruulFeedback"),
