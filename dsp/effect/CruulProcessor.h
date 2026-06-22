@@ -105,6 +105,8 @@ public:
       apvts.getRawParameterValue("CruulFeedbackFilterCutoff")->load();
     const float feedback = apvts.getRawParameterValue("CruulFeedback")->load();
     const float mix = apvts.getRawParameterValue("CruulMix")->load();
+    const float saturation =
+      apvts.getRawParameterValue("CruulDistortion")->load();
 
     // Applay the delay line to the input buffer
     for (int channel = 0; channel < _buffer.getNumChannels(); ++channel) {
@@ -125,7 +127,8 @@ public:
         // Output
         const float wetSample = delayLine.popSample(channel);
         const float mixSample = (wetSample * mix) + (drySample * (1.0f - mix));
-        channelData[sample] = mixSample;
+        const float saturatedSample = processSaturation(mixSample, saturation);
+        channelData[sample] = saturatedSample;
         feedbackBuffer[channel] = wetSample * feedback;
       }
     }

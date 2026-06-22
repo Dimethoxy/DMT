@@ -92,22 +92,22 @@ public:
                   juce::String("CruulPreGain"),
                   Unit::Type::CruulPreGain,
                   RotarySliderType::Bipolar)
+    , spreadSlider(_apvts,
+                   juce::String("Stereo"),
+                   juce::String("CruulSpread"),
+                   Unit::Type::CruulStereo,
+                   RotarySliderType::Positive)
     , rangeSlider(_apvts,
-                  juce::String("Stereo"),
-                  juce::String("CruulSpread"),
-                  Unit::Type::CruulStereo,
-                  RotarySliderType::Positive)
-    , toneSlider(_apvts,
-                 juce::String("Range"),
-                 juce::String("CruulRange"),
-                 Unit::Type::CruulRange,
-                 LinearSliderType::Positive,
-                 LinearSliderOrientation::Horizontal)
-    , feedbackSlider(_apvts,
-                     juce::String("Saturation"),
-                     juce::String("CruulDistortion"),
-                     Unit::Type::CruulDistortion,
-                     RotarySliderType::Positive)
+                  juce::String("Range"),
+                  juce::String("CruulRange"),
+                  Unit::Type::CruulRange,
+                  LinearSliderType::Positive,
+                  LinearSliderOrientation::Horizontal)
+    , saturationSlider(_apvts,
+                       juce::String("Saturation"),
+                       juce::String("CruulDistortion"),
+                       Unit::Type::CruulDistortion,
+                       RotarySliderType::Positive)
     , mixSlider(_apvts,
                 juce::String("Mix"),
                 juce::String("CruulMix"),
@@ -119,9 +119,9 @@ public:
 
     addAndMakeVisible(display);
     addAndMakeVisible(driveSlider);
+    addAndMakeVisible(spreadSlider);
     addAndMakeVisible(rangeSlider);
-    addAndMakeVisible(toneSlider);
-    addAndMakeVisible(feedbackSlider);
+    addAndMakeVisible(saturationSlider);
     addAndMakeVisible(mixSlider);
   }
 
@@ -163,17 +163,17 @@ public:
 
     const auto rangeSliderPoint =
       this->getGridPoint(bounds, driveSliderCol, lowerRotarySliderRow);
-    rangeSlider.setSizeAndCentre(rangeSliderPoint);
+    spreadSlider.setSizeAndCentre(rangeSliderPoint);
 
     const auto leftToneSliderPoint =
       this->getGridPoint(bounds, leftToneSliderCol, linearSliderRow);
     const auto rightToneSliderPoint =
       this->getGridPoint(bounds, rightToneSliderCol, linearSliderRow);
-    toneSlider.setBoundsByPoints(leftToneSliderPoint, rightToneSliderPoint);
+    rangeSlider.setBoundsByPoints(leftToneSliderPoint, rightToneSliderPoint);
 
     const auto feedbackSliderPoint =
       this->getGridPoint(bounds, feedbackSliderCol, lowerRotarySliderRow);
-    feedbackSlider.setSizeAndCentre(feedbackSliderPoint);
+    saturationSlider.setSizeAndCentre(feedbackSliderPoint);
 
     const auto mixSliderPoint =
       this->getGridPoint(bounds, feedbackSliderCol, upperRotarySliderRow);
@@ -186,9 +186,9 @@ private:
   // Members initialized in the initializer list
   DisfluxDisplay display;
   RotarySlider driveSlider;
-  RotarySlider rangeSlider;
-  LinearSlider toneSlider;
-  RotarySlider feedbackSlider;
+  RotarySlider spreadSlider;
+  LinearSlider rangeSlider;
+  RotarySlider saturationSlider;
   RotarySlider mixSlider;
 
   //==============================================================================
