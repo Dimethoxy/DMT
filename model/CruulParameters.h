@@ -80,19 +80,8 @@ cruulParameterGroup(juce::String parentUid, int versionHint)
     std::make_unique<AudioParameterChoice>(
       juce::ParameterID(uid + "DriveType", versionHint),
       "Drive Type",
-      juce::StringArray{ "Hard Clipping",
-                         "Soft Clipping",
-                         "Saturate",
-                         "Atan",
-                         "Crunch",
-                         "Bitcrush",
-                         "Extreme",
-                         "Screame",
-                         "Sine",
-                         "Cosine",
-                         "Harmonic",
-                         "Weird" },
-      0), // defaultItemIndex
+      juce::StringArray{ Unit::distortionTypes }, // choices
+      0),                                         // defaultItemIndex
     std::make_unique<ParameterFloat>(
       juce::ParameterID(uid + "DriveBias", versionHint),
       "Drive Bias",

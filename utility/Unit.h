@@ -198,7 +198,8 @@ struct alignas(8) Unit
         return String(_value, 2) + String("x");
         break;
       case Type::CruulDriveType:
-        return String(_value);
+        return String(
+          distortionTypes[static_cast<int>(static_cast<float>(_value))]);
         break;
       case Type::CruulDriveBias: {
         const int denormalizedValue =
@@ -238,10 +239,17 @@ struct alignas(8) Unit
   //==============================================================================
 
   static constexpr const char* multiFilterSlopes[]{
-    "LP 12dB/Oct", "LP 24dB/Oct", "LP 36dB/Oct", "LP 48dB/Oct",
-    "BP 12dB/Oct", "BP 24dB/Oct", "BP 36dB/Oct", "BP 48dB/Oct",
-    "HP 12dB/Oct", "HP 24dB/Oct", "HP 36dB/Oct", "HP 48dB/Oct"
+    "LP 12dB/Oct", "LP 36dB/Oct", "LP 64dB/Oct", //
+    "BP 12dB/Oct", "BP 36dB/Oct", "BP 64dB/Oct", //
+    "HP 12dB/Oct", "HP 36dB/Oct", "HP 64dB/Oct"  //
   };
+
+  //==============================================================================
+
+  static constexpr const char* distortionTypes[]{ "Hard Clip", "Soft Clip",
+                                                  "Atan",      "Knee",
+                                                  "Bit Crush", "Brrrr",
+                                                  "Sine",      "Cosine" };
 
   //==============================================================================
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Unit)
