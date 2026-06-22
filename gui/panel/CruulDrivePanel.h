@@ -123,8 +123,8 @@ public:
     TRACER("DisfluxPanel::extendResize");
     auto bounds = getLocalBounds();
 
-    const int upperRotarySliderRow = 15;
-    const int linearSliderRow = 45;
+    const int upperRotarySliderRow = 17;
+    const int linearSliderRow = 48;
 
     const int driveSliderCol = 6;
     const int feedbackSliderCol = 15;

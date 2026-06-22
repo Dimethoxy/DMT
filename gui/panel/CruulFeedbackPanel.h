@@ -124,8 +124,8 @@ public:
     TRACER("CruulFeedbackPanel::extendResize");
     auto bounds = getLocalBounds();
 
-    const int upperRotarySliderRow = 21;
-    const int linearSliderRow = 49;
+    const int upperRotarySliderRow = 17;
+    const int linearSliderRow = 48;
 
     const int driveSliderCol = 6;
     const int feedbackSliderCol = 15;
