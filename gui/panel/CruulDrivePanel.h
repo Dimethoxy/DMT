@@ -82,8 +82,7 @@ public:
    * and adds all subcomponents to the panel.
    */
   constexpr inline explicit CruulDrivePanel(
-    juce::AudioProcessorValueTreeState& _apvts,
-    FifoAudioBuffer& _oscilloscopeBuffer) noexcept
+    juce::AudioProcessorValueTreeState& _apvts) noexcept
     : AbstractPanel("Mod Distortion", true)
     , driveTypeSlider(_apvts,
                       juce::String("Type"),

@@ -83,9 +83,8 @@ public:
    * and adds all subcomponents to the panel.
    */
   constexpr inline explicit CruulFeedbackPanel(
-    juce::AudioProcessorValueTreeState& _apvts,
-    FifoAudioBuffer& _oscilloscopeBuffer) noexcept
-    : AbstractPanel("Feedback", false)
+    juce::AudioProcessorValueTreeState& _apvts) noexcept
+    : AbstractPanel("Feedback", true)
     , driveTypeSlider(_apvts,
                       juce::String("Filter Cutoff"),
                       juce::String("CruulFeedbackFilterCutoff"),
