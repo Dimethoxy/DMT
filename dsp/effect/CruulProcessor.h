@@ -159,6 +159,12 @@ protected:
   {
     float raw = std::atan(_sample * _drive);
     float normalizer = std::atan(_drive);
+
+    // We need to make sure we don't divide by zero, but if the drive is zero
+    if (juce::approximatelyEqual(_drive, 0.0f)) {
+      return _sample; // No drive means no saturation
+    }
+
     return raw / normalizer;
   }
 
