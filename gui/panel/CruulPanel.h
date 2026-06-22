@@ -87,11 +87,11 @@ public:
     FifoAudioBuffer& _oscilloscopeBuffer) noexcept
     : AbstractPanel("Oscilloscope", false)
     , display(_oscilloscopeBuffer, _apvts)
-    , driveSlider(_apvts,
-                  juce::String("PreGain"),
-                  juce::String("CruulPreGain"),
-                  Unit::Type::CruulPreGain,
-                  RotarySliderType::Bipolar)
+    , gainSlider(_apvts,
+                 juce::String("PreGain"),
+                 juce::String("CruulPreGain"),
+                 Unit::Type::CruulPreGain,
+                 RotarySliderType::Bipolar)
     , spreadSlider(_apvts,
                    juce::String("Stereo"),
                    juce::String("CruulSpread"),
@@ -118,7 +118,7 @@ public:
     setLayout({ 60, 60 });
 
     addAndMakeVisible(display);
-    addAndMakeVisible(driveSlider);
+    addAndMakeVisible(gainSlider);
     addAndMakeVisible(spreadSlider);
     addAndMakeVisible(rangeSlider);
     addAndMakeVisible(saturationSlider);
@@ -159,7 +159,7 @@ public:
 
     const auto driveSliderPoint =
       this->getGridPoint(bounds, driveSliderCol, upperRotarySliderRow);
-    driveSlider.setSizeAndCentre(driveSliderPoint);
+    gainSlider.setSizeAndCentre(driveSliderPoint);
 
     const auto rangeSliderPoint =
       this->getGridPoint(bounds, driveSliderCol, lowerRotarySliderRow);
@@ -185,7 +185,7 @@ private:
   //==============================================================================
   // Members initialized in the initializer list
   DisfluxDisplay display;
-  RotarySlider driveSlider;
+  RotarySlider gainSlider;
   RotarySlider spreadSlider;
   LinearSlider rangeSlider;
   RotarySlider saturationSlider;
