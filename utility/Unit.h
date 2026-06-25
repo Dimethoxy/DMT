@@ -138,36 +138,44 @@ struct alignas(8) Unit
         return String(static_cast<int>(static_cast<float>(_value))) +
                String("%");
         break;
+
       case Type::OscilloscopeThickness:
         return String(static_cast<int>(static_cast<float>(_value))) +
                String("px");
         break;
+
       case Type::OscilloscopeHeight:
         return String(static_cast<int>(static_cast<float>(_value))) +
                String("dB");
         break;
+
       case Type::DisfluxAmount:
         return String(static_cast<int>(static_cast<float>(_value))) +
                String("x");
         break;
+
       case Type::DisfluxSpread:
         return String(static_cast<int>(static_cast<float>(_value))) +
                String("Hz");
         break;
+
       case Type::DisfluxFrequency:
         return String(static_cast<int>(static_cast<float>(_value))) +
                String("Hz");
         break;
+
       case Type::DisfluxPinch:
         // Map 0.5–16.0 to 0–100%
         return String(static_cast<int>(((_value - 0.5f) / (16.0f - 0.5f)) *
                                        100.0f)) +
                String("%");
         break;
+
       case Type::DisfluxMix:
         return String(static_cast<int>(static_cast<float>(_value * 100.0f))) +
                String("%");
         break;
+
       case Type::EnvelopeBend:
         return String(_value, 1) + String("x");
         break;
@@ -177,18 +185,22 @@ struct alignas(8) Unit
         return String(static_cast<int>(static_cast<float>(_value))) +
                String("dB");
         break;
+
       case Type::CruulStereo:
         return String(static_cast<int>(static_cast<float>(_value * 100.0f))) +
                String("%");
         break;
+
       case Type::CruulRange:
         return String(static_cast<int>(static_cast<float>(_value * 1000.0f))) +
                String(juce::CharPointer_UTF8("\u00B5s"));
         break;
+
       case Type::CruulDistortion:
         return String(static_cast<int>(static_cast<float>(_value * 100.0f))) +
                String("%");
         break;
+
       case Type::CruulMix:
         return String(static_cast<int>(static_cast<float>(_value * 100.0f))) +
                String("%");
@@ -197,36 +209,47 @@ struct alignas(8) Unit
       case Type::CruulDrive:
         return String(_value, 2) + String("x");
         break;
+
       case Type::CruulDriveType:
         return String(
           distortionTypes[static_cast<int>(static_cast<float>(_value))]);
         break;
+
       case Type::CruulDriveBias: {
         const int denormalizedValue =
           static_cast<int>(static_cast<float>(100 * _value));
+          if (denormalizedValue == 0)
+            return String("Neutral");
         const String typeString =
-          (denormalizedValue < 0) ? String("Mono ") : String("Stereo ");
+          (denormalizedValue < 0) ? String("Positive ") : String("Negative ");
         const String valueString = String(std::abs(denormalizedValue));
         const String resultString = typeString + valueString + String("%");
         return resultString;
         break;
       }
-      case Type::CruulFeedback:
+      
+      case Type::CruulFeedback:{
         return String(static_cast<int>(static_cast<float>(_value * 100.0f))) +
                String("%");
         break;
-      case Type::CruulFeedbackFilterSlope:
+      }
+
+      case Type::CruulFeedbackFilterSlope:{
         return String(
           multiFilterSlopes[static_cast<int>(static_cast<float>(_value))]);
         break;
-      case Type::CruulFeedbackFilterCutoff: {
+      }
+
+      case Type::CruulFeedbackFilterCutoff:{
         const String valueString = String(_value);
         const String unitString = String("Hz");
         return valueString + unitString;
       }
-      default:
+      
+      default:{
         return String("ERROR");
         break;
+      }
     }
   }
 
