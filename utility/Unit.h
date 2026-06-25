@@ -258,7 +258,8 @@ struct alignas(8) Unit
   static constexpr const char* multiFilterSlopes[]{
     "LP 12dB/Oct", "LP 36dB/Oct", "LP 64dB/Oct", //
     "BP 12dB/Oct", "BP 36dB/Oct", "BP 64dB/Oct", //
-    "HP 12dB/Oct", "HP 36dB/Oct", "HP 64dB/Oct"  //
+    "HP 12dB/Oct", "HP 36dB/Oct", "HP 64dB/Oct", //
+    nullptr
   };
 
   //==============================================================================
@@ -266,8 +267,9 @@ struct alignas(8) Unit
   static constexpr const char* distortionTypes[]{ "Hard Clip", "Soft Clip",
                                                   "Atan",      "Knee",
                                                   "Bit Crush", "Brrrr",
-                                                  "Sine",      "Cosine" };
-
+                                                  "Sine",      "Cosine",
+                                                  nullptr };
+                                                  
   //==============================================================================
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Unit)
 };
